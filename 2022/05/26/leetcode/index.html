@@ -4,18 +4,66 @@
   <meta charset="utf-8">
   
   
-  <title>personal page</title>
+  <title>leetcode | personal page</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="this is a description test">
-<meta property="og:type" content="website">
-<meta property="og:title" content="personal page">
-<meta property="og:url" content="http://tao1st.github.io/index.html">
+  <meta name="description" content="贪心 Greedy 局部最优解能够导向全局最优解。 贪心的重点往往在于，看出这道题是贪心问题。   455 Assign Cookies 分发饼干 (Easy) 非常典型的贪心问题，需要先进行排序（根据数据规模判断可以接受O(nlogn)的时间复杂度。  135 Candy 分发糖果 (Hard) 一个特殊的题意理解错误：当两个孩子相邻且评分一致时并不一定二者分到相同的糖果。题目只要求相邻二者中多">
+<meta property="og:type" content="article">
+<meta property="og:title" content="leetcode">
+<meta property="og:url" content="http://tao1st.github.io/2022/05/26/leetcode/index.html">
 <meta property="og:site_name" content="personal page">
-<meta property="og:description" content="this is a description test">
+<meta property="og:description" content="贪心 Greedy 局部最优解能够导向全局最优解。 贪心的重点往往在于，看出这道题是贪心问题。   455 Assign Cookies 分发饼干 (Easy) 非常典型的贪心问题，需要先进行排序（根据数据规模判断可以接受O(nlogn)的时间复杂度。  135 Candy 分发糖果 (Hard) 一个特殊的题意理解错误：当两个孩子相邻且评分一致时并不一定二者分到相同的糖果。题目只要求相邻二者中多">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://raw.githubusercontent.com/TAO1st/pics@master/202205260000400.png">
+<meta property="og:image" content="https://fastly.jsdelivr.net/gh/TAO1st/pics@master/202203151641820.png">
+<meta property="og:image" content="https://fastly.jsdelivr.net/gh/TAO1st/pics@master/202203211456914.png">
+<meta property="og:image" content="https://fastly.jsdelivr.net/gh/TAO1st/pics@master/202204061409369.png">
+<meta property="og:image" content="https://fastly.jsdelivr.net/gh/TAO1st/pics@master/202204061102316.png">
+<meta property="og:image" content="https://fastly.jsdelivr.net/gh/TAO1st/pics@master/202204061102867.png">
+<meta property="og:image" content="https://fastly.jsdelivr.net/gh/TAO1st/pics@master/202204211941410.png">
+<meta property="og:image" content="https://fastly.jsdelivr.net/gh/TAO1st/pics@master/202205161418594.png">
+<meta property="og:image" content="https://fastly.jsdelivr.net/gh/TAO1st/pics@master/202205161501183.png">
+<meta property="og:image" content="https://fastly.jsdelivr.net/gh/TAO1st/pics@master/202204241054724.png">
+<meta property="og:image" content="https://fastly.jsdelivr.net/gh/TAO1st/pics@master/202204261027731.png">
+<meta property="og:image" content="https://fastly.jsdelivr.net/gh/TAO1st/pics@master/202205011625893.png">
+<meta property="og:image" content="https://fastly.jsdelivr.net/gh/TAO1st/pics@master/202205011711572.png">
+<meta property="og:image" content="https://fastly.jsdelivr.net/gh/TAO1st/pics@master/202205021237853.png">
+<meta property="og:image" content="https://fastly.jsdelivr.net/gh/TAO1st/pics@master/202112271559574.png">
+<meta property="og:image" content="https://fastly.jsdelivr.net/gh/TAO1st/pics@master/202112271610871.png">
+<meta property="og:image" content="https://fastly.jsdelivr.net/gh/TAO1st/pics@master/202112271610179.png">
+<meta property="og:image" content="https://fastly.jsdelivr.net/gh/TAO1st/pics@master/202112271610855.png">
+<meta property="og:image" content="https://fastly.jsdelivr.net/gh/TAO1st/pics@master/202112271610897.png">
+<meta property="og:image" content="https://fastly.jsdelivr.net/gh/TAO1st/pics@master/202112271611950.png">
+<meta property="og:image" content="https://fastly.jsdelivr.net/gh/TAO1st/pics@master/202205111123247.png">
+<meta property="og:image" content="https://fastly.jsdelivr.net/gh/TAO1st/pics@master/202205111539729.png">
+<meta property="og:image" content="https://fastly.jsdelivr.net/gh/TAO1st/pics@master/202205151303835.png">
+<meta property="og:image" content="https://fastly.jsdelivr.net/gh/TAO1st/pics@master/202205151303981.png">
+<meta property="og:image" content="https://fastly.jsdelivr.net/gh/TAO1st/pics@master/202205151304030.png">
+<meta property="og:image" content="https://fastly.jsdelivr.net/gh/TAO1st/pics@master/202205151304895.png">
+<meta property="og:image" content="https://fastly.jsdelivr.net/gh/TAO1st/pics@master/202205151305541.png">
+<meta property="og:image" content="https://fastly.jsdelivr.net/gh/TAO1st/pics@master/202205151305963.png">
+<meta property="og:image" content="https://fastly.jsdelivr.net/gh/TAO1st/pics@master/202205151305388.png">
+<meta property="og:image" content="https://fastly.jsdelivr.net/gh/TAO1st/pics@master/202205151305522.png">
+<meta property="og:image" content="https://fastly.jsdelivr.net/gh/TAO1st/pics@master/202205151305620.png">
+<meta property="og:image" content="https://fastly.jsdelivr.net/gh/TAO1st/pics@master/202205151306852.png">
+<meta property="og:image" content="https://fastly.jsdelivr.net/gh/TAO1st/pics@master/202205151306288.png">
+<meta property="og:image" content="http://tao1st.github.io/assets/images/posts/algorithm-repeated-string-pattern/repeated-string-pattern-kmp-5-1.jpeg">
+<meta property="og:image" content="http://tao1st.github.io/assets/images/posts/algorithm-repeated-string-pattern/repeated-string-pattern-kmp-5-2.jpeg">
+<meta property="og:image" content="http://tao1st.github.io/assets/images/posts/algorithm-repeated-string-pattern/repeated-string-pattern-kmp-5-3.jpeg">
+<meta property="og:image" content="http://tao1st.github.io/assets/images/posts/algorithm-repeated-string-pattern/repeated-string-pattern-kmp-5-4.jpeg">
+<meta property="og:image" content="http://tao1st.github.io/assets/images/posts/algorithm-repeated-string-pattern/repeated-string-pattern-kmp-5-5.jpeg">
+<meta property="og:image" content="http://tao1st.github.io/assets/images/posts/algorithm-repeated-string-pattern/repeated-string-pattern-kmp-5-6.jpeg">
+<meta property="og:image" content="https://fastly.jsdelivr.net/gh/TAO1st/pics@master/202205151307596.png">
+<meta property="og:image" content="https://fastly.jsdelivr.net/gh/TAO1st/pics@master/202205151307241.png">
+<meta property="og:image" content="https://fastly.jsdelivr.net/gh/TAO1st/pics@master/202205151307726.png">
+<meta property="og:image" content="https://fastly.jsdelivr.net/gh/TAO1st/pics@master/202205151307501.png">
+<meta property="og:image" content="http://tao1st.github.io/assets/images/posts/algorithm-repeated-string-pattern/repeated-string-pattern-kmp-7-3.jpeg">
+<meta property="og:image" content="http://tao1st.github.io/assets/images/posts/algorithm-repeated-string-pattern/repeated-string-pattern-kmp-7-4.jpeg">
+<meta property="article:published_time" content="2022-05-26T10:02:57.000Z">
+<meta property="article:modified_time" content="2022-05-26T10:03:33.582Z">
 <meta property="article:author" content="tao1st">
 <meta property="article:tag" content="this is a keywords test">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/TAO1st/pics@master/202205260000400.png">
   
     <link rel="alternate" href="/atom.xml" title="personal page" type="application/atom+xml">
   
@@ -76,9 +124,7 @@
 </header>
 
       <div class="outer">
-        <section id="main">
-  
-    <article id="post-leetcode" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+        <section id="main"><article id="post-leetcode" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2022/05/26/leetcode/" class="article-date">
   <time class="dt-published" datetime="2022-05-26T10:02:57.000Z" itemprop="datePublished">2022-05-26</time>
@@ -91,8 +137,8 @@
       <header class="article-header">
         
   
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2022/05/26/leetcode/">leetcode</a>
+    <h1 class="p-name article-title" itemprop="headline name">
+      leetcode
     </h1>
   
 
@@ -2468,155 +2514,19 @@ $$
     </footer>
   </div>
   
-</article>
-
-
-
+    
+<nav id="article-nav">
   
-    <article id="post-test-post" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2022/05/26/test-post/" class="article-date">
-  <time class="dt-published" datetime="2022-05-26T07:49:57.000Z" itemprop="datePublished">2022-05-26</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
   
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2022/05/26/test-post/">test post</a>
-    </h1>
+    <a href="/2022/05/26/test-post/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">后一篇</strong>
+      <div class="article-nav-title">test post</div>
+    </a>
   
+</nav>
 
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h1 id="PicGo-GitHub-CDN"><a href="#PicGo-GitHub-CDN" class="headerlink" title="PicGo + GitHub + CDN"></a>PicGo + GitHub + CDN</h1><h2 id="设置"><a href="#设置" class="headerlink" title="设置"></a>设置</h2><ul>
-<li><p>设定仓库名：TAO1st&#x2F;pics</p>
-</li>
-<li><p>master<br>  iiqhg</p>
-</li>
-<li><p>token</p>
-</li>
-<li><p>code test : <code>hello world</code></p>
-</li>
-</ul>
-<hr>
-<ul>
-<li>$\Theta(n)$</li>
-</ul>
-<blockquote>
-<p>123<br>asdf<br>asdf<br>asdf<br>asdf</p>
-</blockquote>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://tao1st.github.io/2022/05/26/test-post/" data-id="cl3mpwtos0001pgcebjozc14h" data-title="test post" class="article-share-link">分享</a>
-      
-      
-      
-    </footer>
-  </div>
   
 </article>
-
-
-
-  
-    <article id="post-post-title-with-whitespace" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2022/05/26/post-title-with-whitespace/" class="article-date">
-  <time class="dt-published" datetime="2022-05-26T07:06:08.000Z" itemprop="datePublished">2022-05-26</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2022/05/26/post-title-with-whitespace/">post title with whitespace</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://tao1st.github.io/2022/05/26/post-title-with-whitespace/" data-id="cl3mprfeq0000ewce5yrfa1a8" data-title="post title with whitespace" class="article-share-link">分享</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-hello-world" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2022/05/26/hello-world/" class="article-date">
-  <time class="dt-published" datetime="2022-05-26T03:55:19.759Z" itemprop="datePublished">2022-05-26</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2022/05/26/hello-world/">Hello World</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p>Welcome to <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a target="_blank" rel="noopener" href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://tao1st.github.io/2022/05/26/hello-world/" data-id="cl3mhggld0000yoceebijg0tg" data-title="Hello World" class="article-share-link">分享</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
 
 
 </section>
