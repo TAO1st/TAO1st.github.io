@@ -1,18 +1,18 @@
 
 
 <!DOCTYPE html>
-<html lang="zh-CN" data-default-color-scheme=auto>
+<html lang="zh-CN" >
 
 
 
 <head>
   <meta charset="UTF-8">
-  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
-  <link rel="icon" href="/img/fluid.png">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/avatar.png">
+  <link rel="icon" href="/img/avatar.png">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
   <meta http-equiv="x-ua-compatible" content="ie=edge">
   
-  <meta name="theme-color" content="#2f4154">
+  <meta name="theme-color" content="#98a5ac">
   <meta name="author" content="tao1st">
   <meta name="keywords" content="this is a keywords test">
   
@@ -69,9 +69,11 @@
 <meta property="og:image" content="https://tao1st.github.io/assets/images/posts/algorithm-repeated-string-pattern/repeated-string-pattern-kmp-7-3.jpeg">
 <meta property="og:image" content="https://tao1st.github.io/assets/images/posts/algorithm-repeated-string-pattern/repeated-string-pattern-kmp-7-4.jpeg">
 <meta property="article:published_time" content="2019-05-26T10:02:57.000Z">
-<meta property="article:modified_time" content="2022-08-16T08:30:42.670Z">
+<meta property="article:modified_time" content="2022-08-17T08:01:43.470Z">
 <meta property="article:author" content="tao1st">
-<meta property="article:tag" content="this is a keywords test">
+<meta property="article:tag" content="数据结构">
+<meta property="article:tag" content="学习笔记">
+<meta property="article:tag" content="Segment Tree">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://raw.githubusercontent.com/TAO1st/pics@master/202205260000400.png">
   
@@ -106,8 +108,6 @@
 
   <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
   
-    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
-  
 
 
 
@@ -115,7 +115,7 @@
   <script id="fluid-configs">
     var Fluid = window.Fluid || {};
     Fluid.ctx = Object.assign({}, Fluid.ctx)
-    var CONFIG = {"hostname":"tao1st.github.io","root":"/","version":"1.9.0","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+    var CONFIG = {"hostname":"tao1st.github.io","root":"/","version":"1.9.0","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":1},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
 
     if (CONFIG.web_analytics.follow_dnt) {
       var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
@@ -139,7 +139,7 @@
   <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
   <div class="container">
     <a class="navbar-brand" href="/">
-      <strong>Fluid</strong>
+      <strong>TAO1st</strong>
     </a>
 
     <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
@@ -207,7 +207,7 @@
             <li class="nav-item">
               <a class="nav-link" href="/about/">
                 <i class="iconfont icon-user-fill"></i>
-                关于
+                关于我
               </a>
             </li>
           
@@ -221,11 +221,6 @@
           
         
         
-          <li class="nav-item" id="color-toggle-btn">
-            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
-                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
-          </li>
-        
       </ul>
     </div>
   </div>
@@ -234,9 +229,9 @@
   
 
 <div id="banner" class="banner" parallax=true
-     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+     style="background: url('/img/bk7.png') no-repeat center center; background-size: cover;">
   <div class="full-bg-img">
-    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.5)">
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
@@ -247,6 +242,11 @@
         
           
   <div class="mt-3">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-author" aria-hidden="true"></i>
+        tao1st
+      </span>
     
     
       <span class="post-meta">
@@ -260,23 +260,7 @@
 
   <div class="mt-1">
     
-      <span class="post-meta mr-2">
-        <i class="iconfont icon-chart"></i>
-        
-          55k 字
-        
-      </span>
-    
 
-    
-      <span class="post-meta mr-2">
-        <i class="iconfont icon-clock-fill"></i>
-        
-        
-        
-          460 分钟
-        
-      </span>
     
 
     
@@ -313,6 +297,14 @@
           <article class="post-content mx-auto">
             <!-- SEO header -->
             <h1 style="display: none">leetcode</h1>
+            
+              <p class="note note-info">
+                
+                  
+                    本文最后更新于：5 小时前
+                  
+                
+              </p>
             
             <div class="markdown-body">
               
@@ -2680,52 +2672,53 @@ $$
             <div>
               <div class="post-metas my-3">
   
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" class="category-chain-item">数据结构</a>
+  
+  
+
+      </span>
+    
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E7%AE%97%E6%B3%95/" class="category-chain-item">算法</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">#数据结构</a>
+      
+        <a href="/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">#学习笔记</a>
+      
+        <a href="/tags/Segment-Tree/">#Segment Tree</a>
+      
+    </div>
   
 </div>
 
 
               
-  
-
-  <div class="license-box my-3">
-    <div class="license-title">
-      <div>leetcode</div>
-      <div>https://tao1st.github.io/2019/05/26/leetcode/</div>
-    </div>
-    <div class="license-meta">
-      
-        <div class="license-meta-item">
-          <div>作者</div>
-          <div>tao1st</div>
-        </div>
-      
-      
-        <div class="license-meta-item license-meta-date">
-          <div>发布于</div>
-          <div>2019年5月26日</div>
-        </div>
-      
-      
-      <div class="license-meta-item">
-        <div>许可协议</div>
-        <div>
-          
-            
-            
-              <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
-              <span class="hint--top hint--rounded" aria-label="BY - 署名">
-                <i class="iconfont icon-by"></i>
-              </span>
-              </a>
-            
-          
-        </div>
-      </div>
-    </div>
-    <div class="license-icon iconfont"></div>
-  </div>
-
-
 
               
                 <div class="post-prevnext my-3">
@@ -2791,6 +2784,12 @@ $$
 
 
   
+
+
+  
+  
+
+
 
 
 
@@ -3023,6 +3022,44 @@ $$
 
 
   <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        MathJax = {
+          tex    : {
+            inlineMath: { '[+]': [['$', '$']] }
+          },
+          loader : {
+            load: ['ui/lazy']
+          },
+          options: {
+            renderActions: {
+              findScript    : [10, doc => {
+                document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+                  const display = !!node.type.match(/; *mode=display/);
+                  const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+                  const text = document.createTextNode('');
+                  node.parentNode.replaceChild(text, node);
+                  math.start = { node: text, delim: '', n: 0 };
+                  math.end = { node: text, delim: '', n: 0 };
+                  doc.math.push(math);
+                });
+              }, '', false],
+              insertedScript: [200, () => {
+                document.querySelectorAll('mjx-container').forEach(node => {
+                  let target = node.parentNode;
+                  if (target.nodeName.toLowerCase() === 'li') {
+                    target.parentNode.classList.add('has-jax');
+                  }
+                });
+              }, '', false]
+            }
+          }
+        };
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.0/es5/tex-mml-chtml.js" ></script>
 
   <script  src="/js/local-search.js" ></script>
 
