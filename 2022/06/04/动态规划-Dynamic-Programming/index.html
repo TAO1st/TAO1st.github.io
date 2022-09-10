@@ -1,0 +1,1569 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" >
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/avatar.png">
+  <link rel="icon" href="/img/avatar.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#98a5ac">
+  <meta name="author" content="tao1st">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="Constant-sized program to solve arbitrary input —— Recursion or Looping.  6.006描述算法的核心在于 “constant-sized program to solve arbitrary input”。所以整门课程的大多算法都与 递归 或 循环 有关。对于一些我们已知的问题，我们可以 reduce to a proble">
+<meta property="og:type" content="article">
+<meta property="og:title" content="动态规划（Dynamic Programming）">
+<meta property="og:url" content="https://tao1st.github.io/2022/06/04/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92-Dynamic-Programming/index.html">
+<meta property="og:site_name" content="tao1st.github.io">
+<meta property="og:description" content="Constant-sized program to solve arbitrary input —— Recursion or Looping.  6.006描述算法的核心在于 “constant-sized program to solve arbitrary input”。所以整门课程的大多算法都与 递归 或 循环 有关。对于一些我们已知的问题，我们可以 reduce to a proble">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://gcore.jsdelivr.net/gh/TAO1st/pics@master/202208271745831.png">
+<meta property="og:image" content="https://gcore.jsdelivr.net/gh/TAO1st/pics@master/202208301414549.png">
+<meta property="og:image" content="https://gcore.jsdelivr.net/gh/TAO1st/pics@master/202208301426836.png">
+<meta property="og:image" content="https://gcore.jsdelivr.net/gh/TAO1st/pics@master/202209031219880.png">
+<meta property="article:published_time" content="2022-06-04T08:16:40.000Z">
+<meta property="article:modified_time" content="2022-09-03T17:23:30.443Z">
+<meta property="article:author" content="tao1st">
+<meta property="article:tag" content="动态规划(Dynamic Programming, DP)">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://gcore.jsdelivr.net/gh/TAO1st/pics@master/202208271745831.png">
+  
+  
+  
+  <title>动态规划（Dynamic Programming） - tao1st.github.io</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"tao1st.github.io","root":"/","version":"1.9.2","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":3},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.2.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>TAO1st</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/bk7.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.5)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="动态规划（Dynamic Programming）"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2022-06-04 16:16" pubdate>
+          2022年6月4日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          17k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          142 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">动态规划（Dynamic Programming）</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <blockquote>
+<p>Constant-sized program to solve arbitrary input —— Recursion or Looping.</p>
+</blockquote>
+<p>6.006描述算法的核心在于 “constant-sized program to solve arbitrary input”。所以整门课程的大多算法都与 <b>递归</b> 或 <b>循环</b> 有关。对于一些我们已知的问题，我们可以 reduce to a problem we already know 。比如使用搜索算法、排序算法以及图算法等来解决相应的问题；而这一部分重点关注的是 <b>如何设计递归算法</b> ，并给出一个 <b>设计范式（SRTBOT）</b>。</p>
+<div class="tips">
+<p><b>子问题图</b></p>
+<p>Recursive algorithm implies a graph of computation.</p>
+<p>子问题图能够清晰的表达子问题以及子问题之间的依赖关系。</p>
+<p>自底向上的动态规划算法就是按照拓扑序来求解子问题。即，对于任何子问题，直至它 <b>依赖的所有子问题均已求解完成（所有入度/出度边被砍掉）</b> 才会去求解它。</p>
+</div>
+<details open>
+<summary><span class="pre-summary">&nbsp;</span><b>Review from 6.006</b></summary><p><img src="https://gcore.jsdelivr.net/gh/TAO1st/pics@master/202208271745831.png" srcset="/img/loading.gif" lazyload alt=""></p>
+</details>
+<p>对于动态规划问题，主要分为以下几个角度来切入：</p>
+<ol>
+<li class="lvl-3">
+<p><strong>什么时候需要适用动态规划算法？</strong></p>
+<p>最优子结构（optimal substructure） 与 子问题重叠（overlapping subproblem）。</p>
+</li>
+<li class="lvl-3">
+<p><strong>如何适用SRTBOT来设计DP算法？</strong></p>
+<p>定义子问题及其之间的关系（状态转移方程）。</p>
+</li>
+<li class="lvl-3">
+<p><strong>常见的DP题目有哪些类型？逐个击破。</strong></p>
+<p>LCS, LIS, Fibonacci… the lists goes on.</p>
+</li>
+</ol>
+<h2 id="使用场景">使用场景</h2>
+<blockquote>
+<p>关注最优值与最优解（的重构）。</p>
+</blockquote>
+<p>动态规划通常用来解决 <b>最优化问题</b>。</p>
+<p>We typically apply dynamic programming to <b>counting/optimization problems</b>.</p>
+<p>最优化问题的定义是：一个问题有很多种可行解，我们要从这些可行解中选出具有 <b>最优值</b>（人为选择最优的概念，比如最大或最小值）的解。</p>
+<p>最优解很可能不止一个，即多种可行解都具有相同的最优值。</p>
+<p>根据题目的不同要求，有的题目只需要求出最优值，而有的题目需要更进一步 <b>重构出最优解</b>。</p>
+<p>Such problems can have many possible solutions. Each solution has a value, and we wish to find a solution with the optimal (minimum or maximum) value. We call such a solution <b>an</b> optimal solution to the problem, as opposed to <b>the</b> optimal solution, since there may be <b>several</b> solutions that achieve the optimal value.</p>
+<p>划分子问题时，都需要做出一个选择，每次选择会产生一个或者多个待解的子问题。而解的重构通常也比较简单，我们将每个子问题所作的选择存入表中即可。</p>
+<h2 id="适用情况">适用情况</h2>
+<div class="success">
+<p>确定使用前提是使用动态规划的第一步，即，<b>在什么情况下我们应该寻求用动态规划方法来解决问题呢？</b></p>
+</div>
+<p>适合应用动态规划方法求解的最优化问题应该具备的两个要素：子问题重叠 与 最优子结构。</p>
+<h3 id="子问题重叠">子问题重叠</h3>
+<p><strong>子问题重叠（overlapping subproblem）</strong>：即不同的子问题具有公共的子问题。直接结果就是造成大量重复计算。</p>
+<p>动态规划与分治相似，都是通过 <b>组合子问题的解</b> 来求解原问题。区别在于，分治法每次将问题二分，即子问题之间互不相交；而动态规划则应用于子问题重叠的情况，即不同的子问题会有公共的子问题。</p>
+<p>如何判断子问题是否重叠？观察同样的子问题是否有重复计算即可。从子问题图上来看，子问题重叠即<b>存在节点的入度大于1</b>（DAG， in-degree &gt; 1）。</p>
+<p>处理不同子问题的时候，如果每次对于重叠的子子问题都再计算一遍，显然十分的浪费。动态规划对每个子问题只求解一次，具体的方法则有 <b>自顶向下（递归+备忘）</b> 和 <b>自底向上（拓扑序）</b> 两种，后面会详细讲解。</p>
+<h3 id="最优子结构">最优子结构</h3>
+<p><strong>最优子结构（optimal substructure）</strong>：问题的最优解由相关子问题的最优解组合而成，而这些子问题可以独立求解。</p>
+<p>如何判断问题具有最优子结构：<strong>子问题无关（independent）</strong>。即同一个原问题的其中一个子问题的解不会影响另一个子问题的解。</p>
+<p>值得注意的是，最优子结构是使用动态规划的必要条件而非充分条件。事实上，最优子结构常常意味着应该使用 <b>贪心算法</b>。</p>
+<p>除此之外，还有一个重要的概念就是针对状态的 <b>无后效性</b>。</p>
+<h3 id="无后效性">无后效性</h3>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>一旦当前状态确定，就不会再改变。</p>
+</li>
+<li class="lvl-2">
+<p>未来的状态只决定于已有的一个或若干个状态。</p>
+</li>
+</ul>
+<p>无后效性会影响 状态转移方程 与 空间压缩 的设计。</p>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>状态转移方程：如果当前设计的状态之间的转移不满足无后效性，不妨把状态进行升维，即增加参数扩大子问题规模。</p>
+</li>
+<li class="lvl-2">
+<p>空间压缩：对于能够划分状态阶段的问题，我们可以尝试将多维的状态压缩至较低维度。即当前状态只和前面有限个状态有关。</p>
+</li>
+</ul>
+<h2 id="实现">实现</h2>
+<h3 id="带备忘的自顶向下法-top-down-with-memoization">带备忘的自顶向下法 top-down with memoization</h3>
+<p>递归 + 备忘（Memoization），付出额外的内存空间记录已经求解过的子问题解，从而节省计算时间，典型的时空权衡（time-memory trade-off）。</p>
+<p>Recurse but re-use: record and lookup subproblem solutions.</p>
+<h3 id="自底向上法-bottom-up-method">自底向上法 bottom-up method</h3>
+<p>按照子问题图的拓扑序来求解子问题防止重复计算。即，当某个子问题需要其他子子问题的解时，我们先求得这些子子问题的解。</p>
+<p>Careful brute force: do each subproblem in (topological) order.</p>
+<p>二者的效率对比上：</p>
+<p>In general practice, if all subproblems must be solved at least once, a bottom-up dynamic-programming algorithm usually outperforms the corresponding top-down memoized algorithm by a constant factor, because the bottom-up algorithm has no overhead for recursion and less overhead for maintaining the table. Moreover, for some problems we can exploit the regular pattern of table accesses in the dynamic programming algorithm to reduce time or space requirements even further. Alternatively, if some subproblems in the subproblem space need not be solved at all, the memoized solution has the advantage of solving only those subproblems that are definitely required.</p>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>自底向上没有 <b>递归调用</b> 和 <b>维护备忘表</b> 的开销；</p>
+</li>
+<li class="lvl-2">
+<p>自底向上会把所有子问题的解求出来，有些情况我们并不需要计算所有子问题，此时备忘的自顶向下方式就体现出优势了，因为其只计算必要的子问题。</p>
+</li>
+</ul>
+<h2 id="SRTBOT">SRTBOT</h2>
+<blockquote>
+<p>设计属于自己的递归算法的一套范式。这并非仅限于动态规划，而是一种解决大规模数据适用的设计范式。</p>
+</blockquote>
+<p><strong>How to Solve a Problem Recursively？</strong></p>
+<ol>
+<li class="lvl-3">
+<p><b>Subproblem</b>: 定义子问题。是整个范式中最难的部分，有多种方法来辅助定义，后面会详细说明。</p>
+</li>
+<li class="lvl-3">
+<p><b>Relate</b>: 写出子问题之间的关系，也就是我们常说的，定义 <b>状态转移方程</b>；</p>
+</li>
+<li class="lvl-3">
+<p><b>Topological Order</b>: 子问题求解的顺序</p>
+</li>
+<li class="lvl-3">
+<p><b>Base</b>: 边界情况</p>
+</li>
+<li class="lvl-3">
+<p><b>Original</b>: 通过子问题最终求解出来的原问题</p>
+<p>Reconstruct: possibly use parent pointers to recover actual solution, that is,  store parent pointers to reconstruct subsequence.</p>
+</li>
+<li class="lvl-3">
+<p><b>Time</b>: 算法的时间效率</p>
+</li>
+</ol>
+<p>以上六步中，3-6条是比较显而易见的步骤。对于复杂的问题来说，最难的点就在于 <b>发现对DP的需求</b>、<b>定义子问题</b>，并 <b>定义子问题之间的求解关系 / 写出状态转移方程</b> 。</p>
+<blockquote>
+<p>Hard part is thinking inductively to construct recurrence on <strong>subproblems</strong>.</p>
+</blockquote>
+<h3 id="1-Subproblem-定义子问题">1 Subproblem 定义子问题</h3>
+<blockquote>
+<p>一个值得注意的常识：</p>
+<ul class="lvl-1">
+<li class="lvl-2">
+<p><b>substring</b> 指的是连续的子序列，如 $(1, 2, 3)$；</p>
+<p>遍历一个序列的所有substring的时间复杂度为 $O(n^2)$。显而易见。</p>
+</li>
+<li class="lvl-2">
+<p><b>subsequence</b> 指的是可以不连续的子序列，任意子元素按照其相对顺序排列即可，如 $(1, 3, 5)$；</p>
+<p>遍历一个序列的所有subsequence的时间复杂度为 $O(2^n)$。即对每个元素都要决定其选或者不选。</p>
+</li>
+</ul>
+</blockquote>
+<p>A general tool for subproblem design. Good subproblems are:</p>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>prefixes: $x[0\ldots i], \space \Theta(n)$ ；</p>
+</li>
+<li class="lvl-2">
+<p>suffixes: $x[i\ldots n], \space \Theta(n)$；</p>
+</li>
+<li class="lvl-2">
+<p>substring: $x[i\ldots j], \space \Theta(n^2)$。</p>
+</li>
+</ul>
+<h4 id="Subproblem-Expansion-Constraints">Subproblem Expansion &amp; Constraints</h4>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>If you find yourself lacking information to check the desired conditions of the problem, or lack the natural subproblem to recurse on, try subproblem constraint/expansion!</p>
+</li>
+<li class="lvl-2">
+<p>More subproblems and constraints give the relation more to work with, so can make DP more feasible</p>
+</li>
+<li class="lvl-2">
+<p>Usually a trade-off between number of subproblems and branching/complexity of relation</p>
+<p>子问题规模扩展，即通过 增加子问题数量 来 降低子问题之间关系的复杂性 。</p>
+<p>从 <b>无后效性</b> 的角度来看，如果当前设计的状态之间的转移不满足无后效性，不妨把状态进行升维，即增加参数扩大子问题规模。</p>
+</li>
+</ul>
+<p>常见的子问题扩展情况</p>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>Often record partial state: add subproblems by <b>incrementing some auxiliary variables</b></p>
+<p>比如：Alternating Coin Game</p>
+</li>
+<li class="lvl-2">
+<p>Often multiply possible subsets across multiple inputs</p>
+<p>Subproblems for <b>multiple inputs</b> (多个输入，比如LCS有两个字符串作为输入): multiply subproblem spaces - get the product. (二维DP)</p>
+<p>比如：LCS</p>
+</li>
+</ul>
+<h4 id="常见的子问题定义技巧">常见的子问题定义技巧</h4>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>不是单纯的缩小规模，而是要求某点为<b>边界</b>；</p>
+<ul class="lvl-2">
+<li class="lvl-5">
+<p>一维：以某点为<b>结尾（prefix）/ 起点（suffix）</b>的最优解</p>
+</li>
+<li class="lvl-5">
+<p>二维：以某点为<b>右下角（prefix）/ 左上角（suffix）</b>的最优解</p>
+</li>
+</ul>
+<p>这种情况下要注意原问题的定义。</p>
+</li>
+</ul>
+<h3 id="2-Relate-求解子问题之间的关系">2 Relate 求解子问题之间的关系</h3>
+<blockquote>
+<p>How to relate subproblem solutions ?</p>
+</blockquote>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>确保问题规模能够越来越小</p>
+<p>Identify a question about a subproblem solution that, if you knew the answer to, reduces the subproblem to smaller subproblem(s)</p>
+</li>
+<li class="lvl-2">
+<p>定义了合适的子问题之后，就是简单的在本地暴力求最优解</p>
+<p>Locally brute-force all possible answers to the question</p>
+</li>
+</ul>
+<h3 id="3-实例">3 实例</h3>
+<h4 id="Bowling">Bowling</h4>
+<h4 id="Alternating-Coin-Game">Alternating Coin Game</h4>
+<h4 id="Bellman-Ford">Bellman-Ford</h4>
+<h2 id="空间压缩">空间压缩</h2>
+<p>使用滚动数组进行空间复杂度上的优化。</p>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>一维：压缩至原地，<code>dp[i]</code>仅与<code>dp[i - 1]</code>和<code>dp[i - 2]</code>相关。</p>
+</li>
+<li class="lvl-2">
+<p>二维：压缩至一维。</p>
+</li>
+</ul>
+<h2 id="题型分类">题型分类</h2>
+<h3 id="基本一维DP">基本一维DP</h3>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>70 Climbing Stairs 爬楼梯 (Easy)</p>
+<p>Fibonacci，注意 边界条件 和 空间压缩。</p>
+</li>
+<li class="lvl-2">
+<p>198 House Robber 打家劫舍 (Medium)</p>
+<p>难以寻找暴力解法  + 显而易见可以缩小的问题规模 —— 尝试SRTBOT：</p>
+<ul class="lvl-2">
+<li class="lvl-4">
+<p>Subproblem: using prefix, $dp[i]$ 代表在 $0-i$ 家抢劫能够获得的最高金额。</p>
+</li>
+<li class="lvl-4">
+<p>Relate: $dp[i] = max{dp[i - 1], dp[i - 2] + nums[i]}$  待选方案分别代表两种不同选择：</p>
+<ol>
+<li class="lvl-7">抢第 $i$ 家：那么第 $i - 1$ 家必定不抢，此时只需要考虑前 $i - 2$ 家抢劫的最大值即可，即 $dp[i - 2] + nums[i]$</li>
+<li class="lvl-7">不抢第 $i$ 家：意味着第 $i - 1$ 家可以抢（但未必会抢），取决于前 $i - 1$ 家抢劫的最大值，即 $dp[i - 1]$</li>
+</ol>
+</li>
+<li class="lvl-4">
+<p>Topological Order: Increasing $i$</p>
+</li>
+<li class="lvl-4">
+<p>Base: $dp[0] = nums[0]$，$dp[1] = max{nums[0], nums[1]}$</p>
+</li>
+<li class="lvl-4">
+<p>Original Problem: $dp[n - 1]$</p>
+</li>
+<li class="lvl-4">
+<p>Time: $O(n)$</p>
+</li>
+</ul>
+<p>空间压缩：进一步使用滚动数组，可以将空间复杂度降低至 $O(1)$。</p>
+</li>
+<li class="lvl-2">
+<p>413 Arithmetic Slices 等差数列划分 (Medium)</p>
+<p>从暴力解法来看，从前往后每个起点，都要重新计算后面元素的间距情况，时间复杂度达到$O(n^2)$。</p>
+<p>重点关注子问题的定义：以xxx为结尾的xxx</p>
+<p>SRTBOT：</p>
+<ul class="lvl-2">
+<li class="lvl-4">
+<p>Subproblem: 取 prefix，$dp[i]$ 表示以 $nums[i]$ 为<b>结尾</b>的等差数列的数量</p>
+</li>
+<li class="lvl-4">
+<p>Relate:<br>
+$$<br>
+dp[i] = \begin{cases} dp[i - 1] +  1 &amp;&amp; nums[i] - nums[i - 1] = nums[i - 1] - nums[i - 2] \ 0 &amp;&amp; else \end{cases}<br>
+$$</p>
+</li>
+<li class="lvl-4">
+<p>Topological Order: Increasing $i$</p>
+</li>
+<li class="lvl-4">
+<p>Base: $dp[0] = 0$，$dp[1] = 0$，$dp[2]=(nums[1] - nums[0] == nums[2] - nums[1])\space ?\space 1 : 0$</p>
+</li>
+<li class="lvl-4">
+<p>Original Problem: $\sum\limits^{n - 1}_{i = 0} dp[i]$，对 $dp$ 数组求和</p>
+</li>
+<li class="lvl-4">
+<p>Time: $T(n) + T(n) = O(n)$</p>
+</li>
+</ul>
+<p>空间压缩：根据状态转换方程，显然可以将空间复杂度降低至 $O(1)$</p>
+</li>
+</ul>
+<h3 id="基本二维DP">基本二维DP</h3>
+<blockquote>
+<p>二维DP的一些注意事项：</p>
+<ul class="lvl-1">
+<li class="lvl-2">常常借助 <b>子问题图</b> 来更清晰的理解状态转换的过程。</li>
+<li class="lvl-2">二维的 <b>空间压缩</b> ：LC 64，LC 1143</li>
+</ul>
+</blockquote>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>64 Minimum Path Sum 最小路径和 (Medium)</p>
+<p>本题重点关注二维DP的空间优化。</p>
+<p>SRTBOT：</p>
+<ul class="lvl-2">
+<li class="lvl-4">
+<p>Subproblem: 二维 prefix, $dp[i][j]$ 表示至 $(i, j)$ 点的最短路径长</p>
+</li>
+<li class="lvl-4">
+<p>Relate: $dp[i][j] = min{dp[i - 1][j], dp[i][j - 1]} + grid[i][j]$ ，要么从上面来，要么从左边来，选其中最小的</p>
+</li>
+<li class="lvl-4">
+<p>Topological Order: Increasing $i$ and $j$</p>
+</li>
+<li class="lvl-4">
+<p>Base: 对于点 $(x, y)$ ，满足 $x = 0$ 或 $y = 0$ 的点均为边界条件</p>
+</li>
+<li class="lvl-4">
+<p>Original Problem: $dp[m - 1][n - 1]$</p>
+</li>
+<li class="lvl-4">
+<p>Time: $O(mn)$</p>
+</li>
+</ul>
+<p><b>空间压缩</b>：将二维压缩至一维。相当于一行一行更新。注意哪部分是已更新（左侧和上半部分），哪部分未更新。</p>
+<p>压缩后的状态转移方程：$dp[j] = min(dp[j], dp[j - 1]) + grid[i][j]$ ，其中两个选项分别代表：</p>
+<ul class="lvl-2">
+<li class="lvl-4">
+<p>$dp[j]$ ：上方元素，此时还未更新，仍为上一行的值，即 $dp[j] = dp[i -1][j]$；</p>
+</li>
+<li class="lvl-4">
+<p>$dp[j - 1]$：左侧元素，此时已更新，为当前行左侧值，即 $dp[j - 1] = dp[i][j - 1]$ 。</p>
+</li>
+</ul>
+</li>
+<li class="lvl-2">
+<p><strong>542 01 Matrix 01矩阵 (Medium)</strong></p>
+<p>解法一：</p>
+<p><b>多次扫描</b> 的DP</p>
+<p>SRTBOT：</p>
+<ul class="lvl-2">
+<li class="lvl-4">
+<p>Subproblem: 二维，$dp[i][j]$ 就代表最终的答案，即到最近的0的距离</p>
+</li>
+<li class="lvl-4">
+<p>Relate: 来自上下左右四个方向的最小值即为最终答案。分两次（行优先）遍历实现：</p>
+<ul class="lvl-4">
+<li class="lvl-6">第一次顺序：行优先的顺序即从左上到右下，每一个点的左侧与上侧均已更新，选择二者中的较小值；</li>
+<li class="lvl-6">第二次逆序：行优先的逆序即从右下到左上，每一个点的右侧与下侧均已更新，选择二者中的较小值；</li>
+</ul>
+<p>如上两次扫描即可选出上下左右四个方向中的最小值。</p>
+<p>相比于 分类讨论上下左右 与 上下左右分四次扫描 的两种方式，这种方式显然在逻辑与速度上是最优的。</p>
+</li>
+<li class="lvl-4">
+<p>Topological Order: 两次扫描分别是不同的顺序</p>
+</li>
+<li class="lvl-4">
+<p>Base: 所有为值为0的点答案初始化为0，值为1的点初始化为 <code>INT_MAX - 1</code> （<i>减一是因为后面扫描过程中要加一，防止溢出</i>）</p>
+</li>
+<li class="lvl-4">
+<p>Original Problem: $dp$ 数组即为欲求答案</p>
+</li>
+<li class="lvl-4">
+<p>Time: 线性时间 $O(mn)$</p>
+</li>
+</ul>
+<p>解法二：BFS</p>
+<p>先将所有值为0的点入队，再进行一次BFS即可得到答案。</p>
+</li>
+<li class="lvl-2">
+<p><strong>221 Maximal Square 最大正方形 (Medium)</strong></p>
+<p>暴力解法：每个点向外扩张搜索，显然时间复杂度会爆炸至$O(m^2n)$。</p>
+<p>SRTBOT：</p>
+<ul class="lvl-2">
+<li class="lvl-4">
+<p>Subproblem: $dp[i][j]$ 表示以点 $(i, j)$ 为 <b>右下角</b> 的正方形的最大边长；</p>
+</li>
+<li class="lvl-4">
+<p>Relate: 这个子问题之间的关系是比较难以看出的，结合图示来理解。<br>
+$$<br>
+dp[i][j] = min{dp[i - 1][j-1], dp[i - 1][j], dp[i][j - 1]} + 1<br>
+$$<br>
+<img src="https://gcore.jsdelivr.net/gh/TAO1st/pics@master/202208301414549.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<p><img src="https://gcore.jsdelivr.net/gh/TAO1st/pics@master/202208301426836.png" srcset="/img/loading.gif" lazyload alt=""></p>
+</li>
+<li class="lvl-4">
+<p>Topological Order: Increasing $i$ and $j$</p>
+</li>
+<li class="lvl-4">
+<p>Base: 因为要考虑来自左上、左和上三个方向，所以左侧边和上侧边为边界条件。<br>
+$$<br>
+dp[i][j] = matrix[i][j] \space \space , if \space i=0 \space or \space j = 0<br>
+$$</p>
+</li>
+<li class="lvl-4">
+<p>Original Problem: 所有 $dp[i][j]$ 中的最大值（的平方）</p>
+</li>
+<li class="lvl-4">
+<p>Time: $O(mn)$</p>
+</li>
+</ul>
+<p>存在空间压缩的可能，需要用到临时变量。</p>
+</li>
+<li class="lvl-2">
+<p>1277 统计全为1的正方形子矩阵 (Medium)</p>
+<p>跟221一样的题目，只是最后 Original Problem 为对 $dp$ 数组求和。</p>
+</li>
+<li class="lvl-2">
+<p>1143 Longest Common Subsequence 最长公共子序列 (Medium)</p>
+<p>下面LCS会讲。</p>
+</li>
+</ul>
+<h3 id="分割">分割</h3>
+<blockquote>
+<p>分割类型问题的子问题定义并不复杂，关键在于找到子问题之间的联系，即如何定义状态转移方程。</p>
+<p>难以找到和相邻位置的关系，在求状态转移方程时难以在本地完成，需要在所有可能的解中进行本地暴力判断。</p>
+<p>分割的含义时 $dp[i]$ 的含义与相邻位置（$dp[i-  1],dp[i-2]$ 等）无关，那么我们要在小于 $i$ 的部分做出所有可能的切割方案，并本地暴力求出其中的最优解。</p>
+</blockquote>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>279 Perfect Squares 完全平方数 (Medium)</p>
+<p>解法一：</p>
+<p>规模显然可以缩小，存在最优子结构。尝试SRTBOT：</p>
+<ul class="lvl-2">
+<li class="lvl-4">
+<p>Subproblem: 选择 prefix , $dp[i]$ 表示和为 $i$ 的完全平方数的最少数量；</p>
+</li>
+<li class="lvl-4">
+<p>Relate: 分析后发现，虽然是一维的前缀，但是<b>很难找到和相邻位置的关系</b>，应该在本地暴力的选出所有可能的解中的最小值（locally brute force）。</p>
+<p>不断切掉平方数的部分，找出所有解中的最小值。<br>
+$$<br>
+dp[i] = \mathop{min}_{j=1}^{j * j &lt;=i}{dp[j]} + 1<br>
+$$</p>
+</li>
+<li class="lvl-4">
+<p>Topological Order: Increasing $i$</p>
+</li>
+<li class="lvl-4">
+<p>Base: $dp[0] = 0$ ，代表 $i$ 本身就是平方数的情况。</p>
+</li>
+<li class="lvl-4">
+<p>Original Problem: $dp[n]$</p>
+</li>
+<li class="lvl-4">
+<p>Time: 外层为线性 $O(n)$ ，内层显然渐进复杂度应该为 $O(\sqrt{n})$，故总复杂度为 $O(n\sqrt{n})$。</p>
+</li>
+</ul>
+<p>解法二：</p>
+<p>一个拥有更低时间复杂度的数学解法使用：四平方和定理。</p>
+<p>首先四平方和定理给出了上界：任意一个正整数都可以表示为至多四个正整数的平方和。</p>
+<p>其余结论如下：</p>
+<ul class="lvl-2">
+<li class="lvl-4">
+<p>当 $n = 4^k \times (8m + 7)$ 时：$n$ 只能表示为四个正整数的平方和，即 $n=4$ ；</p>
+</li>
+<li class="lvl-4">
+<p>当 $n\neq 4^k \times (8m + 7)$ 时：$n$ 可以被表示为至多三个正整数的平方和。此时：</p>
+<ul class="lvl-4">
+<li class="lvl-6">
+<p>当 $n$ 为完全平方数时，答案为 1 ；</p>
+</li>
+<li class="lvl-6">
+<p>当 $n=a^2 + b^2$ 时，答案为 2 ；</p>
+<p>此时，枚举所有的 $a(1 \leq a \leq \sqrt n)$，判断 $n - a^2$ 是否为完全平方数即可。</p>
+</li>
+<li class="lvl-6">
+<p>答案为 3 的情况难以判断，我们通过排除法检查前两种情况即可。</p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="lvl-2">
+<p><strong>139 Word Break 单词拆分 (Medium)</strong></p>
+<p>解法一：动态规划</p>
+<p>DFS 爆搜显然会存在大量重复操作/重叠子问题，且后面的状态与前面部分子问题的状态相关，尝试SRTBOT：</p>
+<ul class="lvl-2">
+<li class="lvl-4">
+<p>Subproblem: $dp[i]$  代表从 $0$ 到 $i - 1$ 的字符串能否用字典中的词来构成；</p>
+</li>
+<li class="lvl-4">
+<p>Relate: $ dp[i] = dp[j] \space \verb’&amp;’ \verb’&amp;’ \space check(s[j…i-1])$</p>
+</li>
+<li class="lvl-4">
+<p>Topological Order: Increasing $i$，decreasing $j$</p>
+<p>$j$ 为逆序遍历，便于剪枝：当前访问的字串长度已经超过了最长单词长度时，退出循环。</p>
+</li>
+<li class="lvl-4">
+<p>Base: $dp[0] = true$，代表哨兵，相当于前半部分整个单词完全匹配的情况；</p>
+</li>
+<li class="lvl-4">
+<p>Original Problem: $dp[s.size()]$</p>
+</li>
+<li class="lvl-4">
+<p>Time:</p>
+<ul class="lvl-4">
+<li class="lvl-6">$j$ 在内层要对小于 $i$ 的情况遍历，为 $O(n)$；</li>
+<li class="lvl-6">外层也是线性；</li>
+</ul>
+<p>综上，时间复杂度为 $O(n^2)$ 。</p>
+</li>
+</ul>
+<p>解法二：字典树 + DFS + 记忆化搜索</p>
+<p>只实现了字典树爆搜，memoization日后挑战实现。</p>
+</li>
+</ul>
+<h3 id="子序列">子序列</h3>
+<h4 id="LCS">LCS</h4>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>1143 Longest Common Subsequence 最长公共子序列 (Medium)</p>
+<p>实际应用场景：其实最长公共子序列相当于对两个序列做一个 <b>相似度</b> 的判断。</p>
+<p>暴力搜索：必定存在穷举子序列的情况，即对每一个元素有选、或者不选两种情况，运行时间必定会达到指数级（exponential）。且题目显然可以缩小规模，存在最优子结构，所以使用SRTBOT：</p>
+<ul class="lvl-2">
+<li class="lvl-4">
+<p>Subproblems: 二维的prefix，$dp[i][j]$ 代表以 $i, j$ 为结尾部分两个字串的LCS；</p>
+</li>
+<li class="lvl-4">
+<p>Relate: 二维的DP可以通过子问题图来加深对状态转换的理解。</p>
+<p><img src="https://gcore.jsdelivr.net/gh/TAO1st/pics@master/202209031219880.png" srcset="/img/loading.gif" lazyload alt=""><br>
+$$<br>
+dp[i][j] = \begin{cases} 0 &amp; \mbox{if} \space i = 0 \space \mbox{or} \space j = 0 \<br>
+dp[i-1,j-1] + 1 &amp; \mbox{if}\space i,j &gt; 0 \space \mbox{and} \space text1[i] = text[j] \<br>
+\mbox{max}(dp[i- 1][j], dp[i][j-1]) &amp; \mbox{if}\space i,j &gt; 0 \space \mbox{and} \space text1[i] \neq text[j]<br>
+\end{cases}d<br>
+$$</p>
+</li>
+<li class="lvl-4">
+<p>Topological Order: 行优先（row-major order）或者列优先（column-major order）均可，对状态转换方程做微调即可。</p>
+</li>
+<li class="lvl-4">
+<p>Base: 即状态转移方程中第一行，行或列坐标为0时；</p>
+</li>
+<li class="lvl-4">
+<p>Original Problem: $dp[text1.size()][text2.size()]$</p>
+</li>
+<li class="lvl-4">
+<p>Time: $O(n^2)$</p>
+</li>
+</ul>
+<p><b>解的重构：构造LCS</b></p>
+<p>维护一个指明状态转移方向的表 $path$，构造一个递归程序（由内向外）来打印出具体的路径。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">printLCS</span><span class="hljs-params">(vector&lt;vector&lt;<span class="hljs-type">int</span>&gt;&gt;&amp; path, string&amp; s, <span class="hljs-type">int</span> x, <span class="hljs-type">int</span> y)</span> </span>&#123;<br>    <span class="hljs-keyword">if</span>(x == <span class="hljs-number">0</span> || y == <span class="hljs-number">0</span>) &#123;<br>        <span class="hljs-keyword">return</span>;<br>    &#125;<br>    <span class="hljs-keyword">if</span>(path[x][y] == <span class="hljs-number">0</span>) &#123;			      <span class="hljs-comment">// 0代表左上</span><br>        <span class="hljs-built_in">printLCS</span>(path, s, x - <span class="hljs-number">1</span>, y - <span class="hljs-number">1</span>);<br>        cout &lt;&lt; s[x - <span class="hljs-number">1</span>];<br>    &#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(path[x][y] == <span class="hljs-number">1</span>) &#123;	      <span class="hljs-comment">// 1代表 上</span><br>        <span class="hljs-built_in">printLCS</span>(path, s, x - <span class="hljs-number">1</span>, y);<br>    &#125; <span class="hljs-keyword">else</span> &#123;     <span class="hljs-comment">// if(path[x][y] == 2)	     2代表 </span><br>        <span class="hljs-built_in">printLCS</span>(path, s, x, y - <span class="hljs-number">1</span>);<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>要注意的是，如果想要实现解的重构，就不能使用滚动数组来对空间进行优化，即至少需要 $O(m\times n)$ 的空间储存信息才能实现解的重构。</p>
+<p><b>空间优化</b></p>
+<p>二维滚动数组的压缩，特别要注意哪部分值是已更新过的，哪部分值是未更更新过的。</p>
+<p>分析：$dp[i][j]$ 的更新有三个方向的来源，分别是左上对角线、左侧、和上侧。</p>
+<ul class="lvl-2">
+<li class="lvl-4">
+<p>首先看选择左侧和上侧最小值的情况，此时很容易进行压缩：因为左侧的值处于已更新状态，上侧的值处于未更新状态，与我们想要得到的值状态一致，可以直接压缩至一维；</p>
+</li>
+<li class="lvl-4">
+<p>再来看来自左上对角线的情况，此时我们希望得到的是未更新的左上值，但是如果完全压缩至一维的情况，该值此时已被更新为左侧值，而非左上对角线的实际值，所以我们需要引入辅助数组。</p>
+</li>
+</ul>
+<p>辅助的方式很多样，此处仅做一例：构建两个 $dp$ 数组，$prev$ 与 $curr$ 分别代表上一行与当前行的值。此时状态转移方程为：<br>
+$$<br>
+curr[j] = \begin{cases} 0 &amp; \mbox{if} \space i = 0 \space \mbox{or} \space j = 0 \<br>
+prev[j-1] + 1 &amp; \mbox{if}\space i,j &gt; 0 \space \mbox{and} \space text1[i] = text[j] \<br>
+\mbox{max}(prev[j], curr[j-1]) &amp; \mbox{if}\space i,j &gt; 0 \space \mbox{and} \space text1[i] \neq text[j]<br>
+\end{cases}<br>
+$$<br>
+每一行结束后要更新 $prev$ 与 $curr$ 的值，即 $prev = curr$ 。至此，空间压缩至线性级别。</p>
+</li>
+</ul>
+<h4 id="LIS">LIS</h4>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>300 Longest Increasing Subsequence 最长递增子序列 (Medium)</p>
+<p>解法一：DP</p>
+<p>暴力求解：子序列问题，对每一位都有两种选择情况，复杂度会达到指数级的 $O(2^n)$</p>
+<p>缩小问题规模，发现每个子问题与前面的更小规模子问题相关：</p>
+<ul class="lvl-2">
+<li class="lvl-4">
+<p>Subproblems: 采取prefixes，$dp[i]$ 代表以 <code>s[i]</code>字符为结尾的前缀的LIS最大长度；</p>
+</li>
+<li class="lvl-4">
+<p>Relate: $dp[i]=1 + max{dp[j]\space | \space 0\leq j &lt; i, s[j] &lt; s[i]} \cup {0}$</p>
+<p>其中0代表没有比 $s[i]$ 更小的字符。</p>
+</li>
+<li class="lvl-4">
+<p>Topological order: Increasing $i$</p>
+</li>
+<li class="lvl-4">
+<p>Base Case: $dp[0] = 1$</p>
+</li>
+<li class="lvl-4">
+<p>Original Problem: $ans = max{dp[i], \space 0\leq i \leq n - 1}$</p>
+</li>
+<li class="lvl-4">
+<p>Time:</p>
+<ol>
+<li class="lvl-7">$O(n)$ - subproblems 子问题个数</li>
+<li class="lvl-7">$O(n)$ - 每个子问题的运算时长</li>
+</ol>
+<p>二者嵌套，总时间复杂度为 $O(n^2)$，再加上最终遍历状态数组时的线性时间，复杂度仍为平方级。</p>
+</li>
+</ul>
+<p><b>解法二：贪心 + 二分查找</b></p>
+<p>比较明显的贪心思路，易于模拟：如果我们要使上升子序列尽可能的长，则我们需要让序列上升得尽可能慢，因此我们希望每次在上升子序列最后加上的那个数尽可能的小。</p>
+<p>维护一个数组 $dp[i]$，代表长度为 $i$ 的递增子序列的最后一位的 <b>最小值</b>。当每次遇到比前面的元素更小的元素，我们要确定其在数组 $dp$ 中的位置。而 $dp$ 根据其定义与维护的过程，显然是递增的，所以使用二分来优化搜索效率。</p>
+<p>外层仍然是线性，而内层通过二分优化至对数级。综上，时间复杂度为 $O(nlogn)$。</p>
+<p><b>解的重构 / 输出路径</b></p>
+<p>重构解应该使用DP解法，因为贪心的解法并不存在元素的前后关系。动态规划的解法只要增加一个类似Dijkstra中的游标数组即可实现解的重构，无论是<b>输出所有路径</b>还是<b>字典序最小的路径均</b>可通过增加判断逻辑实现。</p>
+</li>
+</ul>
+<h3 id="背包问题-Knapsack-Problem">背包问题 Knapsack Problem</h3>
+<p>背包问题是一种组合优化的 <b>NP完全</b> 问题。其题型灵活多变。问题的基本定义如下：</p>
+<blockquote>
+<p>有 $n$ 件物品，每件物品的重量为 $w[i]$，价值为 $v[i]$ 。选取物品放入一个容量为 $C$ 的背包中，使得背包内物品的总价值最大。</p>
+</blockquote>
+<p>显然，背包问题也是一个最优化问题。背包问题大体上可以分为两类：</p>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>01背包问题：限定每种物品的数量，通常一件物品只能拿一次；</p>
+</li>
+<li class="lvl-2">
+<p>完全背包问题：不限定物品的数量，可以取任意次。</p>
+</li>
+</ul>
+<p>对于背包问题，我们首先对暴力枚举的方式进行分析，每一个物品放或者不妨有两种选择，时间复杂度显然会来到指数级。我们希望使用动态规划的方式来使时间降低到多项式级。</p>
+<h4 id="01背包">01背包</h4>
+<p>首先考虑问题的最优子结构，显然从 <b> 物品的数量 $i$ </b>， 和 <b>背包的剩余容量 $j$  </b> 上问题规模是可缩小的。我们先根据这个子问题考虑一个最基本的SRTBOT解决方案：</p>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>Subproblem: $dp[i][j]$ 代表前 $i$ 件物品在容量 $j$ 下能够达到的最大价值</p>
+</li>
+<li class="lvl-2">
+<p>Relate: 对于每一个物品，显然都有选或者不选两种策略，我们直接暴力选取其中更优的那个：</p>
+<ul class="lvl-2">
+<li class="lvl-4">不选择第 $i$ 号物品：即在 容量 $j$ 下在前 $i - 1$ 件物品中选取，即 $dp[i- 1][j]$ ；</li>
+<li class="lvl-4">选择第 $i$ 号物品：即前 $i - 1$ 件物品要在 $j - v[i]$ 的容量中选取，即 $dp[i - 1][j - w[i]] + v[i]$</li>
+</ul>
+<p>$$<br>
+dp[i][j] = \begin{cases}<br>
+max{dp[i-1][j], dp[i - 1][j - w[i]] + v[i]} &amp;  \space j &gt;= w[i] \<br>
+dp[j] &amp;  \space j&lt; w[i]<br>
+\end{cases}<br>
+$$</p>
+</li>
+<li class="lvl-2">
+<p>Topological Order: 先假定都按照顺序来访问，Increasing $i$ and $j$</p>
+</li>
+<li class="lvl-2">
+<p>Base: 当 $i == 0$ 或 $j == 0$ 时，$dp[i][j] = 0$ 。两种情况分别代表：</p>
+<ul class="lvl-2">
+<li class="lvl-4">$i ==0$： 0 件物品放入背包中；</li>
+<li class="lvl-4">$j == 0$：物品放入容量为 0 的背包中。</li>
+</ul>
+<p>二者显然均应该为 0。</p>
+</li>
+<li class="lvl-2">
+<p>Original Problem: $dp[n][C]$</p>
+</li>
+<li class="lvl-2">
+<p>Time: $O(nC)$</p>
+</li>
+</ul>
+<p><b>空间压缩</b>：观察状态转换方程，显然 $dp[i][j]$ 仅与上一行的值有关，应考虑使用滚动数组进行空间优化。</p>
+<p>将二维的 $dp$ 数组压缩为一维，即长为 $C$ 的一维数组。这时我们要考虑压缩后，值是否还是我们想要的：</p>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>$dp[i - 1][j]$ ：想要的是 $i- 1$ 件物品放入容量 $j$ 中。即来自上方的、未更新过的旧值。此时直接压缩成 $dp[j]$ 即可，因为当前 $dp[j]$ 还未被更新，仍然保留着上一行的旧值。</p>
+</li>
+<li class="lvl-2">
+<p>$dp[i - 1][j - w[i]]$ ：想要仍然是来自左上方、未更新过的旧值。但如果我们按照 $j$ 的正序进行更新的话，因为 $j -w[i]$ 在左侧，其已经被更新。即 $dp[j - w[i]$ 的值已经被更新为 $dp[i][j - w[i]]$ 。</p>
+<p>为了避免这个更新覆盖的问题，我们可以改为按照 $j$ 的逆序进行更新，此时处于左侧的值就能保持旧值的状态而不会被覆盖。</p>
+</li>
+</ul>
+<p>如上分析，状态转移方程变为如下：<br>
+$$<br>
+dp[j] = \begin{cases}<br>
+max{dp[j], dp[j - w[i]] + v[i]} &amp;  \space j \geq w[i] \<br>
+dp[j] &amp;  \space j&lt; w[i]<br>
+\end{cases}<br>
+$$<br>
+其中，$0 \leq j \leq V$，且 $j$ 为逆序遍历。</p>
+<h4 id="完全背包">完全背包</h4>
+<p>同样尝试SRTBOT：</p>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>Subproblem: 和01背包一样的子问题定义</p>
+</li>
+<li class="lvl-2">
+<p>Relate: 同样是两种选择，放或者不放：</p>
+<ul class="lvl-2">
+<li class="lvl-4">
+<p>不选择第 $i$ 号物品：即在容量 $j$ 下放前 $i - 1$ 件物品，仍然为 $dp[i - 1][j]$</p>
+</li>
+<li class="lvl-4">
+<p>选择第 $i$ 号物品：即在容量 $j - w[i]$ 下放前 $i$ 件物品，因为第 $i$ 件物品可以放若干次。</p>
+<p>即 $dp[i][j - w[i]] + v[i]$ 。</p>
+</li>
+</ul>
+</li>
+</ul>
+<p>$$<br>
+dp[i][j] = \begin{cases}<br>
+max{dp[i - 1][j] , dp[i][j - w[i]] + v[i]   &amp; j \geq w[i]  \<br>
+dp[i - 1][j] &amp; j &lt; w[i]<br>
+\end{cases}<br>
+$$</p>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>Topological Order: Increasing $i$ and $j$</p>
+</li>
+<li class="lvl-2">
+<p>Base: 当 $i$ 或 $j$ 为0时，$dp[i][j] = 0 $</p>
+</li>
+<li class="lvl-2">
+<p>Original Problem: $dp[n][C]$</p>
+</li>
+<li class="lvl-2">
+<p>Time: $O(nC)$</p>
+</li>
+</ul>
+<p><b>空间压缩</b>: 分析状态转换方程，$dp[i][j]$ 的值取决于其上方（未更新）与其左侧（已更新）的值，显然可以直接压缩至一维而不存在冲突，且必须保持按照正序更新。即<br>
+$$<br>
+dp[j] = \begin{cases}<br>
+max{dp[j] , dp[j - w[i]] + v[i]   &amp; j \geq w[i]  \<br>
+dp[j] &amp; j &lt; w[i]<br>
+\end{cases}<br>
+$$</p>
+<h4 id="相关题目-3">相关题目</h4>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>416 Partition Equal Subset Sum 分割等和子集 (Medium)</p>
+<p>表面上，这并不是一道最优化问题。我们首先考虑常规的暴力解法：</p>
+<p>我们想要等分为两个子集，显然应该先求出整个数组的和，然后遍历所有的子集（这里是 subsequence），查看其值是否为和的一半即可。暴力法显然会达到 $O(n^2)$ 。</p>
+<p>此时问题已经简化成了从数组中选定子集并求其值，显然这是一个简单的01背包问题。</p>
+<ul class="lvl-2">
+<li class="lvl-4">
+<p>Subproblem: 因为本题不是最优化问题，而是检查是否存在符合条件的解，所以我们开一个布尔数组即可。</p>
+<p>$dp[i][j]$ 代表前 $i$ 个元素中是否存在子集的和为 $j$。</p>
+<p>可以通过滚动数组进行空间优化，即子问题变为 $dp[j]$。</p>
+</li>
+<li class="lvl-4">
+<p>Relate:<br>
+$$<br>
+dp[i][j] = \begin{cases} dp[i-1][j]\space || \space dp[i-1][j - nums[i]] &amp;j \geq nums[i] \<br>
+dp[i - 1][j] &amp; j &lt; nums[i]<br>
+\end{cases}<br>
+$$</p>
+<p>滚动数组优化后：<br>
+$$<br>
+dp[j] = \begin{cases} dp[j]\space || \space dp[j - nums[i]] &amp;j \geq nums[i] \<br>
+dp[j] &amp; j &lt; nums[i]<br>
+\end{cases}<br>
+$$</p>
+</li>
+<li class="lvl-4">
+<p>Topological Order: Increasing $i$ ，decreasing $j$</p>
+<p>为了进行空间压缩，内层必须是逆序遍历。</p>
+</li>
+<li class="lvl-4">
+<p>Base: $dp[0] = true$ ，代表任意子集都能满足容量为0的情况（一个数都不选就行了）。</p>
+</li>
+<li class="lvl-4">
+<p>Original Problem: $dp[sum]$</p>
+</li>
+<li class="lvl-4">
+<p>Time: $O(n\times sum)$，显然这是一个 pseudopolynomial 的情况。</p>
+</li>
+</ul>
+</li>
+<li class="lvl-2">
+<p>474 Ones and Zeroes 一和零 (Medium)</p>
+<p>明面的01背包问题，特点其容量分为了两部分，即0的容量和1的容量。</p>
+<p>相当于：物品的价值均为1（价值的本质其实就是数量），求放入对0的容量为 $m$ 和对1的容量为 $n$ 的背包中的最大价值（最大物品个数）。</p>
+<ul class="lvl-2">
+<li class="lvl-4">
+<p>Subproblem: $dp[i][j][k]$ 前 $i$ 个字符串，在对0的容量为 $j$、对1的容量为 $k$ 的情况下的最大子集长度</p>
+</li>
+<li class="lvl-4">
+<p>Relate:<br>
+$$<br>
+dp[i][j][k] = \begin{cases} max{dp[i - 1][j][k], dp[i - 1][j - zero[i]][k - one[i]] + 1 }  &amp; j \geq zero[i] \space &amp;&amp;\space k \geq one[i] \<br>
+dp[i - 1][j][k] &amp; else<br>
+\end{cases}<br>
+$$<br>
+空间压缩后：<br>
+$$<br>
+dp[j][k] = \begin{cases} max{dp[j][k], dp[j - zero[i]][k - one[i]] + 1 }  &amp; j \geq zero[i] \space &amp;&amp;\space k \geq one[i] \<br>
+dp[j][k] &amp; else<br>
+\end{cases}<br>
+$$</p>
+</li>
+<li class="lvl-4">
+<p>Topological Order: 空间压缩后，内层必须逆序遍历。</p>
+<p>即Increasing $i$, decreasing $j$ and $k$</p>
+</li>
+<li class="lvl-4">
+<p>Base: $dp[0][0] = 0$，当容量为0时，显然结果也为0。</p>
+</li>
+<li class="lvl-4">
+<p>Original Problem: $dp[len][m][n]$</p>
+</li>
+<li class="lvl-4">
+<p>Time: $O(len\times m\times n + L)$ 其中 $len$ 为数组长度，$L$ 为所有字符串长度之和（因为要求所有的01个数）。</p>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="字符串">字符串</h3>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>91 Decode Ways 解码方法 (Medium)</p>
+<p>首先来看暴力搜索解法，逻辑必定很复杂，时间复杂度上粗略分析一下：对每一个位置而言，大致可以分为两种情况——独立成字母、以及和前一个位置组成一个字母，那么渐进时间复杂度大概在 $O(2^n)$ 级别，显然爆炸。</p>
+<p>问题显然可以缩小规模，所以尝试SRTBOT。题目的关键点在于，其状态转换方程由多种情况下的多个公式组成，要注意细节和各种情况，进行分类讨论。</p>
+<ul class="lvl-2">
+<li class="lvl-4">
+<p>Subproblem: prefix，$dp[i]$ 表示前 $i$ 个字符的解码方法总数</p>
+</li>
+<li class="lvl-4">
+<p>Relate:<br>
+$$<br>
+dp[i] = \begin{cases} 0  &amp; s[i] = 0 \space &amp;&amp;\space s[i-1] &gt; 2 \<br>
+dp[i - 2] &amp; s[i] = 0 \space&amp;&amp;\space s[i-1] &lt;= 2 \<br>
+dp[i - 1] + dp[i - 2] &amp; s[i - 1] \times 10 + s[i] &lt;= 26 \<br>
+dp[i - 1] &amp; else<br>
+\end{cases}<br>
+$$<br>
+从上到下四种情况分别代表：</p>
+<ul class="lvl-4">
+<li class="lvl-6">当前位为 0，前一位大于 2，说明不存在可行解码，此时剪枝，直接返回 0；</li>
+<li class="lvl-6">当前位为 0， 前一位小于等于 2，说明当前的 0 能够且必须与前一位组合编码；</li>
+<li class="lvl-6">当前位不为 0，且和前一位组成的数字小于等于 26，说明二者组合可以解码；</li>
+<li class="lvl-6">当前位不为 0，但和前一位组成的数字不合法，说明二者无法组合编码，该位只能单独解码。</li>
+</ul>
+</li>
+<li class="lvl-4">
+<p>Topological Order: Increasing $i$</p>
+</li>
+<li class="lvl-4">
+<p>Base:</p>
+<ul class="lvl-4">
+<li class="lvl-6">
+<p>$dp[0] = 1$ ，哨兵，代表前两位组合编码的缺省情况；</p>
+</li>
+<li class="lvl-6">
+<p>$dp[1] = 1$，表示第一位单独解码的情况。</p>
+</li>
+</ul>
+</li>
+<li class="lvl-4">
+<p>Original Problem: $dp[n]$</p>
+</li>
+<li class="lvl-4">
+<p>Time: $O(n)$</p>
+</li>
+</ul>
+<p>空间压缩：因为 $dp[i]$ 在各种情况下都仅与 $dp[i - 1]$ 和 $dp[i - 2]$ 有关，所以可以使用滚动数组进行空间优化。</p>
+</li>
+</ul>
+<h2 id="Pseudopolynomial">Pseudopolynomial</h2>
+<p>有关时间复杂度的分析，详见6.006的lecture note.</p>
+<h2 id="其他相关题目">其他相关题目</h2>
+<ul class="lvl-0">
+<li class="lvl-2">
+</li>
+<li class="lvl-2">
+<p>338 Counting Bits 比特位计数 (Easy)</p>
+<p>详见<a href="##%E4%BD%8D%E8%BF%90%E7%AE%97">位运算部分</a>。</p>
+</li>
+<li class="lvl-2">
+<p>256 Paint House 粉刷房子 (Medium)</p>
+</li>
+<li class="lvl-2">
+<p>2327 Number of People Aware of a Secrets 知道秘密的人数 (Medium)</p>
+</li>
+<li class="lvl-2">
+</li>
+<li class="lvl-2">
+<p>873 Length of Longest Fibonacci Subsequence 最长的斐波那契子序列的长度 (Medium)</p>
+<ul class="lvl-2">
+<li class="lvl-4">
+<p>Subproblem: $dp[i][j]$，以$arr[i],arr[j]$两个元素为结尾的斐波那契子序列的长度；</p>
+</li>
+<li class="lvl-4">
+<p>Relate:<br>
+$$<br>
+dp[i][j]= \begin{cases}<br>
+max(dp[k][i] + 1, \space 3), &amp; k&lt;i \space 且 \space arr[k] = arr[j] - arr[i] \<br>
+0, &amp; else<br>
+\end{cases}<br>
+$$<br>
+这里的$else$包含了两种情况：</p>
+<ol>
+<li class="lvl-7">
+<p>不存在 $k$ 能使得 $arr[k]=arr[j] - arr[i]$；</p>
+<p>这里显然涉及到集合中的查询，使用<strong>哈希表</strong>进行优化。</p>
+</li>
+<li class="lvl-7">
+<p><em>剪枝</em>：若存在符合条件的 $k$ 但 $k &gt; i$，此时意味着 $i$ 和 $j$ 距离过远，应该停止 $j$ 继续增大搜索，从而实现剪枝。</p>
+</li>
+</ol>
+</li>
+<li class="lvl-4">
+<p>Topological Order: $i$ 与 $j$ 均为从小到大，两层循环。</p>
+</li>
+<li class="lvl-4">
+<p>Base: 初始状态下均为0。</p>
+</li>
+<li class="lvl-4">
+<p>Original Problem: $dp[i][j]$ 中的最大值。</p>
+</li>
+<li class="lvl-4">
+<p>Time: $O(n^2)$</p>
+</li>
+</ul>
+</li>
+<li class="lvl-2">
+<p><em>42 Trapping Rain Water 接雨水 (Hard)</em></p>
+<p>首先思考朴素暴力解法：对每一个位置，寻找其左侧与右侧的最高点，取二者中的较小者减去当前位置的高度即为此处能接的雨水。如果该值小于当前高度，则此处无法接住雨水。</p>
+<ol>
+<li class="lvl-5">
+<p>动态规划</p>
+<p>显然，从每个点往左右两侧搜索最高点时，存在大量的重复计算与搜索。显然可以通过动态规划来进行优化。重点在于要进行两次dp，其中左侧最大值使用prefix前缀子问题，右侧最大值使用suffix后缀子问题，此处以前缀为例，后缀类似：</p>
+<ul class="lvl-4">
+<li class="lvl-7">
+<p><strong>Subproblem:</strong> $left(i)$, 表示下标从 $0 \sim i$ 中的最大值；</p>
+</li>
+<li class="lvl-7">
+<p><strong>Relate:</strong> $left(i) = max{left(i - 1), height(i)}, 0 &lt; i &lt; n$</p>
+</li>
+<li class="lvl-7">
+<p><strong>Topological Order:</strong> Increasing $i$</p>
+</li>
+<li class="lvl-7">
+<p><strong>Base:</strong> $left(0) = height(0)$</p>
+</li>
+<li class="lvl-7">
+<p><strong>Original Problem:</strong> $left(n - 1)$</p>
+</li>
+<li class="lvl-7">
+<p><strong>Time:</strong> 共$n$个子问题，每个子问题常数运算时间，共$\Theta(n)$。</p>
+</li>
+</ul>
+</li>
+<li class="lvl-5">
+<p>单调栈</p>
+<p>单调栈维护的是一个局部区域的解，不像朴素解法和动态规划对一个位置进行计算。</p>
+<p>栈中维护一个 $left$ 位置作为左侧边界，根据下标计算出区域宽度，再通过具体值得到区域高度，宽乘上高即为能够接到雨水的量。</p>
+</li>
+<li class="lvl-5">
+<p>双指针 基于动态规划的解法进行空间复杂度优化</p>
+<p>每一个点处能接多少雨水显然由 $min{leftMax, rightMax}$ 来决定。我们使用双指针从两侧向内收入，指针的移动根据两侧维护的最大值而定：当 $leftMax$ 小于 $rightMax$ 时，说明 $left$ 指针处的雨水量由 $leftMax$ 来决定，即此位置的雨水量为 $leftMax - height[left]$。同时将 $right$ 指针向左移动（直至 $rightMax$ 小于 $leftMax$）；反之同理，即哪一侧的最大值更小，哪一侧就将指针继续移动。</p>
+<p>双指针也是按位置进行处理，具体过程结合代码进行更深入的理解。</p>
+<p>该解法为综合最优解法，其空间复杂度优化至 $O(1)$。</p>
+</li>
+</ol>
+</li>
+<li class="lvl-2">
+<ul class="lvl-2">
+<li class="lvl-4">
+</li>
+</ul>
+</li>
+</ul>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/" class="category-chain-item">数据结构与算法</a>
+  
+  
+
+      </span>
+    
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/LeetCode/" class="category-chain-item">LeetCode</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92-Dynamic-Programming-DP/">#动态规划(Dynamic Programming, DP)</a>
+      
+    </div>
+  
+</div>
+
+
+              
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2022/08/22/%E5%8D%95%E8%B0%83%E6%A0%88-Monotone-Stack/" title="单调栈（Monotone Stack）">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">单调栈（Monotone Stack）</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2022/05/26/hello-world/" title="Hello World">
+                        <span class="hidden-mobile">Hello World</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>2022</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>TAO1st</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      headingSelector : CONFIG.toc.headingSelector || 'h1,h2,h3,h4,h5,h6',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      collapseDepth   : CONFIG.toc.collapseDepth || 0,
+      scrollSmooth    : true,
+      headingsOffset  : -boardTop
+    });
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.10/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.1/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

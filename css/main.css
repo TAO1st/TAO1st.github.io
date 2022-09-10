@@ -1283,6 +1283,14 @@ figure.highlight td.code > pre {
 }
 .markdown-body strong {
   font-weight: bold;
+  color: #15ac8e;
+  padding: 0 2px 0 2px;
+}
+.markdown-body em {
+  padding: 0 2px 0 2px;
+  color: #15ac8e;
+  font-weight: bold;
+  font-style: normal;
 }
 .markdown-body code {
   tab-size: 4;
@@ -1323,7 +1331,11 @@ figure.highlight td.code > pre {
   background-color: transparent;
 }
 .markdown-body blockquote {
+  background-color: #f5f7f9;
   color: var(--sec-text-color);
+  border-left: 4px solid #15ac8e;
+  border-radius: 0.3rem;
+  padding: 1rem;
 }
 .markdown-body details {
   cursor: pointer;
@@ -1351,6 +1363,46 @@ hr,
 }
 .markdown-body figcaption:not(.image-caption) {
   display: none;
+}
+.tips {
+  padding-left: 10px;
+  padding-top: 17px;
+  padding-bottom: 1px;
+  background-color: rgba(52,152,219,0.3);
+  border-left: 4px solid #3498db;
+  color: #217bb8;
+  margin: 5px 0 5px 0;
+  border-radius: 0.3rem;
+}
+.success {
+  padding-left: 10px;
+  padding-top: 17px;
+  padding-bottom: 1px;
+  background-color: rgba(46,204,113,0.3);
+  border-left: 4px solid #2ecc71;
+  border-radius: 0.3rem;
+  margin: 5px 0 5px 0;
+  color: #25a35a;
+}
+.warning {
+  padding-left: 10px;
+  padding-top: 17px;
+  padding-bottom: 1px;
+  background-color: rgba(241,196,15,0.3);
+  border-left: 4px solid #f1c40f;
+  color: #c29d0b;
+  margin: 5px 0 5px 0;
+  border-radius: 0.3rem;
+}
+.danger {
+  padding-left: 10px;
+  padding-top: 17px;
+  padding-bottom: 1px;
+  background-color: rgba(231,76,60,0.3);
+  border-left: 4px solid #e74c3c;
+  color: #cf2b1a;
+  margin: 5px 0 5px 0;
+  border-radius: 0.3rem;
 }
 .post-content,
 post-custom {
