@@ -28,7 +28,7 @@
 <meta property="og:image" content="https://gcore.jsdelivr.net/gh/TAO1st/pics@master/202208301426836.png">
 <meta property="og:image" content="https://gcore.jsdelivr.net/gh/TAO1st/pics@master/202209031219880.png">
 <meta property="article:published_time" content="2022-06-04T08:16:40.000Z">
-<meta property="article:modified_time" content="2022-09-03T17:23:30.443Z">
+<meta property="article:modified_time" content="2022-09-10T07:05:30.600Z">
 <meta property="article:author" content="tao1st">
 <meta property="article:tag" content="动态规划(Dynamic Programming, DP)">
 <meta name="twitter:card" content="summary_large_image">
@@ -217,7 +217,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          17k 字
+          24k 字
         
       </span>
     
@@ -228,7 +228,7 @@
         
         
         
-          142 分钟
+          198 分钟
         
       </span>
     
@@ -343,6 +343,8 @@
 <p>空间压缩：对于能够划分状态阶段的问题，我们可以尝试将多维的状态压缩至较低维度。即当前状态只和前面有限个状态有关。</p>
 </li>
 </ul>
+<h3 id="最优化问题">最优化问题</h3>
+<p>很多问题难以从表面看出其存在子问题重叠与最优子结构的特性，那么动态规划作为题解的另外一个很显著的特点就是 <strong>最优化问题</strong>。</p>
 <h2 id="实现">实现</h2>
 <h3 id="带备忘的自顶向下法-top-down-with-memoization">带备忘的自顶向下法 top-down with memoization</h3>
 <p>递归 + 备忘（Memoization），付出额外的内存空间记录已经求解过的子问题解，从而节省计算时间，典型的时空权衡（time-memory trade-off）。</p>
@@ -427,14 +429,14 @@
 <li class="lvl-2">
 <p>Usually a trade-off between number of subproblems and branching/complexity of relation</p>
 <p>子问题规模扩展，即通过 增加子问题数量 来 降低子问题之间关系的复杂性 。</p>
-<p>从 <b>无后效性</b> 的角度来看，如果当前设计的状态之间的转移不满足无后效性，不妨把状态进行升维，即增加参数扩大子问题规模。</p>
+<p>从 <b>无后效性</b> 的角度来看，如果当前设计的状态之间的转移不满足无后效性，不妨把状态进行<b>升维</b>，即增加参数扩大子问题规模。</p>
 </li>
 </ul>
 <p>常见的子问题扩展情况</p>
 <ul class="lvl-0">
 <li class="lvl-2">
 <p>Often record partial state: add subproblems by <b>incrementing some auxiliary variables</b></p>
-<p>比如：Alternating Coin Game</p>
+<p>比如：Alternating Coin Game，<b>股票类题目</b></p>
 </li>
 <li class="lvl-2">
 <p>Often multiply possible subsets across multiple inputs</p>
@@ -497,7 +499,7 @@
 <p>难以寻找暴力解法  + 显而易见可以缩小的问题规模 —— 尝试SRTBOT：</p>
 <ul class="lvl-2">
 <li class="lvl-4">
-<p>Subproblem: using prefix, $dp[i]$ 代表在 $0-i$ 家抢劫能够获得的最高金额。</p>
+<p>Subproblem: using prefix, $dp[i]$ 表示能够获得的最高金额。</p>
 </li>
 <li class="lvl-4">
 <p>Relate: $dp[i] = max{dp[i - 1], dp[i - 2] + nums[i]}$  待选方案分别代表两种不同选择：</p>
@@ -520,6 +522,11 @@
 </li>
 </ul>
 <p>空间压缩：进一步使用滚动数组，可以将空间复杂度降低至 $O(1)$。</p>
+</li>
+<li class="lvl-2">
+<p>213 House Robber II 打家劫舍 (Medium)</p>
+<p>与198的区别在于不能同时抢第一家和最后一家——增加限制——升维即可。增加状态“抢第0家”与“不抢第0家”。</p>
+<p>状态转移方程与198无差，最后选择两种情况下的最大值作为答案即可。</p>
 </li>
 <li class="lvl-2">
 <p>413 Arithmetic Slices 等差数列划分 (Medium)</p>
@@ -550,6 +557,100 @@ $$</p>
 </li>
 </ul>
 <p>空间压缩：根据状态转换方程，显然可以将空间复杂度降低至 $O(1)$</p>
+</li>
+<li class="lvl-2">
+<p>650 2 Keys Keyboard 只有两个键的键盘 (Medium)</p>
+<p>解法一：DP</p>
+<p>从题面上来看，是一道 <b>最优化问题（最少的操作次数）</b>且 <b>题目规模显然可以缩小</b>，尝试使用SRTBOT：</p>
+<ul class="lvl-2">
+<li class="lvl-4">
+<p>Subproblem: $dp[i]$ 代表输出 $i$ 个 <code>A</code> 的最少操作次数</p>
+</li>
+<li class="lvl-4">
+<p>Relate:<br>
+$$<br>
+dp[i] = \mathop{min}\limits_{i\space % \space j=0 } { dp[j] + i / j }<br>
+$$<br>
+即找出 $i$ 的因数，如 $i = 8$ ，$j = 2$ 时，需要 1 次复制 + 3 次粘贴，即 $i / j$ 次额外操作。</p>
+</li>
+<li class="lvl-4">
+<p>Topological Order: Increasing $i$ and $j$</p>
+<p>内层的 $j$ 不必从 $0$ 到 $i$ 完全遍历，可以根据其含义进行剪枝：</p>
+<ul class="lvl-4">
+<li class="lvl-6">
+<p>初步优化：$j &lt;= i / 2$，显然更大的时候必定无法构成 $i$ ；</p>
+<p>此时内层复杂度优化了一半。</p>
+</li>
+<li class="lvl-6">
+<p>进一步优化：从 <b>因数</b> 的角度考虑，$j$ 必定为 $i$ 的因数，所以 $i$ 会被分为 $j$ 与 $i / j$ ，二者必定一大一小。</p>
+<p>此时，我们可以使 $j * j &lt;= i$，并在每次循环时同时考虑 $j$ 与 $i / j$ 的情况。此时内层复杂度降低至 $O(\sqrt i)$。</p>
+</li>
+</ul>
+</li>
+<li class="lvl-4">
+<p>Base: $dp[1] = 0$，1个 <code>A</code> 的情况无需操作</p>
+</li>
+<li class="lvl-4">
+<p>Original Problem: $dp[n]$</p>
+</li>
+<li class="lvl-4">
+<p>Time: 经过剪枝优化后，$O(n\sqrt n)$。</p>
+</li>
+</ul>
+<p>解法二：质因数分解</p>
+<p>通过上面的解法，我们能概括出求解的基本操作，即“1 次 Copy All + x 次 Paste”。</p>
+<p>整体流程最终可以等价概括如下：</p>
+<ol>
+<li class="lvl-5">
+<p>起始长度为 1，对其进行 1 次复制 + $k_1 - 1$ 次粘贴，此时长度为 $k_1$，操作次数为 $k_1$；</p>
+</li>
+<li class="lvl-5">
+<p>此时长度为 $k_1$，对其进行 1 次复制 + $k_2 - 1$ 次粘贴，此时长度为 $k_1 \times k_2$，操作次数为 $k_1 + k _2$ ；</p>
+<p>…</p>
+</li>
+</ol>
+<p>最终我们想要得到长度为 $n$ 的串，经过 $x$ 次操作后，即有:<br>
+$$<br>
+n = k_1 \times k_2 \times … \times k_x<br>
+$$<br>
+而此时的操作次数为：<br>
+$$<br>
+n = k_1 + k_2 +… + k_x<br>
+$$<br>
+此时我们的欲求问题转换为，<b>如何对 $n$ 进行因数分解，使得其所有因数的加和最小</b>。</p>
+<p>利用一个不等式来帮助我们的证明：当 $a, b &gt; 0$ 时，$a\times b &gt;= a +b$ 。</p>
+<p>对于任意一个合数 $k_i$ ，我们将其分解为 $k_{i1} \times k_{i2}$。如果我们将其拆分为 $k_{i1}$ 和 $k_{i2}$，那么我们的消耗就会从 $k_i = k_{i1} \times k_{i2}$ 降至 $k_{i1} + k_{i2}$ ，因为 $k_{i1} \times k_{i2} &gt;= k_{i1} + k_{i2}$ 。所以进一步对合数因数进行拆分必定会使得消耗减少。</p>
+<p>综上，我们只需要将 $n$ 进行质因数分解即可。最终加和所有的操作次数即为答案。</p>
+<p>质因数分解的方式就是，从最小的质数2开始尝试能否整除，能的话就继续整除后继续检查至不能整除，再换下一个质数来继续重复同样的尝试。尝试的上限是 $\sqrt n$。</p>
+<p>时间复杂度为最优，$O(\sqrt n)$。</p>
+</li>
+<li class="lvl-2">
+<p>53 Maximum Subarray 最大子数组和 (Medium)</p>
+<ul class="lvl-2">
+<li class="lvl-4">
+<p>Subproblem: $dp[i]$ 以 $nums[i - 1]$ 为结尾的子数组的最大和</p>
+</li>
+<li class="lvl-4">
+<p>Relate: $dp[i] = max(nums[i - 1], dp[i - 1] + nums[i - 1])$  即两种选择：</p>
+<ol>
+<li class="lvl-7">$nums[i]$ 为开头重新开始构成子数组，即前半部分总和为负数，对后面没有贡献；</li>
+<li class="lvl-7">$nums[i]$ 接在前面子数组的最后，即前半部分总和为正数。</li>
+</ol>
+</li>
+<li class="lvl-4">
+<p>Topological Order: Increasing $i$</p>
+</li>
+<li class="lvl-4">
+<p>Base: $nums[0] = 0$，初始情况为空</p>
+</li>
+<li class="lvl-4">
+<p>Original Problem: $\mathop{max}\limits_{1\leq i \leq n}{dp[i]}$</p>
+</li>
+<li class="lvl-4">
+<p>Time: $O(n)$</p>
+<p>空间压缩后，空间复杂度优化为常数。</p>
+</li>
+</ul>
 </li>
 </ul>
 <h3 id="基本二维DP">基本二维DP</h3>
@@ -767,7 +868,7 @@ $$</p>
 <p>只实现了字典树爆搜，memoization日后挑战实现。</p>
 </li>
 </ul>
-<h3 id="子序列">子序列</h3>
+<h3 id="子序列-Subsequence">子序列 Subsequence</h3>
 <h4 id="LCS">LCS</h4>
 <ul class="lvl-0">
 <li class="lvl-2">
@@ -824,6 +925,11 @@ prev[j-1] + 1 &amp; \mbox{if}\space i,j &gt; 0 \space \mbox{and} \space text1[i]
 \end{cases}<br>
 $$<br>
 每一行结束后要更新 $prev$ 与 $curr$ 的值，即 $prev = curr$ 。至此，空间压缩至线性级别。</p>
+</li>
+<li class="lvl-2">
+<p>583 Delete Operation for Two Strings 两个字符串的删除操作 (Medium)</p>
+<p>本质就是一道LCS。这里不再赘述。</p>
+<p>也可以直接根据题目定义直接DP。</p>
 </li>
 </ul>
 <h4 id="LIS">LIS</h4>
@@ -984,7 +1090,7 @@ max{dp[j] , dp[j - w[i]] + v[i]   &amp; j \geq w[i]  \<br>
 dp[j] &amp; j &lt; w[i]<br>
 \end{cases}<br>
 $$</p>
-<h4 id="相关题目-3">相关题目</h4>
+<h4 id="相关题目">相关题目</h4>
 <ul class="lvl-0">
 <li class="lvl-2">
 <p>416 Partition Equal Subset Sum 分割等和子集 (Medium)</p>
@@ -1059,7 +1165,46 @@ $$</p>
 <p>Original Problem: $dp[len][m][n]$</p>
 </li>
 <li class="lvl-4">
-<p>Time: $O(len\times m\times n + L)$ 其中 $len$ 为数组长度，$L$ 为所有字符串长度之和（因为要求所有的01个数）。</p>
+<p>Time: $O(len\times m\times n + L)$ 其中 $len$ 为数组长度，$L$ 为所有字符串长度之和（因为要求出所有字符串中的01个数）。</p>
+<p>空间复杂度则优化至 $O(mn)$。</p>
+</li>
+</ul>
+</li>
+<li class="lvl-2">
+<p>322 Coin Change 零钱兑换 (Medium)</p>
+<p>从零钱中凑出想要的金额，并选出其中最少的硬币个数，其中每个面额的金币数量不限。显然是适用完全背包模型的最优化问题。</p>
+<ul class="lvl-2">
+<li class="lvl-4">
+<p>Subproblem: $dp[i][j]$ 代表前 $i$ 个硬币中能够凑成 $j$ 元的最少硬币个数</p>
+</li>
+<li class="lvl-4">
+<p>Relate:<br>
+$$<br>
+dp[i][j] = \begin{cases}<br>
+min{dp[i - 1][j], dp[i][j - coins[i]] + 1} &amp; j \geq coins[i]  \<br>
+dp[i - 1][j] &amp; j &lt; coins[i] \space | \space coins[i] &gt; 10^4<br>
+\end{cases}<br>
+$$<br>
+空间压缩后：<br>
+$$<br>
+dp[j] = \begin{cases}<br>
+min{dp[j], dp[j - coins[i]] + 1} &amp; j \geq coins[i]  \<br>
+dp[j] &amp; j &lt; coins[i] \space | \space coins[i] &gt; 10^4<br>
+\end{cases}<br>
+$$<br>
+其中 $j$ 必须正序访问。</p>
+</li>
+<li class="lvl-4">
+<p>Topological Order: Increasing $i$ and $j$</p>
+</li>
+<li class="lvl-4">
+<p>Base: $dp[0] = 0$ 显然，0元只需要0个硬币。</p>
+</li>
+<li class="lvl-4">
+<p>Original Problem: $dp[amount]$</p>
+</li>
+<li class="lvl-4">
+<p>Time:</p>
 </li>
 </ul>
 </li>
@@ -1113,6 +1258,312 @@ $$<br>
 </li>
 </ul>
 <p>空间压缩：因为 $dp[i]$ 在各种情况下都仅与 $dp[i - 1]$ 和 $dp[i - 2]$ 有关，所以可以使用滚动数组进行空间优化。</p>
+</li>
+<li class="lvl-2">
+<p>72 Edit Distance 编辑距离 (Hard)</p>
+<blockquote>
+<p>求解两个字符串之间的编辑距离其实也是一种 <b>相似度</b> 的度量，显然可以联想到LCS的做法。</p>
+<p>首先我们直观的将两个字符串放到一块，尝试手动去进行转换。为了减少总操作次数，我们会倾向于保留二者相同的子序列部分，对其他部分进行改动，这显然和LCS问题高度相似。</p>
+</blockquote>
+<p>接下来我们对题中给出的操作加以分析：有插入、删除、替换三种操作，分别应用在两个不同的字符串上，对应出六种操作。但这六种操作其实很多情况下都等价，最终简化成三种情况：</p>
+<ul class="lvl-2">
+<li class="lvl-4">
+<p>在A中插入 等价于 在B中删除</p>
+</li>
+<li class="lvl-4">
+<p>在A中删除 等价于 在B中插入</p>
+</li>
+<li class="lvl-4">
+<p>在A中修改 等价于 在B中修改</p>
+</li>
+</ul>
+<p>接下来可以尝试将问题规模缩小：</p>
+<ul class="lvl-2">
+<li class="lvl-4">
+<p>Subproblem: $dp[i][j]$ 代表 $word1$ 的前 $i$ 部分与 $word2$ 的前 $j$ 部分之间的编辑距离（最少操作数）。</p>
+</li>
+<li class="lvl-4">
+<p>Relate:<br>
+$$<br>
+dp[i][j] = \begin{cases}<br>
+min{dp[i - 1][j - 1], dp[i - 1][j] + 1, dp[i][j - 1] + 1} &amp; word1[i] = word2[j] \<br>
+min{dp[i - 1][j - 1] + 1, dp[i - 1][j] + 1, dp[i][j - 1] + 1} &amp; word1[i] \neq word2[j]<br>
+\end{cases}<br>
+$$<br>
+状态转移方程分别对应三种情况：</p>
+<ol>
+<li class="lvl-7">$dp[i - 1][j - 1]$ 考虑 $word1[i]$ 和 $word2[j]$ 的情况：
+<ul class="lvl-6">
+<li class="lvl-9">$word1[i] = word2[j]$ ：无需变动，无需加1</li>
+<li class="lvl-9">$word1[i] \neq word2[j]$ ：需要修改 $word1$ 中 $i$ 位置，等价于在 $word2$ 中修改 $j$ 位置，需要加1</li>
+</ul>
+</li>
+<li class="lvl-7">$dp[i - 1][j] + 1$ : 对应在 $word1$ 中删除 $i$ 位置，等价于 在 $word2$ 中增加 $j$ 位置</li>
+<li class="lvl-7">$dp[i][j - 1] + 1$：对应在 $word1$ 中增加 $i$ 位置，等价于 在 $word2$ 中删除 $j$ 位置</li>
+</ol>
+<p>分析三种来源，可以进行空间压缩。由于 $j - 1$ 有两个来源，需要辅助空间来存储上一行的情况：<br>
+$$<br>
+dp_curr[j] = \begin{cases}<br>
+min{dp_prev[j - 1], dp_prev[j] + 1, dp_curr[j - 1] + 1} &amp; word1[i] = word2[j] \<br>
+min{dp_prev[j - 1] + 1, dp_prev[j] + 1, dp_curr[j - 1] + 1} &amp; word1[i] \neq word2[j]<br>
+\end{cases}<br>
+$$</p>
+</li>
+<li class="lvl-4">
+<p>Topological Order: Increasing $i$ and $j$</p>
+</li>
+<li class="lvl-4">
+<p>Base:</p>
+<ul class="lvl-4">
+<li class="lvl-6">$dp[0][j] = j$：$word1$ 需增加 $j$ 个字符 / $word1$ 需减少 $j$ 个字符</li>
+<li class="lvl-6">$dp[i][0] = i$：$word1$ 需减少 $i$ 个字符 / $word2$ 需增加 $i$ 个字符</li>
+</ul>
+<p>空间压缩后：</p>
+<ul class="lvl-4">
+<li class="lvl-6">
+<p>当 $i = 0$ 时，$dp[j] = j$；</p>
+</li>
+<li class="lvl-6">
+<p>当 $j = 0$ 时，$dp[0] = i$；</p>
+</li>
+</ul>
+<p>即，<code>dp_curr[j] = (i == 0) ? j : i</code></p>
+</li>
+<li class="lvl-4">
+<p>Original Problem: $dp[n - 1][m - 1]$ ，其中 $n = word1.size(), m = word2.size()$。</p>
+</li>
+<li class="lvl-4">
+<p>Time: $O(nm)$</p>
+<p>空间复杂度上，压缩后可以达到 $O(m)$ 。</p>
+</li>
+</ul>
+</li>
+<li class="lvl-2">
+<p>10 Regular Expression Matching 正则表达式匹配 (Hard)</p>
+</li>
+</ul>
+<h3 id="股票类题目">股票类题目</h3>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>121 Best Time to Buy and Sell Stock 买卖股票的最佳时机 (Easy)</p>
+<p>一次循环。</p>
+</li>
+<li class="lvl-2">
+<p>122 Best Time to Buy and Sell Stock II 买卖股票的最佳时机 II (Medium)</p>
+<p>解法一：贪心</p>
+<p>本题的最优解法，直接求出向上的区间差之和即可。</p>
+<p>值得注意的是，题目并不允许 当天卖出后再买入，所以贪心的方式求出来的最大利润，即所有上升求区间差之和，而并非实际的交易过程。联系实例 <code>[1,2,3,4,5]</code> 来分析。</p>
+<p>解法二：动态规划</p>
+<p>其实用贪心的解法是最优且最简洁的，但是这道题非常适合作为 <strong>子问题扩展</strong> 的样例题。</p>
+<p>这是一道 <b>规模可缩减</b> 的 <b>最优化问题</b> 。显然可以尝试使用 SRTBOT 模型来解决：</p>
+<ul class="lvl-2">
+<li class="lvl-4">
+<p>Subproblem: 与 Alternating Coin Game 相似，这是一道需要进行 子问题扩展的问题。</p>
+<p>因为每天会存在两种不同的状态：<b>持有股票</b>、<b>未持有股票</b>。所以设计子问题时不能简单的缩小规模，而是必须要升维，才能正确的满足状态转移的无后效性。</p>
+<ul class="lvl-4">
+<li class="lvl-6">
+<p>$dp[i][0]$ ：未持有股票，第 $i$ 天时的最大收益；</p>
+</li>
+<li class="lvl-6">
+<p>$dp[i][1]$ ：持有股票，第 $i$ 天时的最大收益。</p>
+</li>
+</ul>
+<div class="warning">
+<p><b>记录一次错误的做法</b></p>
+<p>升维时要想清楚状态的分类，一开始的想法是分成：第 $i$ 天买进 和 第 $i$ 天卖出 两种情况。而实际的状态并未每天都一定会买进和卖出。而且这种设计方式与前 $i$ 种情况均相关，使得内层操作时间也达到线性，题目会超时。</p>
+</div>
+</li>
+<li class="lvl-4">
+<p>Relate: 考虑当天是否有买进或者卖出：</p>
+<p>如果当前未持有股票：</p>
+<ol>
+<li class="lvl-7">
+<p>前一天未持有股票，今天也未持有股票，状态不变；</p>
+</li>
+<li class="lvl-7">
+<p>前一天持有股票，那么说明今天卖出了股票，收益增加；</p>
+</li>
+</ol>
+<p>即：<br>
+$$<br>
+dp[i][0] = max{dp[i - 1][0], dp[i - 1][1] + prices[i] }<br>
+$$<br>
+如果当前持有股票：</p>
+<ol>
+<li class="lvl-7">
+<p>前一天未持有股票，则说明今天有买入；</p>
+</li>
+<li class="lvl-7">
+<p>前一天持有股票，说明状态不变；</p>
+</li>
+</ol>
+<p>即：<br>
+$$<br>
+dp[i][1] = max{dp[i - 1][0] - prices[i], dp[i - 1][1]}<br>
+$$</p>
+</li>
+<li class="lvl-4">
+<p>Topological Order: Increasing $i$</p>
+</li>
+<li class="lvl-4">
+<p>Base: $dp[0][0] = 0,\space dp[0][1] = - prices[0]$</p>
+</li>
+<li class="lvl-4">
+<p>Original Problem: $dp[n - 1][1]$</p>
+</li>
+<li class="lvl-4">
+<p>Time: $O(n)$</p>
+<p>空间上，显然 $dp$ 只与前一个值相关，可以使用滚动数组优化至 $O(1)$ 。</p>
+</li>
+</ul>
+</li>
+<li class="lvl-2">
+<p>123 Best Time to Buy and Sell Stock III 买卖股票的最佳时机 III (Hard)</p>
+<p>在122题的基础上增加了一条限制：最多可以完成两笔交易。因此我们尝试再次升维，增加一个维度来保存“当前完成了交易”这个状态。</p>
+<ul class="lvl-2">
+<li class="lvl-4">
+<p>Subproblem &amp; Relate: 两种升维状态进行组合如下</p>
+<ul class="lvl-4">
+<li class="lvl-6">
+<p>$dp[i][0][0] = 0$<br>
+未持有股票、卖出0次：没有任何交易发生</p>
+</li>
+<li class="lvl-6">
+<p>$dp[i][0][1] = max{dp[i - 1][0][1], dp[i - 1][1][0] + prices[i]}$<br>
+未持有股票、卖出1次：</p>
+<ol>
+<li class="lvl-9">前一天未持有股票且卖出1次</li>
+<li class="lvl-9">前一天持有股票且卖出0次、当天卖出</li>
+</ol>
+</li>
+<li class="lvl-6">
+<p>$dp[i][0][2] = max{dp[i - 1][0][2], dp[i - 1][1][1] + prices[i]}$<br>
+未持有股票、卖出2次：</p>
+<ol>
+<li class="lvl-9">前一天未持有股票且卖出2次</li>
+<li class="lvl-9">前一天持有股票且卖出1次，当天卖出</li>
+</ol>
+</li>
+<li class="lvl-6">
+<p>$dp[i][1][0] = max{dp[i - 1][1][0], dp[i - 1][0][0] - prices[i]}$<br>
+持有股票、卖出0次:</p>
+<ol>
+<li class="lvl-9">前一天持有股票且卖出0次</li>
+<li class="lvl-9">前一天未持有股票且卖出0次，当天买进</li>
+</ol>
+</li>
+<li class="lvl-6">
+<p>$dp[i][1][1] = max{dp[i - 1][1][1], dp[i - 1][0][1] - prices[i]}$<br>
+持有股票、卖出1次：</p>
+<ol>
+<li class="lvl-9">前一天持有股票且卖出1次</li>
+<li class="lvl-9">前一天未持有股票且卖出1次，当天买进</li>
+</ol>
+</li>
+<li class="lvl-6">
+<p>$dp[i][1][2] = -INF$<br>
+持有股票、卖出2次：不存在的情况，超出交易上限</p>
+</li>
+</ul>
+<p>因为每次都只与前一天有关，所以可以使用滚动数组去掉数组的第一维，将空间优化至常数级。</p>
+</li>
+<li class="lvl-4">
+<p>Topological Order: Increasing $i$</p>
+</li>
+<li class="lvl-4">
+<p>Base:  此处写空间压缩后的初始状态。<br>
+$$<br>
+prev[0][0] = 0 \<br>
+prev[1][0] = -prices[0] \<br>
+prev[0][1] = -INF \<br>
+prev[1][1] = -INF \<br>
+prev[0][2] = -INF \<br>
+prev[1][2] = -INF \<br>
+$$</p>
+</li>
+<li class="lvl-4">
+<p>Original Problem: $max{dp[i][j][k]}$</p>
+</li>
+<li class="lvl-4">
+<p>Time: $ O(n) $</p>
+</li>
+</ul>
+</li>
+<li class="lvl-2">
+<p>188 Best Time to Buy and Sell Stock IV 买卖股票的最佳时机 IV (Hard)</p>
+<p>和123一样，只是把2次交易升级到 $k$ 次交易。</p>
+</li>
+<li class="lvl-2">
+<p>309 Best Time to Buy and Sell Stock with Cooldown 最佳买卖股票时机含冷冻期 (Medium)</p>
+<p>同样的套路，只是增加了新的限制，这里新增的冷冻期比较重要：</p>
+<p>冷冻期并不是一个普通的状态，而是随着卖出后的一个伴随状态。所以我们不能简单的增加一个冷冻期的维度。</p>
+<p>冷冻期关注的是前一天是否有卖出，因此为了方便判断，我们增加一个“当天是否卖出的条件”，定义三种状态，类似状态机，关注状态之间的转换。</p>
+<ul class="lvl-2">
+<li class="lvl-4">
+<p>Subproblem &amp; Relate:</p>
+<ol>
+<li class="lvl-7">未持股、且当天未卖出：$dp[i][0] = max{dp[i -1][0],dp[i - 1][1]}$
+<ul class="lvl-6">
+<li class="lvl-9">前一天未持股，且未卖出；</li>
+<li class="lvl-9">前一天未持股、且当天卖出，即当天为冷冻期；</li>
+</ul>
+</li>
+<li class="lvl-7">未持股、且当天卖出：$dp[i][1]= dp[i-  1][2] + prices[i]$
+<ul class="lvl-6">
+<li class="lvl-9">前一天持股、当天卖出；</li>
+</ul>
+</li>
+<li class="lvl-7">持股：$dp[i][2] = max{dp[i][2], dp[i][0] - prices[i]}$
+<ul class="lvl-6">
+<li class="lvl-9">前一天已持股；</li>
+<li class="lvl-9">前一天未持股、且未卖出，即当天买入；</li>
+</ul>
+</li>
+</ol>
+<div class="warning">
+<p><b>记录一次错误的做法</b></p>
+<p>一开始没有尝试升维，只是在状态转换时隔一天转换，仍然保持一维的 $dp$ 数组。这种方式的问题在于 <b>不满足最优子结构</b> 。</p>
+<p>比如看例子 <code>[1,2,3,0,2]</code>，关注前三个元素部分 <code>[1,2,3]</code>，此时我们求出的最优解应该是 2 ，由 <code>3-1</code> 得到，即第一天买入，第三天卖出。因为我们的数组是一维，所以此时求出的最优解即为日后用到的最优解。但我们综合看整体结果，发现最终实际的最优结果为 <code>[买入, 卖出, 冷冻期, 买入, 卖出]</code>，即第一天买入、第二天卖出。</p>
+<p>至此，一维的子问题无法满足最优子结构，是错误的解题逻辑。</p>
+</div>
+</li>
+<li class="lvl-4">
+<p>Topological Order: Increasing $i$</p>
+</li>
+<li class="lvl-4">
+<p>Base: $dp[0][0] = 0, \space dp[0][2] = -prices[0]$</p>
+</li>
+<li class="lvl-4">
+<p>Original Problem: $max{dp[n - 1][0], dp[n - 1][1]}$</p>
+</li>
+<li class="lvl-4">
+<p>Time: $O(n)$</p>
+<p>当前状态显然仅与前一天状态有关，空间压缩可至原地。</p>
+</li>
+</ul>
+</li>
+<li class="lvl-2">
+<p>714 Best Time to Buy and Sell Stock with Transaction Fee (Medium)</p>
+<ul class="lvl-2">
+<li class="lvl-4">
+<p>Subproblem &amp; Relate:</p>
+<p>$dp[i][0] = max{dp[i - 1][0], dp[i - 1][1] + prices[i] - 2}$</p>
+<p>$dp[i][1] = max{dp[i - 1][1], dp[i - 1][0] - prices[i]}$</p>
+</li>
+<li class="lvl-4">
+<p>Topological Order: Increasing $i$</p>
+</li>
+<li class="lvl-5">
+<p>Base: $dp[0][0] = 0, \space dp[0][1] = -prices[0]$</p>
+</li>
+<li class="lvl-4">
+<p>Original Problem: $dp[n - 1][0]$</p>
+</li>
+<li class="lvl-4">
+<p>Time: $O(n)$</p>
+<p>空间压缩后，消耗降至原地。</p>
+</li>
+</ul>
 </li>
 </ul>
 <h2 id="Pseudopolynomial">Pseudopolynomial</h2>
