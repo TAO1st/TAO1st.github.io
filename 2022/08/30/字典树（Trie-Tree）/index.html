@@ -24,9 +24,9 @@
 <meta property="og:description" content="字典树 Trie Tree  切实在实际工程中有所应用的结构。后续深入了解其实际适用场景。  定义 字典树的定义与概念还是很简单的，这里不加赘述，重点关注实现细节。 实现 重点关注树中的节点定义。这里的节点和定义不完全一致，主要存放两种信息：   指针：因为节点存放的是下一层的指针，本身并不指明该节点所代表的字符。每个节点代表哪个字符由其上层的指针来决定。 通常用一个长度为26的指针数组。   结">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2022-08-30T13:51:14.000Z">
-<meta property="article:modified_time" content="2022-08-30T17:05:00.130Z">
+<meta property="article:modified_time" content="2022-09-11T15:14:16.970Z">
 <meta property="article:author" content="tao1st">
-<meta property="article:tag" content="字典树（Trie Tree）">
+<meta property="article:tag" content="字典树(Trie Tree)">
 <meta name="twitter:card" content="summary_large_image">
   
   
@@ -270,9 +270,9 @@
 <blockquote>
 <p>切实在实际工程中有所应用的结构。后续深入了解其实际适用场景。</p>
 </blockquote>
-<h2 id="定义-6">定义</h2>
+<h2 id="定义">定义</h2>
 <p>字典树的定义与概念还是很简单的，这里不加赘述，重点关注实现细节。</p>
-<h2 id="实现-3">实现</h2>
+<h2 id="实现">实现</h2>
 <p>重点关注树中的<strong>节点</strong>定义。这里的节点和定义不完全一致，主要存放两种信息：</p>
 <ol>
 <li class="lvl-3">
@@ -285,7 +285,7 @@
 </ol>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">class</span> <span class="hljs-title class_">TrieNode</span> &#123;<br>	<span class="hljs-type">bool</span> isEnd;<br>	TrieNode* child[<span class="hljs-number">26</span>];<br>	<br>	<span class="hljs-built_in">TrieNode</span>(): <span class="hljs-built_in">isEnd</span>(<span class="hljs-literal">false</span>) &#123;<br>		<span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">26</span> ; i++) &#123;<br>			child[i] = <span class="hljs-literal">nullptr</span>;<br>		&#125;<br>	&#125;<br>&#125;<br></code></pre></td></tr></table></figure>
 <p>其他的各种操作并不繁杂，在节点的基础上进行衍生与拓展即可。</p>
-<h2 id="相关题目-8">相关题目</h2>
+<h2 id="相关题目">相关题目</h2>
 <ul class="lvl-0">
 <li class="lvl-2">
 <p>208 Implement Trie (Prefix Tree) 实现Trie（前缀树）(Medium)</p>
@@ -394,7 +394,7 @@
     <div class="post-meta">
       <i class="iconfont icon-tags"></i>
       
-        <a href="/tags/%E5%AD%97%E5%85%B8%E6%A0%91%EF%BC%88Trie-Tree%EF%BC%89/">#字典树（Trie Tree）</a>
+        <a href="/tags/%E5%AD%97%E5%85%B8%E6%A0%91-Trie-Tree/">#字典树(Trie Tree)</a>
       
     </div>
   

@@ -647,7 +647,7 @@
 <p>虽然快速排序在排序的中途不会产生任何有序子序列，但是每一次子集划分时，分治基准<code>pivot</code>都会被放在最终的正确位置。</p>
 </li>
 </ul>
-<h4 id="相关题目-2">相关题目</h4>
+<h4 id="相关题目-4">相关题目</h4>
 <blockquote>
 <p><em>TopK</em>类型题目常用于考察快速排序。</p>
 </blockquote>
@@ -701,7 +701,7 @@
 </li>
 </ul>
 <p>具体代码见sort.cpp。</p>
-<h4 id="相关题目-3">相关题目</h4>
+<h4 id="相关题目-5">相关题目</h4>
 <ul class="lvl-0">
 <li class="lvl-2">
 <p><strong>215 Kth Largest Element in an Array 数组中的第K个最大元素 (Medium)</strong></p>
@@ -1809,13 +1809,13 @@ $$
 <p>前、中、后序遍历的</p>
 <ul class="lvl-3">
 <li class="lvl-4">
-<p><input type="checkbox" id="checkbox0" checked="true"><label for="checkbox0"></label><strong>递归</strong>写法；</p>
+<p><input type="checkbox" id="checkbox4" checked="true"><label for="checkbox4"></label><strong>递归</strong>写法；</p>
 </li>
 <li class="lvl-4">
-<p><input type="checkbox" id="checkbox1" checked="true"><label for="checkbox1"></label><strong>非递归 / 迭代</strong>写法：其中<strong>后序</strong>格外重要；</p>
+<p><input type="checkbox" id="checkbox5" checked="true"><label for="checkbox5"></label><strong>非递归 / 迭代</strong>写法：其中<strong>后序</strong>格外重要；</p>
 </li>
 <li class="lvl-4">
-<p><input type="checkbox" id="checkbox2" checked="true"><label for="checkbox2">[Morris 遍历 / 线索二叉树](##Morris Traversal / 线索二叉树)；</label></p>
+<p><input type="checkbox" id="checkbox6" checked="true"><label for="checkbox6">[Morris 遍历 / 线索二叉树](##Morris Traversal / 线索二叉树)；</label></p>
 <p>递归和迭代写法的时间复杂度与空间复杂度均为线性 <code>O(n)</code>，而Morris遍历能够将额外的空间复杂度降到常数级<code>O(1)</code>。</p>
 <p><em>即，遇到树的前中后序遍历相关的题目，要立刻想到尝试通过Morris遍历来对空间复杂度进行进一步优化。</em></p>
 </li>
@@ -1824,8 +1824,8 @@ $$
 <li class="lvl-2">
 <p>根据中序遍历序列与另外一种序列来<strong>构造二叉树</strong>；</p>
 <ul class="lvl-3">
-<li class="lvl-4"><input type="checkbox" id="checkbox3" checked="true"><label for="checkbox3">递归写法</label></li>
-<li class="lvl-4"><input type="checkbox" id="checkbox4"><label for="checkbox4"></label><em>迭代写法（TBD）</em></li>
+<li class="lvl-4"><input type="checkbox" id="checkbox7" checked="true"><label for="checkbox7">递归写法</label></li>
+<li class="lvl-4"><input type="checkbox" id="checkbox8"><label for="checkbox8"></label><em>迭代写法（TBD）</em></li>
 </ul>
 </li>
 </ul>
@@ -1906,8 +1906,8 @@ $$
 </ul>
 </li>
 </ul>
-<h3 id="二叉搜索树-BST">二叉搜索树 BST</h3>
-<h4 id="基本操作-CRUD">基本操作 CRUD</h4>
+<h3 id="二叉搜索树-BST-2">二叉搜索树 BST</h3>
+<h4 id="基本操作-CRUD-2">基本操作 CRUD</h4>
 <blockquote>
 <ul class="lvl-1">
 <li class="lvl-2">
@@ -1938,7 +1938,7 @@ $$
 <p><strong>450 Delete Node in a BST 删除二叉搜索树中的节点 (Medium)</strong></p>
 </li>
 </ul>
-<h4 id="特性-中序序列有序">特性 - 中序序列有序</h4>
+<h4 id="特性-中序序列有序-2">特性 - 中序序列有序</h4>
 <ul class="lvl-0">
 <li class="lvl-2">
 <p>99 Recover Binary Search Tree 恢复二叉搜索树 (Medium)</p>
@@ -2294,7 +2294,7 @@ $$
 <p>Find 查询：查询两个元素是否在同一个集合中。</p>
 </li>
 </ul>
-<h3 id="使用场景-2">使用场景</h3>
+<h3 id="使用场景">使用场景</h3>
 <p>并查集的优势在于：同一集合中存在大量元素，且元素之间具有较为复杂的关系组织时，判断元素的归属问题需要过多的资源，而并查集能够在更少的资源下完成这种类型的操作。比如经典的亲戚问题：</p>
 <blockquote>
 <p>若某个家族人员过于庞大，要判断两个人是否为亲戚是一个比较复杂的过程，现在给出某个亲戚关系图，求任意给出的两个人是否具有亲戚关系。</p>
@@ -2354,7 +2354,7 @@ $$
 </li>
 </ul>
 <p>这两个概念都比较抽象，结合后面的例子来进行更深刻的理解。</p>
-<h3 id="使用场景-3">使用场景</h3>
+<h3 id="使用场景-2">使用场景</h3>
 <p>最优化问题（optimization problem）</p>
 <h2 id="SRT-BOT">SRT BOT</h2>
 <p>设计属于自己的递归算法的一套范式。并不一定只能写</p>
@@ -2405,13 +2405,13 @@ $$
 </li>
 </ul>
 <p>Subproblems for <strong>multiple inputs</strong> (多个输入，比如LCS有两个字符串作为输入): multiply subproblem spaces - get the product. (二维DP)</p>
-<h3 id="Subproblem-Expansion-Constraints-2">Subproblem Expansion &amp; Constraints</h3>
+<h3 id="Subproblem-Expansion-Constraints">Subproblem Expansion &amp; Constraints</h3>
 <h2 id="Relate">Relate</h2>
 <blockquote>
 <p>How to relate subproblem solutions ?</p>
 </blockquote>
 <h2 id="Examples">Examples</h2>
-<h3 id="Bowling-2">Bowling</h3>
+<h3 id="Bowling">Bowling</h3>
 <h3 id=""></h3>
 <h2 id="分类">分类</h2>
 <ul class="lvl-0">
@@ -2462,13 +2462,13 @@ $$
 </ol>
 </li>
 </ul>
-<h4 id="LCS-2">LCS</h4>
+<h4 id="LCS">LCS</h4>
 <ul class="lvl-0">
 <li class="lvl-2">
 <p>1143 Longest Common Subsequence 最长公共子序列 (Medium)</p>
 </li>
 </ul>
-<h4 id="LIS-2">LIS</h4>
+<h4 id="LIS">LIS</h4>
 <ul class="lvl-0">
 <li class="lvl-2">
 <p>300 Longest Increasing Subsequence 最长递增子序列 (Medium)</p>
@@ -2509,7 +2509,7 @@ $$
 </ul>
 </li>
 </ul>
-<h2 id="空间压缩-2">空间压缩</h2>
+<h2 id="空间压缩">空间压缩</h2>
 <p><code>dp[i]</code>仅与<code>dp[i - 1]</code>和<code>dp[i - 2]</code>相关</p>
 <p>重叠子问题</p>
 <p>子问题状态记录 避免重复计算</p>
@@ -2790,7 +2790,7 @@ $$
 </li>
 </ul>
 <p>以上这些问题，在不同使用场景下灵活使用以下的不同数据结构。</p>
-<h3 id="前缀和与积分图">前缀和与积分图</h3>
+<h3 id="前缀和与积分图-2">前缀和与积分图</h3>
 <blockquote>
 <p>适合没有值修改的<strong>静态</strong>数组使用。</p>
 <p>前缀和针对一维的数组，积分图针对二维的数组，二者都是进行打表存储区间和，加速查询。</p>
@@ -2845,7 +2845,7 @@ $$
 </ul>
 </li>
 </ul>
-<h3 id="树状数组-BIT">树状数组 BIT</h3>
+<h3 id="树状数组-BIT-2">树状数组 BIT</h3>
 <blockquote>
 <p>又称二叉索引树（Binary Indexed Tree）、Fenwick树（发明者的命名）。</p>
 <ul class="lvl-1">
@@ -2875,10 +2875,10 @@ $$
 </li>
 </ul>
 </blockquote>
-<h4 id="引入">引入</h4>
+<h4 id="引入-2">引入</h4>
 <p>通过引入树状数组维护前缀和，能够使单点修改和区间和计算都达到$O(logn)$，即树高。</p>
 <p>树状数组巧妙地利用了下标的二进制位特性，所以这里用到了一个重要的位运算操作，定义为 $lowbit(x)$，即保留最低有效位（最低的一个1）后的值。</p>
-<h4 id="定义">定义</h4>
+<h4 id="定义-5">定义</h4>
 <p>首先来看树状数组的特征与含义：</p>
 <ul class="lvl-0">
 <li class="lvl-2">
@@ -2909,7 +2909,7 @@ $$
 </ul>
 <p>具体实现如下：</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-comment">/*--</span><br><span class="hljs-comment">	a[i] 	: 0 &lt;= i &lt; n</span><br><span class="hljs-comment">	bit[i]	: 0 &lt; i &lt;= n </span><br><span class="hljs-comment">--*/</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">BIT</span> &#123;<br><span class="hljs-keyword">private</span>:<br>    vector&lt;<span class="hljs-type">int</span>&gt; bit;<br>    <span class="hljs-type">int</span> size;<br>    <br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-built_in">BIT</span>(<span class="hljs-type">int</span> n) : <span class="hljs-built_in">size</span>(n), <span class="hljs-built_in">tree</span>(n + <span class="hljs-number">1</span>) &#123;&#125;<br>    <br>    <span class="hljs-type">int</span> lowbit（<span class="hljs-type">int</span> x) &#123;							<span class="hljs-comment">// 求lowbit就是位运算中保留最低有效位</span><br>        <span class="hljs-keyword">return</span> x &amp; (-x);<br>    &#125;<br><br>    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">build</span><span class="hljs-params">()</span> </span>&#123;<br>        <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt;= n; i++) &#123;<br>            bit[i] = a[i - <span class="hljs-number">1</span>];		<br>            <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> index = i - <span class="hljs-number">1</span> - <span class="hljs-number">1</span>; i &gt;= i - <span class="hljs-built_in">lowbit</span>(i); i--) &#123;	<span class="hljs-comment">// 长度为 lowbit[i] 的区间</span><br>                bit[i] += a[index];<br>            &#125;<br>        &#125;<br>    &#125;<br>    <br>    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">update</span><span class="hljs-params">(<span class="hljs-type">int</span> index, <span class="hljs-type">int</span> val)</span> </span>&#123;				<span class="hljs-comment">// 将第index个元素的值修改为x</span><br>        <span class="hljs-type">int</span> diff = val - a[index + <span class="hljs-number">1</span>];<br>        <br>        <span class="hljs-keyword">while</span>(index &lt;= n) &#123;<br>            bit[index] += diff;<br>            index += <span class="hljs-built_in">lowbit</span>(index);<br>        &#125;<br>      <br>        <span class="hljs-comment">// for(int i = index; i &lt;= n; i += lowbit(i)) &#123;</span><br>        <span class="hljs-comment">//     bit[i] += diff;</span><br>        <span class="hljs-comment">// &#125;</span><br>    &#125;<br><br>    <span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">prefix_sum</span><span class="hljs-params">(<span class="hljs-type">int</span> k)</span> </span>&#123;							<span class="hljs-comment">// 查询前k项和</span><br>        <span class="hljs-type">int</span> sum = <span class="hljs-number">0</span>;<br>        <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = k; i &gt; <span class="hljs-number">0</span>; i -= lowbit[i]) &#123;<br>            sum += bit[i];<br>        &#125;<br>        <span class="hljs-keyword">return</span> ans;<br>    &#125;<br><br>    <span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">range_sum</span><span class="hljs-params">(<span class="hljs-type">int</span> a, <span class="hljs-type">int</span> b)</span> </span>&#123;					<span class="hljs-comment">// 查询[a, b]的区间和（左闭右闭）</span><br>        <span class="hljs-keyword">return</span> <span class="hljs-built_in">prefix_sum</span>(b) - <span class="hljs-built_in">prefix_sum</span>(a - <span class="hljs-number">1</span>);<br>    &#125;<br>&#125;;<br></code></pre></td></tr></table></figure>
-<h4 id="相关题目-4">相关题目</h4>
+<h4 id="相关题目-6">相关题目</h4>
 <ul class="lvl-0">
 <li class="lvl-2">
 <p><em>剑指Offer 51. 数组中的逆序对 (Hard)</em></p>
@@ -2964,11 +2964,11 @@ $$
 <p>跟剑指offer51一模一样的题目，换个形式而已。</p>
 </li>
 </ul>
-<h3 id="线段树-Segment-Tree">线段树 Segment Tree</h3>
+<h3 id="线段树-Segment-Tree-2">线段树 Segment Tree</h3>
 <blockquote>
 <p>线段树基于分治思想，将区间不断进行二分，可以维护区间的多种信息，如<strong>区间和</strong>、<strong>区间最值</strong>等等</p>
 </blockquote>
-<h4 id="定义-2">定义</h4>
+<h4 id="定义-6">定义</h4>
 <p>线段树（Segment Tree）是一个基于分治思想的二叉树：</p>
 <ul class="lvl-0">
 <li class="lvl-2">
@@ -2983,7 +2983,7 @@ $$
 </ul>
 <p>树的具体结构与定义如图所示（以维护区间最值为例）：</p>
 <p><img src="https://gcore.jsdelivr.net/gh/TAO1st/pics@master/202205011625893.png" srcset="/img/loading.gif" lazyload alt=""></p>
-<h4 id="存储方式">存储方式</h4>
+<h4 id="存储方式-2">存储方式</h4>
 <p>据上可得，线段树除了最后一层，其他上层均为满二叉树，选用顺序存储方式，用数组来存放这颗树，下标从1开始。</p>
 <p>值得注意的是，该数组开辟的大小与输入规模 $n$ 的关系应该是怎样的：</p>
 <img src="https://gcore.jsdelivr.net/gh/TAO1st/pics@master/202205011711572.png" srcset="/img/loading.gif" lazyload style="zoom:33%;" />
@@ -3009,18 +3009,18 @@ $$
 <p>不加懒标记的单点更新时，需要向下递归搜索至叶节点，并在向上返回的过程中不断完成修改。根据上面的流程可以发现，增加懒标记后，每次向下递归无需搜索至叶节点，而是对被覆盖的区间加一个懒标记后，直接对区间进行修改并增加懒标记。而该节点以下的子节点区间都先不做修改，而是等到<strong>下一次需要访问其子区间时</strong>按需<strong>向下传递懒标记</strong>再进行更改，从而实现效率的提升。同时，由于叶节点无法继续向下传递，可以不对其设置懒标记。</p>
 <p>向下递归的过程如图所示（不包含向上返回的过程）：</p>
 <p><img src="https://gcore.jsdelivr.net/gh/TAO1st/pics@master/202205021237853.png" srcset="/img/loading.gif" lazyload alt=""></p>
-<h4 id="效率">效率</h4>
+<h4 id="效率-2">效率</h4>
 <p>任意的查询与更新的单次操作的复杂度都是 $O(logn)$。</p>
 <p>增加了懒标记的区间更新的渐进复杂度也为 $O(logn)$。</p>
 <h4 id="实现-2">实现</h4>
-<h5 id="无懒标记-携带区间范围信息">无懒标记 + 携带区间范围信息</h5>
+<h5 id="无懒标记-携带区间范围信息-2">无懒标记 + 携带区间范围信息</h5>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br></pre></td><td class="code"><pre><code class="hljs c++">vector&lt;<span class="hljs-type">int</span>&gt; num;			<span class="hljs-comment">// 原数组，这里假设从下标为1处开始</span><br><span class="hljs-type">int</span> n = nums.<span class="hljs-built_in">size</span>(); 					<span class="hljs-comment">// n为输入规模，即元素总个数</span><br><br><span class="hljs-comment">// 结构定义</span><br><span class="hljs-keyword">struct</span> <span class="hljs-title class_">node</span> &#123;<br>    <span class="hljs-type">int</span> l, r, mx;		<span class="hljs-comment">// l，r为区间做右端点，也有不携带区间信息的写法</span><br>    					<span class="hljs-comment">// 区间信息此处以区间最大值为例</span><br>&#125; tree[n * <span class="hljs-number">4</span>];<br><br><span class="hljs-comment">/*--</span><br><span class="hljs-comment">创建线段树：</span><br><span class="hljs-comment">	按照树的定义，递归形式创建</span><br><span class="hljs-comment">--*/</span><br><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">build</span><span class="hljs-params">(<span class="hljs-type">int</span> root, <span class="hljs-type">int</span> l, <span class="hljs-type">int</span> r)</span> </span>&#123;<br>    tree[root].l = l;<br>    tree[root].r = r;<br>    <span class="hljs-comment">// recursive base</span><br>    <span class="hljs-keyword">if</span>(l == r) &#123;<br>        tree[root].mx = num[l];<br>    	<span class="hljs-keyword">return</span>;<br>    &#125;<br>    <br>    <span class="hljs-comment">// 向左右儿子进入递归</span><br>    <span class="hljs-type">int</span> mid = l + (r - l) / <span class="hljs-number">2</span>；<br>    <span class="hljs-type">int</span> left = root &lt;&lt; <span class="hljs-number">1</span>, right = root &lt;&lt; <span class="hljs-number">1</span> | <span class="hljs-number">1</span>;<br>    <span class="hljs-built_in">build</span>(left, l, mid);<br>    <span class="hljs-built_in">build</span>(right, mid + <span class="hljs-number">1</span>, r);<br>    <br>    <span class="hljs-comment">// 更新区间信息，此处以更新区间最大值为例</span><br>    tree[root].mx = <span class="hljs-built_in">max</span>(tree[left].mx, tree[right].mx);<br>    <span class="hljs-comment">// tree[root] = push_up(tree[left], tree[right]);</span><br>&#125;<br><br><br><span class="hljs-comment">/*--</span><br><span class="hljs-comment">点更新:</span><br><span class="hljs-comment">	递归寻找目标节点，找到后更改，并向上修改	</span><br><span class="hljs-comment">--*/</span><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">update</span><span class="hljs-params">(<span class="hljs-type">int</span> root, <span class="hljs-type">int</span> index, <span class="hljs-type">int</span> val)</span> </span>&#123;<br>    <span class="hljs-comment">// recursive base</span><br>    <span class="hljs-keyword">if</span>(root.l == root.r &amp;&amp; root.l == index) &#123;<br>   		<span class="hljs-comment">// 更新区间信息，此处以更新区间最大值为例</span><br>        tree[l].mx = val;<br>        <span class="hljs-keyword">return</span>;<br>    &#125;<br>    <span class="hljs-comment">// 向左右儿子进入递归</span><br>    <span class="hljs-type">int</span> mid = root.l + (root.r - root.l) / <span class="hljs-number">2</span>;<br>    <span class="hljs-type">int</span> left = root &lt;&lt; <span class="hljs-number">1</span>, right = root &lt;&lt; <span class="hljs-number">1</span> | <span class="hljs-number">1</span>;<br>    <span class="hljs-keyword">if</span>(index &lt;= mid) &#123;<br>        <span class="hljs-built_in">update</span>(left, index, val);<br>    &#125; <span class="hljs-keyword">else</span> &#123;<br>        <span class="hljs-built_in">update</span>(right, index, val);<br>    &#125;<br>    tree[root].mx = <span class="hljs-built_in">max</span>(tree[left].mx, tree[right].mx);<br>&#125;<br><br><span class="hljs-comment">/*--</span><br><span class="hljs-comment">区间信息查询:</span><br><span class="hljs-comment">	1. 区间覆盖式查询</span><br><span class="hljs-comment">	2. 区间相等式查询</span><br><span class="hljs-comment"></span><br><span class="hljs-comment">--*/</span><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">query_cover</span><span class="hljs-params">(<span class="hljs-type">int</span> root, <span class="hljs-type">int</span> l, <span class="hljs-type">int</span> r)</span> </span>&#123;<br>    <span class="hljs-comment">// recursive base</span><br>	<span class="hljs-keyword">if</span>(l &lt;= root.l &amp;&amp; root.r &lt;= r) &#123;	<span class="hljs-comment">// 查询区间完全覆盖了当前区间</span><br>        <span class="hljs-keyword">return</span> tree[root].mx;<br>    &#125; <br>    <span class="hljs-type">int</span> mid = root.l + (root.l - root.r) / <span class="hljs-number">2</span>;<br>    <span class="hljs-type">int</span> lmax, rmax;<br>    <span class="hljs-keyword">if</span>(l &lt;= mid) &#123;<br>        lmax = <span class="hljs-built_in">query</span>(root &lt;&lt; <span class="hljs-number">1</span>, l, r);<br>    &#125;<br>    <span class="hljs-keyword">if</span>(r &gt; mid) &#123;<br>        rmax = <span class="hljs-built_in">query</span>(root &lt;&lt; <span class="hljs-number">1</span> | <span class="hljs-number">1</span>, l, r);<br>    &#125;<br>    <span class="hljs-keyword">return</span> <span class="hljs-built_in">max</span>(lmax, rmax);<br>&#125;<br><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">query_equal</span><span class="hljs-params">(<span class="hljs-type">int</span> root, <span class="hljs-type">int</span> l, <span class="hljs-type">int</span> r)</span> </span>&#123;<br>    <span class="hljs-comment">// recursive </span><br>    <span class="hljs-keyword">if</span>(root.l == l &amp;&amp; root.r == r) &#123;<br>        <span class="hljs-keyword">return</span> tree[root].mx;<br>    &#125;<br>    <span class="hljs-type">int</span> mid = root.l + (root.r - root.l) / <span class="hljs-number">2</span>;<br>    <span class="hljs-keyword">if</span>(r &lt;= mid) &#123;<br>    	<span class="hljs-keyword">return</span> <span class="hljs-built_in">query_equal</span>(root &lt;&lt; <span class="hljs-number">1</span>, l, r);<br>    &#125; <br>    <span class="hljs-keyword">if</span>(l &gt; mid) &#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-built_in">query_equal</span>(root &lt;&lt; <span class="hljs-number">1</span> | <span class="hljs-number">1</span>, l, r);<br>    &#125;<br>    <span class="hljs-keyword">return</span> <span class="hljs-built_in">max</span>(<span class="hljs-built_in">query_equal</span>(root &lt;&lt; <span class="hljs-number">1</span>, l, mid), <span class="hljs-built_in">query_equal</span>(root &lt;&lt; <span class="hljs-number">1</span> | <span class="hljs-number">1</span>, mid + <span class="hljs-number">1</span>, r);<br>&#125;<br></code></pre></td></tr></table></figure>
-<h5 id="带懒标记-携带区间范围信息">带懒标记 + 携带区间范围信息</h5>
+<h5 id="带懒标记-携带区间范围信息-2">带懒标记 + 携带区间范围信息</h5>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-comment">// 此处指定维护的区间信息为区间和</span><br>vector&lt;<span class="hljs-type">int</span>&gt; nums;<br><span class="hljs-type">int</span> n = nums.<span class="hljs-built_in">size</span>();<br><span class="hljs-keyword">struct</span>&#123;<br>    <span class="hljs-type">int</span> l, r, sum, lz;<br>&#125;tree[<span class="hljs-number">4</span> * n];<br><span class="hljs-comment">// 维护的区间信息 并 添加懒标记</span><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">lazy</span><span class="hljs-params">(<span class="hljs-type">int</span> root, <span class="hljs-type">int</span> delta)</span> </span>&#123;<br>    tree[root].sum += val * (tree[root].r - tree[root].l + <span class="hljs-number">1</span>);<br>    tree[root].lz += delta;<br>&#125;<br><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">pushdown</span><span class="hljs-params">(<span class="hljs-type">int</span> root)</span> </span>&#123;<br>    <span class="hljs-built_in">lazy</span>(root &lt;&lt; <span class="hljs-number">1</span>, tree[root].lz);<br>    <span class="hljs-built_in">lazy</span>(root &lt;&lt; <span class="hljs-number">1</span> | <span class="hljs-number">1</span>, tree[root].lz);<br>    tree[root].lz = <span class="hljs-number">0</span>;<br>&#125;<br><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">range_update</span><span class="hljs-params">(<span class="hljs-type">int</span> root, <span class="hljs-type">int</span> l, <span class="hljs-type">int</span> r, <span class="hljs-type">int</span> delta)</span> </span>&#123;<br>    <span class="hljs-keyword">if</span>(l &lt;= tree[root].l &amp;&amp; tree[root].r &lt;= r) &#123;<br>        <span class="hljs-built_in">lazy</span>(root, delta);<br>        <span class="hljs-keyword">return</span>;<br>    &#125;<br>    <span class="hljs-comment">// 重要：当前区间大于查询区间，意味着要向下访问子区间，此时如果有懒标记，则要向下对子区间进行更新！</span><br>    <span class="hljs-keyword">if</span>(!tree[root].lz) &#123; 		<span class="hljs-comment">// tree[root].lz != 0</span><br>        <span class="hljs-built_in">pushdown</span>(root);<br>    &#125;<br>    <span class="hljs-keyword">if</span>(l &lt;= mid) &#123;<br>        <span class="hljs-built_in">range_update</span>(root &lt;&lt; <span class="hljs-number">1</span>, <span class="hljs-type">int</span> l, <span class="hljs-type">int</span> r, <span class="hljs-type">int</span> delta);<br>    &#125;<br>    <span class="hljs-keyword">if</span>(r &gt; mid) &#123;<br>        <span class="hljs-built_in">range_update</span>(root &lt;&lt; <span class="hljs-number">1</span> | <span class="hljs-number">1</span>, <span class="hljs-type">int</span> l, <span class="hljs-type">int</span> r, <span class="hljs-type">int</span> delta);<br>    &#125;<br>&#125;<br><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">query</span><span class="hljs-params">(<span class="hljs-type">int</span> root, <span class="hljs-type">int</span> l, <span class="hljs-type">int</span> r)</span> </span>&#123;<br>    <span class="hljs-keyword">if</span>(l &lt;= tree[root].l &amp;&amp; tree[root].r &lt;= r) &#123;<br>        <span class="hljs-keyword">return</span> tree[root].sum;<br>    &#125;<br>    <span class="hljs-keyword">if</span>(!tree[root].lz) &#123;<br>        <span class="hljs-built_in">pushdown</span>(root);<br>    &#125;<br>    <span class="hljs-type">int</span> lsum，rsum;<br>    <span class="hljs-keyword">if</span>(l &lt;= mid) &#123;<br>        lsum = <span class="hljs-built_in">query</span>(root &lt;&lt; <span class="hljs-number">1</span>, l, r);<br>    &#125;<br>    <span class="hljs-keyword">if</span>(mid &lt; r) &#123;<br>        rsum = <span class="hljs-built_in">query</span>(root &lt;&lt; <span class="hljs-number">1</span> | <span class="hljs-number">1</span>, l, r);<br>    &#125;<br>    <span class="hljs-keyword">return</span> lsum + rsum;<br>&#125;<br></code></pre></td></tr></table></figure>
-<h3 id="倍增、ST表、最长公共祖先-LCA、分块">倍增、ST表、最长公共祖先 LCA、分块</h3>
+<h3 id="倍增、ST表、最长公共祖先-LCA、分块-2">倍增、ST表、最长公共祖先 LCA、分块</h3>
 <p>出现次数少，按需补全。</p>
 <p>分块：几乎可以解决所有<strong>区间更新</strong>和<strong>区间查询</strong>问题，但<strong>效率比线段树差一些</strong>。</p>
-<h3 id="相关题目-5">相关题目</h3>
+<h3 id="相关题目-7">相关题目</h3>
 <ul class="lvl-0">
 <li class="lvl-2">
 <p>303 Range Sum Query - Immutable 区域和检索 - 数组不可变 (Easy)</p>
@@ -3357,13 +3357,13 @@ $$
 </ol>
 <p>综上即为Morris遍历的实现过程，可以看出具有左子树的节点都会访问两次，没有左子树的节点只会到达一次。整体实现过程与<strong>构建中序线索二叉树</strong>思路十分相似。最终<code>curr</code>的完整访问路线被称为Morris序列。</p>
 <p>在以上过程中稍作修改，就能够得到二叉树的先序、中序和后序遍历序列。</p>
-<h3 id="代码实现">代码实现</h3>
+<h3 id="代码实现-2">代码实现</h3>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><code class="hljs c++">vector&lt;<span class="hljs-type">int</span>&gt; morris, preOrder, inOrder, postOrder;<br><br><span class="hljs-function">vector&lt;<span class="hljs-type">int</span>&gt; <span class="hljs-title">btTraversal</span><span class="hljs-params">(TreeNode* root)</span> </span>&#123;<br>    TreeNode *curr = root;    <span class="hljs-comment">// 直接用root也一样，这里可有可无，只是和解释保持一致</span><br>    TreeNode *mostRight = <span class="hljs-literal">nullptr</span>;<br>    <span class="hljs-keyword">while</span>(curr) &#123;					<span class="hljs-comment">// curr为空即退出循环</span><br>        <span class="hljs-keyword">if</span>(curr-&gt;left) &#123;			<span class="hljs-comment">// 左子树不为空</span><br>            <span class="hljs-comment">// 定位mostRight</span><br>            mostRight = curr-&gt;left;<br>            <span class="hljs-keyword">while</span>(mostRight-&gt;right &amp;&amp; mostRight-&gt;right != curr) &#123;<br>                mostRight = mostRight-&gt;right;<br>            &#125;<br>            <br>            <span class="hljs-comment">// 第一次访问</span><br>            <span class="hljs-keyword">if</span>(mostRight-&gt;right == <span class="hljs-literal">nullptr</span>) &#123;<br>                mostRight-&gt;right = curr;<br>                <span class="hljs-comment">// morris.emplace_back(curr-&gt;val);</span><br>               <br>                <span class="hljs-comment">/*--</span><br><span class="hljs-comment">                	先序遍历在此处插入</span><br><span class="hljs-comment">                	preOrder.emplace_back(curr-&gt;val);</span><br><span class="hljs-comment">                --*/</span><br>                <br>                curr = curr-&gt;left;				<span class="hljs-comment">// 第一次访问意味着左子树还未访问</span><br>            &#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(mostRight-&gt;right == curr) &#123;<br>                mostRight-&gt;right = <span class="hljs-literal">nullptr</span>;     <span class="hljs-comment">// 二叉树还原</span><br>                <span class="hljs-comment">// morris.emplace_back(curr-&gt;val);</span><br>                <br>                <span class="hljs-comment">/*--</span><br><span class="hljs-comment">                	中序遍历在此处插入</span><br><span class="hljs-comment">                	inOrder.emplace_back(curr-&gt;val);</span><br><span class="hljs-comment">                	</span><br><span class="hljs-comment">                	后序遍历在此处插入</span><br><span class="hljs-comment">                	addPath(postOrder, curr-&gt;left);</span><br><span class="hljs-comment">                --*/</span><br>                <br>                <br>                curr = curr-&gt;right;<br>            &#125;<br>        &#125; <span class="hljs-keyword">else</span> &#123;	<span class="hljs-comment">// 左子树为空</span><br>            <span class="hljs-comment">// morris.emplace_back(curr-&gt;val);</span><br>            <br>            <span class="hljs-comment">/*--</span><br><span class="hljs-comment">                	先序、中序遍历在此处插入</span><br><span class="hljs-comment">                	preOrder.emplace_back(curr-&gt;val);</span><br><span class="hljs-comment">                	inOrder.emplace_back(curr-&gt;val);</span><br><span class="hljs-comment">            --*/</span><br>            <br>            curr = curr-&gt;right;<br>        &#125;<br>    &#125;<br>    <span class="hljs-comment">/*--</span><br><span class="hljs-comment">    	后序遍历在此处插入</span><br><span class="hljs-comment">    	addPath(postOrder, root);</span><br><span class="hljs-comment">    --*/</span><br>&#125;<br></code></pre></td></tr></table></figure>
 <h1>Misc.</h1>
 <blockquote>
 <p>Tricks !</p>
 </blockquote>
-<h2 id="时间复杂度-数据规模">时间复杂度 - 数据规模</h2>
+<h2 id="时间复杂度-数据规模-2">时间复杂度 - 数据规模</h2>
 <table>
 <thead>
 <tr>
