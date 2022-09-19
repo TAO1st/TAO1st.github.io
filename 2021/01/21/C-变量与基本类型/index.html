@@ -24,7 +24,7 @@
 <meta property="og:description" content="Terminology: Object 此处的对象（Object）均指一块能存储数据并具有某种类型的内存空间。  1 变量及其基本类型 1.1 原始内置类型 Primitive Built-in Types C++中的原始类型大致可以分为两大类：   算数类型 arithmetic types   空类型 void 空类型没有关联的值，最常见的使用场景即 不返回值的函数返回值类型。 The vo">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2021-01-21T15:12:40.000Z">
-<meta property="article:modified_time" content="2022-09-14T05:31:05.128Z">
+<meta property="article:modified_time" content="2022-09-17T06:41:11.390Z">
 <meta property="article:author" content="tao1st">
 <meta property="article:tag" content="复合类型(Compound Type)">
 <meta property="article:tag" content="引用(reference)">
@@ -215,7 +215,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          16k 字
+          17k 字
         
       </span>
     
@@ -226,7 +226,7 @@
         
         
         
-          137 分钟
+          140 分钟
         
       </span>
     
@@ -912,14 +912,13 @@ When we bind a <code>const</code> reference to an object of a <strong>different 
 <p>这种情况下，我们显然无法通过 <code>ri</code> 来访问 <code>dval</code> ，因为 <code>ri</code> 实际绑定至了一个临时量！这并没有任何的实际意义，所以这种行为被归为非法。</p>
 </div>
 <h3 id="常量与指针-const-and-pointer">常量与指针 const and pointer</h3>
-<p>指针与引用不同。引用并非对象，没有实际存储的内容，仅仅作为一个别名存在。而指针本身也是一个对象。</p>
-<p>所以指针与常量的结合有两种情况：</p>
+<p>指针与引用不同。引用并非对象，没有实际存储的内容，仅仅作为一个别名存在。而指针本身也是一个对象，所以指针与常量的结合有两种情况：</p>
 <ol>
 <li class="lvl-3">
-<p>指向常量对象的指针：类似于常量引用，限制了其能够参与的操作，即不能通过复合类型修改其指向的实际对象。</p>
+<p><b>指向常量对象的指针</b>：类似于常量引用，限制了其能够参与的操作，即不能通过复合类型修改其指向的实际对象。</p>
 </li>
 <li class="lvl-3">
-<p>常量指针：指针本身是一个常量。指针变量的值不能修改，即指针只能指向一块地址空间而不能改变。</p>
+<p><b>常量指针</b>：指针本身是一个常量。指针变量的值不能修改，即指针只能指向一块地址空间而不能改变。</p>
 </li>
 </ol>
 <h4 id="指向常量对象的指针-pointer-to-const">指向常量对象的指针 pointer to const</h4>
@@ -931,7 +930,7 @@ When we bind a <code>const</code> reference to an object of a <strong>different 
 <p>指向常量类型的指针可以令其指向非常量对象，但不能通过该指针修改该对象。</p>
 </li>
 </ul>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-type">const</span> <span class="hljs-type">int</span> i = <span class="hljs-number">0</span>;<br><span class="hljs-type">int</span> j = <span class="hljs-number">0</span>;<br><span class="hljs-type">int</span> *p = &amp;i;			<span class="hljs-comment">// error: 普通指针不可指向常量对象</span><br><span class="hljs-comment">// 从右向左读，const 是修饰基本类型 int 的，即定义一个指针指向 const int 类型对象</span><br><span class="hljs-type">const</span> <span class="hljs-type">int</span> *cp1 = &amp;i;	<span class="hljs-comment">// correct</span><br><span class="hljs-type">const</span> <span class="hljs-type">int</span> *cp2 = &amp;j;	<span class="hljs-comment">// correct: 指向非常量对象，但不能通过该指针修改该对象</span><br>*cp1 = <span class="hljs-number">2</span>;				<span class="hljs-comment">// error: 试图通过指向常量的指针来修改其指向值</span><br></code></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-type">const</span> <span class="hljs-type">int</span> i = <span class="hljs-number">0</span>;<br><span class="hljs-type">int</span> j = <span class="hljs-number">0</span>;<br><span class="hljs-type">int</span> *p = &amp;i;			<span class="hljs-comment">// error: 普通指针不可指向常量对象</span><br><span class="hljs-comment">// 从右向左读，const 是修饰基本类型 int 的，即定义一个 普通指针 指向 const int 类型对象</span><br><span class="hljs-type">const</span> <span class="hljs-type">int</span> *cp1 = &amp;i;	<span class="hljs-comment">// correct: 常量指针指向常量对象</span><br><span class="hljs-type">const</span> <span class="hljs-type">int</span> *cp2 = &amp;j;	<span class="hljs-comment">// correct: 指向非常量对象，但不能通过该指针修改该对象</span><br>*cp1 = <span class="hljs-number">2</span>;				<span class="hljs-comment">// error: 试图通过指向常量的指针来修改其指向值是非法的，无论其指向变量是否为常量</span><br></code></pre></td></tr></table></figure>
 <h4 id="常量指针-const-pointer">常量指针 const pointer</h4>
 <ul class="lvl-0">
 <li class="lvl-2">
@@ -941,73 +940,85 @@ When we bind a <code>const</code> reference to an object of a <strong>different 
 <p>虽然常量指针本身的值是固定的，但是可以通过该常量指针对变量的值进行修改。</p>
 </li>
 <li class="lvl-2">
-<p>常量指针的写法：<code>const*</code> ，const 写在</p>
+<p>常量指针的写法：<code>*const</code> ，显然与其他不同，const写在了其修饰对象的后面。</p>
 </li>
 </ul>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-type">int</span> i = <span class="hljs-number">0</span>;<br><span class="hljs-type">int</span> *<span class="hljs-type">const</span> p = &amp;i;         <span class="hljs-comment">// read from right to left</span><br>                           <span class="hljs-comment">// the 【*const】 placement shows that p is a const pointer</span><br>                           <span class="hljs-comment">// const pointer can not point to a const object</span><br><span class="hljs-type">const</span> <span class="hljs-type">int</span> j = <span class="hljs-number">1</span>;<br><span class="hljs-type">const</span> <span class="hljs-type">int</span> *<span class="hljs-type">const</span> q = &amp;j;   <span class="hljs-comment">// a const pointer to a const object</span><br>                           <span class="hljs-comment">// a const pointer to a const object can point to either const or non-const object</span><br></code></pre></td></tr></table></figure>
-<blockquote>
-<p>常量指针意味着<strong>指针变量本身的值无法修改</strong>，即指向一个固定地址，但<strong>可以通过该常量指针对变量的值进行修改</strong>。</p>
-</blockquote>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-type">int</span> i = <span class="hljs-number">0</span>;<br><span class="hljs-type">int</span> *<span class="hljs-type">const</span> p = &amp;i;         <span class="hljs-comment">// read from right to left</span><br>                           <span class="hljs-comment">// const修饰指针，指明该指针为常量指针，并指向 int 类型</span><br><span class="hljs-type">const</span> <span class="hljs-type">int</span> j = <span class="hljs-number">1</span>;<br><span class="hljs-type">const</span> <span class="hljs-type">int</span> *<span class="hljs-type">const</span> q = &amp;j;   <span class="hljs-comment">// 双层嵌套：一个常量指针，且指向常量对象。</span><br>						   <span class="hljs-comment">// 既不能修改该指针的指向，也不能通过该指针修改其指向对象</span><br></code></pre></td></tr></table></figure>
 <h4 id="顶层与底层">顶层与底层</h4>
+<p>显然，对于指针来说，const 存在两种情况，我们将其定义为顶层与底层：</p>
 <ul class="lvl-0">
 <li class="lvl-2">
-<p>Top-level const</p>
+<p>Top-level const：</p>
+<p>顾名思义，const 修饰指针本身。即指针本身就是个常量，而不关心其指向变量是否为常量。</p>
+<p>扩展到普通情况，即任意对象其本身为常量。</p>
+<p>More generally, top-level <code>const</code> indicates that an object itself is <code>const</code>.</p>
+<p>我们可以说，任意的对象都能被声明为顶层 const，因为顶层的含义形容的就是自身。</p>
+<p>Top-level <code>const</code> can appear in any object type.</p>
 </li>
-</ul>
-<p>const 修饰复合类型本身。即复合类型本身（指针）是一个常量。</p>
-<ul class="lvl-0">
 <li class="lvl-2">
-<p>指针：</p>
+<p>Low-level const：</p>
+<p>与之对应的，底层 const 只能修饰复合类型，因为底层的含义是其指向或绑定的对象为常量。</p>
+<p>显然：</p>
 <ul class="lvl-2">
 <li class="lvl-4">
-<p>通过该指针或引用无法对其指向的对象进行修改，即引用对复合类型可参与的操作做出了限定；</p>
+<p>指针：既可以是顶层又可以是底层 const，一个特殊情况。</p>
 </li>
 <li class="lvl-4">
-<p>其指向的对象不必是常量，只是不能通过该复合类型对其进行修改。</p>
+<p>引用：因为引用本身不是个对象，所以引用只能出现底层 const 的情况。</p>
+<p>值得注意的是，不要误会底层 const 的引用一定会绑定一个常量对象。因为常量引用仍然可以指向普通对象，只是不能通过常量引用来修改。</p>
 </li>
 </ul>
 </li>
 <li class="lvl-2">
-<p>引用：本身并非对象，不占用内存空间。所以引用不存在顶层 const 的情况。</p>
+<p>顶层与底层的影响：</p>
+<p>对赋值时拷贝有所影响。</p>
+<ul class="lvl-2">
+<li class="lvl-4">
+<p>顶层：对象本身是常量并不影响我们拷贝其值来进行赋值，因为拷贝操作并不会修改对象的值。</p>
 </li>
-<li class="lvl-2">
-<p>Low-level const</p>
+<li class="lvl-4">
+<p>底层：底层在拷贝的时候要注意，因为底层会影响顶层复合类型对其能够进行的操作，所以其底层对象必须类型能够匹配或者能够合理转换：常量可以转为非常量，反之不可。</p>
+<p>比如：</p>
+<ul class="lvl-4">
+<li class="lvl-6">
+<p>非常量引用不能绑定至一个常量对象上，因为常量对象无法转换为非常量；</p>
+</li>
+<li class="lvl-6">
+<p>常量引用可以绑定到一个普通对象上，只是不能通过该常量引用对其进行修改。即拷贝赋值时普通对象转换为常量对象。</p>
 </li>
 </ul>
-<p>const 修饰指向的对象。即复合类型指向了一个常量对象。</p>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="3-3-常量表达式-const-expression">3.3 常量表达式 const expression</h2>
+<h3 id="基本概念">基本概念</h3>
+<p>一个表达式满足如下两个特点即为常量表达式：</p>
+<ol>
+<li class="lvl-3">
+<p>值不会改变</p>
+</li>
+<li class="lvl-3">
+<p>编译过程就能得到计算结果</p>
+</li>
+</ol>
+<p>一个对象或表达式是不是常量表达式由它的数据类型（type）和初始值（initializer）共同决定：</p>
 <ul class="lvl-0">
 <li class="lvl-2">
-<p>指针：一个普通的指针，只是指向常量。不能通过该指针修改其指向的常量对象，但指针本身的指向可以修改。</p>
+<p>字面值：a <strong>literal</strong> is a constant expression</p>
 </li>
 <li class="lvl-2">
-<p>引用：只有常量引用才能绑定到一个常量对象上。即，<b>普通引用绑定到常量对象上是非法的</b>。</p>
-</li>
-</ul>
-<h2 id="3-3-const-expression">3.3 const expression</h2>
-<h3 id="3-3-1-const-expression">3.3.1 const expression</h3>
-<h4 id="Definition">Definition</h4>
-<p>A constant expression is an expression:</p>
-<ul class="lvl-0">
-<li class="lvl-2">
-<p>whose value can not change</p>
+<p>初值由常量表达式给定的常量对象：a <strong><code>const</code> object</strong> that is initialized from a constant expression is also a constant expression</p>
 </li>
 <li class="lvl-2">
-<p>that can be evaluated at compile time</p>
-</li>
-</ul>
-<p>Whether a given object (or expression) is a constant expression depends on the <strong>types</strong> and the <strong>initializers</strong>:</p>
-<ul class="lvl-0">
-<li class="lvl-2">
-<p>a <strong>literal</strong> is a constant expression</p>
-</li>
-<li class="lvl-2">
-<p>a <strong><code>const</code> object</strong> that is initialized from a constant expression is also a constant expression</p>
+<p>由上述两种对象进行运算组成的表达式也是常量表达式。</p>
 </li>
 </ul>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-type">const</span> <span class="hljs-type">int</span> i = <span class="hljs-number">0</span>;                 <span class="hljs-comment">// i is a constant expression</span><br><span class="hljs-type">const</span> <span class="hljs-type">int</span> j = i + <span class="hljs-number">1</span>;             <span class="hljs-comment">// j is a constant expression</span><br><br><span class="hljs-type">int</span> k = <span class="hljs-number">3</span>;                       <span class="hljs-comment">// k is not because of its 【type】</span><br><span class="hljs-type">const</span> <span class="hljs-type">int</span> q = <span class="hljs-built_in">get_size</span>()         <span class="hljs-comment">// q is not because of its 【initializer】</span><br></code></pre></td></tr></table></figure>
-<h3 id="3-3-2-constexpr">3.3.2 <code>constexpr</code></h3>
+<h3 id="constexpr-类型">constexpr 类型</h3>
 <blockquote>
-<p>就是我们无法确定右侧表达式是否为常量表达式，所以交给编译器去判断。</p>
+<p>我们希望一个定义一个常量，但有的时候初始值较为复杂，右侧表达式难以判断是否为常量表达式。如果右侧不是，编译器显然会报错。</p>
+<p>C++增加了一个新的机制，我们可以将该变量定义为常量表达式类型，右侧值是否为常量表达式则交给编译器去判断。</p>
 <p>Generally, it is a good idea to use <code>constexpr</code> for variables that you intend to use as constant expressions.</p>
 </blockquote>
 <p>C++11: ask the <strong>compiler</strong> to verify that a variable is a constant expression by declaring the variable in a <code>constexpr</code> declaration.</p>
@@ -1029,7 +1040,7 @@ When we bind a <code>const</code> reference to an object of a <strong>different 
 <p>Generally, it is a good idea to use <code>constexpr</code> for variables that you intend to use as constant expressions.</p>
 </li>
 </ul>
-<h4 id="Literal-type-字面类型">Literal type 字面类型</h4>
+<h3 id="Literal-type-字面类型">Literal type 字面类型</h3>
 <blockquote>
 <p>详见后，仅略了解</p>
 </blockquote>
