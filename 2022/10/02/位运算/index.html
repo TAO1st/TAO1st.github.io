@@ -1,0 +1,776 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" >
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/avatar.png">
+  <link rel="icon" href="/img/avatar.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#98a5ac">
+  <meta name="author" content="tao1st">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="比较吃技巧，最好临面试前重新熟悉一遍，代码量小，吃思路。  常用位运算技巧：   n &amp; (n - 1) : 去除n的位级表示中最低的那一位，即去除掉最低的那一个1；该算法常称为Brain Kernighan算法。   n &amp; (-n) : 得到n的位级表示中最低的哪一位，即保留最后一个1；   x &amp; 1 &#x2F; x % 2 : 获取x的最低位（掩码操作）。   异或全1：">
+<meta property="og:type" content="article">
+<meta property="og:title" content="位运算（Bitwise Operation）">
+<meta property="og:url" content="https://tao1st.github.io/2022/10/02/%E4%BD%8D%E8%BF%90%E7%AE%97/index.html">
+<meta property="og:site_name" content="tao1st.github.io">
+<meta property="og:description" content="比较吃技巧，最好临面试前重新熟悉一遍，代码量小，吃思路。  常用位运算技巧：   n &amp; (n - 1) : 去除n的位级表示中最低的那一位，即去除掉最低的那一个1；该算法常称为Brain Kernighan算法。   n &amp; (-n) : 得到n的位级表示中最低的哪一位，即保留最后一个1；   x &amp; 1 &#x2F; x % 2 : 获取x的最低位（掩码操作）。   异或全1：">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-10-01T17:13:45.000Z">
+<meta property="article:modified_time" content="2022-10-01T17:27:09.673Z">
+<meta property="article:author" content="tao1st">
+<meta property="article:tag" content="位运算(Bitwise Operation)">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>位运算（Bitwise Operation） - tao1st.github.io</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"tao1st.github.io","root":"/","version":"1.9.2","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":3},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.2.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>TAO1st</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/bk7.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.5)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="位运算（Bitwise Operation）"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2022-10-02 01:13" pubdate>
+          2022年10月2日 凌晨
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          1.9k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          16 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">位运算（Bitwise Operation）</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <blockquote>
+<p>比较吃技巧，最好临面试前重新熟悉一遍，代码量小，吃思路。</p>
+</blockquote>
+<p>常用位运算技巧：</p>
+<ol>
+<li class="lvl-3">
+<p><code>n &amp; (n - 1)</code> : 去除n的位级表示中最低的那一位，即<em>去除掉最低的那一个1</em>；该算法常称为Brain Kernighan算法。</p>
+</li>
+<li class="lvl-3">
+<p><code>n &amp; (-n)</code> : 得到n的位级表示中最低的哪一位，即<em>保留最后一个1</em>；</p>
+</li>
+<li class="lvl-3">
+<p><code>x &amp; 1</code> / <code>x % 2</code> : <em>获取x的最低位</em>（掩码操作）。</p>
+</li>
+<li class="lvl-3">
+<p>异或全1：<em>翻转二进制位</em>；</p>
+</li>
+</ol>
+<p>常用的位运算符号有：</p>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p><code>^</code> : 按位异或</p>
+<ul class="lvl-2">
+<li class="lvl-4"><em>异或全1：翻转二进制位；</em></li>
+<li class="lvl-4">异或全0：不变；</li>
+<li class="lvl-4">异或本身：全部置0；</li>
+</ul>
+</li>
+<li class="lvl-2">
+<p><code>&amp;</code> : 按位与</p>
+<ul class="lvl-2">
+<li class="lvl-4">与全1：不变；</li>
+<li class="lvl-4">与全0：全部置0；</li>
+<li class="lvl-4">与本身：不变；</li>
+</ul>
+</li>
+<li class="lvl-2">
+<p><code>|</code> : 按位或</p>
+<ul class="lvl-2">
+<li class="lvl-4">或全1：全部置1；</li>
+<li class="lvl-4">或全0：不变；</li>
+<li class="lvl-4">或本身：不变；</li>
+</ul>
+<p>以上三个为二元操作符，与全0、全1、本身的操作结果要熟记（掩码操作）。</p>
+</li>
+<li class="lvl-2">
+<p><code>~</code> : 按位取反</p>
+</li>
+<li class="lvl-2">
+<p><code>&lt;&lt;</code> / <code>&gt;&gt;</code> : 左移与右移，逻辑移位还是算术移位要根据操作数类型来判断。</p>
+</li>
+<li class="lvl-2">
+</li>
+</ul>
+<h2 id="位运算分治">位运算分治</h2>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>190 Reverse Bits 颠倒二进制位 (Easy)</p>
+</li>
+<li class="lvl-2">
+<p>231 Power of Two 2的幂 (Easy)</p>
+</li>
+<li class="lvl-2">
+<p>342 Power of Four 4的幂 (Easy)</p>
+</li>
+</ul>
+<h2 id="位哈希">位哈希</h2>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p><strong>318 Maximum Product of Word Lengths 最大单词长度乘积 (Medium)</strong></p>
+<ol>
+<li class="lvl-5">第一个重点在于：对每个单词使用<strong>位哈希</strong>，即一个整数的26个二进制位分别对应是否存在该字母，则两个不具有公共字母的位哈希相与结果必为0，反之结果不为0；</li>
+</ol>
+<ul class="lvl-2">
+<li class="lvl-4">
+<p>第二个重点在于：引入<strong>哈希表</strong>。第一反应是从字符串<code>string</code>到位掩码<code>int</code>的哈希，但是这样还要对字符串数组进行一个$O(n^2)$的循环查询，还可以进一步优化；</p>
+</li>
+<li class="lvl-4">
+<p>第三个重点就是最后一步的优化，直接<strong>构造从位掩码到字符串最大长度的掩码</strong>。这里统计最大长度是因为有可能有相同的字符构成，但是长度不一样的情况，即出现重复字符的情况。</p>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="其他">其他</h2>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>461 Hamming Distance 汉明距离 (Easy)</p>
+<p>可以使用内置函数，直接计算二进制表达中1的数量。C++中为<code>__builtin_popcount(x)</code>。</p>
+</li>
+<li class="lvl-2">
+<p><strong>338 Counting Bits 比特数计位 (Easy)</strong></p>
+<ul class="lvl-2">
+<li class="lvl-4">
+<p>解法一：利用位运算统计；</p>
+<p>使用<code>n &amp; (n - 1)</code>的技巧来统计1的个数，该操作复杂度为$O(logn)$，故总体的时间复杂度为<code>O(nlogn)</code>。</p>
+</li>
+<li class="lvl-4">
+<p>解法二：使用内置函数<code>__builtin_popcount(x)</code>；</p>
+</li>
+<li class="lvl-4">
+<p>解法三：使用<strong>动态规划</strong>；</p>
+<p>在使用位运算技巧解题的时候就发现，从小到大1的数量和位置是有一定规律的，联想到使用一维状态转移方程来求解。时间复杂度优化至$O(n)$。</p>
+</li>
+</ul>
+</li>
+<li class="lvl-2">
+<p>268 Missing Number 丢失的数字 (Easy)</p>
+<ul class="lvl-2">
+<li class="lvl-4">
+<p>解法一：给定了$n$，可以通过$\frac{n*(n+1)}{2}$来得到总和，减去数组内的加和即可得到结果；</p>
+</li>
+<li class="lvl-4">
+<p>解法二：要求线性复杂度（没要求一次扫描，该方法需要两次扫描）+原地，使用位运算技巧来求和；</p>
+<p>第一轮对数组内所有值进行异或，第二轮对$0-n$之间所有值异或，除了缺失的数之外，其他值都出现了两次。</p>
+</li>
+</ul>
+</li>
+<li class="lvl-2">
+<p>693 Binary Number with Alternating Bits 交替位二进制数 (Easy)</p>
+<p>交替位二进制数右移一位后异或其本身能够得到低位的全1，再加1后整个二进制表示只有一个1。</p>
+<p>判断此时二进制位表示是否只有一个1即可。</p>
+</li>
+<li class="lvl-2">
+<p><strong>476 Number Complement 数字的补数 (Easy)</strong></p>
+<p>按照题目中补数的定义，即将二进制位翻转，根据位运算常见技巧，立马反应构造全1的掩码进行异或。从而题目转变为如何构造出不带前导零的指定位数的全1掩码。</p>
+</li>
+<li class="lvl-2">
+<p>136 Single Number 只出现一次的数字 (Easy)</p>
+</li>
+<li class="lvl-2">
+<p><strong>137 Single Number II 只出现一次的数字 (Medium)</strong></p>
+<p>题目中每个数字都出现了三次，只有一个例外只出现了一次。</p>
+<ul class="lvl-2">
+<li class="lvl-4">
+<p>解法一：挨个位处理，统计每个位上数组中所有元素为1的个数，将个数模3即可得到该位答案。</p>
+<p>时间复杂度达到 $O(nlogC)$，其中$C$是位数，即32。</p>
+</li>
+<li class="lvl-4">
+<p>解法二：利用<strong>数字电路</strong>中的<strong>状态机</strong>，书写真值表来实现并行处理32个位。具体见题解，不是很复杂的解法。</p>
+</li>
+</ul>
+</li>
+<li class="lvl-2">
+<p><strong>260 Single Number III 只出现一次的数字 III (Medium)</strong></p>
+<p>题目中每个数字都出现了两次，只有两个例外只出现了一次。</p>
+<ol>
+<li class="lvl-5">
+<p>首先，根据线性时间复杂度和原地处理的条件可得，使用位运算技巧解题；</p>
+</li>
+<li class="lvl-5">
+<p>将整个数组异或之后得到的是两个目标值的异或之和，重点考虑如何该结果分开得到两个结果值；</p>
+</li>
+<li class="lvl-5">
+<p>考虑到136题中的技巧，试图通过<strong>分组</strong>来将题目退化成136题的情况，重点在于如何分组；</p>
+</li>
+<li class="lvl-5">
+<p>分组的方式为，取异或结果中的<strong>最后一个1</strong>（通过）来区分，那么两个不一样的值必定会分到两个不同的组中，对两组分别进行异或求和即可。</p>
+</li>
+</ol>
+</li>
+</ul>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/" class="category-chain-item">数据结构与算法</a>
+  
+  
+
+      </span>
+    
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/LeetCode/" class="category-chain-item">LeetCode</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E4%BD%8D%E8%BF%90%E7%AE%97-Bitwise-Operation/">#位运算(Bitwise Operation)</a>
+      
+    </div>
+  
+</div>
+
+
+              
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2022/10/06/%E5%B9%B6%E6%9F%A5%E9%9B%86%EF%BC%88Union-Find-Set%EF%BC%89/" title="并查集（Union-Find Set）">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">并查集（Union-Find Set）</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2022/10/02/%E5%9B%BE-graph/" title="图论（Graph）">
+                        <span class="hidden-mobile">图论（Graph）</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>2022</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>TAO1st</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      headingSelector : CONFIG.toc.headingSelector || 'h1,h2,h3,h4,h5,h6',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      collapseDepth   : CONFIG.toc.collapseDepth || 0,
+      scrollSmooth    : true,
+      headingsOffset  : -boardTop
+    });
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.10/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.1/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
