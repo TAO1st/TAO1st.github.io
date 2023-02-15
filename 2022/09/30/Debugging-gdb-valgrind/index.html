@@ -1,0 +1,950 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" >
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/avatar.png">
+  <link rel="icon" href="/img/avatar.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#98a5ac">
+  <meta name="author" content="tao1st">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="三种常见的 Debug 方式   Code Tracing: 使用 printf() 输出部分变量值；   Valgrind: malloc &#x2F; free bug 内存分配检测   GDB: Everything else   Code Tracing 做题的时候常用，用于在某个阶段查看变量的值，与期望值对比来确定算法有没有正确运行。符合直觉，无需多说。 When to Use   Easy an">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Debugging">
+<meta property="og:url" content="https://tao1st.github.io/2022/09/30/Debugging-gdb-valgrind/index.html">
+<meta property="og:site_name" content="tao1st.github.io">
+<meta property="og:description" content="三种常见的 Debug 方式   Code Tracing: 使用 printf() 输出部分变量值；   Valgrind: malloc &#x2F; free bug 内存分配检测   GDB: Everything else   Code Tracing 做题的时候常用，用于在某个阶段查看变量的值，与期望值对比来确定算法有没有正确运行。符合直觉，无需多说。 When to Use   Easy an">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-09-30T11:56:23.000Z">
+<meta property="article:modified_time" content="2023-02-08T12:57:42.326Z">
+<meta property="article:author" content="tao1st">
+<meta property="article:tag" content="Valgrind">
+<meta property="article:tag" content="gdb">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>Debugging - tao1st.github.io</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"tao1st.github.io","root":"/","version":"1.9.2","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":3},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.2.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>TAO1st</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/bk7.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.5)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Debugging"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2022-09-30 19:56" pubdate>
+          2022年9月30日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          5.3k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          45 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">Debugging</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>三种常见的 Debug 方式</p>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>Code Tracing: 使用 <code>printf()</code> 输出部分变量值；</p>
+</li>
+<li class="lvl-2">
+<p>Valgrind: <code>malloc</code> / <code>free</code> bug</p>
+<p>内存分配检测</p>
+</li>
+<li class="lvl-2">
+<p>GDB: Everything else</p>
+</li>
+</ul>
+<h2 id="Code-Tracing">Code Tracing</h2>
+<p>做题的时候常用，用于在某个阶段查看变量的值，与期望值对比来确定算法有没有正确运行。符合直觉，无需多说。</p>
+<h3 id="When-to-Use">When to Use</h3>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>Easy and relatively simple code</p>
+<p>刷题这种小型、只关注结果的代码；</p>
+</li>
+<li class="lvl-2">
+<p>Tracing conditional paths in an if statement</p>
+<p>便于检查在分支语句中的走向</p>
+</li>
+</ul>
+<h2 id="Valgrind">Valgrind</h2>
+<p>内存检测利器。Tool for debugging, memory leak detection and profiling.</p>
+<h3 id="When-to-Use-2">When to Use</h3>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>Dealing with <b>memory</b></p>
+<p>especially <b>dynamic memory allocation</b></p>
+</li>
+<li class="lvl-2">
+<p>Whenever bugs occur, get instant feedback about what the bug is, where it occurred, and why.</p>
+<p>即时反馈 bug 及其发生的位置与原因。</p>
+</li>
+</ul>
+<h3 id="When-Not-to-Use">When Not to Use</h3>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>程序本不会存在内存相关的问题：不存在 <b>无效的读写</b>，也不可能有<b>内存泄漏</b>。</p>
+</li>
+<li class="lvl-2">
+<p>If the test case is inherently slow, then this is not a good choice.</p>
+<p>程序本身速度慢的情况下尽量避免使用。</p>
+</li>
+</ul>
+<h3 id="How-to-Use">How to Use</h3>
+<div class="tips">
+<p>Always remember about the man page: <code>man valgrind</code></p>
+</div>
+<h3 id="Memory-Problem">Memory Problem</h3>
+<p>首先我们分析一下产生内存相关问题的原因。总的来说可以分为两大类：无效读写（Invalid reads and writes） 与 内存泄漏（Memory Leaks）。</p>
+<h4 id="Invalid-Reads-and-Writes-无效读写">Invalid Reads and Writes 无效读写</h4>
+<p>无效的读写 顾名思义，即读到不该读的或写入位置的区域，常见分以下几种情况：</p>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>读 已经被释放的变量 Reading freed variables</p>
+</li>
+<li class="lvl-2">
+<p>读 未初始化的变量 Reading uninitialized variables</p>
+</li>
+<li class="lvl-2">
+<p>写 未分配的内存 / 地址空间 Writing to uninitialized memory</p>
+<p>Caused by writing to much data  to allocated memory</p>
+<p>比如数组越界。</p>
+</li>
+</ul>
+<p>无效读写在 Valgrind 中的输出：</p>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>Invalid read of size n</p>
+</li>
+<li class="lvl-2">
+<p>HEAP SUMMARY</p>
+</li>
+<li class="lvl-2">
+<p>…</p>
+</li>
+</ul>
+<h4 id="Memory-Leaks-内存泄漏">Memory Leaks 内存泄漏</h4>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>内存空间使用后忘记释放，该块空间无法被其他进程所合理使用，即为内存泄露。</p>
+<p>Forgetting to free memory after using it.</p>
+</li>
+<li class="lvl-2">
+<p>主动申请（<code>malloc</code>）的内存空间在用完之后都应该主动释放（<code>free</code>）。</p>
+<p>Memory that is allocated by a programmer should <b>always</b> be freed.</p>
+</li>
+</ul>
+<p>Types of Memory Leaks:</p>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p><b>difinitely lost</b> 一定泄露</p>
+<p>不存在指向该部分内存块的指针。</p>
+<p>No pointer to the block can be found.</p>
+</li>
+<li class="lvl-2">
+<p><b>indirectly lost</b> 间接泄露</p>
+<p>指针本身所在的内存块泄露，其指向的内存部分即为 indirectly lost。</p>
+<p>Block is “lost” because the blocks themselves that point to it are lost.</p>
+</li>
+<li class="lvl-2">
+<p><b>possibly lost</b> 可能泄露</p>
+<p>存在指针，但该指针指向了内部部分（internal part）</p>
+<p>Pointer exists but it points to an internal part of the memory block.</p>
+</li>
+<li class="lvl-2">
+<p><b>still reachable</b> 可达的</p>
+<p>存在指针，仍然可以通过该指针来释放该部分内存空间</p>
+<p>Block is still pointed at, programmer could go back and free it before exiting.</p>
+</li>
+</ul>
+<p>内存泄漏在 Valgrind 中的输出：</p>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>HEAP SUMMARY</p>
+</li>
+<li class="lvl-2">
+<p>LEAK SUMMARY</p>
+</li>
+</ul>
+<h2 id="GDB">GDB</h2>
+<p><a target="_blank" rel="noopener" href="https://sourceware.org/gdb/current/onlinedocs/gdb/">Top (Debugging with GDB) (sourceware.org)</a></p>
+<p>GNU Debugger</p>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>Powerful debugger that lets you inspect your program as it’s executing</p>
+</li>
+<li class="lvl-2">
+<p>Allows you to see what is going on ‘inside’  another program</p>
+</li>
+<li class="lvl-2">
+<p>Breaks abstraction between program and machine</p>
+</li>
+</ul>
+<h3 id="When-to-Use-3">When to Use</h3>
+<p>Always super useful.</p>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p><i>Complicated</i> code that you need to step through</p>
+</li>
+<li class="lvl-2">
+<p>Need to find values at specific points</p>
+</li>
+<li class="lvl-2">
+<p>Valgrind was not helpful</p>
+</li>
+<li class="lvl-2">
+<p>To inspect machine state</p>
+</li>
+</ul>
+<h3 id="How-to-Use-2">How to Use</h3>
+<h4 id="前提">前提</h4>
+<p>gcc编译时使用<code>-g</code> flag后才能通过gdb进行调试。</p>
+<h4 id="基本操作">基本操作</h4>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p><code>run</code>：运行程序</p>
+</li>
+<li class="lvl-2">
+<p><code>CTRL + C</code>：停止执行</p>
+</li>
+</ul>
+<h4 id="单步测试-next-step">单步测试 next &amp; step</h4>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p><code>next</code> / <code>n</code> 逐行执行语句，不会进入函数，跳过函数</p>
+<p><code>next X</code> / <code>n X</code> 执行接下来 X 行语句</p>
+<p><code>nexti</code> 逐行执行汇编语句，且不会进入函数</p>
+<p>run next line of program and does NOT step into functions</p>
+<p>执行完next语句后出现的代码行表示下一次next即将执行的代码，即当前还未执行该行。</p>
+</li>
+<li class="lvl-2">
+<p><code>step</code> 逐行执行语句，遇到函数时，进入函数运行</p>
+<p><code>step X</code> / <code>s X</code> 执行接下来 X 行语句</p>
+<p><code>stepi</code> 逐行执行汇编语句，遇到函数时，进入函数运行</p>
+</li>
+</ul>
+<h4 id="跟踪变量">跟踪变量</h4>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p><code>display [var]</code> : display the variable value at every command we run</p>
+<p><code>undisplay id</code>：不能直接用变量名来undisplay，而是要使用display number</p>
+</li>
+<li class="lvl-2">
+<p><code>whatis [var]</code> / <code>what [var]</code></p>
+</li>
+</ul>
+<h4 id="继续-恢复执行">继续/恢复执行</h4>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p><code>finish</code> 运行程序，直到当前函数完成时返回。同时打印函数返回时的对战地址和返回值以及参数值等信息</p>
+</li>
+<li class="lvl-2">
+<p><code>continue</code> 恢复程序运行，直到 程序结束 或者 遇到断点 或者 遇到错误。</p>
+<p>可以增加参数 <code>ignore-count</code>，<code>continue ignore-count</code> 代表忽略其后的断点次数。</p>
+</li>
+</ul>
+<h4 id="查看源代码与汇编代码">查看源代码与汇编代码</h4>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p><code>disassemble</code> / <code>disas</code> 将源代码反汇编为汇编代码</p>
+</li>
+<li class="lvl-2">
+<p><code>list</code> / <code>l</code> 从当前行起，读出接下来10行源代码</p>
+<p><code>list X</code> / <code>l X</code> 从第 X 行开始，读出接下来10行源代码</p>
+<p><code>list funcName</code> / <code>l funcName</code> 从 <code>funcName</code> 函数中读取出10行源代码</p>
+</li>
+</ul>
+<h4 id="断点-Breakpoints">断点 Breakpoints</h4>
+<blockquote>
+<p>断点：任何时候遇到断点，程序就会停止。<br>
+A breakpoint makes your program stop whenever a certain point in the program is reached.</p>
+</blockquote>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p><code>break func_name</code> / <code>b func_name</code>: 设置关于 “func_name” 函数的断点。</p>
+<p>调用 “func_name” 函数时，触发断点。</p>
+<p>breaks once you call a specific function. (break abbreviated b)</p>
+</li>
+<li class="lvl-2">
+<p><code>break *0x…</code>: 设置指定地址处的断点。</p>
+<p>“*0x…” 代表地址，即在执行该地址处指令时跳转？</p>
+<p>breaks when you execute instruction at a certain address</p>
+</li>
+<li class="lvl-2">
+<p><code>info breakpoints</code> /<code>info b</code>: 展示当前设置的所有断点的信息</p>
+<p>displays information about all breakpoints currently set</p>
+<p>info指令可以展示多种内容，这里只介绍了断点一种。</p>
+</li>
+<li class="lvl-2">
+<p><code>disable #no</code>: 关闭 ID 为 # 号的断点。</p>
+<p>disables breakpoint with ID equal to #</p>
+<p><code>disable</code> 的缩写是 <code>$disa</code> ，区分与 <code>$disas</code></p>
+</li>
+<li class="lvl-2">
+<p><code>clear [location]</code>: 删除在 location 处的断点</p>
+<p>例如 <code>clear main</code>: 删除 main 函数中的断点</p>
+<p>delete breakpoints according to where they are in your program.</p>
+</li>
+</ul>
+<h4 id="观察点-Watchpoints">观察点 Watchpoints</h4>
+<blockquote>
+<p>观察点：一种特殊的断点。当表达式中的值发生改变时，程序停止。这里的表达式内容可以是 一个变量的值，也可以是用运算符组合的值。<br>
+A special breakpoint that stops your program when the value of an expression changes.<br>
+The expression may be a value of a variable, or involve values combined by operators.</p>
+</blockquote>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p><code>watch var</code>: 设置一个关于变量 foo 的观察点。</p>
+<p>观察变量 foo 的值的变化，有变化时程序停止。</p>
+<p>watch the value of a single variable</p>
+</li>
+<li class="lvl-2">
+<p><code>watch *(int *)0x600850</code> : 设置某一指定地址的观察点。</p>
+<p>当指定地址处的值发生变化，触发观察点，程序停止。（注意指明正确的数据类型）</p>
+<p>watch for a change in a numerically entered address</p>
+</li>
+<li class="lvl-2">
+<p><code>delete [watchpoint/breakpoint]</code> / <code>d</code>: 删除指定编号（而非名字）的断点（breakpoint）或观察点（watchpoint）</p>
+<p>如果后面没接任何参数，则删除所有的断点与观察点。</p>
+</li>
+</ul>
+<h4 id="打印值-Print-Values">打印值 Print Values</h4>
+<p><code>print [any valid expression]</code> / <code>p</code>: 输出参数指定处的值。</p>
+<p>参数可以是某个表达式的值，亦可以是某个显式指定的地址（注意指明正确的数据类型）。</p>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p><code>print expr</code> : 输出表达式的值；</p>
+</li>
+<li class="lvl-2">
+<p><code>print *ptr</code> : 输出指针变量的值；</p>
+</li>
+<li class="lvl-2">
+<p><code>print *(struct_t*) tmp</code> : 将 tmp 的值以 “struct_t*” 的类型输出。如果 tmp 本身不是该类型，进行强制转换。</p>
+</li>
+</ul>
+<h4 id="查看内存信息-Inspecting-Memory">查看内存信息 Inspecting Memory</h4>
+<p><code>x/nfu [memory address]</code>: 使用 “x” 命令来打印内存的值,格式为“<code>x/nfu addr</code>”。</p>
+<p>等价于 <code>print *(addr)</code></p>
+<p>含义为以<code>f</code>格式打印从<code>addr</code>开始的<code>n</code>个长度单元为<code>u</code>的内存值。参数具体含义如下：</p>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>n：输出单元的个数。</p>
+</li>
+<li class="lvl-2">
+<p>f：是输出格式；</p>
+<ul class="lvl-2">
+<li class="lvl-4">n: 下 n 个单位内存，即输出单元的个数；</li>
+<li class="lvl-4">f (format): 定义输出格式
+<ul class="lvl-4">
+<li class="lvl-6">d: decimal</li>
+<li class="lvl-6">x: hexadecimal</li>
+<li class="lvl-6">s: string</li>
+</ul>
+</li>
+<li class="lvl-4">u (unit): 定义输出单元大小；
+<ul class="lvl-4">
+<li class="lvl-6">b: bytes</li>
+<li class="lvl-6">h: half word / 2 bytes</li>
+<li class="lvl-6">w: word / 4 bytes</li>
+<li class="lvl-6">g: giant word / 8 bytes</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="lvl-2">
+<p>u：标明一个单元的长度。<code>b</code>是一个<code>byte</code>，<code>h</code>是两个<code>byte</code>（halfword），<code>w</code>是四个<code>byte</code>（word），<code>g</code>是八个<code>byte</code>（giant word）。</p>
+</li>
+</ul>
+<h4 id="Backtrace-查看函数栈帧">Backtrace 查看函数栈帧</h4>
+<blockquote>
+<p><b>Backtrace</b> see previous function calls.</p>
+</blockquote>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p><code>backtrace</code> / <code>bt</code>: 打印程序运行到当前状态的历史状态信息</p>
+<p>prints a summary of how program got where it is / 输出整个call stack（运行时栈）</p>
+<ul class="lvl-2">
+<li class="lvl-4">
+<p>到该点处调用的函数序列 Print sequence of function calls that led to this point</p>
+</li>
+<li class="lvl-4">
+<p>确认程序崩溃原因的时候很有用 Helpful to use when programs crash</p>
+</li>
+</ul>
+</li>
+<li class="lvl-2">
+<p><code>up N</code> / <code>u N</code>: go up N function calls 向上查看栈帧 / 即查看向上的调用者</p>
+<p>Select and print stack frame that called this one.</p>
+<p>An argument says how many frames up to go.</p>
+</li>
+<li class="lvl-2">
+<p><code>down N</code> / <code>d N</code>: go down N function calls. 向下查看栈帧 / 即查看被当前函数调用的函数</p>
+<p>Select and print stack frame called by this one.</p>
+<p>An argument says how many frames down to go.</p>
+</li>
+</ul>
+<h4 id="Calling-Functions">Calling Functions</h4>
+<p>Calling your program’s functions.</p>
+<p><code>call expr</code>: Evaluate the expression expr without displaying void returned values.</p>
+<h4 id="Changing-Values">Changing Values</h4>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p><code>set [variable] expr</code>: change the value associated with a variable, memory  address, or expression</p>
+</li>
+</ul>
+<p>Evaluates the specified expression. If the expression includes the assignment operator (“=”), that operator will be evaluated and the assignment will be done.</p>
+<p>The only difference between <i>the set variable</i> and <i>the print commands</i> is <b>printing the value</b>.</p>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p><code>target record-full</code></p>
+</li>
+<li class="lvl-2">
+<p><code>reverse-next</code> / <code>rn</code></p>
+<p><code>reverse-step</code></p>
+<p><code>reverse-continue</code></p>
+</li>
+</ul>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/Valgrind/">#Valgrind</a>
+      
+        <a href="/tags/gdb/">#gdb</a>
+      
+    </div>
+  
+</div>
+
+
+              
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2022/10/02/%E5%9B%BE-graph/" title="图论（Graph）">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">图论（Graph）</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2022/09/27/%E7%BC%96%E8%AF%91%E7%B3%BB%E7%BB%9F-Compilation-System/" title="编译系统（Compilation System）">
+                        <span class="hidden-mobile">编译系统（Compilation System）</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>2022</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>TAO1st</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      headingSelector : CONFIG.toc.headingSelector || 'h1,h2,h3,h4,h5,h6',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      collapseDepth   : CONFIG.toc.collapseDepth || 0,
+      scrollSmooth    : true,
+      headingsOffset  : -boardTop
+    });
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.10/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.1/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

@@ -16,15 +16,15 @@
   <meta name="author" content="tao1st">
   <meta name="keywords" content="">
   
-    <meta name="description" content="贪心 Greedy  局部最优解能够导向全局最优解。 贪心的重点往往在于，看出这道题是贪心问题。    455 Assign Cookies 分发饼干 (Easy) 非常典型的贪心问题，需要先进行排序（根据数据规模判断可以接受O(nlogn)的时间复杂度。   1403 Minimum Subsequence in Non-Increasing Order 非递增顺序的最小子序列 (Easy) 简">
+    <meta name="description" content="基本原理  不保证得到最优解，但实际对很多问题都可求得最优解。 满足最优子结构。 贪心选择性质（greedy-choice property）：局部最优解能够导向全局最优解。   几乎在每个贪心算法下，几乎总有一个更为繁琐的动态规划算法。  相关算法 贪心的思想体现在各种重要的算法当中，比如Dijkstra、最小生成树以及Huffman编码等。 区间问题  对于区间贪心，通常都使用【排序 + 贪心">
 <meta property="og:type" content="article">
 <meta property="og:title" content="贪心（Greedy）">
 <meta property="og:url" content="https://tao1st.github.io/2022/10/18/%E8%B4%AA%E5%BF%83%EF%BC%88Greedy%EF%BC%89/index.html">
 <meta property="og:site_name" content="tao1st.github.io">
-<meta property="og:description" content="贪心 Greedy  局部最优解能够导向全局最优解。 贪心的重点往往在于，看出这道题是贪心问题。    455 Assign Cookies 分发饼干 (Easy) 非常典型的贪心问题，需要先进行排序（根据数据规模判断可以接受O(nlogn)的时间复杂度。   1403 Minimum Subsequence in Non-Increasing Order 非递增顺序的最小子序列 (Easy) 简">
+<meta property="og:description" content="基本原理  不保证得到最优解，但实际对很多问题都可求得最优解。 满足最优子结构。 贪心选择性质（greedy-choice property）：局部最优解能够导向全局最优解。   几乎在每个贪心算法下，几乎总有一个更为繁琐的动态规划算法。  相关算法 贪心的思想体现在各种重要的算法当中，比如Dijkstra、最小生成树以及Huffman编码等。 区间问题  对于区间贪心，通常都使用【排序 + 贪心">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2022-10-18T07:01:00.000Z">
-<meta property="article:modified_time" content="2022-10-29T03:59:39.496Z">
+<meta property="article:modified_time" content="2022-12-09T07:53:20.021Z">
 <meta property="article:author" content="tao1st">
 <meta name="twitter:card" content="summary_large_image">
   
@@ -211,7 +211,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          2.5k 字
+          3.1k 字
         
       </span>
     
@@ -222,7 +222,7 @@
         
         
         
-          22 分钟
+          26 分钟
         
       </span>
     
@@ -265,11 +265,87 @@
             
               <div class="markdown-body">
                 
-                <h1>贪心 Greedy</h1>
+                <h2 id="基本原理">基本原理</h2>
+<ul class="lvl-0">
+<li class="lvl-2">不保证得到最优解，但实际对很多问题都可求得最优解。</li>
+<li class="lvl-2">满足最优子结构。</li>
+<li class="lvl-2">贪心选择性质（greedy-choice property）：局部最优解能够导向全局最优解。</li>
+</ul>
+<div class="tips">
+<p>几乎在每个贪心算法下，几乎总有一个更为繁琐的动态规划算法。</p>
+</div>
+<h2 id="相关算法">相关算法</h2>
+<p>贪心的思想体现在各种重要的算法当中，比如<strong>Dijkstra</strong>、<strong>最小生成树</strong>以及<strong>Huffman编码</strong>等。</p>
+<h3 id="区间问题">区间问题</h3>
 <blockquote>
-<p>局部最优解能够导向全局最优解。</p>
-<p>贪心的重点往往在于，看出这道题是贪心问题。</p>
+<p>对于区间贪心，通常都使用【排序 + 贪心】的思路来解决。</p>
+<p>参考：算法导论16.1（活动选择问题）、算法设计4.1（区间调度）。</p>
 </blockquote>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>435 Non-overlapping Intervals 无重叠区间 (Medium)</p>
+<p>贪心思想：每次选择都保证剩余空间更大。</p>
+<p>根据区间右端点进行排序，越小的右端点代表剩余空间越大。左端点排序与否不影响结果。</p>
+<p>该题另外的解法还有动态规划，但时间复杂度更差，达到平方级且会TLE。</p>
+</li>
+<li class="lvl-2">
+<p>452 Minimum Number of Arrows to Burst Balloons 用最少数量的箭引爆气球 (Medium)</p>
+<p>贪心思想：每次都从区间端点处射箭，可以理解为，再不射这根箭就没有办法满足要求。</p>
+<p>本质和435一致。选择按照右端点进行排序。</p>
+</li>
+<li class="lvl-2">
+<p>757 Set Intersection Size At Least Two 设置交集大小至少为2 (Hard)</p>
+<p>题目为452的变式，452代表交集大小为1的情况。</p>
+<p>贪心思想：每次选择点都希望尽可能涉及更多的区间。</p>
+<p>将区间按照右端点从小到大排序，显然我们尽量希望选择区间最右侧的点放入区间，因为该部分最有可能与后半部分产生相交。</p>
+<p>一些注意事项：</p>
+<ul class="lvl-2">
+<li class="lvl-4">
+<p>因为交集大小为2，所以每轮对新区间更新时要进行分类讨论；</p>
+</li>
+<li class="lvl-4">
+<p>要注意集合右端点相同的情况，集合左端点应该按照反向排序。具体通过手动模拟来理解。</p>
+</li>
+</ul>
+</li>
+<li class="lvl-2">
+<p><a target="_blank" rel="noopener" href="http://algorithm.openjudge.cn/2022hw2/solution/36796440/">POJ Radar Installation</a></p>
+<p>题目的实质和还是“用最少数量的箭引爆气球”，只是需要将题目中的几何转化为实际的区间问题。</p>
+</li>
+<li class="lvl-2">
+<p><a target="_blank" rel="noopener" href="http://algorithm.openjudge.cn/2022hw1/solution/36075720/">POJ 区间合并</a></p>
+<p>本质和452是一样的题目。</p>
+</li>
+<li class="lvl-2">
+<p>763 Partition Labels 划分字母区间 (Medium)</p>
+<p>题目的实质一道最基础的区间问题：将一系列区间划分为完全不重叠的几部分。重点在于如何对题目建模，将字符串问题转化为实际的区间问题。</p>
+</li>
+<li class="lvl-2">
+<p>122 Best Time to Buy and Sell Stock II 买卖股票的最佳时机 (Medium)</p>
+<p>贪心思想：因为购买次数没有限制，所以相当于涨了就卖。求出所有上升区间之差即可。注意的是贪心只能计算出最大利润，而计算过程本身并不代表实际交易过程。想要获得实际交易过程，需要使用动态规划。</p>
+</li>
+</ul>
+<h3 id="Dijkstra">Dijkstra</h3>
+<p>详细内容见图部分。</p>
+<h3 id="MST">MST</h3>
+<p>贪心思想：</p>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>Prim：每次选取离集合最近的点加入集合，即使当前树的总权重增加量最小的边。</p>
+</li>
+<li class="lvl-2">
+<p>Kruskal: 边贪心，即次选取图中不会构成回路的最小边。</p>
+</li>
+</ul>
+<p>详细内容见图部分。相关题目如下：</p>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p><a target="_blank" rel="noopener" href="http://bailian.openjudge.cn/practice/solution/37220720/">POJ Agri-Net</a></p>
+</li>
+</ul>
+<h3 id="Huffman-Code">Huffman Code</h3>
+<p>详细内容见树部分。</p>
+<h3 id="相关题目-17">相关题目</h3>
 <ul class="lvl-0">
 <li class="lvl-2">
 <p>455 Assign Cookies 分发饼干 (Easy)</p>
@@ -357,39 +433,8 @@
 </li>
 </ul>
 </li>
-</ul>
-<h2 id="贪心中的区间问题-2">贪心中的区间问题</h2>
-<blockquote>
-<p>对于区间贪心，通常都使用【排序 + 贪心】的思路来解决。由于区间有左右两个端点，所以排序的优先级不止一个。</p>
-<p>通常对两个不同的优先级分别取相反的顺序，比如 右端点顺序排列，则右端点相同的情况下，左端点逆序排列。</p>
-<p>这种排序的方式能够保证整体优先级的递增/递减。</p>
-</blockquote>
-<ul class="lvl-0">
 <li class="lvl-2">
-<p>435 Non-overlapping Intervals 无重叠区间 (Medium)</p>
-<p>贪心思想：按照区间右端点排序，每次选择都保证剩余空间更大，然后一次从左到右扫描判断即可。</p>
-<p>时间复杂度为<code>O(nlogn)</code>，因为要先根据右端点大小进行排序。</p>
-<ul class="lvl-2">
-<li class="lvl-4">
-<p>另外的解法还有动态规划，但时间复杂度更差，达到平方级且会TLE。</p>
-</li>
-</ul>
-</li>
-<li class="lvl-2">
-<p>452 Minimum Number of Arrows to Burst Balloons 用最少数量的箭引爆气球 (Medium)</p>
-<p>和435一样，都是区间问题上的贪心。</p>
-</li>
-<li class="lvl-2">
-<p>757 Set Intersection Size At Least Two 设置交集大小至少为2 (Hard)</p>
-<p>整体思路类似于452。</p>
-</li>
-<li class="lvl-2">
-<p>763 Partition Labels 划分字母区间 (Medium)</p>
-<p>实质还是一个区间问题，重点关注将字母转化为区间尽可能简洁的技巧。实际本题只需要记录最右侧最远点，不需要记录区间左端点。</p>
-</li>
-<li class="lvl-2">
-<p>122 Best Time to Buy and Sell Stock II 买卖股票的最佳时机 (Medium)</p>
-<p>重点在于发现这是贪心题目，非常直白的解法。</p>
+<p><a target="_blank" rel="noopener" href="http://algorithm.openjudge.cn/2022hw2/solution/36786583/">POJ Yogurt Factory</a></p>
 </li>
 </ul>
 
@@ -441,6 +486,12 @@
                 <div class="post-prevnext my-3">
                   <article class="post-prev col-6">
                     
+                    
+                      <a href="/2022/11/22/%E6%8E%92%E5%BA%8F-Sort/" title="排序 Sort">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">排序 Sort</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
                     
                   </article>
                   <article class="post-next col-6">

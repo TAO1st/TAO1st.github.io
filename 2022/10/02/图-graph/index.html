@@ -16,21 +16,17 @@
   <meta name="author" content="tao1st">
   <meta name="keywords" content="">
   
-    <meta name="description" content="图的遍历 Traversal  565 Array Nesting 数组嵌套 (Medium)  最短路径 Shortest Path 最小生成树 Minimum Spanning Tree 基本概念与性质：   最小生成树（MST）即所有边权之和最小的生成树。   MST不唯一，但对应的边权和唯一（最小值）。   必有 $|V|$ 个顶点， $|V| - 1$ 条边。这符合树的基本性质：包含所有">
+    <meta name="description" content="图的遍历 Traversal  565 Array Nesting 数组嵌套 (Medium)  拓扑排序 Topological Sort 拓扑排序就是对有向无环图（Directed Acyclic Graph, DAG）进行排序，其本质还是一个广度优先搜索。 一些性质：   拓扑序通常不唯一；   如果图 $G$ 的矩阵为三角矩阵，则该图存在拓扑序。  反之不能确保成立（必要不充分）。但根据拓">
 <meta property="og:type" content="article">
 <meta property="og:title" content="图论（Graph）">
 <meta property="og:url" content="https://tao1st.github.io/2022/10/02/%E5%9B%BE-graph/index.html">
 <meta property="og:site_name" content="tao1st.github.io">
-<meta property="og:description" content="图的遍历 Traversal  565 Array Nesting 数组嵌套 (Medium)  最短路径 Shortest Path 最小生成树 Minimum Spanning Tree 基本概念与性质：   最小生成树（MST）即所有边权之和最小的生成树。   MST不唯一，但对应的边权和唯一（最小值）。   必有 $|V|$ 个顶点， $|V| - 1$ 条边。这符合树的基本性质：包含所有">
+<meta property="og:description" content="图的遍历 Traversal  565 Array Nesting 数组嵌套 (Medium)  拓扑排序 Topological Sort 拓扑排序就是对有向无环图（Directed Acyclic Graph, DAG）进行排序，其本质还是一个广度优先搜索。 一些性质：   拓扑序通常不唯一；   如果图 $G$ 的矩阵为三角矩阵，则该图存在拓扑序。  反之不能确保成立（必要不充分）。但根据拓">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2022-10-01T17:12:40.000Z">
-<meta property="article:modified_time" content="2022-11-04T16:16:22.374Z">
+<meta property="article:modified_time" content="2022-12-26T04:55:47.466Z">
 <meta property="article:author" content="tao1st">
-<meta property="article:tag" content="最短路径(Shortest Path)">
-<meta property="article:tag" content="最小生成树(Minimum Spanning Tree, MST)">
 <meta property="article:tag" content="拓扑排序(Topological Sort)">
-<meta property="article:tag" content="二分图(Bipartite Graph)">
-<meta property="article:tag" content="欧拉通路">
 <meta name="twitter:card" content="summary_large_image">
   
   
@@ -216,7 +212,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          1.6k 字
+          2.4k 字
         
       </span>
     
@@ -227,7 +223,7 @@
         
         
         
-          14 分钟
+          21 分钟
         
       </span>
     
@@ -270,49 +266,83 @@
             
               <div class="markdown-body">
                 
-                <h2 id="图的遍历-Traversal">图的遍历 Traversal</h2>
+                <h2 id="图的遍历-Traversal-2">图的遍历 Traversal</h2>
 <ul class="lvl-0">
 <li class="lvl-2">565 Array Nesting 数组嵌套 (Medium)</li>
 </ul>
-<h2 id="最短路径-Shortest-Path">最短路径 Shortest Path</h2>
-<h2 id="最小生成树-Minimum-Spanning-Tree">最小生成树 Minimum Spanning Tree</h2>
-<p>基本概念与性质：</p>
+<h2 id="拓扑排序-Topological-Sort-2">拓扑排序 Topological Sort</h2>
+<p>拓扑排序就是对有向无环图（Directed Acyclic Graph, DAG）进行排序，其本质还是一个<strong>广度优先搜索</strong>。</p>
+<p>一些性质：</p>
 <ul class="lvl-0">
 <li class="lvl-2">
-<p>最小生成树（MST）即所有边权之和最小的生成树。</p>
+<p>拓扑序通常不唯一；</p>
 </li>
 <li class="lvl-2">
-<p>MST不唯一，但对应的边权和唯一（最小值）。</p>
-</li>
-<li class="lvl-2">
-<p>必有 $|V|$ 个顶点， $|V| - 1$ 条边。这符合树的基本性质：包含所有图中的顶点，且不存在回路。</p>
-<p>由此可得：如果图 $G$ 是一颗树，则其 MST 必定是它本身。</p>
-</li>
-<li class="lvl-2">
-<p>最小生成树的两种算法实现都是典型的<strong>贪心算法</strong>。</p>
-</li>
-<li class="lvl-2">
-<p>最小生成树的存在性同时也表征了 <b>图的连通性</b>。</p>
+<p>如果图 $G$ 的矩阵为三角矩阵，则该图存在拓扑序。</p>
+<ul class="lvl-2">
+<li class="lvl-4">反之不能确保成立（必要不充分）。但根据拓扑序重新编号，可使其变为三角矩阵；</li>
+<li class="lvl-4">若为上三角，说明节点为小编号指向大编号；若为下三角，说明节点为大编号指向小编号。</li>
+</ul>
 </li>
 </ul>
-<h3 id="Prim">Prim</h3>
-<blockquote>
-<p>基本思想：让一颗小树长大</p>
-<p>从某一起点出发，不断选择 <b>与当前集合 距离最近的节点</b> 加入。</p>
-</blockquote>
-<h4 id="实现">实现</h4>
-<h4 id="效率-2">效率</h4>
-<h3 id="Kruskal">Kruskal</h3>
-<blockquote>
-<p>基本思想：将森林合并成树</p>
-<p>每次选取 <b>权值最小</b> 且 <b>不会构成回路</b> 的边，加入集合。</p>
-</blockquote>
-<h4 id="实现-2">实现</h4>
-<h4 id="效率-3">效率</h4>
-<h2 id="拓扑排序-Topological-Sort">拓扑排序 Topological Sort</h2>
-<p>拓扑排序就是对有向无环图（Directed Acyclic Graph, DAG）进行排序，其本质还是一个<strong>广度优先搜索</strong>。</p>
-<p>常用于处理<strong>有向图</strong>中的依赖性问题（后继依赖前驱），并能够<strong>判断图中是否存在环路</strong>。</p>
-<p>而对于无向图的连通性问题，更多考虑使用 [并查集](##并查集 Union-find Set)。</p>
+<h3 id="适用情况-3">适用情况</h3>
+<p>常用于处理<strong>有向图中的依赖性问题</strong>（后继依赖前驱），并能够<strong>判断图中是否存在环路</strong>。而对于无向图的连通性问题，更多考虑使用 [并查集](##并查集 Union-find Set)。</p>
+<h3 id="算法实现-2">算法实现</h3>
+<p>具体流程如下：</p>
+<ol>
+<li class="lvl-3">
+<p>将入度为0的顶点组织到某个线性容器中，常使用队列；</p>
+</li>
+<li class="lvl-3">
+<p>while 该容器不为空</p>
+<ul class="lvl-2">
+<li class="lvl-5">弹出队首元素，并按题意做相应处理；</li>
+<li class="lvl-5">队首元素的每个邻接点入度 - 1；如果更新后入度为0，则将该邻接点入队。</li>
+</ul>
+</li>
+<li class="lvl-3">
+<p>记录输出的的点的个数，如果不等于 $|V|$，说明不存在拓扑序 / 图中存在环路。</p>
+</li>
+</ol>
+<h3 id="DFS实现">DFS实现</h3>
+<p>拓扑排序的实现也可以通过DFS来实现。按照DFS的顺序，我们从一个节点 $u$ 出发，当其能够到达的所有邻接点都访问完毕后，才会重新回溯到节点 $u$。此时我们借助一个栈来记录访问情况，每当重新回溯到节点处时，将其入栈。此时从栈顶往栈底看，$u$ 处在栈顶的位置，$u$ 在其指向的所有相邻节点的前面，即满足 $u$ 的拓扑关系。我们按照这种流程对图进行一遍深度优先搜索。最终栈顶到栈底的序列就是拓扑排序。</p>
+<p>具体实现如下：首先定义每个节点在搜索中的三种状态：</p>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>未搜索：我们还没有搜索到这个节点；</p>
+</li>
+<li class="lvl-2">
+<p>搜索中：我们搜索过这个节点，但还没有回溯到该节点，即该节点还没有入栈，还有相邻的节点没有搜索完成）；</p>
+</li>
+<li class="lvl-2">
+<p>已完成：我们搜索过并且回溯过这个节点，即该节点已经入栈，并且所有该节点的相邻节点都出现在栈的更底部的位置，满足拓扑排序的要求。</p>
+</li>
+</ul>
+<p>通过上述的三种状态，我们就可以给出使用深度优先搜索得到拓扑排序的算法流程，在每一轮的搜索搜索开始时，我们任取一个「未搜索」的节点开始进行深度优先搜索。</p>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>我们将当前搜索的节点 $u$ 标记为「搜索中」，遍历该节点的每一个相邻节点 $v$：</p>
+<ul class="lvl-2">
+<li class="lvl-4">如果 $v$ 为「未搜索」，那么我们开始搜索 $v$，待搜索完成回溯到 $u$；</li>
+<li class="lvl-4">如果 $v$ 为「搜索中」，那么我们就找到了图中的一个环，因此是不存在拓扑排序的；</li>
+<li class="lvl-4">如果 $v$ 为「已完成」，那么说明 $v$ 已经在栈中了，而 $u$ 还不在栈中，因此 $u$ 无论何时入栈都不会影响到 $(u, v)$ 之前的拓扑关系，以及不用进行任何操作。</li>
+</ul>
+</li>
+<li class="lvl-2">
+<p>当 $u$ 的所有相邻节点都为「已完成」时，我们将 $u$ 放入栈中，并将其标记为「已完成」。</p>
+</li>
+</ul>
+<p>在整个深度优先搜索的过程结束后，如果我们没有找到图中的环，那么栈中存储这所有的 $n$ 个节点，从栈顶到栈底的顺序即为一种拓扑排序。</p>
+<h3 id="效率-3">效率</h3>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>使用邻接表：每个节点输出一次 $O(V)$，每个边处理一次 $O(E)$，总时间复杂度为 $O(V+E)$。</p>
+</li>
+<li class="lvl-2">
+<p>使用邻接矩阵：因为处理边时需要遍历矩阵的一行，所以相当于内层循环也为 $O(V)$，总时间复杂度为 $O(V^2)$。</p>
+</li>
+</ul>
+<h3 id="相关题目-8">相关题目</h3>
 <ul class="lvl-0">
 <li class="lvl-2">
 <p>210 Course Schedule II 课程表 II (Medium)</p>
@@ -321,8 +351,11 @@
 <p>剑指Offer II 114. 外星文字典 (Hard)</p>
 <p>重点在于思路和建图。</p>
 </li>
+<li class="lvl-2">
+<p><a target="_blank" rel="noopener" href="http://algorithm.openjudge.cn/2022hw2/solution/36786354/">POJ Genealogical Tree</a></p>
+</li>
 </ul>
-<h2 id="二分图-Bipartite-Graph">二分图 Bipartite Graph</h2>
+<h2 id="二分图-Bipartite-Graph-2">二分图 Bipartite Graph</h2>
 <blockquote>
 <p>二分图的定义：图中所有顶点可以分割为两个子集合，图中所有边的两个顶点来自于不同的集合，即同一集合中的任意两点之间没有边。</p>
 <p>二分图是图论中一个比较经典的问题，对于其判定除了常见的染色法还有其他的做法待补充（对面试作用不大）。</p>
@@ -336,8 +369,11 @@
 <p>785 Is Graph Bipartite? 判断二分图 (Medium)</p>
 <p>染色法，通过 深度优先遍历 或 广度优先遍历 均可实现。</p>
 </li>
+<li class="lvl-2">
+<p><a target="_blank" rel="noopener" href="http://algorithm.openjudge.cn/2022hw2/solution/36536600/">POJ Butterfly</a></p>
+</li>
 </ul>
-<h2 id="欧拉通路-回路">欧拉通路/回路</h2>
+<h2 id="欧拉通路-回路-2">欧拉通路/回路</h2>
 <p>简单的来讲，就是<strong>图的遍历</strong> + <strong>栈</strong>，要注意的点是</p>
 <ol>
 <li class="lvl-3">
@@ -350,10 +386,10 @@
 <p>栈存放结果：最终的实际结果往往要把栈倒转过来。</p>
 </li>
 </ol>
-<blockquote>
+<h3 id="算法原理">算法原理</h3>
 <p>即给定一个起点的<strong>一笔画</strong>问题。</p>
-<h4 id="1-定义">1 定义</h4>
-<ul class="lvl-1">
+<h4 id="1-定义-2">1 定义</h4>
+<ul class="lvl-0">
 <li class="lvl-2">
 <p>通过图中所有边恰好一次且行遍所有顶点的通路称为欧拉通路。</p>
 </li>
@@ -367,12 +403,12 @@
 <p>具有欧拉通路但不具有欧拉回路的无向图称为半欧拉图。</p>
 </li>
 </ul>
-<h4 id="2-判断">2 判断</h4>
+<h4 id="2-判断-2">2 判断</h4>
 <p>如果没有保证至少存在一种合理的路径，我们需要判别这张图是否是欧拉图或者半欧拉图，具体地：</p>
-<ul class="lvl-1">
+<ul class="lvl-0">
 <li class="lvl-2">
 <p>对于无向图 G：</p>
-<ul class="lvl-3">
+<ul class="lvl-2">
 <li class="lvl-4">
 <p>G 是欧拉图当且仅当 G 是连通的且没有奇度顶点。</p>
 </li>
@@ -383,13 +419,13 @@
 </li>
 <li class="lvl-2">
 <p>对于有向图 G</p>
-<ul class="lvl-3">
+<ul class="lvl-2">
 <li class="lvl-4">
 <p>G 是欧拉图当且仅当 G 的所有顶点属于同一个强连通分量且每个顶点的入度和出度相同。</p>
 </li>
 <li class="lvl-4">
 <p>G 是半欧拉图当且仅当 G 的所有顶点属于同一个强连通分量且：</p>
-<ul class="lvl-5">
+<ul class="lvl-4">
 <li class="lvl-6">恰有一个顶点的出度与入度差为 1；</li>
 <li class="lvl-6">恰有一个顶点的入度与出度差为 1；</li>
 <li class="lvl-6">所有其他顶点的入度和出度相同。</li>
@@ -399,7 +435,7 @@
 </li>
 </ul>
 <p>判断及证明放到离散数学/算法导论中具体了解。</p>
-<h4 id="3-求解">3 求解</h4>
+<h4 id="3-求解-2">3 求解</h4>
 <p><strong>Heirholzer算法</strong>：</p>
 <ol>
 <li class="lvl-3">
@@ -412,7 +448,7 @@
 <p>如果没有可移动的路径，则将所在节点加入到栈中，并返回。</p>
 </li>
 </ol>
-</blockquote>
+<h3 id="相关题目-9">相关题目</h3>
 <ul class="lvl-0">
 <li class="lvl-2">
 <p><em>332 Reconstruct Itinerary 重新安排行程 (Hard)</em></p>
@@ -433,50 +469,11 @@
             <div>
               <div class="post-metas my-3">
   
-    <div class="post-meta mr-3 d-flex align-items-center">
-      <i class="iconfont icon-category"></i>
-      
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/" class="category-chain-item">数据结构与算法</a>
-  
-  
-
-      </span>
-    
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/LeetCode/" class="category-chain-item">LeetCode</a>
-  
-  
-
-      </span>
-    
-  
-</span>
-
-    </div>
-  
   
     <div class="post-meta">
       <i class="iconfont icon-tags"></i>
       
-        <a href="/tags/%E6%9C%80%E7%9F%AD%E8%B7%AF%E5%BE%84-Shortest-Path/">#最短路径(Shortest Path)</a>
-      
-        <a href="/tags/%E6%9C%80%E5%B0%8F%E7%94%9F%E6%88%90%E6%A0%91-Minimum-Spanning-Tree-MST/">#最小生成树(Minimum Spanning Tree, MST)</a>
-      
         <a href="/tags/%E6%8B%93%E6%89%91%E6%8E%92%E5%BA%8F-Topological-Sort/">#拓扑排序(Topological Sort)</a>
-      
-        <a href="/tags/%E4%BA%8C%E5%88%86%E5%9B%BE-Bipartite-Graph/">#二分图(Bipartite Graph)</a>
-      
-        <a href="/tags/%E6%AC%A7%E6%8B%89%E9%80%9A%E8%B7%AF/">#欧拉通路</a>
       
     </div>
   
@@ -500,7 +497,7 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2022/09/30/Debugging/" title="Debugging">
+                      <a href="/2022/09/30/Debugging-gdb-valgrind/" title="Debugging">
                         <span class="hidden-mobile">Debugging</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>

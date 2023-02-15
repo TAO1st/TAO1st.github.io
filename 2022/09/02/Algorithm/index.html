@@ -16,25 +16,28 @@
   <meta name="author" content="tao1st">
   <meta name="keywords" content="">
   
-    <meta name="description" content="时间复杂度 - 数据规模    复杂度 数量级     $logn$ long long 以内都可以   $\sqrt{n}$ $10^{12}$   $n$ $10^{6} \sim 10^{7}$   $nlogn$ $10^{5}$ $\sim$ $5*10^{5}$   $n^2$ 1000~5000   $n^3$ 100~500   $n^4$ 50   $2^n$ 20~24   $">
+    <meta name="description" content="时间复杂度 - 数据规模    复杂度 数量级     $logn$ long long 以内都可以   $\sqrt{n}$ $10^{12}$   $n$ $10^{6} \sim 10^{7}$   $nlogn$ $10^{5}$ $\sim$ $5*10^{5}$   $n^2$ $1000 \sim 5000$   $n^3$ $100\sim 500$   $n^4$ $50$">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Algorithm">
+<meta property="og:title" content="算法基础">
 <meta property="og:url" content="https://tao1st.github.io/2022/09/02/Algorithm/index.html">
 <meta property="og:site_name" content="tao1st.github.io">
-<meta property="og:description" content="时间复杂度 - 数据规模    复杂度 数量级     $logn$ long long 以内都可以   $\sqrt{n}$ $10^{12}$   $n$ $10^{6} \sim 10^{7}$   $nlogn$ $10^{5}$ $\sim$ $5*10^{5}$   $n^2$ 1000~5000   $n^3$ 100~500   $n^4$ 50   $2^n$ 20~24   $">
+<meta property="og:description" content="时间复杂度 - 数据规模    复杂度 数量级     $logn$ long long 以内都可以   $\sqrt{n}$ $10^{12}$   $n$ $10^{6} \sim 10^{7}$   $nlogn$ $10^{5}$ $\sim$ $5*10^{5}$   $n^2$ $1000 \sim 5000$   $n^3$ $100\sim 500$   $n^4$ $50$">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://gcore.jsdelivr.net/gh/TAO1st/pics@master/202211231929165.png">
+<meta property="og:image" content="https://gcore.jsdelivr.net/gh/TAO1st/pics@master/202211231929578.png">
+<meta property="og:image" content="https://gcore.jsdelivr.net/gh/TAO1st/pics@master/202211231930256.png">
 <meta property="article:published_time" content="2022-09-02T09:24:24.000Z">
-<meta property="article:modified_time" content="2022-09-13T15:41:49.581Z">
+<meta property="article:modified_time" content="2022-11-24T17:08:25.046Z">
 <meta property="article:author" content="tao1st">
 <meta property="article:tag" content="时间复杂度">
-<meta property="article:tag" content="NP">
-<meta property="article:tag" content="线性规划">
-<meta property="article:tag" content="主定理">
+<meta property="article:tag" content="数学证明(Proof)">
+<meta property="article:tag" content="渐进记号(Asymptotic Notation)">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://gcore.jsdelivr.net/gh/TAO1st/pics@master/202211231929165.png">
   
   
   
-  <title>Algorithm - tao1st.github.io</title>
+  <title>算法基础 - tao1st.github.io</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -192,7 +195,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="Algorithm"></span>
+            <span id="subtitle" data-typed-text="算法基础"></span>
           
         </div>
 
@@ -215,7 +218,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          230 字
+          4.9k 字
         
       </span>
     
@@ -226,7 +229,7 @@
         
         
         
-          2 分钟
+          41 分钟
         
       </span>
     
@@ -264,7 +267,7 @@
         <div id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">Algorithm</h1>
+            <h1 style="display: none">算法基础</h1>
             
             
               <div class="markdown-body">
@@ -287,53 +290,200 @@
 <td style="text-align:center">$10^{12}$</td>
 </tr>
 <tr>
-<td style="text-align:center"><em>$n$</em></td>
-<td style="text-align:center"><em>$10^{6} \sim 10^{7}$</em></td>
+<td style="text-align:center">$n$</td>
+<td style="text-align:center">$10^{6} \sim 10^{7}$</td>
 </tr>
 <tr>
-<td style="text-align:center"><em>$nlogn$</em></td>
-<td style="text-align:center"><em>$10^{5}$</em> $\sim$ $5*10^{5}$</td>
+<td style="text-align:center">$nlogn$</td>
+<td style="text-align:center">$10^{5}$ $\sim$ $5*10^{5}$</td>
 </tr>
 <tr>
-<td style="text-align:center"><em>$n^2$</em></td>
-<td style="text-align:center"><em>1000</em>~5000</td>
+<td style="text-align:center">$n^2$</td>
+<td style="text-align:center">$1000 \sim 5000$</td>
 </tr>
 <tr>
-<td style="text-align:center"><strong>$n^3$</strong></td>
-<td style="text-align:center"><strong>100</strong>~500</td>
+<td style="text-align:center">$n^3$</td>
+<td style="text-align:center">$100\sim 500$</td>
 </tr>
 <tr>
 <td style="text-align:center">$n^4$</td>
-<td style="text-align:center">50</td>
+<td style="text-align:center">$50$</td>
 </tr>
 <tr>
-<td style="text-align:center"><strong>$2^n$</strong></td>
-<td style="text-align:center"><strong>20~24</strong></td>
+<td style="text-align:center">$2^n$</td>
+<td style="text-align:center">$20\sim 24$</td>
 </tr>
 <tr>
 <td style="text-align:center">$3^n$</td>
-<td style="text-align:center">14</td>
+<td style="text-align:center">$14$</td>
 </tr>
 <tr>
 <td style="text-align:center">$n!$</td>
-<td style="text-align:center">9 ~12</td>
+<td style="text-align:center">$9 \sim 12$</td>
 </tr>
 </tbody>
 </table>
-<h2 id="函数的增长">函数的增长</h2>
-<h2 id="摊还分析">摊还分析</h2>
+<h2 id="数学证明-Proof">数学证明 Proof</h2>
+<h4 id="证明-Proof">证明 Proof</h4>
+<p>A <i><u>mathematical proof</u></i> of a <i><u>proposition</u></i> is a chain of <i><u>logical deductions</u></i> leading to the proposition from a base set of <i><u>axioms</u></i>.<br>
+<b>命题</b> 的<b>数学证明</b> 是指基于一系列 <b>公理</b>，经过一连串的 <b>逻辑推理</b>，最后得出这个命题。</p>
+<h4 id="命题-Proposition">命题 Proposition</h4>
+<p>A <i>preposition</i> is a statement (communication) that is either true of false.<br>
+<b>命题</b>是一个或真或假的语句。</p>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>单纯的表述，而非判断。区分于断言。</p>
+</li>
+<li class="lvl-2">
+<p>真假性随不同情况而变化的语句 <b>不是</b> 命题。</p>
+</li>
+</ul>
+<h4 id="断言-Claim">断言 Claim</h4>
+<p>可能是错误的一种判断语句。</p>
+<h4 id="猜想-Conjecture">猜想 Conjecture</h4>
+<p>顾名思义。</p>
+<h4 id="谓词-Predicate">谓词 Predicate</h4>
+<p>A <i>predicate</i> can be understood as a <i>proposition</i> whose truth depends on the value of one or more variables.<br>
+<b>谓词</b> 相当于 真假性取决于一个或多个变量值的 <b>命题</b>。例如：“ $n$ 是一个完全平方数” 描述的就是一个谓词。只有 $n$ 的值确定后才能确定其真假。</p>
+<h4 id="公理化方法-The-Axiomatic-Method">公理化方法 The Axiomatic Method</h4>
+<p>不证自明、无可争辩的命题被称为 公理（Axiom）。以下几个通用术语用来描述已经被证明的命题，不同的术语表示该命题的作用不同：</p>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p><b>定理 Theroem</b> ：重要的真命题。</p>
+</li>
+<li class="lvl-2">
+<p><b>引理 Lemma</b> ：预备性命题，为后面的命题证明做准备。</p>
+</li>
+<li class="lvl-2">
+<p><b>推论 Corollary</b> ：从定理出发，只需几步逻辑推导就能得出的命题。</p>
+</li>
+</ul>
+<h2 id="渐进记号-Asymptotic-Notation">渐进记号 Asymptotic Notation</h2>
+<p>渐进记号的引入是用来刻画随着输入规模增长，算法运行时间的变化情况。我们可以抽象出：运行时间函数 $T(n)$ 是定义在自然数集 $N$ 上的。考虑的也是函数增长的速度。</p>
+<p>那么我们在此处给出限制 / 假设：所有涉及到的函数 $f(n)$，均为 <b>渐进非负（asympototically nonnegative）</b>。即，当 $n$ 足够大时，$f(n)$ 非负。</p>
+<div class="tips">
+<p>对于 $\Theta$ 和 $O$ 两个记号，我们在日常使用中可以给出一个非形式化的求解，即 <strong>去掉低阶项</strong> 并 <strong>忽略最高阶项前的系数</strong>。</p>
+</div>
+<h3 id="渐进符号在数学公式中的含义">渐进符号在数学公式中的含义</h3>
+<p>所有的渐进符号表征的其实都是一个 <b>集合</b>。因此，我们可以记 “$f(n) \in \Theta(g(n))$”，表示函数 $f(n)$ 属于该集合。但实际应用中，我们使用 <b>等号</b> 来表征相同的意思，即写作 “$f(n) = \Theta(g(n))$” 。</p>
+<p>当渐近符号位于公式中的不同位置时，其表征的含义也略有不同：</p>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>当渐进记号 <b>独立</b> 于公式的 <b>右侧</b> 时：如上所述，定义等号指明集合的成员关系。</p>
+<p>例如，$n = O(n^2)$ 即代表 $n \in O(n^2)$。</p>
+</li>
+<li class="lvl-2">
+<p>当渐进记号出现在右侧某个公式（的一部分）中时：代表某个我们不关注的匿名函数集。可以用于消除一个公式中无关紧要的细节部分。</p>
 <blockquote>
-<p>求操作的平均代价。</p>
+<p>例如对于归并排序：<br>
+$$<br>
+T(n) = \begin{cases} \Theta(1)&amp; \mbox{if} \space n \leq c \<br>
+aT(n / b) + Divide(n) + Combine(n) &amp; else<br>
+\end{cases}<br>
+$$<br>
+其中 $aT(n / b)$ 表示将原问题分解为 $a$ 个子问题，每个子问题的规模是原问题的 $\frac{1}{b}$ （此处二者值均为 2）；$Divide(n)$ 代表分解子问题消耗的时间、$Combine(n)$ 代表合并子问题的解成原问题的解消耗的时间。</p>
+<p>其中：</p>
+<ul class="lvl-3">
+<li class="lvl-2">
+<p>分解 $Divide(n)$：仅需计算子数组的分割位置，需要常量时间，即 $\Theta(1)$；</p>
+</li>
+<li class="lvl-2">
+<p>解决 $2T(n/2)$：递归求解规模更小的子问题；</p>
+</li>
+<li class="lvl-2">
+<p>合并 $Combine(n)$：显然为线性时间，$\Theta(n)$。</p>
+</li>
+</ul>
+<p>对整体算法运行时间的贡献，取决于解决部分的递归运算。所以 <b>把分解和合并这种不重点关注的部分简写为 $\Theta(n)$ </b>。即：<br>
+$$<br>
+T(n) = \begin{cases} \Theta(1)&amp; \mbox{if} \space n \leq c \<br>
+2T(n / 2) + \Theta(n) &amp; else<br>
+\end{cases}<br>
+$$</p>
 </blockquote>
-<p>待补。</p>
-<h2 id="递归式求解">递归式求解</h2>
-<blockquote>
-<p>递归式求解 即求出算法的渐进界。</p>
-</blockquote>
-<h3 id="主方法-主定理">主方法/主定理</h3>
-<h2 id="NP完全性">NP完全性</h2>
-<h2 id="线性规划">线性规划</h2>
-<h2 id="计算机科学中的数学">计算机科学中的数学</h2>
+</li>
+<li class="lvl-2">
+<p>当渐进符号出现在公式的左边时，可以理解为 <b>等式右边比左边提供的细节更粗糙，对界的要求更松散</b>。</p>
+<p>通常右侧一定会出现渐进符号，所以可以以一个等式链的实例来理解此种情况：<br>
+$$<br>
+2n^2 + 3n + 1 = 2n^2 + \Theta(n) = \Theta(n^2)<br>
+$$<br>
+直观上看，右侧提供的紧确界相对松散，即：无论如何选择等号左侧的匿名函数，总有一种对右侧匿名函数的选择使得整个公式/归属成立。</p>
+</li>
+</ul>
+<h3 id="Theta-notation">$\Theta$-notation</h3>
+<p>$\Theta$记号渐进地给出一个函数的上界和下界，即 $g(n)$ 为 $f(n)$ 的 <b>渐进紧确界（asymptotically tight bound）</b>。</p>
+<p>实际应用中表征算法 <b>在某种输入情况下的实际运行时间</b>。</p>
+<p>对于一个给定的函数 $g(n)$ ，用 $\Theta(g(n))$ 来表示以下函数的集合：<br>
+$$<br>
+\Theta(g(n)) = {f(n): \mbox{there} \space \mbox{exist} \space \mbox{positive}\space \mbox{constants}\space  c_1, c_2,\space \mbox{and} \space n_0 \space \mbox{such}\space \mbox{that}\space \0 \leq c_1g(n) \leq f(n)\leq c_2g(n)\space \mbox{for} \space \mbox{all}\space n \geq n_0 }<br>
+$$<br>
+<img src="https://gcore.jsdelivr.net/gh/TAO1st/pics@master/202211231929165.png" srcset="/img/loading.gif" lazyload style="zoom:50%;" /></p>
+<p>通常，将 $c_1$ 设置为一个稍小于最高阶项系数的值，并将 $c_2$ 设置为稍大于最高阶项系数的值，能够使 $\Theta$ 记号定义中的不5678568等式得到满足。</p>
+<h3 id="O-notation">$O$-notation</h3>
+<p>$O$ 记号表征函数的 <b>渐进上界（asymptotic upper bound）</b>。实际应用中表征算法的 <b>最坏情况运行时间</b>。</p>
+<p>对于一个给定的函数 $g(n)$ ，用 $O(g(n))$ 来表示以下函数的集合：<br>
+$$<br>
+O(g(n)) = {f(n): \mbox{there} \space \mbox{exist} \space \mbox{positive}\space \mbox{constants}\space  c\space \mbox{and} \space n_0 \space \mbox{such}\space \mbox{that}\space \ 0  \leq f(n)\leq cg(n)\space \mbox{for} \space \mbox{all}\space n \geq n_0 }<br>
+$$<br>
+显然，$f(n) = \Theta(g(n))$ 蕴含着 $f(n) = O(g(n))$。</p>
+<img src="https://gcore.jsdelivr.net/gh/TAO1st/pics@master/202211231929578.png" srcset="/img/loading.gif" lazyload style="zoom:50%;" />
+<h3 id="Omega-notation">$\Omega$-notation</h3>
+<p>$\Omega$ 记号表征函数的 <b>渐进下界（asymptotic lower bound）</b>。实际应用中表征算法的 <b>最好情况运行时间</b>。</p>
+<p>对于一个给定的函数 $g(n)$ ，用 $\Omega(g(n))$ 来表示以下函数的集合：<br>
+$$<br>
+\Omega(g(n)) = {f(n): \mbox{there} \space \mbox{exist} \space \mbox{positive}\space \mbox{constants}\space  c\space \mbox{and} \space n_0 \space \mbox{such}\space \mbox{that}\space \ 0  \leq cg(n)\leq f(n)\space \mbox{for} \space \mbox{all}\space n \geq n_0 }<br>
+$$<br>
+显然，$f(n) = \Theta(g(n))$ 蕴含着 $f(n) = \Omega(g(n))$。</p>
+<img src="https://gcore.jsdelivr.net/gh/TAO1st/pics@master/202211231930256.png" srcset="/img/loading.gif" lazyload style="zoom:50%;" />
+<h3 id="渐进确界-Asymptotic-Tight-Bound">渐进确界 Asymptotic Tight Bound</h3>
+<p>要注意理解 <b>渐进确界 / 紧确（tight）</b> 的含义：</p>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>渐进上/下界（$O$，$\Omega$）意味着，对算法在 <b>每个输入</b> 上的运行时间，都能满足该界；</p>
+<p>注意，这两个记号提供的界可能是非渐进紧确、也可能是渐进紧确的，要看具体的输入情况。</p>
+</li>
+<li class="lvl-2">
+<p>渐进确界（$\Theta$）给出的是一个更紧凑的范围，不能保证每个输入都满足其要求。</p>
+</li>
+</ul>
+<p>以插入排序为例：</p>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>在最坏情况下，运行时间为平方级，可以说同时满足于 $O(n^2)$ 与 $\Theta(n^2)$；</p>
+</li>
+<li class="lvl-2">
+<p>在最好情况下，整个输入为有序序列，则插入排序的运行时间为线性。即 $\Theta(n)$，可得对于确界，最坏情况与最好情况为两种不同结果。而对于上界来说，线性仍然满足集合 $O(n^2)$ 的要求，即满足每个输入的情况。</p>
+</li>
+</ul>
+<p>结合插入排序的实例可以说：$n^2 = O(n^2)$ 是渐进紧确（tight）的，而 $n = O(n^2)$ 则不是。</p>
+<p>理解了渐进确界的情况，我们可以引入下述两个表示非渐进确界的渐进记号。</p>
+<h3 id="o-notation">$o$-notation</h3>
+<p>$O$ 记号提供的渐进上界可能是紧确也可能是非紧确的。我们使用 $o$ 记号来表示一个一定非渐进紧确的上界。</p>
+<p>对于一个给定的函数 $g(n)$ ，用 $o(g(n))$ 来表示以下函数的集合：<br>
+$$<br>
+o(g(n)) = {f(n): \mbox{there} \space \mbox{exist} \space \mbox{positive}\space \mbox{constants}\space  c\space \mbox{and} \space n_0 \space \mbox{such}\space \mbox{that}\space \ 0  \leq f(n)&lt; cg(n)\space \mbox{for} \space \mbox{all}\space n \geq n_0 }<br>
+$$<br>
+例如：$2n = o(n^2)$ ，但 $2n^2 \neq o(n^2)$。</p>
+<p>直观来看，$f(n) =o(g(n))$ 表示 $g(n)$ 为 $f(n)$ 不紧确的上界。从数学角度来看，即当 $n$ 趋于无穷大时，$f(n)$ 相对于 $g(n)$ 无穷小：<br>
+$$<br>
+\mathop{lim}\limits_{n\rightarrow \infty}\frac{f(n)}{g(n)} = 0<br>
+$$</p>
+<h3 id="omega-notation">$\omega$-notation</h3>
+<p>与 $o$ 同理，$\omega$ 对应 $\Omega$ 记号，表征一个一定非渐进紧确的下界。</p>
+<p>对于一个给定的函数 $g(n)$ ，用 $\omega(g(n))$ 来表示以下函数的集合：<br>
+$$<br>
+\omega(g(n)) = {f(n): \mbox{there} \space \mbox{exist} \space \mbox{positive}\space \mbox{constants}\space  c\space \mbox{and} \space n_0 \space \mbox{such}\space \mbox{that}\space \ 0  \leq cg(n) &lt; f(n)\space \mbox{for} \space \mbox{all}\space n \geq n_0 }<br>
+$$<br>
+例如：$2n^2 = \omega(n)$ ，但 $2n \neq \omega(n)$。</p>
+<p>直观来看，$f(n) =\omega(g(n))$ 表示 $g(n)$ 为 $f(n)$ 不紧确的下界。从数学角度来看，即当 $n$ 趋于无穷大时，$f(n)$ 相对于 $g(n)$ 无穷大：<br>
+$$<br>
+\mathop{lim}\limits_{n\rightarrow \infty}\frac{f(n)}{g(n)} = \infty<br>
+$$</p>
+<h3 id="不同记号之间的运算性质">不同记号之间的运算性质</h3>
+<p>实数的许多关系性指适用于渐进比较：包括传递性（Transitivity）、自反性（Reflexivity）、对称性（Symmetry）、转置对称性（Transpose Symmetry）等。</p>
+<p>实数的三分性不能带到渐进记号中。</p>
+<p>（算法导论Ch3.1）</p>
 
                 
               </div>
@@ -369,11 +519,9 @@
       
         <a href="/tags/%E6%97%B6%E9%97%B4%E5%A4%8D%E6%9D%82%E5%BA%A6/">#时间复杂度</a>
       
-        <a href="/tags/NP/">#NP</a>
+        <a href="/tags/%E6%95%B0%E5%AD%A6%E8%AF%81%E6%98%8E-Proof/">#数学证明(Proof)</a>
       
-        <a href="/tags/%E7%BA%BF%E6%80%A7%E8%A7%84%E5%88%92/">#线性规划</a>
-      
-        <a href="/tags/%E4%B8%BB%E5%AE%9A%E7%90%86/">#主定理</a>
+        <a href="/tags/%E6%B8%90%E8%BF%9B%E8%AE%B0%E5%8F%B7-Asymptotic-Notation/">#渐进记号(Asymptotic Notation)</a>
       
     </div>
   

@@ -1,0 +1,766 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" >
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/avatar.png">
+  <link rel="icon" href="/img/avatar.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#98a5ac">
+  <meta name="author" content="tao1st">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="最小生成树 Minimum Spanning Tree 基本概念与性质：   最小生成树（MST）即所有边权之和最小的生成树。   MST不唯一，但对应的边权和唯一（最小值）。   必有 $|V|$ 个顶点， $|V| - 1$ 条边。这符合树的基本性质：包含所有图中的顶点，且不存在回路。 由此可得：如果图 $G$ 是一颗树，则其 MST 必定是它本身。   最小生成树的两种算法实现都是典型的贪心">
+<meta property="og:type" content="article">
+<meta property="og:title" content="最小生成树（Minimum Spanning Tree）">
+<meta property="og:url" content="https://tao1st.github.io/2022/12/09/%E6%9C%80%E5%B0%8F%E7%94%9F%E6%88%90%E6%A0%91/index.html">
+<meta property="og:site_name" content="tao1st.github.io">
+<meta property="og:description" content="最小生成树 Minimum Spanning Tree 基本概念与性质：   最小生成树（MST）即所有边权之和最小的生成树。   MST不唯一，但对应的边权和唯一（最小值）。   必有 $|V|$ 个顶点， $|V| - 1$ 条边。这符合树的基本性质：包含所有图中的顶点，且不存在回路。 由此可得：如果图 $G$ 是一颗树，则其 MST 必定是它本身。   最小生成树的两种算法实现都是典型的贪心">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-12-09T08:05:11.000Z">
+<meta property="article:modified_time" content="2022-12-09T08:07:25.232Z">
+<meta property="article:author" content="tao1st">
+<meta property="article:tag" content="Prim">
+<meta property="article:tag" content="Kruskal">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>最小生成树（Minimum Spanning Tree） - tao1st.github.io</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"tao1st.github.io","root":"/","version":"1.9.2","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":3},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.2.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>TAO1st</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/bk7.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.5)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="最小生成树（Minimum Spanning Tree）"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2022-12-09 16:05" pubdate>
+          2022年12月9日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          1.6k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          14 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">最小生成树（Minimum Spanning Tree）</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h2 id="最小生成树-Minimum-Spanning-Tree-2">最小生成树 Minimum Spanning Tree</h2>
+<p>基本概念与性质：</p>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>最小生成树（MST）即所有边权之和最小的生成树。</p>
+</li>
+<li class="lvl-2">
+<p>MST不唯一，但对应的边权和唯一（最小值）。</p>
+</li>
+<li class="lvl-2">
+<p>必有 $|V|$ 个顶点， $|V| - 1$ 条边。这符合树的基本性质：包含所有图中的顶点，且不存在回路。</p>
+<p>由此可得：如果图 $G$ 是一颗树，则其 MST 必定是它本身。</p>
+</li>
+<li class="lvl-2">
+<p>最小生成树的两种算法实现都是典型的<strong>贪心算法</strong>。</p>
+</li>
+<li class="lvl-2">
+<p>最小生成树的存在性同时也表征了 <b>图的连通性</b>。即，生成树的概念只针对连通图。</p>
+<p>如果是非连通图，只存在生成森林。</p>
+</li>
+</ul>
+<h3 id="Prim">Prim</h3>
+<blockquote>
+<p>基本思想：让一颗小树长大从某一起点出发，不断选择 <b>与当前集合 距离最近的节点</b> 加入。</p>
+</blockquote>
+<h4 id="实现-7">实现</h4>
+<p>实现中有两个重点概念：</p>
+<ol>
+<li class="lvl-3">
+<p>集合：集合中的点即代表当前已经处理过的点。可以使用<b>布尔数组</b>或者<b>哈希集合</b>来表示该集合。</p>
+</li>
+<li class="lvl-3">
+<p>与集合的距离：</p>
+<p>初始状态为所有点距离起始点的距离。后续每次向集合中加入新点时，都更新数组（即<b>松弛操作</b>，Relaxation）。即绕该新节点是否能获得离集合更近的距离。</p>
+</li>
+</ol>
+<p>算法流程如下：</p>
+<p>执行 $n$ 次循环。其中 $n$ 代表节点个数，每次循环向集合中加入一个节点。循环体：</p>
+<ol>
+<li class="lvl-3">
+<p><b>找出当前距离集合最近的点 $v$</b>。两种方法实现：</p>
+<ul class="lvl-2">
+<li class="lvl-5">线性遍历；</li>
+<li class="lvl-5">使用<b>堆</b>进行优化；</li>
+</ul>
+</li>
+<li class="lvl-3">
+<p><b>将点 $v$ 加入集合。</b>加入哈希序列或者修改布尔数组的值即可，视具体实现而定。</p>
+</li>
+<li class="lvl-3">
+<p><b>松弛（Relaxation）。</b>更新其他节点与集合的距离，即其他节点绕行该新加入的节点 $v$ 是否能够获得更近的距离。</p>
+</li>
+</ol>
+<blockquote>
+<p>Dijkstra算法和prim算法其实是相同的思路（贪心+松弛），只是在其中记录距离的 $dist$ 数组的含义发生了变化：Dijkstra中代表与源点的距离，而Prim中代表与集合的距离。</p>
+</blockquote>
+<h4 id="效率-5">效率</h4>
+<p>最外层循环共执行 $V$ 次；</p>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>寻找最小值：</p>
+<ul class="lvl-2">
+<li class="lvl-4">线性遍历：$O(V)$</li>
+<li class="lvl-4">堆：$O(logV)$</li>
+</ul>
+</li>
+<li class="lvl-2">
+<p>松弛：</p>
+<ul class="lvl-2">
+<li class="lvl-4">使用邻接表（能够按照边的信息来访问）：$O(E)$</li>
+<li class="lvl-4">使用邻接矩阵：$O(V)$</li>
+</ul>
+<p>如果使用堆，松弛操作进行的修改还涉及堆的调整：$O(logV)$</p>
+</li>
+</ul>
+<p>综上：</p>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>暴力寻找最小值：$O(V^2)$</p>
+</li>
+<li class="lvl-2">
+<p>普通二叉堆：$O((E+V)logV) = O(ElogV)$</p>
+</li>
+</ul>
+<p>使用Fib堆能够有进一步的提升。</p>
+<p>Prim主要由节点数量决定效率，显然适合稠密图。实际应用中虽然复杂度比Kruskal更优，跑起来却未必更快。</p>
+<h3 id="Kruskal">Kruskal</h3>
+<blockquote>
+<p>基本思想：将森林合并成树每次选取 <b>权值最小</b> 且 <b>不会构成回路</b> 的边，加入集合。</p>
+</blockquote>
+<h4 id="实现-8">实现</h4>
+<p>实现中的重点：</p>
+<ol>
+<li class="lvl-3">
+<p>边贪心。即如何从小到大的取边。</p>
+<ul class="lvl-2">
+<li class="lvl-5">排序：将图的信息转换为边的信息，对每条边按照权重从小到大排序。排序是最常用的方法；</li>
+<li class="lvl-5">堆：利用优先队列实现从小到大取。</li>
+</ul>
+</li>
+<li class="lvl-3">
+<p>判断当前加入的边是否为安全边 / 是否会构成回路。</p>
+<p>使用并查集，判断边是否满足要求相当于判断边的两个节点是否在同一集合中。</p>
+</li>
+<li class="lvl-3">
+<p>当前满足条件的边集合。前面使用了并查集来判断安全边，此处继续通过 Union 操作来将边的两个节点合并即可。</p>
+</li>
+</ol>
+<p>算法流程：</p>
+<ol>
+<li class="lvl-3">
+<p>对边进行排序。</p>
+</li>
+<li class="lvl-3">
+<p>从小到大枚举所有边，直至枚举结束或者当前边数已经构成树为止（$|E| = |V| - 1$）。</p>
+</li>
+<li class="lvl-3">
+<p>循环体中：</p>
+<ul class="lvl-2">
+<li class="lvl-5">使用并查集判断当前边是否为安全边（<code>Find</code>操作）；</li>
+<li class="lvl-5">如果为安全边，则加入集合（<code>Union</code>操作）。</li>
+</ul>
+</li>
+<li class="lvl-3">
+<p>如果结束循环时，加入集合的边数量不对（$|E| \neq |V| - 1$），则说明图不连通/生成树不存在。</p>
+</li>
+</ol>
+<h4 id="效率-6">效率</h4>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>排序：$O(ElogE)$</p>
+</li>
+<li class="lvl-2">
+<p>循环+并查集：循环执行 $O(E)$ 次<code>Find</code>与<code>Union</code>操作。</p>
+<p>假定使用按秩合并与路径压缩的并查集：$O(E\alpha(V))$。</p>
+</li>
+</ul>
+<p>综上，总渐进时间复杂度为 $O(ElogE)$。</p>
+<p>考虑到 $|V| - 1\leq|E| &lt; |V|^2$ ，如果是稀疏图，即边的数量接近顶点数量的情况，Kruskal接近$O(VlogV)$。绝大多数情况下，Kruskal的实际性能都更优。</p>
+<h3 id="相关题目-16">相关题目</h3>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p><a target="_blank" rel="noopener" href="http://bailian.openjudge.cn/practice/solution/37220720/">POJ Agri-Net</a></p>
+</li>
+</ul>
+<h3 id="其他相关概念">其他相关概念</h3>
+<p>次优最小生成树（Second-best Minimum Spanning Tree）、瓶颈生成树（Bottleneck Spanning Tree）等。</p>
+<p><a target="_blank" rel="noopener" href="https://oi-wiki.org/graph/mst/">最小生成树 - OI Wiki (oi-wiki.org)</a></p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/" class="category-chain-item">数据结构与算法</a>
+  
+  
+
+      </span>
+    
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/LeetCode/" class="category-chain-item">LeetCode</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/Prim/">#Prim</a>
+      
+        <a href="/tags/Kruskal/">#Kruskal</a>
+      
+    </div>
+  
+</div>
+
+
+              
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2022/12/09/%E7%BD%91%E7%BB%9C%E6%B5%81/" title="网络流">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">网络流</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2022/12/09/%E6%9C%80%E7%9F%AD%E8%B7%AF%E5%BE%84/" title="最短路径（Shortest Path）">
+                        <span class="hidden-mobile">最短路径（Shortest Path）</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>2022</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>TAO1st</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      headingSelector : CONFIG.toc.headingSelector || 'h1,h2,h3,h4,h5,h6',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      collapseDepth   : CONFIG.toc.collapseDepth || 0,
+      scrollSmooth    : true,
+      headingsOffset  : -boardTop
+    });
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.10/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.1/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
