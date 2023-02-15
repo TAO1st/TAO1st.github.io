@@ -1,0 +1,1309 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" >
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/avatar.png">
+  <link rel="icon" href="/img/avatar.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#98a5ac">
+  <meta name="author" content="tao1st">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="关注 x86-64 汇编语言：语法及其实际执行过程。 机器代码 Machine-Level Code 两种抽象机制 指令集体系结构 Instruction Architecture 即 ISA。对 CPU 的抽象。定义了处理器的状态、指令格式、指令对处理器状态的影响等等。机器级代码能够接触到很多对C语言隐藏的特性，其中很重要的一个就是CPU中的 寄存器。 虚拟存储器 Virtual Memory">
+<meta property="og:type" content="article">
+<meta property="og:title" content="15-213: Machine-Level Representation">
+<meta property="og:url" content="https://tao1st.github.io/2023/02/15/15-213-Machine-Level-Representation/index.html">
+<meta property="og:site_name" content="tao1st.github.io">
+<meta property="og:description" content="关注 x86-64 汇编语言：语法及其实际执行过程。 机器代码 Machine-Level Code 两种抽象机制 指令集体系结构 Instruction Architecture 即 ISA。对 CPU 的抽象。定义了处理器的状态、指令格式、指令对处理器状态的影响等等。机器级代码能够接触到很多对C语言隐藏的特性，其中很重要的一个就是CPU中的 寄存器。 虚拟存储器 Virtual Memory">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://gcore.jsdelivr.net/gh/TAO1st/pics@master/20221005214122.png">
+<meta property="og:image" content="https://gcore.jsdelivr.net/gh/TAO1st/pics@master/202211082058886.png">
+<meta property="og:image" content="https://gcore.jsdelivr.net/gh/TAO1st/pics@master/20221005202810.png">
+<meta property="og:image" content="https://gcore.jsdelivr.net/gh/TAO1st/pics@master/202211082202542.png">
+<meta property="og:image" content="https://gcore.jsdelivr.net/gh/TAO1st/pics@master/202211082210307.png">
+<meta property="og:image" content="https://gcore.jsdelivr.net/gh/TAO1st/pics@master/202211082211579.png">
+<meta property="og:image" content="https://gcore.jsdelivr.net/gh/TAO1st/pics@master/202211101457437.png">
+<meta property="og:image" content="https://gcore.jsdelivr.net/gh/TAO1st/pics@master/202211101514789.png">
+<meta property="og:image" content="https://gcore.jsdelivr.net/gh/TAO1st/pics@master/202211101634721.png">
+<meta property="og:image" content="https://gcore.jsdelivr.net/gh/TAO1st/pics@master/202302082151176.png">
+<meta property="og:image" content="https://gcore.jsdelivr.net/gh/TAO1st/pics@master/202212282022621.png">
+<meta property="og:image" content="https://gcore.jsdelivr.net/gh/TAO1st/pics@master/202212282156516.png">
+<meta property="og:image" content="https://gcore.jsdelivr.net/gh/TAO1st/pics@master/202212292118790.png">
+<meta property="og:image" content="https://gcore.jsdelivr.net/gh/TAO1st/pics@master/202301131718042.png">
+<meta property="og:image" content="https://gcore.jsdelivr.net/gh/TAO1st/pics@master/202301131725311.png">
+<meta property="og:image" content="https://gcore.jsdelivr.net/gh/TAO1st/pics@master/202301261113846.png">
+<meta property="og:image" content="https://gcore.jsdelivr.net/gh/TAO1st/pics@master/202302092047995.png">
+<meta property="article:published_time" content="2023-02-15T13:03:11.203Z">
+<meta property="article:modified_time" content="2023-02-15T13:01:17.860Z">
+<meta property="article:author" content="tao1st">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://gcore.jsdelivr.net/gh/TAO1st/pics@master/20221005214122.png">
+  
+  
+  
+  <title>15-213: Machine-Level Representation - tao1st.github.io</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"tao1st.github.io","root":"/","version":"1.9.2","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":3},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.2.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>TAO1st</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/bk7.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.5)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="15-213: Machine-Level Representation"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2023-02-15 21:03" pubdate>
+          2023年2月15日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          12k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          96 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">15-213: Machine-Level Representation</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>关注 x86-64 汇编语言：语法及其实际执行过程。</p>
+<h2 id="机器代码-Machine-Level-Code-2">机器代码 Machine-Level Code</h2>
+<h3 id="两种抽象机制-2">两种抽象机制</h3>
+<h4 id="指令集体系结构-Instruction-Architecture-2">指令集体系结构 Instruction Architecture</h4>
+<p>即 ISA。对 CPU 的抽象。定义了处理器的状态、指令格式、指令对处理器状态的影响等等。机器级代码能够接触到很多对C语言隐藏的特性，其中很重要的一个就是CPU中的 <b>寄存器</b>。</p>
+<h4 id="虚拟存储器-Virtual-Memory-2">虚拟存储器 Virtual Memory</h4>
+<p>按字节寻址的一个大数组。<br>
+x86-64的虚拟地址由64位指定。目前的实现中，<b>高地址的16位必须置 0</b> ，所以一个地址实际能指向的范围是 $2^{48}$ 或 256TB 个字节。</p>
+<h3 id="x86-64-汇编-2">x86-64 汇编</h3>
+<h4 id="CISC-2">CISC</h4>
+<p>x86-64 属于 CISC 风格汇编语言。特性是指令长度不定长，从 1 到 15 个字节不等。常用的指令以及操作数较少的指令所需的字节数少，而那些不太常用或操作数较多的指令所需字节数较多。</p>
+<h4 id="C程序与汇编代码的结合-2">C程序与汇编代码的结合</h4>
+<ol>
+<li class="lvl-3">
+<p>写单独的 .s 汇编文件编写完整的函数，放进独立的汇编代码文件中（.s），让 <b>汇编器</b> 和 <b>链接器</b> 来合并。</p>
+</li>
+<li class="lvl-3">
+<p>GCC 的内联汇编（inline assembly）用 asm 伪指令在 C 程序中包含简短的汇编代码。可以大大减少与机器相关的代码量。</p>
+</li>
+</ol>
+<p>需要注意的是，C 代码与汇编代码相结合会使得 这部分代码与特定机器相关。所以尽量减少这种方法的使用，除非当前机器的某些特性只能通过该种方式来访问。</p>
+<h4 id="ATT-与-Intel-格式-2">ATT 与 Intel 格式</h4>
+<p>下文均采用 ATT 格式表述。</p>
+<h2 id="数据格式-Data-Formats-2">数据格式 Data Formats</h2>
+<p>如下表所示，为 x86-64 下 C语言中数据类型的相关信息。其中，通过在指令后加相应的后缀来指明操作数的大小：字节（<code>b</code>）、字（<code>w</code>）、双字（<code>l</code>） 与 四字（<code>q</code>）。</p>
+<table>
+<thead>
+<tr>
+<th>C declaration</th>
+<th>Intel data type</th>
+<th style="text-align:center">Assembly-code suffix</th>
+<th style="text-align:center">Size (bytes)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>char</td>
+<td>Byte</td>
+<td style="text-align:center">b</td>
+<td style="text-align:center">1</td>
+</tr>
+<tr>
+<td>short</td>
+<td>Word</td>
+<td style="text-align:center">w</td>
+<td style="text-align:center">2</td>
+</tr>
+<tr>
+<td>int</td>
+<td>Double word</td>
+<td style="text-align:center">l</td>
+<td style="text-align:center">4</td>
+</tr>
+<tr>
+<td>long</td>
+<td>Quad word</td>
+<td style="text-align:center">q</td>
+<td style="text-align:center">8</td>
+</tr>
+<tr>
+<td>char*</td>
+<td>Quad word</td>
+<td style="text-align:center">q</td>
+<td style="text-align:center">8</td>
+</tr>
+<tr>
+<td>float</td>
+<td>Single precision</td>
+<td style="text-align:center">s</td>
+<td style="text-align:center">4</td>
+</tr>
+<tr>
+<td>double</td>
+<td>Double precision</td>
+<td style="text-align:center">l</td>
+<td style="text-align:center">8</td>
+</tr>
+</tbody>
+</table>
+<p>浮点数与上述格式略有不同，<code>float</code>对应独有的后缀 <code>s</code>；而<code>double</code>对应的指令后缀也为<code>l</code>。这并不会与上述双字的情况产生歧义，因为 <b>浮点数采用的是一组完全不同的指令和寄存器</b>。</p>
+<h2 id="数据访问-Accessing-Data-2">数据访问 Accessing Data</h2>
+<p>访问的数据来源有两个：</p>
+<ol>
+<li class="lvl-3">
+<p>一组 16 个 存储 64 位值的 <b>通用目的寄存器（general-purpose）</b>。</p>
+</li>
+<li class="lvl-3">
+<p>内存。</p>
+</li>
+</ol>
+<h3 id="寄存器-Register-2">寄存器 Register</h3>
+<p>如图所示，其中：</p>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p><code>%r8</code>到<code>%r15</code>是 x86-64 新增的 8 个寄存器；</p>
+</li>
+<li class="lvl-2">
+<p>不同后缀的指令进行不同大小规模的操作，修改对应大小的寄存器位。对于指令生成的结果小于 64 位 / 8 字节的情况，剩余高位部分的填充按照如下规则：</p>
+<ol>
+<li class="lvl-5">生成 1 字节 或 2 字节结果的指令：保持剩下的高位字节不变；</li>
+<li class="lvl-5">生成 4 字节 / 32位结果的指令：<b>将剩下的高位 4 个字节全部置0</b>。该规则是向前继承 IA32 时采用的特性。</li>
+</ol>
+</li>
+</ul>
+<img src="https://gcore.jsdelivr.net/gh/TAO1st/pics@master/20221005214122.png" srcset="/img/loading.gif" lazyload style="zoom:50%;" />
+<h4 id="功能约定-2">功能约定</h4>
+<p>不同的寄存器扮演不同的功能角色（如上图中右侧注释）。有一组标准的编程规范控制着如何使用寄存器。</p>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>返回值：<code>%rax</code></p>
+</li>
+<li class="lvl-2">
+<p>参数：按顺序从前到后，<code>%rdi</code>、<code>%rsi</code>、<code>%rdx</code>、<code>%rcx</code>、<code>%r8</code>、<code>%r9</code></p>
+</li>
+<li class="lvl-2">
+<p>局部变量</p>
+</li>
+</ul>
+<h3 id="内存-Memory-2">内存 Memory</h3>
+<p>从程序的角度访问的是专属的虚拟内存，分布如图。地址从下往上增大。</p>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>高地址处存放操作系统内核保留区域；</p>
+</li>
+<li class="lvl-2">
+<p>栈：向下增长，低地址为栈顶；</p>
+</li>
+<li class="lvl-2">
+<p>堆：向上增长，新元素地址更大；</p>
+</li>
+</ul>
+<img src="https://gcore.jsdelivr.net/gh/TAO1st/pics@master/202211082058886.png" srcset="/img/loading.gif" lazyload style="zoom:50%;" />
+<h3 id="操作数-Operand-2">操作数 Operand</h3>
+<h4 id="操作数格式-2">操作数格式</h4>
+<p>操作数格式分为三种：</p>
+<ol>
+<li class="lvl-3">
+<p>立即数 immediate</p>
+<p>表示常数值。书写方式为 <code>$</code> 符号后跟一个整数。不同指令允许的立即数值范围肯定不同，汇编器会自动选择最紧凑的方式来进行数值编码。</p>
+</li>
+<li class="lvl-3">
+<p>寄存器 register</p>
+<p>书写方式为 <code>R[%xxx]</code></p>
+</li>
+<li class="lvl-3">
+<p>内存引用 memory reference</p>
+<p>书写方式为 <code>M[ea]</code>。表示根据计算出来的有效地址（Effective Address, EA） 来访问对应位置的内存。</p>
+</li>
+</ol>
+<p>不同指令操作数不同，通常为一个或多个，我们按照 源操作数 与 目的操作数 两种类型来讨论。</p>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>源操作数：可以是立即数、也可以是寄存器或内存读出；</p>
+</li>
+<li class="lvl-2">
+<p>目的操作数：存放在寄存器或者内存中。</p>
+</li>
+</ul>
+<h4 id="寻址模式-2">寻址模式</h4>
+<p>操作数具体的寻址格式如下表：</p>
+<img src="https://gcore.jsdelivr.net/gh/TAO1st/pics@master/20221005202810.png" srcset="/img/loading.gif" lazyload style="zoom:50%;" />
+<h3 id="数据传送指令-Data-Management-Instructions-2">数据传送指令 Data Management Instructions</h3>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>将数据从一个位置复制到另一个位置的指令。</p>
+</li>
+<li class="lvl-2">
+<p>源操作数：可以是 立即数、寄存器、或内存引用；</p>
+<p>目的操作数：可以是 寄存器、内存引用；</p>
+<p>传送指令的两个操作数不能同时指向内存。即<b>不能实现内存到内存的直接移动</b>，而需要寄存器来作中继。</p>
+</li>
+<li class="lvl-2">
+<p>操作数大小要与指令后缀指定的大小相匹配，指令也只会更新对应大小的位；</p>
+<p>唯一的例外就是：<b>当目的操作数为 双字 / long word / 32bits 大小的寄存器时，高位会全部置 0。</b></p>
+</li>
+</ul>
+<h4 id="基础传送指令类-2">基础传送指令类</h4>
+<p>首先是最基础的 MOV 指令类，将数据简单的从源位置复制到目的位置，不作任何修改：</p>
+<img src="https://gcore.jsdelivr.net/gh/TAO1st/pics@master/202211082202542.png" srcset="/img/loading.gif" lazyload style="zoom:50%;" />
+<p><code>movabsq</code> 是一个特殊为 64 位立即数设置的指令。这是因为 <code>movq</code> 指令的源操作数只能接受 32 位补码立即数，然后将该值符号扩展得到 64 位的值后送入目的位置。而 <code>movabsq</code> 则可以直接以任意 64 位立即数值作为源操作数，并且只能以（64位）寄存器作为目的操作数。</p>
+<h4 id="扩展传送指令类-2">扩展传送指令类</h4>
+<p>扩展传送指令即，将 尺寸较小的源值 复制到 尺寸较大的目的 中时使用。扩展时根据扩展形式分为以下两种：</p>
+<ol>
+<li class="lvl-3">
+<p>零扩展传送指令</p>
+<p>即剩余高位全补 0 。</p>
+<img src="https://gcore.jsdelivr.net/gh/TAO1st/pics@master/202211082210307.png" srcset="/img/loading.gif" lazyload style="zoom:50%;" />
+<ul class="lvl-2">
+<li class="lvl-5">
+<p>z 代表 zero，后两位为大小指示符。</p>
+</li>
+<li class="lvl-5">
+<p>不存在 <code>movzlq</code> 指令。因为对源为 long word 的情况，高位会自动补0。直接使用 <code>movl</code> 指令即可达到同样的效果。</p>
+</li>
+</ul>
+</li>
+<li class="lvl-3">
+<p>符号扩展传送指令</p>
+<p>即对剩余高位进行符号扩展。</p>
+<p>注意一个特殊的指令：</p>
+<ul class="lvl-2">
+<li class="lvl-5">
+<p><code>cltq</code>（convert long to quad）：总是将 <code>%eax</code> 作为源，将 <code>%rax</code> 作为目的。即32位符号扩展至64位。</p>
+<p>其效果与指令 <code>movslq %eax, %rax</code> 完全一致，但编码更为紧凑。</p>
+</li>
+</ul>
+<img src="https://gcore.jsdelivr.net/gh/TAO1st/pics@master/202211082211579.png" srcset="/img/loading.gif" lazyload style="zoom:50%;" />
+</li>
+</ol>
+<blockquote>
+<p>数据传送指令的一些注意事项（练习3.4）：</p>
+<ul class="lvl-1">
+<li class="lvl-2">
+<p>扩展传送指令的选择（符号扩展还是零扩展？），主要取决于源操作数：</p>
+<ul class="lvl-3">
+<li class="lvl-4">源操作数为 无符号，则采用零扩展；</li>
+<li class="lvl-4">源操作数为 有符号，则采用符号扩展。</li>
+</ul>
+</li>
+<li class="lvl-2">
+<p>同时存在 符号变化 与 大小变化 的情况下，先转换大小、再转换符号（2.2.6节+练习题3.4，见书）。</p>
+<p>这个规则是C语言标准要求的。</p>
+</li>
+<li class="lvl-2">
+<p>仅大小转换的情况，先完全读出，再按照大小存储（练习题3.4）。</p>
+</li>
+</ul>
+</blockquote>
+<h3 id="压入和弹出栈指令-2">压入和弹出栈指令</h3>
+<p>首先关注<strong>程序栈（Program Stack）</strong>：</p>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p><b>内存</b> 的一部分，可以通过标准内存的寻址方式访问。栈的位置通过栈顶指针 <code>%rsp</code> 来确定；</p>
+</li>
+<li class="lvl-2">
+<p>对于处理 <b>过程调用</b> 至关重要；</p>
+</li>
+<li class="lvl-2">
+<p>栈向下增长，栈顶元素处于低地址；</p>
+</li>
+</ul>
+<p>具体指令见下表：</p>
+<img src="https://gcore.jsdelivr.net/gh/TAO1st/pics@master/202211101457437.png" srcset="/img/loading.gif" lazyload style="zoom:50%;" />
+<p>两条指令的效果如上表中所述，压入和弹出栈指令与如下指令组合等价：</p>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p><code>pushq %source</code>:</p>
+<ul class="lvl-2">
+<li class="lvl-4"><code>subq %8, %rsp</code></li>
+<li class="lvl-4"><code>movq %source, (%rsp)</code></li>
+</ul>
+</li>
+<li class="lvl-2">
+<p><code>popq</code></p>
+<ul class="lvl-2">
+<li class="lvl-4"><code>movq (%rsp), %rax</code></li>
+<li class="lvl-4"><code>addq %8, %rsp</code></li>
+</ul>
+</li>
+</ul>
+<p>栈相关指令的优势就在于编码长度更短。</p>
+<h2 id="算术与逻辑操作-2">算术与逻辑操作</h2>
+<p>针对整数的算术与逻辑操作，如下：</p>
+<img src="https://gcore.jsdelivr.net/gh/TAO1st/pics@master/202211101514789.png" srcset="/img/loading.gif" lazyload style="zoom: 33%;" />
+<h3 id="加载有效地址-LEA-2">加载有效地址 LEA</h3>
+<p>加载有效地址（load effective address）指令其实就是数据传送指令的简单变形。唯一的区别在于：<code>mov</code>指令根据寻址模式计算出地址后，读取或存储相应地址空间的数据；而 <code>lea</code> 指令则计算出地址后，直接操作地址数据（即有效地址EA），并没有任何访存相关的操作。</p>
+<p>该指令的作用非常灵活：</p>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>为内存引用产生 <b>指针</b>。毕竟指针的本质就也是地址。</p>
+</li>
+<li class="lvl-2">
+<p>编译器常常会利用该指令进行一些<b>普通的算术运算</b>，这也是实际汇编代码中最常见的用途。该种用途与有效地址计算完全无关，只是利用了该指令的灵活性计算一些常见算术运算（<b>加法</b> 以及 <b>有限形式的乘法</b>）。</p>
+</li>
+<li class="lvl-2">
+<p>目的操作数必须为寄存器，即计算结果存放至寄存器中。</p>
+</li>
+</ul>
+<h3 id="一元与二元算术操作-2">一元与二元算术操作</h3>
+<p>没什么特别的。</p>
+<h3 id="移位操作-2">移位操作</h3>
+<p>移位操作的操作数上有一定的功能性约束：</p>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>第一个操作数 $k$：代表位移量，约束为两种格式：</p>
+<ol>
+<li class="lvl-5">
+<p>立即数。</p>
+</li>
+<li class="lvl-5">
+<p>单字节寄存器<code>%cl</code></p>
+<p>移位操作如果想要使用寄存器中的数作为位移量，只能使用该特定寄存器。</p>
+<p>形式上来说，单字节对位移量编码，则位移量最大范围可以达到 $2^8 - 1 = 255$ 位。实际进行唯一操作时，会根据数据类型长度来缩减位移量，只采用寄存器中的低位，高位会被忽略。</p>
+</li>
+</ol>
+</li>
+<li class="lvl-2">
+<p>第二个操作数：要进行移位的目的数。可以是寄存器或者内存引用。</p>
+</li>
+</ul>
+<p>根据逻辑移位和算术移位分为两种移位指令：</p>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>逻辑左移和算术左移完全一致，因为低位肯定都补零；</p>
+</li>
+<li class="lvl-2">
+<p>逻辑右移和算术右移有区别：逻辑右移高位补零，算术右移高位补符号位。</p>
+</li>
+</ul>
+<h3 id="支持128位数的操作-2">支持128位数的操作</h3>
+<p>64位数的<b>乘除法运算</b>会涉及128位数，Intel 将 128 位数按照规则命名为八字（octal word）。<br>
+128位数的存放通常使用两个寄存器分别存放高 64 与 低 64 位，如下表为相关的支持指令（均为<b>单操作数指令</b>）：</p>
+<img src="https://gcore.jsdelivr.net/gh/TAO1st/pics@master/202211101634721.png" srcset="/img/loading.gif" lazyload style="zoom: 33%;" />
+<p>主要分为 乘法、除法 与 扩展三种操作，相关特点如下：</p>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>乘法：乘法指令有两种不同形式，即双操作数与单操作数两种情况。汇编器会根据操作数的数目分辨出实际为哪条指令。</p>
+</li>
+<li class="lvl-2">
+<p>除法：无符号除法操作下，<code>%rdx</code> 通常会事先设置为 0。</p>
+</li>
+<li class="lvl-2">
+<p>扩展：另外一个特殊的指令为 <code>cqto</code> 指令（convert quad to octal）：对于 64 位除法运算，被除数虽然最大能够接受 128 位，但其常常仅为一个 64 位的值。此时我们应该将 64 位的值扩展至 128 位。低 64 位通常存放在 <code>%rax</code> 中，扩展规则如下：</p>
+<ul class="lvl-2">
+<li class="lvl-4">
+<p>对于无符号数，将 <code>%rdx</code> 置零；</p>
+</li>
+<li class="lvl-4">
+<p>对于有符号数，将<code>%rax</code>中的符号位扩展至 <code>%rdx</code>。</p>
+</li>
+</ul>
+<p>以上的扩展操作，可以用指令 <code>cqto</code> 轻松完成。该条指令无需操作数，对于符号扩展可以隐含读取 <code>%rax</code> 中的符号位并复制到 <code>%rdx</code> 中的所有位。</p>
+</li>
+</ul>
+<h2 id="控制-Control-2">控制 Control</h2>
+<p>机器代码提供了两种基本的低级机制来实现有条件的行为：测试数据值，然后通过测试的结果来改变控制流或者数据流。</p>
+<h3 id="基本机制-2">基本机制</h3>
+<h4 id="条件码-Condition-Code-2">条件码 Condition Code</h4>
+<p>除了上述介绍的整数寄存器外，CPU 还维护了一组单个位的 <b>条件码（condition code）寄存器</b> 。条件码寄存器中的内容包括一系列 标志位，其描述了一系列最近的算术或者逻辑操作的属性。最常用的条件码为：</p>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>CF（Carry Flag）：操作得到的结果产生了进位。可用于检查<b>无符号操作</b>的溢出。</p>
+</li>
+<li class="lvl-2">
+<p>ZF（Zero Flag）：操作得到的结果为0；</p>
+</li>
+<li class="lvl-2">
+<p>SF（Sign Flag）：操作得到的结果为负数；</p>
+</li>
+<li class="lvl-2">
+<p>OF（Overflow Flag）：操作导致补码溢出，可以分为正溢出与负溢出。</p>
+</li>
+</ul>
+<h4 id="设置条件码-CMP-TEST-2">设置条件码 CMP &amp; TEST</h4>
+<p>指令的结果会影响条件码的值，不同类型的指令作用结果不同。</p>
+<p>普通算术逻辑指令的注意事项：</p>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p><code>lea</code> 指令不修改条件码，除此之外，其他算术逻辑指令都会设置条件码。</p>
+</li>
+<li class="lvl-2">
+<p>逻辑操作（与或非）：无需考虑进位和溢出的情况，故二者均设置为0；</p>
+</li>
+<li class="lvl-2">
+<p>移位操作：</p>
+<ul class="lvl-2">
+<li class="lvl-4">进位标志会被设置为最后一个被移出的位；</li>
+<li class="lvl-4">溢出标志会设置位0；</li>
+</ul>
+</li>
+<li class="lvl-2">
+<p>自增指令：<code>INC</code>与<code>DEC</code>指令会设置溢出和零标志，但不会改变进位标志。</p>
+</li>
+</ul>
+<p>除此之外，存在两类的特殊指令，其作用只用于设置条件码，而不会改变任何其他寄存器：</p>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p><code>CMP</code>：与<code>SUB</code>指令行为一致。用于比较两个操作数之间的大小关系；</p>
+</li>
+<li class="lvl-2">
+<p><code>TEST</code>：与<code>AND</code>指令行为一致。一般来说典型的用法是：</p>
+<ul class="lvl-2">
+<li class="lvl-4">设置两个一样的操作数，用于检查该操作数是负数、正数、还是零；</li>
+<li class="lvl-4">其中一个操作数设置为掩码，指明对于另一个操作数哪些位应该被测试。</li>
+</ul>
+</li>
+</ul>
+<img src="https://gcore.jsdelivr.net/gh/TAO1st/pics@master/202302082151176.png" srcset="/img/loading.gif" lazyload style="zoom: 50%;" />
+<h4 id="使用条件码-SET-2">使用条件码 SET</h4>
+<p>条件码通常不会直接读取，我们可以使用如下指令，根据条件码的取值情况，将一个目标字节设置为0或者1。</p>
+<img src="https://gcore.jsdelivr.net/gh/TAO1st/pics@master/202212282022621.png" srcset="/img/loading.gif" lazyload style="zoom:33%;" />
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>set指令的目的操作数总是低位单字节寄存器之一，或是一个字节长度的内存位置；</p>
+</li>
+<li class="lvl-2">
+<p>同义名（synonym）：如表格中所述，有些机器指令可能会有多个名字，比如有符号大于（<code>setg</code>）和不小于（<code>setnle</code>）显然是同样的作用。汇编与反汇编器会随意决定使用哪个名字。</p>
+</li>
+<li class="lvl-2">
+<p>所有的判断都是根据条件码的不同组合获得的。具体见表格。</p>
+</li>
+<li class="lvl-2">
+<p>SET通常紧跟在CMP和TEST后面，根据其结果执行操作，以表达判断。</p>
+</li>
+</ul>
+<blockquote>
+<p><strong>关于机器代码对有符号与无符号值操作的区分</strong></p>
+<p>It is important to note how machine code <b>does</b> or <b>does not</b> distinguish between signed and unsigned values.<br>
+Unlike in C, it does not associate a data type with each program value. Instead, it mostly uses the same instructions for the two cases, because many arithmetic operations have <b>the same bit-level behavior</b> for unsigned and two’s-complement arithmetic.<br>
+Some circumstances require different instructions to handle signed and unsigned operations, such as using different versions of right shifts, division and multiplication instructions, and different combinations of condition codes.</p>
+</blockquote>
+<h4 id="跳转指令-JMP-2">跳转指令 JMP</h4>
+<p>作用即跳转到标号（label）指明的一个全新的位置。</p>
+<img src="https://gcore.jsdelivr.net/gh/TAO1st/pics@master/202212282156516.png" srcset="/img/loading.gif" lazyload style="zoom:33%;" />
+<h4 id="分类-2">分类</h4>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>无条件跳转：</p>
+<ul class="lvl-2">
+<li class="lvl-4">直接跳转：根据地址直接跳转；</li>
+<li class="lvl-4">间接跳转：间接寻址。寻址方式如前所述。跳转目标可以是寄存器中的值（<code>*%rax</code>），也可以是寄存器中地址指向的内存中的值（<code>*(%rax)</code>）。</li>
+</ul>
+</li>
+<li class="lvl-2">
+<p>条件跳转：根据条件码组合的结果来确定是否跳转。不跳转就会继续执行下一条指令。</p>
+<p>条件跳转只能是直接跳转，无法进行间接寻址。</p>
+</li>
+</ul>
+<h4 id="目标地址编码-2">目标地址编码</h4>
+<p>在产生目标代码文件时，汇编器会确定所有带标号指令（label）的地址，并将跳转目标（目的指令的地址）编码为跳转指令的一部分。对于目标地址的编码有两种方式，汇编器和链接器会选择适当的编码方式：</p>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>PC-relative（PC相对的）：PC中存放的是下一条指令的地址，即将<b>下一条指令的地址</b>与<b>目标指令的地址</b>之间的差作为编码；</p>
+<p>地址偏移量可以编码为1、2或4个字节。</p>
+<p>相对地址的方式显然具有优势：代码段和指令在多次执行时可能被重定位到内存中的不同位置，而相对地址的编码方式可以对目标代码不做改变就移动到不同位置。</p>
+</li>
+<li class="lvl-2">
+<p>绝对地址：用4个字节直接指定目标地址。</p>
+</li>
+</ul>
+<hr>
+<p>利用上述基本机制，有多种实现高级语言中控制流变换的方法。</p>
+<h3 id="条件分支-if-2">条件分支 if</h3>
+<p>首先，我们定义一个高级语言下的通用伪代码模板：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs C"><span class="hljs-keyword">if</span> (test-expr) <br>    then-statement<br><span class="hljs-keyword">else</span><br>    <span class="hljs-keyword">else</span>-statement<br></code></pre></td></tr></table></figure>
+<p>实现条件分支（conditional branches）有两种方式：</p>
+<h4 id="1-使用JMP指令实现条件转移（Conditional-Control）-2">1 使用JMP指令实现条件转移（Conditional Control）</h4>
+<p>条件控制即使用跳转指令JMP来实现。汇编器为 $then-statement$ 与 $else-statement$ 产生各自的代码块，并插入条件与无条件跳转以实现执行正确的代码块。其基本实现逻辑如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs c">	t = text-expr;<br>	<span class="hljs-keyword">if</span> (!t) <br>        <span class="hljs-keyword">goto</span> <span class="hljs-literal">false</span>;<br>	then-statement;<br>	<span class="hljs-keyword">goto</span> done;<br><span class="hljs-literal">false</span>:<br>	<span class="hljs-keyword">else</span>-statement;<br>done:<br></code></pre></td></tr></table></figure>
+<p>两种值得注意的特殊情况：</p>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p><b>没有 $else$ 语句</b>的情况值得注意的点是：if 和 else 的两个分支的代码部分位置显然可以调换。但对于<b>没有 $else$ 语句</b>的情况，上述方式可以更简单的修改为：</p>
+  <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs c">t = text-expr;<br>  <span class="hljs-keyword">if</span> (!t)<br>     <span class="hljs-keyword">goto</span> done;<br>  then-statment;<br>  done:<br></code></pre></td></tr></table></figure>
+</li>
+<li class="lvl-2">
+<p>判断语句存在短路求值等复杂情况</p>
+<p>短路求值的情况下，相当于多次分支判断。（练习题3.16）</p>
+</li>
+</ul>
+<h4 id="2-基于数据的条件传送指令（Conditional-Moves）-2">2 基于数据的条件传送指令（Conditional Moves）</h4>
+<p>使用JMP指令进行跳转的方式会存在控制流大量的跳转，对于现代处理器架构中的<strong>流水线</strong>来说，这是一个很大的性能瓶颈。为了去掉控制流的分支跳转，我们引入基于数据的条件传送，其基本逻辑如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs c">v = then-expr;<br>ve = <span class="hljs-keyword">else</span>-expr;<br>t = text-expr;<br><span class="hljs-keyword">if</span>(!t)                   <span class="hljs-comment">// 该部分条件传送由条件传送指令来实现</span><br>    v = ve;			     <span class="hljs-comment">// 仅当符合条件时，才会进行值的传送</span><br><span class="hljs-keyword">return</span> v;<br></code></pre></td></tr></table></figure>
+<h5 id="适用情况-2">适用情况</h5>
+<p>条件传送的方式下，会对 then 与 else 两部分语句块提前计算出结果。这样做的方式使得：</p>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>流水线无·需进行分支预测，更容易充满，效率更高；</p>
+</li>
+<li class="lvl-2">
+<p>不是所有的条件表达式都可以用条件传送来编译。很多情况下不能提前对结果进行计算。任一表达式如果可能产生错误条件或副作用（比如空指针的引用），都会导致非法的行为。</p>
+</li>
+<li class="lvl-2">
+<p>条件传送也不是总会提高代码的效率。如果两个分支语句块需要大量的计算，则流水线上的补偿也得不偿失。显然，编译器在做出判断时应该了解分支浪费的计算和分支预测错误的开销二者之间的大小关系，但实际很难有足够的信息做出正确的判断。实际应用中，通常只有两个表达式都很容易计算时，例如表达式分别都只是一条加法指令，它才会适用条件传送。根据经验来说，即使许多分支预测错误的开销是相对更大的，GCC也还是会使用条件控制转移（JMP指令）。总体来说，条件数据传送只能用于非常受限制的情况，但这些情况也是相当常见的，而且这种方式与现代处理器结构（流水线）更契合。</p>
+</li>
+</ul>
+<h5 id="条件传送指令-2">条件传送指令</h5>
+<p>条件传送（Conditional Moves）需要借助条件传送指令来实现，具体如下表：</p>
+<img src="https://gcore.jsdelivr.net/gh/TAO1st/pics@master/202212292118790.png" srcset="/img/loading.gif" lazyload style="zoom:33%;" />
+<p>普通的无条件传送指令MOV会将操作数的长短显式的编码在指令名中（<code>movl</code>, <code>movb</code>）。而条件传送指令不同，汇编器要从目标寄存器的名字来推断出操作数的实际长度，因此对所有的操作数长度，都可以使用同一个指令名。</p>
+<p>源操作数和目的操作数可以是16位、32位或64位长，不支持单字节的条件传送。</p>
+<h3 id="循环-while-for-2">循环 while &amp; for</h3>
+<h4 id="do-while-2">do-while</h4>
+<p>do-while loop至少会对循环体语句执行一次，比较容易实现，逻辑如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-keyword">do</span> &#123;<br>    body-statement<br>&#125; <span class="hljs-keyword">while</span> (text-expr);<br><br>loop:<br>	body-statement<br>    t = text-expr;<br>	<span class="hljs-keyword">if</span> (t) <br>        <span class="hljs-keyword">goto</span> loop;<br></code></pre></td></tr></table></figure>
+<h4 id="while-2">while</h4>
+<p>while语句的区别在于，其需要先对 $text-expr$ 进行一次测试，如果首次测试就失败，则不会执行循环体。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-keyword">while</span> (text-expr) <br>    body-statement<br></code></pre></td></tr></table></figure>
+<p>实现while循环有两种方式：</p>
+<ol>
+<li class="lvl-3">
+<p>jump to middle</p>
+<p>分别设置两个标号：loop 代表循环体内容，test 代表分支判断。其中 loop 在 test 前，第一句执行一个 goto 语句至 test 标号处执行第一次测试。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-keyword">goto</span> test					<span class="hljs-comment">// 每次循环开始的 goto 跳转对流水线不友好</span><br>loop:<br>	body-statement<br>test:<br>	t = test-expr;<br>	<span class="hljs-keyword">if</span> (t) <br>        <span class="hljs-keyword">goto</span> loop;<br></code></pre></td></tr></table></figure>
+<p>这种方式的弊端显而易见：每次循环必有一句分支跳转，对于流水线显然不友好。</p>
+</li>
+<li class="lvl-3">
+<p>guarded-do</p>
+<p>第一次初始测试通过分支判断来实现，从而将while转换为do-while：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs C">t = test-expr;<br><span class="hljs-keyword">if</span> (!t) <br>    <span class="hljs-keyword">goto</span> done; <br>loop:<br>	body-statement<br>	t = test-expr;<br>	<span class="hljs-keyword">if</span> (t) <br>        <span class="hljs-keyword">goto</span> loop;<br>done:<br></code></pre></td></tr></table></figure>
+<p>两种不同翻译的区别取决于优化的等级，使用较高优化等级编译时，例如使用命令行选项<code>-O1</code>，GCC会采用这种策略。其减少了开始一定会有的<code>goto</code>控制流变化，更适合现代处理器中的流水线。</p>
+</li>
+</ol>
+<h4 id="for-2">for</h4>
+<p>通用逻辑形式如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-keyword">for</span> (init-expr; test-expr; update-expr) <br>    body-statement<br></code></pre></td></tr></table></figure>
+<p>这种逻辑形式可以转换为如下等效的while循环：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs c">init-expr;<br><span class="hljs-keyword">while</span> (test-expr) &#123;<br>    body-statement<br>    update-expr;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>所以，GCC会将 for 语句按照 while 循环的两种翻译形式产生对应代码。特殊的，如果 for 语句循环中存在<b> continue 语句</b>，则需要对代码进行适当修改，因为 update-expr 被放入了 while 循环的循环体，如果直接跳过循环，则意味着跳过 update-expr，导致进入死循环（Practice Problem 3.29）。应增加相应的 goto 语句与标签：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs C">init-expr;<br><span class="hljs-keyword">while</span> (test-expr) &#123;<br>	body-statement;<br>	<span class="hljs-keyword">if</span> (<span class="hljs-keyword">continue</span>-test) &#123;<br>		<span class="hljs-keyword">goto</span> update;			<span class="hljs-comment">// implement continue</span><br>	&#125;<br>	update:<br>		update-expr;<br>&#125;<br></code></pre></td></tr></table></figure>
+<h3 id="多重分支-switch-2">多重分支 switch</h3>
+<p>多重分支从高级语言逻辑来说，可以写成多个条件分支，但这样意味着可读性的降低，多次跳转对编译后的性能也并不友好。</p>
+<p>GCC引入了**跳转表（Jump Table）**来实现 switch 语句，其具体情况较复杂，不易抽象，详见书3.6.8节，结合实例理解。</p>
+<h2 id="过程-Procedures-2">过程 Procedures</h2>
+<p>要提供对过程机制的机器级支持，包括以下几个方面：</p>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p><b>传递控制 Passing control</b></p>
+<p>通过PC（<code>%rip</code>）与运行时栈来实现控制转移，其实就是代码地址的存储与释放。</p>
+</li>
+<li class="lvl-2">
+<p><b>传递数据 Passing data</b></p>
+<p>过程调用中需要传递参数，返回时也会有返回值。当寄存器空间足够时，通过寄存器传递即可（实际最多可以传6个参数），多出来的需要通过内存（运行时栈）来进行传递。</p>
+</li>
+<li class="lvl-2">
+<p><b>分配和释放内存 Allocating and deallocating memory</b></p>
+<p>内存即指运行时栈，用于存放<b>被保存的寄存器值</b>、<b>局部变量</b>以及<b>寄存器中装不下的参数</b>。</p>
+</li>
+</ul>
+<p>显然，三种机制都依赖于一个内存中的数据结构，即<strong>运行时栈（Run-Time Stack）</strong>。</p>
+<h3 id="运行时栈-Run-Time-Stack-2">运行时栈 Run-Time Stack</h3>
+<p>栈后进先出的特性，非常适合实现过程的调用。运行时栈的特点：</p>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p><b>内存</b>中的一块区域；</p>
+</li>
+<li class="lvl-2">
+<p>栈意味着后进先出，使用<code>push</code>和<code>pop</code>指令来操作栈空间；</p>
+</li>
+<li class="lvl-2">
+<p>向下增长，即低地址为栈顶；</p>
+</li>
+<li class="lvl-2">
+<p>栈顶位置由栈指针指明，其值位于<code>%rsp</code>寄存器中（stack pointer）；</p>
+</li>
+</ul>
+<p>当x86-64过程需要的存储空间超过寄存器能够存放的大小时，就需要从栈上分配空间。为每个过程分配的空间成为过程的<i>栈帧（stack frame）</i>。栈帧常见内容如图，包括：</p>
+<h4 id="返回地址-return-address-2">返回地址 return address</h4>
+<p>当过程调用了其他过程，就需要保存返回地址，即为<code>callq</code>指令的下一条指令地址；</p>
+<h4 id="参数-argument-2">参数 argument</h4>
+<p>寄存器中至多能够传递6个参数（整数值），超出这个数量的参数（或者较大的容器如数组）就需要借助栈帧来传递；</p>
+<h4 id="被保存的寄存器-saved-registers-2">被保存的寄存器 saved registers</h4>
+<p>寄存器组时唯一被所有过程共享的资源。某些寄存器在函数调用时可能被覆盖，而其值后续会用到，需要保存。x86-64设置了一组统一的<b>寄存器使用惯例</b>，所有的过程都必须遵循。</p>
+<p>根据惯例（前寄存器图片有标注），寄存器分为两种：<b>callee-saved（被调用者保存）</b>与<b>caller-saved（调用者保存）</b>。因为寄存器组是所有过程共享的空间，所以要确保内容的正确性。</p>
+<ol>
+<li class="lvl-3">
+<p><b>Callee-saved Registers</b></p>
+<p>即被调用的函数需要保存的寄存器，包括：<code>%rbx</code>、<code>%rbp</code>和<code>%r12</code> ~ <code>%r15</code>。（共6个）被调用的函数要保证这些值在其结束并返回时与开始时保持一致。想要保证这些寄存器的值不变：</p>
+<ul class="lvl-2">
+<li class="lvl-5">
+<p>不修改寄存器的值；</p>
+</li>
+<li class="lvl-5">
+<p>需要修改寄存器的情况时，将寄存器中的原始值压入栈中，并在返回前从栈中弹出旧值，恢复现场。栈帧中标注的“Saved Registers”即为该部分值。</p>
+</li>
+</ul>
+<p>通常，这6个寄存器用于作为中介来存放临时变量，如果callee-saved寄存器用完，多余的需要借助栈的空间来存放。（Practice Problem 3.34）</p>
+</li>
+<li class="lvl-3">
+<p><b>Caller-saved Registers</b></p>
+<p>除了<code>%rsp</code>之外的所有寄存器，都为调用者保存寄存器。即任何过程可以任意对这些寄存器进行修改，保存寄存器值的责任由调用者本身承担。</p>
+</li>
+</ol>
+<h4 id="局部变量-local-variables-2">局部变量 local variables</h4>
+<p>过程中创建的局部变量，在过程运行时创建，过程结束就会随着栈帧一起回收/销毁；对于局部变量，如果寄存器空间足够也会优先使用寄存器空间。在以下几种情况时，必须使用内存/栈来存放：</p>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>寄存器不足以存放所有的本地数据；</p>
+</li>
+<li class="lvl-2">
+<p>涉及地址的变量空间，比如：</p>
+<ul class="lvl-2">
+<li class="lvl-4">使用了地址运算符 <code>&amp;</code>；</li>
+<li class="lvl-4">数组或者结构等涉及地址偏移量的数据，能够通过引用来访问。</li>
+</ul>
+</li>
+</ul>
+<p>在为局部变量分配栈帧时，过程首先减小栈指针（<code>subq $offset %rsp</code>）来在栈上分配空间。分配的结果作为栈帧的一部分，即为图中的“Local variables”部分。用后增大栈指针（<code>addq $offset %rsp</code>）恢复栈空间。</p>
+<p>栈帧可能存放的内容大体上就这些，但实际情况中很多函数根本不需要栈帧，比如不超过6个整数大小参数的叶子过程（即不存在调用其他过程的过程）。也就是说，不存在调用，且寄存器够用的情况下，函数无需借助栈帧。</p>
+<img src="https://gcore.jsdelivr.net/gh/TAO1st/pics@master/202301131718042.png" srcset="/img/loading.gif" lazyload style="zoom: 33%;" />
+<p>运行时帧作为内存的一部分，是实现过程的有利支撑，接下来关注实现过程的三个重要方面。</p>
+<h3 id="控制传送-Control-Transfer-2">控制传送 Control Transfer</h3>
+<p>转移控制的本质其实就是跳转到正确的代码位置，并在执行完子过程后返回正确的地址。这个过程会借助程序计数器PC（<code>%rip</code>寄存器）与运行时栈，使用如下两条指令完成：</p>
+<img src="https://gcore.jsdelivr.net/gh/TAO1st/pics@master/202301131725311.png" srcset="/img/loading.gif" lazyload style="zoom: 50%;" />
+<ul class="lvl-0">
+<li class="lvl-2">
+<p><code>call</code></p>
+<ul class="lvl-2">
+<li class="lvl-4">
+<p><code>call Q</code>指令会把返回地址（紧跟在<code>call</code>指令后面的下一条指令）压入栈帧，并相应的调整<code>%rsp</code>的值。</p>
+</li>
+<li class="lvl-4">
+<p>然后程序跳转到 Q 指定的地址位置。</p>
+<p>其中 Q 可以是直接访存，在汇编代码中就是一个标号（Label），也可以是间接访存，目标形式就是 <code>*</code> 号后面跟着操作数指示符。</p>
+</li>
+</ul>
+</li>
+<li class="lvl-2">
+<p><code>ret</code>：从栈帧中弹出返回地址，并将PC / <code>%rip</code> 的值设置为返回地址。</p>
+</li>
+</ul>
+<h3 id="数据传送-Data-Transfer-2">数据传送 Data Transfer</h3>
+<p>数据传送主要包括两部分：<b>参数</b>与<b>返回值</b>。返回值按照规定通常都由<code>%rax</code>传递。参数如前所述，6个整数以内由寄存器传递，多出的部分需要开辟（调用者的）栈帧来传递。</p>
+<p>寄存器传递参数的规则如图所示：</p>
+<img src="https://gcore.jsdelivr.net/gh/TAO1st/pics@master/202301261113846.png" srcset="/img/loading.gif" lazyload style="zoom:50%;" />
+<p>栈传递参数的规则：</p>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>参数的顺序见运行时栈部分的图片，通常来说，编号更小的参数位于栈顶（后进先出）；</p>
+</li>
+<li class="lvl-2">
+<p>所有的数据大小按8的倍数对齐（按字节寻址）；</p>
+</li>
+</ul>
+<h3 id="递归过程-Recursive-Process-2">递归过程 Recursive Process</h3>
+<p>没什么特别的，和普通函数调用基本一致。由于递归函数的参数形式都是一样的，caller要按需保存参数的值（参数寄存器均为 caller-saved），可能会占用 callee-saved register。</p>
+<h2 id="数组-2">数组</h2>
+<h3 id="基本原则-2">基本原则</h3>
+<p>对于数据类型 T 与整型常数 N，定义：<code>T = A[N]</code>。该语句相当于以下几步工作：</p>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>分配空间：在<b>内存</b>中分配一段 $L\times N$ 字节的<b>连续</b>空间。其中 $L$ 为数据类型 T 的大小；</p>
+</li>
+<li class="lvl-2">
+<p>初始地址：引入标识符 $A$，其值为指向数组开头的指针。通常将该指针值记作 $x_A$；</p>
+</li>
+<li class="lvl-2">
+<p>生成索引：通过整数索引 $0\sim N- 1$ 来访问数组中的元素。</p>
+</li>
+</ul>
+<h3 id="访问与指针-2">访问与指针</h3>
+<h4 id="指针运算-2">指针运算</h4>
+<p>C语言中的指针运算会自动根据数据类型大小进行伸缩。即，对于数据类型 $T$，有一个指向该类型的指针 $p$，其中 $p$ 的具体值记为 $x_p$，那么 $p+ i$ 就相当于 $x_p + L \times i$。其中 $L$ 是该数据类型的大小。</p>
+<h4 id="数组元素的访问-2">数组元素的访问</h4>
+<p>通常，数组的起始地址存放在寄存器<code>%rdx</code>中，而索引则存放在<code>%rcx</code>中。可以利用内存引用指令来简化数组的访问，其具体实现如下表（假定结果都存放在<code>%rax</code>/<code>%eax</code>中）：</p>
+<img src="https://gcore.jsdelivr.net/gh/TAO1st/pics@master/202302092047995.png" srcset="/img/loading.gif" lazyload style="zoom: 33%;" />
+<h4 id="嵌套数组-多维数组的访问-2">嵌套数组 / 多维数组的访问</h4>
+<p>与一维数组基本无差。以二维数组为例，对于数组<code>T D[R][C]</code>，其数组元素<code>D[i][j]</code>的地址为：$x_D + L(C\times i + j)$。较复杂的地址计算可能无法使用单句 <code>mov </code>指令来实现，可以利用 <code>lea</code> 指令进行地址的辅助计算。</p>
+<h3 id="定长数组-2">定长数组</h3>
+<p>对于定长数组，GCC能够对其操作进行性能上的优化。3.8.4节给出了在<code>O1</code>优化等级下的例子。</p>
+<h3 id="变长数组-2">变长数组</h3>
+<p>具体优化见3.8.5节。</p>
+<h2 id="异质的数据结构-Heterogeneous-Data-Structures-2">异质的数据结构 Heterogeneous Data Structures</h2>
+<h3 id="struct-2">struct</h3>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>将不同类型的对象聚合到一个对象中；</p>
+</li>
+<li class="lvl-2">
+<p>访问与存储规则类似于数组：</p>
+<ul class="lvl-2">
+<li class="lvl-4">所有的组成部分都放在内存中的一段<b>连续</b>区域内；</li>
+<li class="lvl-4">指向结构的指针就是指向结构第一个字节的地址；</li>
+<li class="lvl-4">不同成员的类型不同，意味着内存偏移量不同。编译器负责维护关于每个结构类型的信息，指示每个字段的字节偏移量，并以这些偏移量作为内存引用指令中的位移，从而产生对结构元素的引用。</li>
+</ul>
+</li>
+</ul>
+<h3 id="union-2">union</h3>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>以多种类型来引用同一个对象。</p>
+</li>
+<li class="lvl-2">
+<p>union的用途：</p>
+<ol>
+<li class="lvl-5">按照不同的数据类型来解释同样的位模式；</li>
+<li class="lvl-5">多个字段多选一时，可以使用union来节省空间。因为union的大小取决于其最大字段的大小。</li>
+</ol>
+</li>
+</ul>
+<p>详见3.9.2节。</p>
+<h3 id="数据对齐-2">数据对齐</h3>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>x86-64的对齐原则：任何$K$字节的基本对象的地址必须是$K$的倍数。</p>
+</li>
+<li class="lvl-2">
+<p>编译器在汇编代码中放入命令，指明全局数据所需的对齐，格式如下：</p>
+<p><code>.align K</code>：代表后面的所有数据的起始地址必须是$K$的倍数。</p>
+</li>
+<li class="lvl-2">
+<p>强制对齐：特殊指令如SSE指令。</p>
+</li>
+</ul>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/15-213/" class="category-chain-item">15-213</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+</div>
+
+
+              
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2023/02/15/15-213-Representing-and-Manipulating-Information/" title="15-213: Representing and Manipulating Information">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">15-213: Representing and Manipulating Information</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2023/02/07/15-213-bomb_lab/" title="15-213：bomb-lab">
+                        <span class="hidden-mobile">15-213：bomb-lab</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>2022</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>TAO1st</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      headingSelector : CONFIG.toc.headingSelector || 'h1,h2,h3,h4,h5,h6',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      collapseDepth   : CONFIG.toc.collapseDepth || 0,
+      scrollSmooth    : true,
+      headingsOffset  : -boardTop
+    });
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.10/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.1/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

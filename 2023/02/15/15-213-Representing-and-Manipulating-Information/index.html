@@ -1,0 +1,980 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" >
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/avatar.png">
+  <link rel="icon" href="/img/avatar.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#98a5ac">
+  <meta name="author" content="tao1st">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="Floating Point  基本二进制表示与IEEE 754标准 Fractional Binary Numbers ：小数部分分数表示   只能表示一部分分数（除以2的次幂），其他的都是无限循环的位级表示。   总位数有限，小数点的位置比较重要  左移：小数位数增加，整数位数减少，数据的表示范围变小 右移：小数位数减少，整数位数增加，数据的表示精度变小    基本的表示法肯定不适用，所以使用">
+<meta property="og:type" content="article">
+<meta property="og:title" content="15-213: Representing and Manipulating Information">
+<meta property="og:url" content="https://tao1st.github.io/2023/02/15/15-213-Representing-and-Manipulating-Information/index.html">
+<meta property="og:site_name" content="tao1st.github.io">
+<meta property="og:description" content="Floating Point  基本二进制表示与IEEE 754标准 Fractional Binary Numbers ：小数部分分数表示   只能表示一部分分数（除以2的次幂），其他的都是无限循环的位级表示。   总位数有限，小数点的位置比较重要  左移：小数位数增加，整数位数减少，数据的表示范围变小 右移：小数位数减少，整数位数增加，数据的表示精度变小    基本的表示法肯定不适用，所以使用">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://gcore.jsdelivr.net/gh/TAO1st/pics@master/20211210152223.png">
+<meta property="og:image" content="https://gcore.jsdelivr.net/gh/TAO1st/pics@master/20211210152318.png">
+<meta property="og:image" content="https://gcore.jsdelivr.net/gh/TAO1st/pics@master/20211210164457.png">
+<meta property="og:image" content="https://gcore.jsdelivr.net/gh/TAO1st/pics@master/20211210221731.png">
+<meta property="article:published_time" content="2023-02-15T13:03:11.206Z">
+<meta property="article:modified_time" content="2022-10-13T15:17:50.321Z">
+<meta property="article:author" content="tao1st">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://gcore.jsdelivr.net/gh/TAO1st/pics@master/20211210152223.png">
+  
+  
+  
+  <title>15-213: Representing and Manipulating Information - tao1st.github.io</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"tao1st.github.io","root":"/","version":"1.9.2","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":3},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.2.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>TAO1st</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/bk7.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.5)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="15-213: Representing and Manipulating Information"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2023-02-15 21:03" pubdate>
+          2023年2月15日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          4.3k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          37 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">15-213: Representing and Manipulating Information</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h2 id="Floating-Point-2">Floating Point</h2>
+<blockquote>
+<h4 id="基本二进制表示与IEEE-754标准-2">基本二进制表示与IEEE 754标准</h4>
+<p>Fractional Binary Numbers ：小数部分分数表示</p>
+<ul class="lvl-1">
+<li class="lvl-2">
+<p>只能表示一部分分数（除以2的次幂），其他的都是无限循环的位级表示。</p>
+</li>
+<li class="lvl-2">
+<p>总位数有限，小数点的位置比较重要</p>
+<ul class="lvl-3">
+<li class="lvl-4">左移：小数位数增加，整数位数减少，数据的表示范围变小</li>
+<li class="lvl-4">右移：小数位数减少，整数位数增加，数据的表示精度变小</li>
+</ul>
+</li>
+</ul>
+<p>基本的表示法肯定不适用，所以使用IEEE754表示方法来平衡精度和范围的问题。</p>
+<ul class="lvl-1">
+<li class="lvl-2">
+<p>IEEE 754 is hard to make fast in hardware. Numerical analysts predominated over hardware designers in defining standard.</p>
+<p>更注重功能性，从硬件层面来看速度很慢。</p>
+</li>
+</ul>
+</blockquote>
+<h3 id="组成-2">组成</h3>
+<p>IEEE 754标准由三部分组成，长度分布如图所示。</p>
+<p><img src="https://gcore.jsdelivr.net/gh/TAO1st/pics@master/20211210152223.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<blockquote>
+<p>区分数值（Numerical Form）与编码（Encoding）</p>
+</blockquote>
+<h4 id="1-Sign-标志位-2">1 Sign 标志位</h4>
+<blockquote>
+<p>MSB $s$ is sign bit s.</p>
+</blockquote>
+<p>一位的正负标志位，没什么可说的。</p>
+<h4 id="2-Significand-尾数-2">2 Significand 尾数</h4>
+<blockquote>
+<p>$frac$ field encodes Significand M (but is not equal to M)</p>
+</blockquote>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>原模原样抄下来的<strong>原码</strong>位数。</p>
+</li>
+<li class="lvl-2">
+<p>前面有<strong>隐含1</strong>，即位数M的值为 <strong>$1.frac$</strong></p>
+</li>
+</ul>
+<h4 id="3-Exponent-指数-2">3 Exponent 指数</h4>
+<blockquote>
+<p>$exp$ field encodes exponent E (but is not equal to E)</p>
+</blockquote>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>在规格化状态下，采用<strong>移码</strong>表示：</p>
+<p>$exp = E + bias$，其中 $bias = 2^{n-1} - 1$， $n$ 为指数的位数（8/11），即值为127/1023。</p>
+<p>采用移码的目的是为所有的指数加上一个偏置，从而使得指数域全部为整数，方便在计算的时候进行<strong>对阶</strong>。</p>
+</li>
+<li class="lvl-2">
+<p>指数<strong>编码</strong>为特殊值如全0和全1有特别含义，见<a href="###%E7%8A%B6%E6%80%81">状态部分</a>。</p>
+</li>
+</ul>
+<h3 id="状态-2">状态</h3>
+<p>根据**指数域（exp）**的不同来划分为三种状态，这三种状态对于encoding的解读是不一样的。</p>
+<h4 id="1-Normalized-规格化-2">1 Normalized 规格化</h4>
+<blockquote>
+<p>$exp\neq000\ldots0$ 且 $exp\neq111\ldots1$</p>
+<p>表示正常区间的浮点数。</p>
+</blockquote>
+<h5 id="指数部分-3">指数部分</h5>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>移码表示，见[指数部分](####Exponent 指数)。</p>
+</li>
+<li class="lvl-2">
+<p>表示范围：</p>
+<ul class="lvl-2">
+<li class="lvl-4">编码 exp域： $000\ldots01$ ~ $111\ldots10$</li>
+<li class="lvl-4">数值 E：
+<ul class="lvl-4">
+<li class="lvl-6">Single precision: -126 ~ 127</li>
+<li class="lvl-6">Double precision: -1022 ~ 1023</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h5 id="尾数部分-3">尾数部分</h5>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>前有隐含1，见[尾数部分](####Significand 尾数)。</p>
+</li>
+<li class="lvl-2">
+<p>表示范围：</p>
+<ul class="lvl-2">
+<li class="lvl-4">最小时 $M=1$ ，即 $frac = 000\ldots0$ ；</li>
+<li class="lvl-4">最大时 $M = 2 - \epsilon$ ，即 $frac = 111\ldots1$ 。</li>
+</ul>
+</li>
+</ul>
+<h4 id="2-Denormalized-非规格化-2">2 Denormalized 非规格化</h4>
+<blockquote>
+<p>$exp = 000\ldots0$ ，即<strong>指数域全0</strong>。</p>
+<p>表示接近0的情况。</p>
+</blockquote>
+<h5 id="指数部分-4">指数部分</h5>
+<p>$E=1-bias$ 而非 $0-bias$，即此时指数 $E$ 为固定值：</p>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>Single precision: $E = -126$</p>
+</li>
+<li class="lvl-2">
+<p>Double precision: $E = -1022$</p>
+</li>
+</ul>
+<p>均为指数域最小值，用于表示接近0的实数域，即 $0.xx \times 2^{-126/-1022}$。</p>
+<h5 id="尾数部分-4">尾数部分</h5>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>前有<strong>隐含0</strong>（而非隐含1），以用于表示接近0的实数域；</p>
+</li>
+<li class="lvl-2">
+<p>$frac=000\ldots0$ 表示0，根据标志位的正负存在正零和负零；</p>
+<ul class="lvl-2">
+<li class="lvl-4">正零和整数Integer的表示是完全一致的，即编码为<strong>全零</strong>。</li>
+</ul>
+</li>
+<li class="lvl-2">
+<p>$frac \neq000\ldots0$ 表示最接近0的实数域部分，该部分为<strong>等间距的（equispaced）</strong>，关于间距问题详见<a href="####%E9%97%B4%E8%B7%9D">间距部分</a>。</p>
+</li>
+</ul>
+<h4 id="3-Special-特殊值-2">3 Special 特殊值</h4>
+<blockquote>
+<p>$exp=111\ldots1$，即指数域全1。</p>
+<p>用于表示<strong>无穷大</strong>与<strong>非法值（NaN）</strong>。</p>
+</blockquote>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>$frac =000\ldots0$ ：表示无穷大。</p>
+<ul class="lvl-2">
+<li class="lvl-4">当运算出现<strong>溢</strong>出时即为无穷大；</li>
+<li class="lvl-4">根据标志位的正负，分为正无穷大和负无穷大；</li>
+<li class="lvl-4">对无穷大进行任何操作结果仍为无穷大；</li>
+<li class="lvl-4">除0的结果也是正负无穷大，符号取决于操作数符号。</li>
+</ul>
+</li>
+<li class="lvl-2">
+<p>$frac = 111\ldots1$ ：表示<strong>NaN (Not a number)</strong>，即非法值。</p>
+<ul class="lvl-2">
+<li class="lvl-4">用于一些非法操作，无法决定数字的值的情况，例如：
+<ul class="lvl-4">
+<li class="lvl-6">$sqrt(-1)$， $\infty - \infty$， $\infty \times 0$， $\ldots$</li>
+</ul>
+</li>
+<li class="lvl-4">从编码上看（视为无符号数），<strong>NaN比其他值都要更大</strong>（全1或符号位为0其余位全1）见分布部分的<a href="####Visualization"><strong>数轴</strong></a>。</li>
+</ul>
+</li>
+<li class="lvl-2">
+<p>$frac$ 尾数部分不会为其他值，无意义。</p>
+</li>
+</ul>
+<h3 id="分布-2">分布</h3>
+<h4 id="Visualization-2">Visualization</h4>
+<p>通过数轴图来直观地感受IEEE 754在整个实数中的分布及其表示范围</p>
+<p><img src="https://gcore.jsdelivr.net/gh/TAO1st/pics@master/20211210152318.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<h4 id="间距-2">间距</h4>
+<p><img src="https://gcore.jsdelivr.net/gh/TAO1st/pics@master/20211210164457.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<h4 id="临界点-2">临界点</h4>
+<h3 id="计算-2">计算</h3>
+<h4 id="Comparison-比较-2">Comparison 比较</h4>
+<blockquote>
+<p>Can (Almost) use unsigned integer comparison</p>
+</blockquote>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>首先比较符号位</p>
+<ul class="lvl-2">
+<li class="lvl-4">特殊情况：正零与负零是相等的。</li>
+</ul>
+</li>
+<li class="lvl-2">
+<p>比较指数位：对阶</p>
+</li>
+<li class="lvl-2">
+<p>NaN在编码上比其他值都大（$111\ldots1$ 或 $011\ldots1$）</p>
+<ul class="lvl-2">
+<li class="lvl-4">NaN与其他数的比较的结果？还没查</li>
+</ul>
+</li>
+<li class="lvl-2">
+<p>其他情况与无符号数基本一致。</p>
+<ul class="lvl-2">
+<li class="lvl-4">Denorm vs. normalized : 对阶时denorm为全0</li>
+<li class="lvl-4">Normalized vs. infinity</li>
+</ul>
+</li>
+</ul>
+<h4 id="Rounding-舍入-2">Rounding 舍入</h4>
+<blockquote>
+<p>Basic idea:</p>
+<ul class="lvl-1">
+<li class="lvl-2">First compute exact result</li>
+<li class="lvl-2">Make it fit into desired precision
+<ul class="lvl-3">
+<li class="lvl-4">Possibly overflow, if exponent too large</li>
+<li class="lvl-4">Possibly round to fit into $frac$</li>
+</ul>
+</li>
+</ul>
+<p>先计算出实际值，然后在尽可能保留精度的前提下进行舍入。</p>
+</blockquote>
+<p>四种舍入模式（可以在汇编语言中选择使用的模式）：</p>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>Towards zero 靠近0的舍入：即大于0时向下舍入，小于0时向上舍入</p>
+</li>
+<li class="lvl-2">
+<p>Round down 向下舍入：存在偏低的统计偏差 under-estimated</p>
+</li>
+<li class="lvl-2">
+<p>Round up 向上舍入：存在偏高的统计偏差 over-estimated</p>
+</li>
+<li class="lvl-2">
+<p><strong>Nearest even</strong> 正中间的值向偶数舍入</p>
+<ul class="lvl-2">
+<li class="lvl-4">
+<p>Default mode：默认的舍入模式，只有通过汇编才能改变为其他模式</p>
+</li>
+<li class="lvl-4">
+<p>可以避免统计偏差（statistically biased）</p>
+</li>
+<li class="lvl-4">
+<p>舍入更近的值，当值正好在正中间时，选择使得<strong>最低有效位为偶数</strong>的舍入方式。 When exactly halfway between two possible values, round so that least significant digit is even.</p>
+<p>从二进制的角度来看：</p>
+<ul class="lvl-4">
+<li class="lvl-6">
+<p>Even 偶数： 即LSB为0</p>
+</li>
+<li class="lvl-6">
+<p>Halfway 正中间的值：形如 $100\ldots_{2}$</p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="Addition-加法-2">Addition 加法</h4>
+<h5 id="1-计算步骤-3">1 计算步骤</h5>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>对阶：将指数小的进行左移至二者指数相同后再相加，最终结果的指数跟着指数大的走。</p>
+<p>assume $E_{1} &gt; E_{2}$ :</p>
+<img src="https://gcore.jsdelivr.net/gh/TAO1st/pics@master/20211210221731.png" srcset="/img/loading.gif" lazyload style="zoom:50%;" />
+</li>
+<li class="lvl-2">
+<p>Exact Result 计算实际的值</p>
+<ul class="lvl-2">
+<li class="lvl-4">符号位 $s$ 与尾数 $M$ 根据对阶后的值进行有符号数加法；</li>
+</ul>
+</li>
+<li class="lvl-2">
+<p>Fixing 修改数值使其符合IEEE 754标准</p>
+<ul class="lvl-2">
+<li class="lvl-4">修正尾数：
+<ul class="lvl-4">
+<li class="lvl-6">If $M \geq 2$, shift $M$ right, increment $E$</li>
+<li class="lvl-6">If $M &lt; 1$, shift $M$ left $k$ positions, decrement $E$ by $k$</li>
+</ul>
+</li>
+<li class="lvl-4">Overflow 溢出：指数 $E$ 过大</li>
+<li class="lvl-4">对尾数 $M$ 进行舍入（按照前面提到的[舍入方式](####Rounding 舍入)）。</li>
+</ul>
+</li>
+</ul>
+<h5 id="2-Mathematical-Properties-数学性质-3">2 Mathematical Properties 数学性质</h5>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>Closed under addition 加法封闭</p>
+</li>
+<li class="lvl-2">
+<p>Commutative 符合交换律</p>
+</li>
+<li class="lvl-2">
+<p>Associative 不符合结合律</p>
+<p>如果大数和小数相差太大（从指数上来看），尾数的位数可能并不够表示（中间需要太多0）<br>
+$$<br>
+(3.14+1e10)-1e10=0, \space\space 3.14 + (1e10-1e10) = 3.14<br>
+$$</p>
+</li>
+<li class="lvl-2">
+<p>0 is additive identity. 0为加法恒等元，意味着对于群内任意值 $a$， 有 $a+0=a$。</p>
+</li>
+<li class="lvl-2">
+<p>Every element has <strong>additive inverse</strong>, except for infinities &amp; NaNs.</p>
+<p>除了特殊值情况（无穷大与非法值）之外，其他元素均存在逆元。</p>
+</li>
+<li class="lvl-2">
+<p>Monotonicity, except for infinities &amp; NaNs.</p>
+<p>除了特殊值情况（无穷大与非法值）之外，均符合单调性。即 $a\geq b\space \Rightarrow a+c \geq b+c $ 。</p>
+</li>
+</ul>
+<h4 id="Multiplication-乘法-2">Multiplication 乘法</h4>
+<h5 id="1-计算步骤-4">1 计算步骤</h5>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>Exact Result 实际计算值</p>
+<ul class="lvl-2">
+<li class="lvl-4">Sign 标志位：$s_{1}$ ^ $s_{2}$</li>
+<li class="lvl-4">Significand 尾数：$M_{1} \times M_{2}$</li>
+<li class="lvl-4">Exponent 指数：$E_{1} + E_{2}$</li>
+</ul>
+</li>
+<li class="lvl-2">
+<p>Fixing 修改数值使其符合IEEE 754标准</p>
+<ul class="lvl-2">
+<li class="lvl-4">如果尾数$M$计算后大于等于2 （即$M=10.xx\ldots_{2}$），则对 $M$ 进行右移使其符合隐含1的格式，并相应的增加指数 $E$ 。</li>
+<li class="lvl-4">Overflow: 如果指数 $E$ 过大则溢出。</li>
+<li class="lvl-4">对尾数 $M$ 进行舍入（按照前面提到的[舍入方式](####Rounding 舍入)）。</li>
+</ul>
+</li>
+<li class="lvl-2">
+<p>Implementation 具体实现</p>
+<ul class="lvl-2">
+<li class="lvl-4">对硬件计算资源要求最多的还是尾数相乘（使用乘法器）。</li>
+</ul>
+</li>
+</ul>
+<h5 id="2-Mathematical-Properties-数学性质-4">2 Mathematical Properties 数学性质</h5>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>Closed under multiplication 乘法封闭</p>
+<p>但有可能结果产生特殊值（infinity or NaN）</p>
+</li>
+<li class="lvl-2">
+<p>Commutative 符合交换律</p>
+</li>
+<li class="lvl-2">
+<p>Associative 不符合结合律</p>
+<p>出现溢出与精度舍入的情况会导致结果不同</p>
+</li>
+<li class="lvl-2">
+<p>1 is multiplicative identity. 1为乘法恒等元</p>
+</li>
+<li class="lvl-2">
+<p>Multiplication <strong>does not</strong> distribute over addition. 不满足加法上的分配律</p>
+<p>出现溢出与精度舍入的情况会导致结果不同</p>
+</li>
+<li class="lvl-2">
+<p>Monotonicity 单调性</p>
+<p>除了特殊值情况之外都满足。</p>
+</li>
+</ul>
+<h3 id="C语言中的表示-2">C语言中的表示</h3>
+<p>提供了两种类型，即单精度float与双精度double。</p>
+<h4 id="Conversion-and-casting-类型转换-2">Conversion and casting 类型转换</h4>
+<p>C中要注意的是<strong>不同类型之间的转换</strong>：</p>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>在<code>int</code>, <code>float</code>,<code>double</code>之间进行转换会对二进制位表示产生影响。</p>
+<p>Casting between <code>int</code>, <code>float</code>,<code>double</code> <strong>changes bit representation</strong>.</p>
+<p>区分于<code>unsigned</code>与<code>int</code>之间的转换，其二进制位表示并没有任何变化，只是对位的含义解读产生了变化。</p>
+</li>
+<li class="lvl-2">
+<p><code>double</code>/<code>float</code> $\rightarrow$ <code>int</code></p>
+<ul class="lvl-2">
+<li class="lvl-4">Truncates fractional part</li>
+<li class="lvl-4">Not defined when out of range or NaN: Generally sets to <code>TMin</code>.</li>
+</ul>
+</li>
+<li class="lvl-2">
+<p><code>int</code> $\rightarrow$ <code>double</code></p>
+<ul class="lvl-2">
+<li class="lvl-4">
+<p>Exact conversion, as long as <code>int</code> has $\leq$ 53 bit word size.</p>
+<p>double尾数为52位，再多需要舍入。</p>
+</li>
+</ul>
+</li>
+<li class="lvl-2">
+<p><code>int</code> $\rightarrow$ <code>float</code></p>
+<ul class="lvl-2">
+<li class="lvl-4">Will round according to rounding m</li>
+</ul>
+</li>
+</ul>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/15-213/" class="category-chain-item">15-213</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+</div>
+
+
+              
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2023/02/15/15-213-Machine-Level-Representation/" title="15-213: Machine-Level Representation">
+                        <span class="hidden-mobile">15-213: Machine-Level Representation</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>2022</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>TAO1st</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      headingSelector : CONFIG.toc.headingSelector || 'h1,h2,h3,h4,h5,h6',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      collapseDepth   : CONFIG.toc.collapseDepth || 0,
+      scrollSmooth    : true,
+      headingsOffset  : -boardTop
+    });
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.10/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.1/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
