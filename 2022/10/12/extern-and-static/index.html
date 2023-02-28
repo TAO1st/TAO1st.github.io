@@ -16,21 +16,25 @@
   <meta name="author" content="tao1st">
   <meta name="keywords" content="">
   
-    <meta name="description" content="Linking">
+    <meta name="description" content="程序内存  这里关注的是Read&#x2F;write data与Read-only code and data这部分。这些内容都是直接按照可执行目标文件（executable object file）的内容进行初始化的。   Read&#x2F;write data：存放全局变量（global）与静态变量（static）。  .data：已经初始化的全局变量与静态变量（initialized）； .bss：未初始化">
 <meta property="og:type" content="article">
-<meta property="og:title" content="15-213: Linking">
-<meta property="og:url" content="https://tao1st.github.io/2022/12/04/15-213-Linking/index.html">
+<meta property="og:title" content="extern &amp; static">
+<meta property="og:url" content="https://tao1st.github.io/2022/10/12/extern-and-static/index.html">
 <meta property="og:site_name" content="tao1st.github.io">
-<meta property="og:description" content="Linking">
+<meta property="og:description" content="程序内存  这里关注的是Read&#x2F;write data与Read-only code and data这部分。这些内容都是直接按照可执行目标文件（executable object file）的内容进行初始化的。   Read&#x2F;write data：存放全局变量（global）与静态变量（static）。  .data：已经初始化的全局变量与静态变量（initialized）； .bss：未初始化">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2022-12-04T02:20:36.000Z">
-<meta property="article:modified_time" content="2023-02-26T03:56:50.822Z">
+<meta property="og:image" content="https://gcore.jsdelivr.net/gh/TAO1st/pics@master/202211082058886.png">
+<meta property="article:published_time" content="2022-10-12T12:14:27.000Z">
+<meta property="article:modified_time" content="2023-02-28T13:13:50.648Z">
 <meta property="article:author" content="tao1st">
+<meta property="article:tag" content="extern">
+<meta property="article:tag" content="static">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://gcore.jsdelivr.net/gh/TAO1st/pics@master/202211082058886.png">
   
   
   
-  <title>15-213: Linking - tao1st.github.io</title>
+  <title>extern &amp; static - tao1st.github.io</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -183,7 +187,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="15-213: Linking"></span>
+            <span id="subtitle" data-typed-text="extern &amp; static"></span>
           
         </div>
 
@@ -194,8 +198,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2022-12-04 10:20" pubdate>
-          2022年12月4日 上午
+        <time datetime="2022-10-12 20:14" pubdate>
+          2022年10月12日 晚上
         </time>
       </span>
     
@@ -206,7 +210,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          7 字
+          662 字
         
       </span>
     
@@ -217,7 +221,7 @@
         
         
         
-          1 分钟
+          6 分钟
         
       </span>
     
@@ -255,12 +259,72 @@
         <div id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">15-213: Linking</h1>
+            <h1 style="display: none">extern &amp; static</h1>
             
             
               <div class="markdown-body">
                 
-                <h1>Linking</h1>
+                <h4 id="程序内存">程序内存</h4>
+<img src="https://gcore.jsdelivr.net/gh/TAO1st/pics@master/202211082058886.png" srcset="/img/loading.gif" lazyload style="zoom:50%;" />
+<p>这里关注的是Read/write data与Read-only code and data这部分。这些内容都是直接按照可执行目标文件（executable object file）的内容进行初始化的。</p>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>Read/write data：存放全局变量（global）与静态变量（static）。</p>
+<ul class="lvl-2">
+<li class="lvl-4"><code>.data</code>：已经初始化的全局变量与静态变量（initialized）；</li>
+<li class="lvl-4"><code>.bss</code>：未初始化的全局变量与静态变量（uninitialized）。</li>
+</ul>
+</li>
+<li class="lvl-2">
+<p>Read-only code and data：该部分内容只读。</p>
+<ul class="lvl-2">
+<li class="lvl-4"><code>.text</code>：代码段，即程序的机器代码。</li>
+<li class="lvl-4">常量内容。程序结束后，由系统进行释放。</li>
+</ul>
+</li>
+</ul>
+<h4 id="作用域与生命周期">作用域与生命周期</h4>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>作用域（scope）：从代码空间角度来看，变量在哪个代码段内有效。</p>
+</li>
+<li class="lvl-2">
+<p>生命周期（duration）：从时间角度来看，变量什么时候被初始化，什么时候被回收。</p>
+</li>
+</ul>
+<h1>extern</h1>
+<h1>static</h1>
+<h2 id="面向过程中的static">面向过程中的static</h2>
+<blockquote>
+<p><strong>全局（global）与局部（local）</strong></p>
+<ul class="lvl-1">
+<li class="lvl-2">
+<p>全局即在函数外定义的变量，局部即在函数或语句内部定义的变量。</p>
+</li>
+<li class="lvl-2">
+<p>全局变量作用域从定义处开始，一直到程序结束；</p>
+<p>局部变量作用域仅限于其所在的函数或语句作用域内。</p>
+</li>
+<li class="lvl-2">
+<p>全局变量位于程序内存中的静态区域，其在生成可执行目标文件时已经分配完成；</p>
+<p>局部变量位于程序内存中的动态区域，其位于程序栈处。</p>
+</li>
+</ul>
+</blockquote>
+<h3 id="静态全局变量">静态全局变量</h3>
+<p>全局变量前添加<code>static</code>关键字，即为静态全局变量。</p>
+<h4 id="用途">用途</h4>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>希望全局变量只能被本文件引用，而不能被其他文件引用。</p>
+</li>
+</ul>
+<h3 id="静态局部变量">静态局部变量</h3>
+<p>局部变量前添加<code>static</code>关键字，即为静态局部变量。</p>
+<h3 id="静态函数">静态函数</h3>
+<h2 id="面向对象中的static">面向对象中的static</h2>
+<h3 id="静态成员变量">静态成员变量</h3>
+<h3 id="静态成员函数">静态成员函数</h3>
 
                 
               </div>
@@ -279,7 +343,7 @@
     
       <span class="category-chain">
         
-  <a href="/categories/15-213/" class="category-chain-item">15-213</a>
+  <a href="/categories/C/" class="category-chain-item">C++</a>
   
   
 
@@ -291,6 +355,15 @@
     </div>
   
   
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/extern/">#extern</a>
+      
+        <a href="/tags/static/">#static</a>
+      
+    </div>
+  
 </div>
 
 
@@ -301,9 +374,9 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2022/12/09/%E6%9C%80%E7%9F%AD%E8%B7%AF%E5%BE%84/" title="最短路径（Shortest Path）">
+                      <a href="/2022/10/18/%E8%B4%AA%E5%BF%83%EF%BC%88Greedy%EF%BC%89/" title="贪心（Greedy）">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">最短路径（Shortest Path）</span>
+                        <span class="hidden-mobile">贪心（Greedy）</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
@@ -311,8 +384,8 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2022/11/23/%E5%88%86%E6%B2%BB-Divide-and-Conquer/" title="分治 Divide and Conquer">
-                        <span class="hidden-mobile">分治 Divide and Conquer</span>
+                      <a href="/2022/10/06/%E5%B9%B6%E6%9F%A5%E9%9B%86%EF%BC%88Union-Find-Set%EF%BC%89/" title="并查集（Union-Find Set）">
+                        <span class="hidden-mobile">并查集（Union-Find Set）</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
