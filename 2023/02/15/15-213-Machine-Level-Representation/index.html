@@ -1,7 +1,7 @@
 
 
 <!DOCTYPE html>
-<html lang="zh-CN" >
+<html lang="zh-CN" data-default-color-scheme=auto>
 
 
 
@@ -77,6 +77,8 @@
 
   <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
   
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
 
 
 
@@ -140,18 +142,6 @@
           
           
             <li class="nav-item">
-              <a class="nav-link" href="/archives/">
-                <i class="iconfont icon-archive-fill"></i>
-                归档
-              </a>
-            </li>
-          
-        
-          
-          
-          
-          
-            <li class="nav-item">
               <a class="nav-link" href="/categories/">
                 <i class="iconfont icon-category-fill"></i>
                 分类
@@ -192,6 +182,11 @@
           
         
         
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
       </ul>
     </div>
   </div>
@@ -200,7 +195,7 @@
   
 
 <div id="banner" class="banner" parallax=true
-     style="background: url('/img/bk7.png') no-repeat center center; background-size: cover;">
+     style="background: url('/img/bk.png') no-repeat center center; background-size: cover;">
   <div class="full-bg-img">
     <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.5)">
       <div class="banner-text text-center fade-in-up">
@@ -909,7 +904,7 @@ Some circumstances require different instructions to handle signed and unsigned 
 </ul>
 <h3 id="递归过程-Recursive-Process-2">递归过程 Recursive Process</h3>
 <p>没什么特别的，和普通函数调用基本一致。由于递归函数的参数形式都是一样的，caller要按需保存参数的值（参数寄存器均为 caller-saved），可能会占用 callee-saved register。</p>
-<h2 id="数组-2">数组</h2>
+<h2 id="数组">数组</h2>
 <h3 id="基本原则-2">基本原则</h3>
 <p>对于数据类型 T 与整型常数 N，定义：<code>T = A[N]</code>。该语句相当于以下几步工作：</p>
 <ul class="lvl-0">
@@ -924,7 +919,7 @@ Some circumstances require different instructions to handle signed and unsigned 
 </li>
 </ul>
 <h3 id="访问与指针-2">访问与指针</h3>
-<h4 id="指针运算-2">指针运算</h4>
+<h4 id="指针运算">指针运算</h4>
 <p>C语言中的指针运算会自动根据数据类型大小进行伸缩。即，对于数据类型 $T$，有一个指向该类型的指针 $p$，其中 $p$ 的具体值记为 $x_p$，那么 $p+ i$ 就相当于 $x_p + L \times i$。其中 $L$ 是该数据类型的大小。</p>
 <h4 id="数组元素的访问-2">数组元素的访问</h4>
 <p>通常，数组的起始地址存放在寄存器<code>%rdx</code>中，而索引则存放在<code>%rcx</code>中。可以利用内存引用指令来简化数组的访问，其具体实现如下表（假定结果都存放在<code>%rax</code>/<code>%eax</code>中）：</p>
@@ -1027,8 +1022,8 @@ Some circumstances require different instructions to handle signed and unsigned 
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2023/02/07/15-213-bomb_lab/" title="15-213：bomb-lab">
-                        <span class="hidden-mobile">15-213：bomb-lab</span>
+                      <a href="/2023/02/14/15-213-bomb_lab/" title="15-213: Bomb Lab">
+                        <span class="hidden-mobile">15-213: Bomb Lab</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>

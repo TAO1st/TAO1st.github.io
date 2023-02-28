@@ -1,7 +1,7 @@
 
 
 <!DOCTYPE html>
-<html lang="zh-CN" >
+<html lang="zh-CN" data-default-color-scheme=auto>
 
 
 
@@ -64,6 +64,8 @@
 
 
   <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
   
 
 
@@ -128,18 +130,6 @@
           
           
             <li class="nav-item">
-              <a class="nav-link" href="/archives/">
-                <i class="iconfont icon-archive-fill"></i>
-                归档
-              </a>
-            </li>
-          
-        
-          
-          
-          
-          
-            <li class="nav-item">
               <a class="nav-link" href="/categories/">
                 <i class="iconfont icon-category-fill"></i>
                 分类
@@ -180,6 +170,11 @@
           
         
         
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
       </ul>
     </div>
   </div>
@@ -188,7 +183,7 @@
   
 
 <div id="banner" class="banner" parallax=true
-     style="background: url('/img/bk7.png') no-repeat center center; background-size: cover;">
+     style="background: url('/img/bk.png') no-repeat center center; background-size: cover;">
   <div class="full-bg-img">
     <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.5)">
       <div class="banner-text text-center fade-in-up">
@@ -377,7 +372,7 @@
 <p><b>终止</b>：循环终止的条件为 $j &gt;A.length=n$，即 $j =A.length+1$ 时。此时子数组 $A[1… n]$ 由原来在 $A[1… n]$ 中的元素组成，但已按序排列。循环不变式成立，算法正确。</p>
 </li>
 </ul>
-<h3 id="效率-3">效率</h3>
+<h3 id="效率-4">效率</h3>
 <p>插入排序一个常见的优化即，在有序子序列部分选择插入位置时，使用 <b>二分查找</b> 来优化查找速度。但插入排序内层循环的时间消耗取决于 选择插入位置 + 移动元素 两部分。仅仅优化选择时间，元素的移动仍然为线性时间，所以时间复杂度仍然为平方级，而不能优化至 $O(nlogn)$。</p>
 <h2 id="快速排序-Quick-Sort-2">快速排序 Quick Sort</h2>
 <blockquote>
@@ -416,7 +411,7 @@
 <p>虽然快速排序在排序的中途不会产生任何有序子序列，但是每一次子集划分时，分治基准<code>pivot</code>都会被放在最终的正确位置。</p>
 </li>
 </ul>
-<h4 id="相关题目-10">相关题目</h4>
+<h4 id="相关题目-12">相关题目</h4>
 <blockquote>
 <p><em>TopK</em>类型题目常用于考察快速排序。</p>
 </blockquote>
@@ -472,7 +467,7 @@
 </li>
 </ul>
 <p>具体代码见sort.cpp。</p>
-<h4 id="相关题目-11">相关题目</h4>
+<h4 id="相关题目-13">相关题目</h4>
 <ul class="lvl-0">
 <li class="lvl-2">
 <p><strong>215 Kth Largest Element in an Array 数组中的第K个最大元素 (Medium)</strong></p>

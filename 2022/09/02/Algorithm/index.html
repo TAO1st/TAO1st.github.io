@@ -1,7 +1,7 @@
 
 
 <!DOCTYPE html>
-<html lang="zh-CN" >
+<html lang="zh-CN" data-default-color-scheme=auto>
 
 
 
@@ -66,6 +66,8 @@
 
   <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
   
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
 
 
 
@@ -129,18 +131,6 @@
           
           
             <li class="nav-item">
-              <a class="nav-link" href="/archives/">
-                <i class="iconfont icon-archive-fill"></i>
-                归档
-              </a>
-            </li>
-          
-        
-          
-          
-          
-          
-            <li class="nav-item">
               <a class="nav-link" href="/categories/">
                 <i class="iconfont icon-category-fill"></i>
                 分类
@@ -181,6 +171,11 @@
           
         
         
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
       </ul>
     </div>
   </div>
@@ -189,7 +184,7 @@
   
 
 <div id="banner" class="banner" parallax=true
-     style="background: url('/img/bk7.png') no-repeat center center; background-size: cover;">
+     style="background: url('/img/bk.png') no-repeat center center; background-size: cover;">
   <div class="full-bg-img">
     <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.5)">
       <div class="banner-text text-center fade-in-up">
@@ -272,7 +267,7 @@
             
               <div class="markdown-body">
                 
-                <h2 id="时间复杂度-数据规模">时间复杂度 - 数据规模</h2>
+                <h2 id="时间复杂度-数据规模-2">时间复杂度 - 数据规模</h2>
 <table>
 <thead>
 <tr>

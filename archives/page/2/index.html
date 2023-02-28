@@ -1,7 +1,7 @@
 
 
 <!DOCTYPE html>
-<html lang="zh-CN" >
+<html lang="zh-CN" data-default-color-scheme=auto>
 
 
 
@@ -48,6 +48,8 @@
 
 
   <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
   
 
 
@@ -112,18 +114,6 @@
           
           
             <li class="nav-item">
-              <a class="nav-link" href="/archives/">
-                <i class="iconfont icon-archive-fill"></i>
-                归档
-              </a>
-            </li>
-          
-        
-          
-          
-          
-          
-            <li class="nav-item">
               <a class="nav-link" href="/categories/">
                 <i class="iconfont icon-category-fill"></i>
                 分类
@@ -164,6 +154,11 @@
           
         
         
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
       </ul>
     </div>
   </div>
@@ -172,7 +167,7 @@
   
 
 <div id="banner" class="banner" parallax=true
-     style="background: url('/img/bk2.png') no-repeat center center; background-size: cover;">
+     style="background: url('/img/bk.png') no-repeat center center; background-size: cover;">
   <div class="full-bg-img">
     <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.5)">
       <div class="banner-text text-center fade-in-up">
@@ -206,13 +201,31 @@
                 
 
 <div class="list-group">
-  <p class="h4">共计 25 篇文章</p>
+  <p class="h4">共计 29 篇文章</p>
   <hr>
   
   
     
       
       <p class="h5">2022</p>
+    
+    <a href="/2022/11/22/%E6%8E%92%E5%BA%8F-Sort/" class="list-group-item list-group-item-action">
+      <time>11-22</time>
+      <div class="list-group-item-title">排序 Sort</div>
+    </a>
+  
+    
+    <a href="/2022/10/18/%E8%B4%AA%E5%BF%83%EF%BC%88Greedy%EF%BC%89/" class="list-group-item list-group-item-action">
+      <time>10-18</time>
+      <div class="list-group-item-title">贪心（Greedy）</div>
+    </a>
+  
+    
+    <a href="/2022/10/06/%E5%B9%B6%E6%9F%A5%E9%9B%86%EF%BC%88Union-Find-Set%EF%BC%89/" class="list-group-item list-group-item-action">
+      <time>10-06</time>
+      <div class="list-group-item-title">并查集（Union-Find Set）</div>
+    </a>
+  
     
     <a href="/2022/10/02/%E4%BD%8D%E8%BF%90%E7%AE%97/" class="list-group-item list-group-item-action">
       <time>10-02</time>
@@ -253,24 +266,6 @@
     <a href="/2022/09/02/Algorithm/" class="list-group-item list-group-item-action">
       <time>09-02</time>
       <div class="list-group-item-title">算法基础</div>
-    </a>
-  
-    
-    <a href="/2022/08/30/%E5%AD%97%E5%85%B8%E6%A0%91%EF%BC%88Trie-Tree%EF%BC%89/" class="list-group-item list-group-item-action">
-      <time>08-30</time>
-      <div class="list-group-item-title">字典树（Trie Tree）</div>
-    </a>
-  
-    
-    <a href="/2022/08/22/%E5%8D%95%E8%B0%83%E6%A0%88-Monotone-Stack/" class="list-group-item list-group-item-action">
-      <time>08-22</time>
-      <div class="list-group-item-title">单调栈（Monotone Stack）</div>
-    </a>
-  
-    
-    <a href="/2022/06/04/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92-Dynamic-Programming/" class="list-group-item list-group-item-action">
-      <time>06-04</time>
-      <div class="list-group-item-title">动态规划（Dynamic Programming）</div>
     </a>
   
 </div>

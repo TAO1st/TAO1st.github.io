@@ -1,7 +1,7 @@
 
 
 <!DOCTYPE html>
-<html lang="zh-CN" >
+<html lang="zh-CN" data-default-color-scheme=auto>
 
 
 
@@ -16,18 +16,20 @@
   <meta name="author" content="tao1st">
   <meta name="keywords" content="">
   
-    <meta name="description" content="比较吃技巧，最好临面试前重新熟悉一遍，代码量小，吃思路。  常用位运算技巧：   n &amp; (n - 1) : 去除n的位级表示中最低的那一位，即去除掉最低的那一个1；该算法常称为Brain Kernighan算法。   n &amp; (-n) : 得到n的位级表示中最低的哪一位，即保留最后一个1；   x &amp; 1 &#x2F; x % 2 : 获取x的最低位（掩码操作）。   异或全1：">
+    <meta name="description" content="比较吃技巧，最好临面试前重新熟悉一遍，代码量小，吃思路。 注意！位运算符的优先级非常低（最值得注意的就是低于&#x3D;&#x3D;），一定注意加括号。  常用位运算技巧：   n &amp; (n - 1) : 去除n的位级表示中最低的那一位，即去除掉最低的那一个1；该算法常称为Brain Kernighan算法。   n &amp; (-n) : 得到n的位级表示中最低的哪一位，即保留最后一个1；   x &amp;a">
 <meta property="og:type" content="article">
 <meta property="og:title" content="位运算（Bitwise Operation）">
 <meta property="og:url" content="https://tao1st.github.io/2022/10/02/%E4%BD%8D%E8%BF%90%E7%AE%97/index.html">
 <meta property="og:site_name" content="tao1st.github.io">
-<meta property="og:description" content="比较吃技巧，最好临面试前重新熟悉一遍，代码量小，吃思路。  常用位运算技巧：   n &amp; (n - 1) : 去除n的位级表示中最低的那一位，即去除掉最低的那一个1；该算法常称为Brain Kernighan算法。   n &amp; (-n) : 得到n的位级表示中最低的哪一位，即保留最后一个1；   x &amp; 1 &#x2F; x % 2 : 获取x的最低位（掩码操作）。   异或全1：">
+<meta property="og:description" content="比较吃技巧，最好临面试前重新熟悉一遍，代码量小，吃思路。 注意！位运算符的优先级非常低（最值得注意的就是低于&#x3D;&#x3D;），一定注意加括号。  常用位运算技巧：   n &amp; (n - 1) : 去除n的位级表示中最低的那一位，即去除掉最低的那一个1；该算法常称为Brain Kernighan算法。   n &amp; (-n) : 得到n的位级表示中最低的哪一位，即保留最后一个1；   x &amp;a">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://gcore.jsdelivr.net/gh/TAO1st/pics@master/202302271752703.png">
 <meta property="article:published_time" content="2022-10-01T17:13:45.000Z">
-<meta property="article:modified_time" content="2023-01-23T11:49:16.804Z">
+<meta property="article:modified_time" content="2023-02-27T15:27:38.322Z">
 <meta property="article:author" content="tao1st">
 <meta property="article:tag" content="位运算(Bitwise Operation)">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://gcore.jsdelivr.net/gh/TAO1st/pics@master/202302271752703.png">
   
   
   
@@ -59,6 +61,8 @@
 
 
   <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
   
 
 
@@ -123,18 +127,6 @@
           
           
             <li class="nav-item">
-              <a class="nav-link" href="/archives/">
-                <i class="iconfont icon-archive-fill"></i>
-                归档
-              </a>
-            </li>
-          
-        
-          
-          
-          
-          
-            <li class="nav-item">
               <a class="nav-link" href="/categories/">
                 <i class="iconfont icon-category-fill"></i>
                 分类
@@ -175,6 +167,11 @@
           
         
         
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
       </ul>
     </div>
   </div>
@@ -183,7 +180,7 @@
   
 
 <div id="banner" class="banner" parallax=true
-     style="background: url('/img/bk7.png') no-repeat center center; background-size: cover;">
+     style="background: url('/img/bk.png') no-repeat center center; background-size: cover;">
   <div class="full-bg-img">
     <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.5)">
       <div class="banner-text text-center fade-in-up">
@@ -212,7 +209,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          2k 字
+          2.8k 字
         
       </span>
     
@@ -223,7 +220,7 @@
         
         
         
-          17 分钟
+          24 分钟
         
       </span>
     
@@ -268,20 +265,21 @@
                 
                 <blockquote>
 <p>比较吃技巧，最好临面试前重新熟悉一遍，代码量小，吃思路。</p>
+<p>注意！位运算符的优先级非常低（最值得注意的就是低于<code>==</code>），一定注意加括号。</p>
 </blockquote>
 <p>常用位运算技巧：</p>
 <ol>
 <li class="lvl-3">
-<p><code>n &amp; (n - 1)</code> : 去除n的位级表示中最低的那一位，即<b>去除掉最低的那一个1</b>；该算法常称为Brain Kernighan算法。</p>
+<p><code>n &amp; (n - 1)</code> : 去除n的位级表示中最低的那一位，即<strong>去除掉最低的那一个1</strong>；该算法常称为Brain Kernighan算法。</p>
 </li>
 <li class="lvl-3">
-<p><code>n &amp; (-n)</code> : 得到n的位级表示中最低的哪一位，即<b>保留最后一个1</b>；</p>
+<p><code>n &amp; (-n)</code> : 得到n的位级表示中最低的哪一位，即<strong>保留最后一个1</strong>；</p>
 </li>
 <li class="lvl-3">
-<p><code>x &amp; 1</code> / <code>x % 2</code> : <b>获取x的最低位</b>（掩码操作）。</p>
+<p><code>x &amp; 1</code> / <code>x % 2</code> : <strong>获取x的最低位</strong>（掩码操作）。</p>
 </li>
 <li class="lvl-3">
-<p>异或全1：<b>翻转二进制位</b>；</p>
+<p>异或全1：<strong>翻转二进制位</strong>；</p>
 </li>
 </ol>
 <p>常用的位运算符号有：</p>
@@ -289,7 +287,7 @@
 <li class="lvl-2">
 <p><code>^</code> : 按位异或</p>
 <ul class="lvl-2">
-<li class="lvl-4"><b>异或全1：翻转二进制位；(LeetCode 476)</b></li>
+<li class="lvl-4"><strong>异或全1：翻转二进制位；(LeetCode 476)</strong></li>
 <li class="lvl-4">异或全0：不变；</li>
 <li class="lvl-4">异或本身：全部置0；</li>
 </ul>
@@ -318,43 +316,81 @@
 <p><code>&lt;&lt;</code> / <code>&gt;&gt;</code> : 左移与右移，逻辑移位还是算术移位要根据操作数类型来判断。</p>
 </li>
 </ul>
-<h2 id="位运算分治-2">位运算分治</h2>
+<hr>
+<h4 id="位运算分治-2">位运算分治</h4>
+<p>即给定一个 $n$ 位二进制数，将其二进制位颠倒。</p>
 <ul class="lvl-0">
 <li class="lvl-2">
 <p>190 Reverse Bits 颠倒二进制位 (Easy)</p>
+<ol>
+<li class="lvl-5">
+<p>解法一：按位颠倒</p>
 </li>
-<li class="lvl-2">
-<p>231 Power of Two 2的幂 (Easy)</p>
+<li class="lvl-5">
+<p>解法二：位运算分治</p>
+<p>分而治之，每次都将整个串分成左右两份并颠倒，逻辑如图。自上至下与自下至上的分治均可。每次颠倒利用掩码实现。</p>
 </li>
-<li class="lvl-2">
-<p>342 Power of Four 4的幂 (Easy)</p>
+</ol>
 </li>
 </ul>
-<h2 id="位哈希-2">位哈希</h2>
+<img src="https://gcore.jsdelivr.net/gh/TAO1st/pics@master/202302271752703.png" srcset="/img/loading.gif" lazyload style="zoom: 25%;" />
+<h4 id="位哈希-2">位哈希</h4>
 <ul class="lvl-0">
 <li class="lvl-2">
 <p><strong>318 Maximum Product of Word Lengths 最大单词长度乘积 (Medium)</strong></p>
+<p>重点需要优化的操作是：如何判断两个单词不含有公共字母。这里用到位哈希来提升效率。对每个单词使用<strong>位哈希</strong>，即一个整数的26个二进制位分别对应是否存在该字母，则两个不具有公共字母的位哈希相与结果必为0，反之结果不为0；</p>
+</li>
+</ul>
+<h4 id="判断是否为2的幂次方">判断是否为2的幂次方</h4>
+<p>2和4都是基本一个类型，主要是关注二进制位表示的特性：</p>
 <ol>
-<li class="lvl-5">第一个重点在于：对每个单词使用<strong>位哈希</strong>，即一个整数的26个二进制位分别对应是否存在该字母，则两个不具有公共字母的位哈希相与结果必为0，反之结果不为0；</li>
+<li class="lvl-3">
+<p>首先注意一个陷阱：只有非负整数满足要求。0与负数均不满足。</p>
+</li>
+<li class="lvl-3">
+<p>二进制位中只有一个1。这就已经满足了是2的次幂的要求。</p>
+</li>
+<li class="lvl-3">
+<p>在此基础上，4的次幂中的1一定在偶数次位上（从右起第一个标记为第0位）。</p>
+</li>
 </ol>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>231 Power of Two 2的幂 (Easy)</p>
 <ul class="lvl-2">
 <li class="lvl-4">
-<p>第二个重点在于：引入<strong>哈希表</strong>。第一反应是从字符串<code>string</code>到位掩码<code>int</code>的哈希，但是这样还要对字符串数组进行一个$O(n^2)$的循环查询，还可以进一步优化；</p>
+<p>解法一：根据二进制位特性判断。</p>
+<p>显然，只需要满足大于0，且去掉最低位的1（<code>n &amp; (n - 1)</code>）后值为0即可。</p>
 </li>
 <li class="lvl-4">
-<p>第三个重点就是最后一步的优化，直接<strong>构造从位掩码到字符串最大长度的掩码</strong>。这里统计最大长度是因为有可能有相同的字符构成，但是长度不一样的情况，即出现重复字符的情况。</p>
+<p>解法二：逐位判断。不断除以2，在<code>n == 1</code>前，如果二进制位存在其他的1（即二进制位超过一个1）则表示不满足。</p>
+</li>
+</ul>
+</li>
+<li class="lvl-2">
+<p>342 Power of Four 4的幂 (Easy)</p>
+<ul class="lvl-2">
+<li class="lvl-4">
+<p>解法一：根据二进制位特性判断。</p>
+<p>只需要满足大于0，二进制位只有一个1，且该1在偶数次位上（使用偶/奇数位全1掩码判断）即可。</p>
+</li>
+<li class="lvl-4">
+<p>解法二：逐位判断。</p>
+</li>
+<li class="lvl-4">
+<p>解法三：同余定理。4的幂次方模3必余1，2的幂次方如果不是4的幂次方模3余2。</p>
 </li>
 </ul>
 </li>
 </ul>
-<h2 id="其他-4">其他</h2>
+<hr>
 <ul class="lvl-0">
 <li class="lvl-2">
 <p>461 Hamming Distance 汉明距离 (Easy)</p>
 <p>可以使用内置函数，直接计算二进制表达中1的数量。C++中为<code>__builtin_popcount(x)</code>。</p>
 </li>
 <li class="lvl-2">
-<p><strong>338 Counting Bits 比特数计位 (Easy)</strong></p>
+<p><strong>338 Counting Bits 比特位计数 (Easy)</strong></p>
 <ul class="lvl-2">
 <li class="lvl-4">
 <p>解法一：利用位运算统计；</p>
@@ -364,8 +400,13 @@
 <p>解法二：使用内置函数<code>__builtin_popcount(x)</code>；</p>
 </li>
 <li class="lvl-4">
-<p>解法三：使用<strong>动态规划</strong>；</p>
-<p>在使用位运算技巧解题的时候就发现，从小到大1的数量和位置是有一定规律的，联想到使用一维状态转移方程来求解。时间复杂度优化至$O(n)$。</p>
+<p>（<b>最优解</b>）解法三：为了实现线性复杂度，使用<strong>动态规划</strong>；</p>
+<p>在使用位运算技巧解题的时候就发现，从小到大1的数量和位置是有一定规律的，联想到使用一维状态转移方程来求解。时间复杂度优化至$O(n)$。令 $dp[i]$ 为 $i$ 二进制位1的个数：<br>
+$$<br>
+dp[i] = \begin{cases} dp[i - 1] + 1 &amp;&amp; i \space &amp;&amp;\space 1== 1\<br>
+dp[i / 2] &amp;&amp; i \space &amp;&amp; \space 1== 0<br>
+\end{cases}<br>
+$$</p>
 </li>
 </ul>
 </li>
@@ -383,25 +424,33 @@
 </li>
 <li class="lvl-2">
 <p>693 Binary Number with Alternating Bits 交替位二进制数 (Easy)</p>
-<p>判断相邻位是否全部相反，显然想到使用异或。</p>
-<p>交替位二进制数右移一位后异或其本身能够得到低位的全1，再加1后整个二进制表示只有一个1。</p>
-<p>判断此时二进制位表示是否只有一个1即可。</p>
+<p>判断相邻位是否全部相反，显然想到使用异或。交替位二进制数右移一位后异或其本身能够得到低位的全1，再加1后整个二进制表示只有一个1。判断此时二进制位表示是否只有一个1即可。</p>
+<p>$O(1)$ 时间即可完成计算。</p>
 </li>
 <li class="lvl-2">
-<p><strong>476 Number Complement 数字的补数 (Easy)</strong></p>
+<p><em>476 Number Complement 数字的补数 (Easy)</em></p>
 <p>直接按位求反，会导致高位的0全部变为1，这与题意不符。根据题意，应该定位到数字的最高位1，并从该位置起进行翻转，翻转的方式即为异或二进制全1。</p>
-<p>按照题目中补数的定义，即将二进制位翻转，根据位运算常见技巧，立马反应构造全1的掩码进行异或。从而题目转变为如何构造出不带前导零的指定位数的全1掩码。</p>
+<p>按照题目中补数的定义，即将二进制位翻转，根据位运算常见技巧，立马反应构造全1的掩码进行异或。从而题目转变为<b>如何构造出不带前导零的指定位数的全1掩码</b>。</p>
+<ul class="lvl-2">
+<li class="lvl-4">
+<p>构造方法一：不断构造低位全1掩码，直至掩码大于 $n$；</p>
+</li>
+<li class="lvl-4">
+<p>构造方法二：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">int</span> mask = n;<br>mask |= (mask &gt;&gt; <span class="hljs-number">1</span>);			<span class="hljs-comment">// 最高位1向右复制，得到高两位1</span><br>mask |= (mask &gt;&gt; <span class="hljs-number">2</span>);			<span class="hljs-comment">// 高两位1向右复制，得到高四位1</span><br>mask |= (mask &gt;&gt; <span class="hljs-number">4</span>);    		<span class="hljs-comment">// 高四位1向右复制，得到高八位1</span><br>mask |= (mask &gt;&gt; <span class="hljs-number">8</span>);			<span class="hljs-comment">// 高八位1向右复制，得到高十六位1</span><br>mask |= (mask &gt;&gt; <span class="hljs-number">16</span>);			<span class="hljs-comment">// 依次类推，如果高位并无1，就相当于无变动</span><br></code></pre></td></tr></table></figure>
+</li>
+</ul>
 </li>
 <li class="lvl-2">
 <p>136 Single Number 只出现一次的数字 (Easy)</p>
 </li>
 <li class="lvl-2">
-<p><strong>137 Single Number II 只出现一次的数字 (Medium)</strong></p>
+<p><em>137 Single Number II 只出现一次的数字 (Medium)</em></p>
 <p>题目中每个数字都出现了三次，只有一个例外只出现了一次。</p>
 <ul class="lvl-2">
 <li class="lvl-4">
-<p>解法一：挨个位处理，统计每个位上数组中所有元素为1的个数，将个数模3即可得到该位答案。</p>
-<p>时间复杂度达到 $O(nlogC)$，其中$C$是位数，即32。</p>
+<p>解法一：按位处理，对从低到高每一位统计数组中元素二进制表示下该位为1的个数，将个数模3即可得到该位答案。</p>
+<p>时间复杂度达到 $O(nlogC)$，其中$C$是数据范围，此处 $logC = 32$。</p>
 </li>
 <li class="lvl-4">
 <p>解法二：利用<strong>数字电路</strong>中的<strong>状态机</strong>，书写真值表来实现并行处理32个位。具体见题解，不是很复杂的解法。</p>
