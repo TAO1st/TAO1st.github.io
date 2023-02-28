@@ -294,7 +294,7 @@
 <p>LCS, LIS, Fibonacci… the lists goes on.</p>
 </li>
 </ol>
-<h2 id="使用场景-4">使用场景</h2>
+<h2 id="使用场景">使用场景</h2>
 <blockquote>
 <p>关注最优值与最优解（的重构）。</p>
 </blockquote>
@@ -305,7 +305,7 @@
 <p>根据题目的不同要求，有的题目只需要求出最优值，而有的题目需要更进一步 <b>重构出最优解</b>。</p>
 <p>Such problems can have many possible solutions. Each solution has a value, and we wish to find a solution with the optimal (minimum or maximum) value. We call such a solution <b>an</b> optimal solution to the problem, as opposed to <b>the</b> optimal solution, since there may be <b>several</b> solutions that achieve the optimal value.</p>
 <p>划分子问题时，都需要做出一个选择，每次选择会产生一个或者多个待解的子问题。而解的重构通常也比较简单，我们将每个子问题所作的选择存入表中即可。</p>
-<h2 id="适用情况-4">适用情况</h2>
+<h2 id="适用情况-3">适用情况</h2>
 <div class="success">
 <p>确定使用前提是使用动态规划的第一步，即，<b>在什么情况下我们应该寻求用动态规划方法来解决问题呢？</b></p>
 </div>
@@ -413,7 +413,7 @@
 <p>substring: $x[i\ldots j], \space \Theta(n^2)$。</p>
 </li>
 </ul>
-<h4 id="Subproblem-Expansion-Constraints-2">Subproblem Expansion &amp; Constraints</h4>
+<h4 id="Subproblem-Expansion-Constraints">Subproblem Expansion &amp; Constraints</h4>
 <ul class="lvl-0">
 <li class="lvl-2">
 <p>If you find yourself lacking information to check the desired conditions of the problem, or lack the natural subproblem to recurse on, try subproblem constraint/expansion!</p>
@@ -469,10 +469,10 @@
 </li>
 </ul>
 <h3 id="3-实例">3 实例</h3>
-<h4 id="Bowling-2">Bowling</h4>
+<h4 id="Bowling">Bowling</h4>
 <h4 id="Alternating-Coin-Game">Alternating Coin Game</h4>
 <h4 id="Bellman-Ford">Bellman-Ford</h4>
-<h2 id="空间压缩-2">空间压缩</h2>
+<h2 id="空间压缩">空间压缩</h2>
 <p>使用滚动数组进行空间复杂度上的优化。</p>
 <ul class="lvl-0">
 <li class="lvl-2">
@@ -482,7 +482,7 @@
 <p>二维：压缩至一维。</p>
 </li>
 </ul>
-<h2 id="分类-4">分类</h2>
+<h2 id="分类-2">分类</h2>
 <h3 id="基本一维DP">基本一维DP</h3>
 <ul class="lvl-0">
 <li class="lvl-2">
@@ -1224,7 +1224,7 @@ max{dp[j] , dp[j - w[i]] + v[i]   &amp; j \geq w[i]  \<br>
 dp[j] &amp; j &lt; w[i]<br>
 \end{cases}<br>
 $$</p>
-<h4 id="相关题目-10">相关题目</h4>
+<h4 id="相关题目-9">相关题目</h4>
 <ul class="lvl-0">
 <li class="lvl-2">
 <p>416 Partition Equal Subset Sum 分割等和子集 (Medium)</p>
