@@ -16,16 +16,16 @@
   <meta name="author" content="tao1st">
   <meta name="keywords" content="">
   
-    <meta name="description" content="程序内存  这里关注的是Read&#x2F;write data与Read-only code and data这部分。这些内容都是直接按照可执行目标文件（executable object file）的内容进行初始化的。   Read&#x2F;write data：存放全局变量（global）与静态变量（static）。  .data：已经初始化的全局变量与静态变量（initialized）； .bss：未初始化">
+    <meta name="description" content="程序&#x2F;进程的内存空间  这里关注的是Read&#x2F;write data与Read-only code and data这部分。这些内容都是直接按照可执行目标文件（executable object file）的内容进行初始化的。   Read&#x2F;write data：全局区。存放全局变量（global）与静态变量（static）。  .data：已经初始化的全局变量与静态变量（initialized）；">
 <meta property="og:type" content="article">
 <meta property="og:title" content="extern &amp; static">
 <meta property="og:url" content="https://tao1st.github.io/2022/10/12/extern-and-static/index.html">
 <meta property="og:site_name" content="tao1st.github.io">
-<meta property="og:description" content="程序内存  这里关注的是Read&#x2F;write data与Read-only code and data这部分。这些内容都是直接按照可执行目标文件（executable object file）的内容进行初始化的。   Read&#x2F;write data：存放全局变量（global）与静态变量（static）。  .data：已经初始化的全局变量与静态变量（initialized）； .bss：未初始化">
+<meta property="og:description" content="程序&#x2F;进程的内存空间  这里关注的是Read&#x2F;write data与Read-only code and data这部分。这些内容都是直接按照可执行目标文件（executable object file）的内容进行初始化的。   Read&#x2F;write data：全局区。存放全局变量（global）与静态变量（static）。  .data：已经初始化的全局变量与静态变量（initialized）；">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://gcore.jsdelivr.net/gh/TAO1st/pics@master/202211082058886.png">
 <meta property="article:published_time" content="2022-10-12T12:14:27.000Z">
-<meta property="article:modified_time" content="2023-02-28T13:13:50.648Z">
+<meta property="article:modified_time" content="2023-03-01T13:52:03.430Z">
 <meta property="article:author" content="tao1st">
 <meta property="article:tag" content="extern">
 <meta property="article:tag" content="static">
@@ -210,7 +210,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          662 字
+          2.6k 字
         
       </span>
     
@@ -221,7 +221,7 @@
         
         
         
-          6 分钟
+          22 分钟
         
       </span>
     
@@ -264,12 +264,12 @@
             
               <div class="markdown-body">
                 
-                <h4 id="程序内存">程序内存</h4>
+                <h2 id="程序-进程的内存空间">程序/进程的内存空间</h2>
 <img src="https://gcore.jsdelivr.net/gh/TAO1st/pics@master/202211082058886.png" srcset="/img/loading.gif" lazyload style="zoom:50%;" />
 <p>这里关注的是Read/write data与Read-only code and data这部分。这些内容都是直接按照可执行目标文件（executable object file）的内容进行初始化的。</p>
 <ul class="lvl-0">
 <li class="lvl-2">
-<p>Read/write data：存放全局变量（global）与静态变量（static）。</p>
+<p>Read/write data：全局区。存放全局变量（global）与静态变量（static）。</p>
 <ul class="lvl-2">
 <li class="lvl-4"><code>.data</code>：已经初始化的全局变量与静态变量（initialized）；</li>
 <li class="lvl-4"><code>.bss</code>：未初始化的全局变量与静态变量（uninitialized）。</li>
@@ -278,12 +278,17 @@
 <li class="lvl-2">
 <p>Read-only code and data：该部分内容只读。</p>
 <ul class="lvl-2">
-<li class="lvl-4"><code>.text</code>：代码段，即程序的机器代码。</li>
-<li class="lvl-4">常量内容。程序结束后，由系统进行释放。</li>
+<li class="lvl-4">
+<p><code>.text</code>：代码段，即程序的机器代码。</p>
+</li>
+<li class="lvl-4">
+<p><code>.rodata</code>：只读数据，例如switch中的jump table。</p>
+<p>或许常量内容也在这部分？</p>
+</li>
 </ul>
 </li>
 </ul>
-<h4 id="作用域与生命周期">作用域与生命周期</h4>
+<h2 id="作用域与生命周期">作用域与生命周期</h2>
 <ul class="lvl-0">
 <li class="lvl-2">
 <p>作用域（scope）：从代码空间角度来看，变量在哪个代码段内有效。</p>
@@ -292,8 +297,8 @@
 <p>生命周期（duration）：从时间角度来看，变量什么时候被初始化，什么时候被回收。</p>
 </li>
 </ul>
-<h1>extern</h1>
-<h1>static</h1>
+<h2 id="extern">extern</h2>
+<p>extern是用作变量声明，而不是变量定义。它只是对一个已定义的外部变量作声明，以扩展其作用域。在多个文件的程序中，如果某一个文件想要引用另一个文件中已定义的外部变量，就可以添加外部变量声明（extern）。</p>
 <h2 id="面向过程中的static">面向过程中的static</h2>
 <blockquote>
 <p><strong>全局（global）与局部（local）</strong></p>
@@ -309,22 +314,141 @@
 <p>全局变量位于程序内存中的静态区域，其在生成可执行目标文件时已经分配完成；</p>
 <p>局部变量位于程序内存中的动态区域，其位于程序栈处。</p>
 </li>
-</ul>
-</blockquote>
-<h3 id="静态全局变量">静态全局变量</h3>
-<p>全局变量前添加<code>static</code>关键字，即为静态全局变量。</p>
-<h4 id="用途">用途</h4>
-<ul class="lvl-0">
 <li class="lvl-2">
-<p>希望全局变量只能被本文件引用，而不能被其他文件引用。</p>
+<p>全局变量因为在程序开始时就已经分配存储空间，所以<b>必须有初始值</b>。</p>
+<p>如果未显式赋值，则编译器默认置0。</p>
 </li>
 </ul>
-<h3 id="静态局部变量">静态局部变量</h3>
+</blockquote>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">// 静态局部</span><br><span class="hljs-type">int</span> <span class="hljs-title function_">func</span><span class="hljs-params">()</span> &#123;<br>	<span class="hljs-type">static</span> <span class="hljs-type">int</span> a = <span class="hljs-number">1</span>;<br>    ...<br>&#125;<br><br><span class="hljs-comment">// 静态全局</span><br><span class="hljs-type">static</span> <span class="hljs-type">int</span> a = <span class="hljs-number">1</span>;<br><span class="hljs-type">int</span> <span class="hljs-title function_">main</span><span class="hljs-params">()</span> &#123;<br>    ...<br>&#125;<br><br><span class="hljs-comment">// 静态函数声明</span><br><span class="hljs-type">static</span> <span class="hljs-type">int</span> <span class="hljs-title function_">func</span><span class="hljs-params">(<span class="hljs-type">int</span> a, <span class="hljs-type">int</span> b)</span>;<br></code></pre></td></tr></table></figure>
+<h3 id="静态全局变量-static-global-var">静态全局变量 static global var</h3>
+<blockquote>
+<p>仅本地有效，其他文件不可见。</p>
+</blockquote>
+<p>全局变量前添加<code>static</code>关键字，即为静态全局变量。</p>
+<h4 id="特性">特性</h4>
+<p>全局变量<b>只能被本文件引用</b>，而不能被其他文件引用。即<b>对其他文件不可见</b>。即使在其他文件中使用<code>extern</code>进行了外部变量声明，仍然无法引用静态全局变量。</p>
+<h4 id="用途">用途</h4>
+<p>避免同名冲突：多人开发时，不同模块/文件之间存在相同的变量名而不会互相影响，提升模块化和通用性，实现解耦。</p>
+<h3 id="静态局部变量-static-local-var">静态局部变量 static local var</h3>
+<blockquote>
+<p>只初始化一次，后续保留上一次计算的原始值。</p>
+</blockquote>
 <p>局部变量前添加<code>static</code>关键字，即为静态局部变量。</p>
+<h4 id="特性-2">特性</h4>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>静态局部变量在程序内存中位于Read/write data部分，其在程序整个运行期间都不释放。</p>
+</li>
+<li class="lvl-2">
+<p>静态局部变量在<b>编译时即赋予初值</b>，且仅赋初值一次；</p>
+<p>其存储特性意味着它必须拥有初值。如果定义时不赋初值，则编译器自动赋予0或空字符串作为初值。</p>
+</li>
+<li class="lvl-2">
+<p>尽管静态局部变量所占用的空间在程序运行整个期间都不释放，但其作用域仍然仅限于其所在函数体内。即对其他函数都不可见。</p>
+</li>
+<li class="lvl-2">
+<p>缺点就是会多占内存，不会及时释放。而且会降低程序可读性。</p>
+</li>
+</ul>
+<h4 id="用途-2">用途</h4>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>希望在函数/语句体内的局部变量的值在函数调用结束后不消失、保留原值，即其占用的存储单元不释放。</p>
+<p>下一次该函数调用时，其初始值保留上一次调用结束时的值。</p>
+</li>
+<li class="lvl-2">
+<p>变量初始化后只会被引用而不会被修改其值的情况。</p>
+</li>
+</ul>
 <h3 id="静态函数">静态函数</h3>
+<blockquote>
+<p>仅本地可见，其他文件不可见。</p>
+</blockquote>
+<p>函数前添加<code>static</code>关键字，即为静态/内部函数。</p>
+<h4 id="特性-3">特性</h4>
+<p>函数的作用域限定在本文件内，即只能被本文件中的其他函数所调用。其他文件无法对其进行调用。这也意味着不使用static声明的函数都默认为外部函数（和使用extern声明的效果一致），能够被其他文件所调用。</p>
+<h4 id="用途-3">用途</h4>
+<p>使函数局限于文件，在多文件的工程中不用担心同名函数互相干扰。实现多人工程开发的解耦。</p>
 <h2 id="面向对象中的static">面向对象中的static</h2>
 <h3 id="静态成员变量">静态成员变量</h3>
+<blockquote>
+<p>实现数据共享，而不破坏封装性。</p>
+</blockquote>
+<p>在成员变量的声明前加关键字<code>static</code>，即声明为静态数据成员。访问权限私有和公有均可。</p>
+<h4 id="用途-4">用途</h4>
+<p>如果我们想要实现数据共享，希望所有实例中的某个数据成员的值保持一致，就可以将该成员定义为静态数据成员。</p>
+<p>静态数据成员不属于某一个对象，而<b>属于该类</b>。所有该类的对象都共享这些静态数据成员（实现数据共享而不会因为全局变量破坏封装性）。</p>
+<h4 id="引用">引用</h4>
+<p>静态数据成员既可以<b>通过对象引用</b>，也可以<b>通过类名来引用</b>。</p>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>即使未实例化对象，也可以<b>通过类名来引用</b>静态数据成员：<code>数据类型名 类名::静态数据成员</code></p>
+</li>
+<li class="lvl-2">
+<p>访问控制与其他数据成员一样，遵从同样的规则；</p>
+<p>如果静态数据成员被定义为private，则不能在类外直接引用，必须通过公用的成员函数引用。通常会编写专门引用静态数据成员的静态成员函数。</p>
+</li>
+</ul>
+<h4 id="作用域与生命周期-2">作用域与生命周期</h4>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>生命周期：从程序开始/类声明开始即分配空间，直至程序结束。</p>
+</li>
+<li class="lvl-2">
+<p>作用域：与类的作用域保持一致。</p>
+</li>
+</ul>
+<p>与之相对的普通数据成员，遵循对象的生命周期，跟随对象的分配与销毁。</p>
+<h4 id="存储">存储</h4>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>在类声明时（还未实例化任何对象）即分配存储空间。</p>
+</li>
+<li class="lvl-2">
+<p>无论实例多少个对象，静态数据成员在内存中都只占一份空间（属于类而非对象），由所有实例化的对象共享。对象无需为其重新开辟空间。</p>
+</li>
+</ul>
+<h4 id="初始化">初始化</h4>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>静态意味着必须初始化。如果未对静态数据成员赋初值，则编译系统默认为0。</p>
+</li>
+<li class="lvl-2">
+<p>只能在类体外进行初始化。类体内只能进行声明。</p>
+</li>
+<li class="lvl-2">
+<p>不能用参数初始化表对静态数据成员进行初始化。</p>
+</li>
+</ul>
 <h3 id="静态成员函数">静态成员函数</h3>
+<blockquote>
+<p>专用于访问静态数据成员。</p>
+</blockquote>
+<p>在成员函数的声明前加关键字<code>static</code>，即声明为静态成员函数。同样的，静态成员函数也是类的一部分，而不属于任何实例化的对象。</p>
+<h4 id="调用">调用</h4>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>公用的静态成员函数可以在类外直接使用类名和域运算符调用：<code>class_name::func_name()</code>。</p>
+</li>
+<li class="lvl-2">
+<p>也可以通过对象名调用静态成员函数。</p>
+<p>但注意，此时仍然没有指向调用对象的this指针。（无法定位对象的非静态成员。）</p>
+</li>
+</ul>
+<h4 id="用途-5">用途</h4>
+<p>专门为了处理静态数据成员，而非进行数据共享。</p>
+<blockquote>
+<p>养成良好习惯：只用静态成员函数引用静态数据成员，而不引用非静态数据成员。</p>
+</blockquote>
+<h4 id="特点">特点</h4>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>因为静态成员函数属于类，所以<b>没有this指针</b>。</p>
+<p>该特性意味着无法通过this指针访问某一实例的非静态成员。</p>
+<p>如果一定要访问某一实例化对象的非静态成员，则需要加上对象名以及成员运算符<code>.</code>。</p>
+</li>
+</ul>
 
                 
               </div>

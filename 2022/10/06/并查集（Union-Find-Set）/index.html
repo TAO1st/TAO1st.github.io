@@ -291,7 +291,7 @@
 <p>并查集森林（有根树）：维护一个游标数组 <code>parent</code>（就开个vector）。数组的值代表其所在下表的父节点的编号。</p>
 <p>即 <code>parent[i] = x</code> 的含义是：节点 $i$ 的父节点编号为 $x$。</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">class</span> <span class="hljs-title class_">ufset</span> &#123;<br>    vector&lt;<span class="hljs-type">int</span>&gt; parent;<br>    ...<br>&#125;<br></code></pre></td></tr></table></figure>
-<h3 id="初始化">初始化</h3>
+<h3 id="初始化-2">初始化</h3>
 <p>将每个节点的父节点设置为自己。</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-built_in">ufset</span>(<span class="hljs-type">int</span> n): <span class="hljs-built_in">parent</span>(n + <span class="hljs-number">1</span>) &#123;<br>    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt;= n; i++) &#123;<br>        parent[i] = i;<br>    &#125;<br>    <span class="hljs-comment">// 等价于：itoa(parent.begin(), parent,end(), 0);</span><br>&#125;<br></code></pre></td></tr></table></figure>
 <h3 id="Union">Union</h3>
