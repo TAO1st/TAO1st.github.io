@@ -23,17 +23,17 @@
 <meta property="og:site_name" content="tao1st.github.io">
 <meta property="og:description" content="基于对象与面向对象   Objected Based 基于对象 针对单个对象，以良好的方式去构建C++ class。 在设计思路上有两种截然不同的分类：   class without pointer members 本身包含了自己所存储的东西；   class with pointer members 本身只存储指针，指针指向其想要存储的东西；    二者根本上的差别决定了在 内存管理 上有很大">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/TAO1st/pics@master/202205181244587.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/TAO1st/pics@master/202205181245883.png">
-<meta property="og:image" content="https://gcore.jsdelivr.net/gh/TAO1st/pics@master/202205311746709.png">
-<meta property="og:image" content="https://fastly.jsdelivr.net/gh/TAO1st/pics@master/202205311744749.png">
-<meta property="og:image" content="https://fastly.jsdelivr.net/gh/TAO1st/pics@master/202205311747762.png">
+<meta property="og:image" content="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/pics-master/202205181244587.png">
+<meta property="og:image" content="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/pics-master/202205181245883.png">
+<meta property="og:image" content="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/pics-master/202205311746709.png">
+<meta property="og:image" content="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/pics-master/202205311744749.png">
+<meta property="og:image" content="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/pics-master/202205311747762.png">
 <meta property="article:published_time" content="2021-03-08T09:52:36.000Z">
-<meta property="article:modified_time" content="2023-03-01T10:10:28.209Z">
+<meta property="article:modified_time" content="2023-03-06T03:55:43.095Z">
 <meta property="article:author" content="tao1st">
 <meta property="article:tag" content="Object Oriented Programming, OOP">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/TAO1st/pics@master/202205181244587.png">
+<meta name="twitter:image" content="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/pics-master/202205181244587.png">
   
   
   
@@ -580,8 +580,8 @@
 </ol>
 <p><code>delete</code>关键字的工作顺序是恰好相反的：<strong>先执行析构函数，然后再释放内存</strong>。</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">delete</span> pc;<br><span class="hljs-comment">// 编译器转换为：</span><br>complex::~<span class="hljs-built_in">complex</span>(pc);		<span class="hljs-comment">// （1）析构函数 - 编译器合成</span><br><span class="hljs-function"><span class="hljs-keyword">operator</span> <span class="hljs-title">delete</span><span class="hljs-params">(pc)</span></span>;		<span class="hljs-comment">// （2）释放内存 - 此时对象占用的内存空间才被真正释放，其内部调用free(pc)</span><br><br><span class="hljs-keyword">delete</span> ps;<br><span class="hljs-comment">// 编译器转换为：</span><br>string::~<span class="hljs-built_in">string</span>(ps);		<span class="hljs-comment">// （1）析构函数 - 按照用户定义的形式，释放掉真正指向的字符数组部分的内存</span><br><span class="hljs-function"><span class="hljs-keyword">operator</span> <span class="hljs-title">delete</span><span class="hljs-params">(ps)</span></span>;		<span class="hljs-comment">// （2）释放内存 - 释放对象本身占用的内存，即m_data指针占用的内存空间</span><br></code></pre></td></tr></table></figure>
-<p><img src="https://cdn.jsdelivr.net/gh/TAO1st/pics@master/202205181244587.png" srcset="/img/loading.gif" lazyload alt=""></p>
-<p><img src="https://cdn.jsdelivr.net/gh/TAO1st/pics@master/202205181245883.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<p><img src="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/pics-master/202205181244587.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<p><img src="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/pics-master/202205181245883.png" srcset="/img/loading.gif" lazyload alt=""></p>
 <h3 id="内存块与array">内存块与array</h3>
 <p>这部分结合<strong>PPT上的图</strong>比较好理解，关键字知识点如下：</p>
 <h4 id="Release-Mode-发行模式">Release Mode 发行模式</h4>
@@ -625,7 +625,7 @@
 <h2 id="Object-Oriented-Programming">Object Oriented Programming</h2>
 <h3 id="Inheritance-继承">Inheritance 继承</h3>
 <p>表示is a (Generalization)。继承的内容比较复杂，此处仅作一些简单的概念性讨论。</p>
-<img src="https://gcore.jsdelivr.net/gh/TAO1st/pics@master/202205311746709.png" srcset="/img/loading.gif" lazyload style="zoom:50%;" />
+<img src="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/pics-master/202205311746709.png" srcset="/img/loading.gif" lazyload style="zoom:50%;" />
 <h4 id="构造和析构">构造和析构</h4>
 <ul class="lvl-0">
 <li class="lvl-2">
@@ -662,7 +662,7 @@
 <h3 id="Composition-复合">Composition 复合</h3>
 <p>表示has a （Association - Aggregation - Composition），即<strong>类的数据成员 是 另一个类的对象</strong>。</p>
 <p>如图：queue的数据成员是deque对象，即deque为实际底层实现结构。</p>
-<img src="https://fastly.jsdelivr.net/gh/TAO1st/pics@master/202205311744749.png" srcset="/img/loading.gif" lazyload style="zoom:33%;" />
+<img src="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/pics-master/202205311744749.png" srcset="/img/loading.gif" lazyload style="zoom:33%;" />
 <h4 id="Adapter-Method-适配器模式">Adapter Method 适配器模式</h4>
 <p>一种结构型设计模式。Adapter模式将一个类的接口转换成客户希望的另外一个接口，使得原本由于<strong>接口不兼容</strong>而不能一起工作的那些类可以一起工作。</p>
 <h4 id="构造与析构的顺序">构造与析构的顺序</h4>
@@ -670,7 +670,7 @@
 <p>见PPT图</p>
 <h3 id="Delegation-委托">Delegation 委托</h3>
 <p>Composition by reference. 即<strong>类的数据成员</strong> 是 <strong>指向对象的指针</strong>。</p>
-<img src="https://fastly.jsdelivr.net/gh/TAO1st/pics@master/202205311747762.png" srcset="/img/loading.gif" lazyload style="zoom:50%;" />
+<img src="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/pics-master/202205311747762.png" srcset="/img/loading.gif" lazyload style="zoom:50%;" />
 <h4 id="pImpl">pImpl</h4>
 <p>point to implementation, Effective C++  31</p>
 <p>通过指针指向其实际实现功能的类，分离度更好。对其内部实现按需改动，不会影响外界的接口。</p>

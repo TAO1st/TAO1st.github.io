@@ -23,44 +23,44 @@
 <meta property="og:site_name" content="tao1st.github.io">
 <meta property="og:description" content="字符串 String 基础   242 Valid Anagram 有效的字母异位词 (Easy)  其实是个哈希表的题目    205 Isomorphic Strings 同构字符串 (Easy)  其实还是个哈希表的题目。 有点小坑，要同时利用两个哈希表。    696 Count Binary Substrings 计数二进制子串 (Easy) 思路题：重点在于子串中的0和1是成组连续的，">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://gcore.jsdelivr.net/gh/TAO1st/pics@master/202205161418594.png">
-<meta property="og:image" content="https://gcore.jsdelivr.net/gh/TAO1st/pics@master/202205161501183.png">
-<meta property="og:image" content="https://gcore.jsdelivr.net/gh/TAO1st/pics@master/202112271559574.png">
-<meta property="og:image" content="https://gcore.jsdelivr.net/gh/TAO1st/pics@master/202112271610871.png">
-<meta property="og:image" content="https://gcore.jsdelivr.net/gh/TAO1st/pics@master/202112271610179.png">
-<meta property="og:image" content="https://gcore.jsdelivr.net/gh/TAO1st/pics@master/202112271610855.png">
-<meta property="og:image" content="https://gcore.jsdelivr.net/gh/TAO1st/pics@master/202112271610897.png">
-<meta property="og:image" content="https://gcore.jsdelivr.net/gh/TAO1st/pics@master/202112271611950.png">
-<meta property="og:image" content="https://gcore.jsdelivr.net/gh/TAO1st/pics@master/202205111123247.png">
-<meta property="og:image" content="https://gcore.jsdelivr.net/gh/TAO1st/pics@master/202205111539729.png">
-<meta property="og:image" content="https://gcore.jsdelivr.net/gh/TAO1st/pics@master/202205151303835.png">
-<meta property="og:image" content="https://gcore.jsdelivr.net/gh/TAO1st/pics@master/202205151303981.png">
-<meta property="og:image" content="https://gcore.jsdelivr.net/gh/TAO1st/pics@master/202205151304030.png">
-<meta property="og:image" content="https://gcore.jsdelivr.net/gh/TAO1st/pics@master/202205151304895.png">
-<meta property="og:image" content="https://gcore.jsdelivr.net/gh/TAO1st/pics@master/202205151305541.png">
-<meta property="og:image" content="https://gcore.jsdelivr.net/gh/TAO1st/pics@master/202205151305963.png">
-<meta property="og:image" content="https://gcore.jsdelivr.net/gh/TAO1st/pics@master/202205151305388.png">
-<meta property="og:image" content="https://gcore.jsdelivr.net/gh/TAO1st/pics@master/202205151305522.png">
-<meta property="og:image" content="https://gcore.jsdelivr.net/gh/TAO1st/pics@master/202205151305620.png">
-<meta property="og:image" content="https://gcore.jsdelivr.net/gh/TAO1st/pics@master/202205151306852.png">
-<meta property="og:image" content="https://gcore.jsdelivr.net/gh/TAO1st/pics@master/202205151306288.png">
+<meta property="og:image" content="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/pics-master/202205161418594.png">
+<meta property="og:image" content="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/pics-master/202205161501183.png">
+<meta property="og:image" content="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/pics-master/202112271559574.png">
+<meta property="og:image" content="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/pics-master/202112271610871.png">
+<meta property="og:image" content="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/pics-master/202112271610179.png">
+<meta property="og:image" content="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/pics-master/202112271610855.png">
+<meta property="og:image" content="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/pics-master/202112271610897.png">
+<meta property="og:image" content="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/pics-master/202112271611950.png">
+<meta property="og:image" content="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/pics-master/202205111123247.png">
+<meta property="og:image" content="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/pics-master/202205111539729.png">
+<meta property="og:image" content="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/pics-master/202205151303835.png">
+<meta property="og:image" content="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/pics-master/202205151303981.png">
+<meta property="og:image" content="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/pics-master/202205151304030.png">
+<meta property="og:image" content="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/pics-master/202205151304895.png">
+<meta property="og:image" content="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/pics-master/202205151305541.png">
+<meta property="og:image" content="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/pics-master/202205151305963.png">
+<meta property="og:image" content="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/pics-master/202205151305388.png">
+<meta property="og:image" content="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/pics-master/202205151305522.png">
+<meta property="og:image" content="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/pics-master/202205151305620.png">
+<meta property="og:image" content="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/pics-master/202205151306852.png">
+<meta property="og:image" content="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/pics-master/202205151306288.png">
 <meta property="og:image" content="https://tao1st.github.io/assets/images/posts/algorithm-repeated-string-pattern/repeated-string-pattern-kmp-5-1.jpeg">
 <meta property="og:image" content="https://tao1st.github.io/assets/images/posts/algorithm-repeated-string-pattern/repeated-string-pattern-kmp-5-2.jpeg">
 <meta property="og:image" content="https://tao1st.github.io/assets/images/posts/algorithm-repeated-string-pattern/repeated-string-pattern-kmp-5-3.jpeg">
 <meta property="og:image" content="https://tao1st.github.io/assets/images/posts/algorithm-repeated-string-pattern/repeated-string-pattern-kmp-5-4.jpeg">
 <meta property="og:image" content="https://tao1st.github.io/assets/images/posts/algorithm-repeated-string-pattern/repeated-string-pattern-kmp-5-5.jpeg">
 <meta property="og:image" content="https://tao1st.github.io/assets/images/posts/algorithm-repeated-string-pattern/repeated-string-pattern-kmp-5-6.jpeg">
-<meta property="og:image" content="https://gcore.jsdelivr.net/gh/TAO1st/pics@master/202205151307596.png">
-<meta property="og:image" content="https://gcore.jsdelivr.net/gh/TAO1st/pics@master/202205151307241.png">
-<meta property="og:image" content="https://gcore.jsdelivr.net/gh/TAO1st/pics@master/202205151307726.png">
-<meta property="og:image" content="https://gcore.jsdelivr.net/gh/TAO1st/pics@master/202205151307501.png">
+<meta property="og:image" content="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/pics-master/202205151307596.png">
+<meta property="og:image" content="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/pics-master/202205151307241.png">
+<meta property="og:image" content="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/pics-master/202205151307726.png">
+<meta property="og:image" content="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/pics-master/202205151307501.png">
 <meta property="og:image" content="https://tao1st.github.io/assets/images/posts/algorithm-repeated-string-pattern/repeated-string-pattern-kmp-7-3.jpeg">
 <meta property="og:image" content="https://tao1st.github.io/assets/images/posts/algorithm-repeated-string-pattern/repeated-string-pattern-kmp-7-4.jpeg">
 <meta property="article:published_time" content="2022-09-02T09:45:47.000Z">
-<meta property="article:modified_time" content="2022-10-13T15:17:50.324Z">
+<meta property="article:modified_time" content="2023-03-06T04:07:02.097Z">
 <meta property="article:author" content="tao1st">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://gcore.jsdelivr.net/gh/TAO1st/pics@master/202205161418594.png">
+<meta name="twitter:image" content="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/pics-master/202205161418594.png">
   
   
   
@@ -294,8 +294,8 @@
             
               <div class="markdown-body">
                 
-                <h2 id="字符串-String-2">字符串 String</h2>
-<h3 id="基础-3">基础</h3>
+                <h2 id="字符串-String">字符串 String</h2>
+<h3 id="基础">基础</h3>
 <ul class="lvl-0">
 <li class="lvl-2">
 <p>242 Valid Anagram 有效的字母异位词 (Easy)</p>
@@ -403,7 +403,7 @@
 <p>811 Subdomain Visit Count 子域名访问计数 (Medium)</p>
 </li>
 </ul>
-<h3 id="回文-Palindrome-2">回文 Palindrome</h3>
+<h3 id="回文-Palindrome">回文 Palindrome</h3>
 <p>回文子序列/子串的题型有多种变式，常见的解法（除暴力求解外）有以下三种（上面两道题都可以用以下算法解答）。</p>
 <h4 id="解法一：中心拓展">解法一：中心拓展</h4>
 <p>本质上还是暴力枚举，只不过<strong>枚举回文中心</strong>比<strong>枚举出所有子串</strong>方便的多。</p>
@@ -418,7 +418,7 @@
 <h4 id="解法二：Manacher">解法二：Manacher</h4>
 <p>详见<a href="##Manacher%E7%AE%97%E6%B3%95">Manacher算法</a></p>
 <h4 id="解法三：动态规划">解法三：动态规划</h4>
-<h4 id="相关题目-12">相关题目</h4>
+<h4 id="相关题目-9">相关题目</h4>
 <ul class="lvl-0">
 <li class="lvl-2">
 <p>647 Palindromic Substrings 回文子串 (Medium)</p>
@@ -431,7 +431,7 @@
 <p>本题的解法实际上是字符串匹配，所以详见字符串匹配部分。</p>
 </li>
 </ul>
-<h3 id="字符串匹配-2">字符串匹配</h3>
+<h3 id="字符串匹配">字符串匹配</h3>
 <p>跟字符串匹配相关的解法如下：</p>
 <ol>
 <li class="lvl-3">
@@ -488,10 +488,10 @@
 <p>由此可得，暴力解法即<strong>从后往前枚举每个元素，查看当前的前缀 $s_1$ 是否为回文串</strong>。该方法的时间复杂度显然为 $O(|s|^2)$ 。</p>
 <p>优化的解法也是在这个思路的基础上进行优化。</p>
 </blockquote>
-<img src="https://gcore.jsdelivr.net/gh/TAO1st/pics@master/202205161418594.png" srcset="/img/loading.gif" lazyload style="zoom: 50%;" />
+<img src="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/pics-master/202205161418594.png" srcset="/img/loading.gif" lazyload style="zoom: 50%;" />
 <p>解法一：KMP算法</p>
 <p>为了找到最长的 $s_1$，我们将 $s$ 作为pattern，将 $\hat{s}$ 作为text，进行模式匹配。如图所示，最后匹配的位置就能帮助我们获取到答案。</p>
-<p><img src="https://gcore.jsdelivr.net/gh/TAO1st/pics@master/202205161501183.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<p><img src="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/pics-master/202205161501183.png" srcset="/img/loading.gif" lazyload alt=""></p>
 <p>解法二：Robin-Karp字符串哈希算法</p>
 </li>
 <li class="lvl-2">
@@ -534,7 +534,7 @@
 <p>滑动窗口 + 哈希表。</p>
 </li>
 </ul>
-<h3 id="其他-4">其他</h3>
+<h3 id="其他">其他</h3>
 <ul class="lvl-0">
 <li class="lvl-2">
 <p><em>316 Remove Duplicate Letters 去除重复字母 (Medium)</em></p>
@@ -557,7 +557,7 @@
 <p>1455 Check If a Word Occurs As a Prefix of Any Word in a Sentence 检查单词是否为句中其他单词的前缀 (Easy)</p>
 </li>
 </ul>
-<h2 id="Manacher算法-2">Manacher算法</h2>
+<h2 id="Manacher算法">Manacher算法</h2>
 <p>比较特殊的算法，要背一下其实现，具体写不写的出其实问题不大。</p>
 <blockquote>
 <p>给定一个字符串，<strong>求其最长回文子串的长度</strong>。例如：</p>
@@ -571,7 +571,7 @@
 <p>Manacher 算法依旧需要枚举字符串的每一个位置并先假设它是回文中心，但是它会<strong>利用已经计算出来的状态来更新 <code>p(i)</code></strong>，<strong>而不是向「中心拓展」一样盲目地拓展</strong>。</p>
 </blockquote>
 <p>算法分为三个重点处理部分：</p>
-<h3 id="1-字符串预处理-2">1 字符串预处理</h3>
+<h3 id="1-字符串预处理">1 字符串预处理</h3>
 <blockquote>
 <p>解决奇偶回文分类问题</p>
 </blockquote>
@@ -588,7 +588,7 @@
 </li>
 </ol>
 <p>举个例子：<code>s=&quot;abbahopxpo&quot;</code>，转换为 <code>s_new=&quot;$#a#b#b#a#h#o#p#x#p#o#^&quot;</code>。如此，s 里起初有一个偶回文 <code>abba</code> 和一个奇回文 <code>opxpo</code>，被转换为 <code>#a#b#b#a#</code> 和 <code>#o#p#x#p#o#</code>，长度都转换成了奇数。</p>
-<h3 id="2-引入辅助数组-2">2 引入辅助数组</h3>
+<h3 id="2-引入辅助数组">2 引入辅助数组</h3>
 <blockquote>
 <p>记录每个字符为中心的最长回文半径</p>
 </blockquote>
@@ -678,33 +678,33 @@
 </tbody>
 </table>
 <p>可以看出， <code>p[i] - 1</code> 正好是<strong>原字符串中最长回文串的长度</strong>，因为此时的半径是添加过预处理符号的半径 。</p>
-<h3 id="3-求解辅助数组-2">3 求解辅助数组</h3>
+<h3 id="3-求解辅助数组">3 求解辅助数组</h3>
 <blockquote>
 <p>实现线性复杂度的关键</p>
 </blockquote>
 <p>接下来的重点就是求解 p 数组，如下图：</p>
-<p><img src="https://gcore.jsdelivr.net/gh/TAO1st/pics@master/202112271559574.png" srcset="/img/loading.gif" lazyload alt=""><br>
+<p><img src="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/pics-master/202112271559574.png" srcset="/img/loading.gif" lazyload alt=""><br>
 设置两个变量，mx 和 id 。mx 代表以 id 为中心的最长回文的右边界，也就是 <code>mx = id + p[id]</code>。</p>
 <p>假设我们现在求 <code>p[i]</code>，也就是以 i 为中心的最长回文半径，如果 <code>i &lt; mx</code>，如上图，那么：</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-comment">// 求解辅助数组的核心</span><br><span class="hljs-keyword">if</span> (i &lt; mx)  <br>    p[i] = <span class="hljs-built_in">min</span>(p[<span class="hljs-number">2</span> * id - i], mx - i);<br></code></pre></td></tr></table></figure>
 <p><code>2 * id - i</code> 为 i 关于 id 的对称点，即上图的 j 点，而 <strong><code>p[j]</code>表示以 j 为中心的最长回文半径</strong>，因此我们可以利用 <code>p[j]</code> 来加快查找。</p>
 <p>根据回文的性质，<code>p[i]</code> 的值基于以下三种情况得出：</p>
-<p>（1）<strong>j 的回文串有一部分在 id 的之外</strong>，如下图：<img src="https://gcore.jsdelivr.net/gh/TAO1st/pics@master/202112271610871.png" srcset="/img/loading.gif" lazyload alt=""><br>
-上图中，黑线为 id 的回文，i 与 j 关于 id 对称，红线为 j 的回文。那么根据代码此时 <code>p[i] = mx - i</code>，即紫线。那么 <code>p[i]</code> 还可以更大么？答案是不可能！见下图：<img src="https://gcore.jsdelivr.net/gh/TAO1st/pics@master/202112271610179.png" srcset="/img/loading.gif" lazyload alt=""><br>
+<p>（1）<strong>j 的回文串有一部分在 id 的之外</strong>，如下图：<img src="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/pics-master/202112271610871.png" srcset="/img/loading.gif" lazyload alt=""><br>
+上图中，黑线为 id 的回文，i 与 j 关于 id 对称，红线为 j 的回文。那么根据代码此时 <code>p[i] = mx - i</code>，即紫线。那么 <code>p[i]</code> 还可以更大么？答案是不可能！见下图：<img src="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/pics-master/202112271610179.png" srcset="/img/loading.gif" lazyload alt=""><br>
 假设右侧新增的紫色部分是 <code>p[i]</code> 可以增加的部分，那么根据回文的性质，a 等于 d ，也就是说 id 的回文不仅仅是黑线，而是黑线+两条紫线，矛盾，所以假设不成立，故 <code>p[i] = mx - i</code>，不可以再增加一分。</p>
-<p>（2）<strong>j 回文串全部在 id 的内部</strong>，如下图：<img src="https://gcore.jsdelivr.net/gh/TAO1st/pics@master/202112271610855.png" srcset="/img/loading.gif" lazyload alt=""><br>
-根据代码，此时 <code>p[i] = p[j]</code>，那么 <code>p[i]</code> 还可以更大么？答案亦是不可能！见下图：<img src="https://gcore.jsdelivr.net/gh/TAO1st/pics@master/202112271610897.png" srcset="/img/loading.gif" lazyload alt=""><br>
+<p>（2）<strong>j 回文串全部在 id 的内部</strong>，如下图：<img src="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/pics-master/202112271610855.png" srcset="/img/loading.gif" lazyload alt=""><br>
+根据代码，此时 <code>p[i] = p[j]</code>，那么 <code>p[i]</code> 还可以更大么？答案亦是不可能！见下图：<img src="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/pics-master/202112271610897.png" srcset="/img/loading.gif" lazyload alt=""><br>
 假设右侧新增的红色部分是 <code>p[i]</code> 可以增加的部分，那么根据回文的性质，a 等于 b ，也就是说 j 的回文应该再加上 a 和 b ，矛盾，所以假设不成立。故 <code>p[i] = p[j]</code>，也不可以再增加一分。</p>
-<p>（3）<strong>j 回文串左端正好与 id 的回文串左端重合</strong>，见下图：<img src="https://gcore.jsdelivr.net/gh/TAO1st/pics@master/202112271611950.png" srcset="/img/loading.gif" lazyload alt=""><br>
+<p>（3）<strong>j 回文串左端正好与 id 的回文串左端重合</strong>，见下图：<img src="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/pics-master/202112271611950.png" srcset="/img/loading.gif" lazyload alt=""><br>
 根据代码，此时 <code>p[i] = p[j]</code> 或 <code>p[i] = mx - i</code>，并且 <code>p[i]</code> 还可以继续增加，所以需要</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">while</span> (s_new[i - p[i]] == s_new[i + p[i]]) <br>    p[i]++;<br></code></pre></td></tr></table></figure>
-<h4 id="代码-2">代码</h4>
+<h4 id="代码">代码</h4>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span>  </span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;cstring&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;algorithm&gt;</span>  </span><br><span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;<br><span class="hljs-type">char</span> s[<span class="hljs-number">1000</span>];<br><span class="hljs-type">char</span> s_new[<span class="hljs-number">2000</span>];<br><span class="hljs-type">int</span> p[<span class="hljs-number">2000</span>];<br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">Init</span><span class="hljs-params">()</span> </span>&#123;<br>    <span class="hljs-type">int</span> len = <span class="hljs-built_in">strlen</span>(s);<br>    s_new[<span class="hljs-number">0</span>] = <span class="hljs-string">&#x27;$&#x27;</span>;<br>    s_new[<span class="hljs-number">1</span>] = <span class="hljs-string">&#x27;#&#x27;</span>;<br>    <span class="hljs-type">int</span> j = <span class="hljs-number">2</span>;<br>    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; len; i++) &#123;<br>        s_new[j++] = s[i];<br>        s_new[j++] = <span class="hljs-string">&#x27;#&#x27;</span>;<br>    &#125;<br>    s_new[j++] = <span class="hljs-string">&#x27;^&#x27;</span>;  <span class="hljs-comment">// 别忘了哦</span><br>    s_new[j] = <span class="hljs-string">&#x27;\0&#x27;</span>;   <span class="hljs-comment">// 这是一个好习惯</span><br>    <span class="hljs-keyword">return</span> j;  <span class="hljs-comment">// 返回 s_new 的长度</span><br>&#125;<br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">Manacher</span><span class="hljs-params">()</span> </span>&#123;<br>    <span class="hljs-type">int</span> len = <span class="hljs-built_in">Init</span>();  <span class="hljs-comment">// 取得新字符串长度并完成向 s_new 的转换</span><br>    <span class="hljs-type">int</span> max_len = <span class="hljs-number">-1</span>;  <span class="hljs-comment">// 最长回文长度</span><br>    <span class="hljs-type">int</span> id;<br>    <span class="hljs-type">int</span> mx = <span class="hljs-number">0</span>;<br>    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt; len; i++) &#123;<br>        <span class="hljs-keyword">if</span> (i &lt; mx)<br>            p[i] = <span class="hljs-built_in">min</span>(p[<span class="hljs-number">2</span> * id - i], mx - i);  <br>        	<span class="hljs-comment">// 需搞清楚上面那张图含义，mx 和 2*id-i 的含义</span><br>        <span class="hljs-keyword">else</span><br>            p[i] = <span class="hljs-number">1</span>;<br><br>        <span class="hljs-keyword">while</span> (s_new[i - p[i]] == s_new[i + p[i]])  <span class="hljs-comment">// 不需边界判断，因为左有 $，右有 ^</span><br>            p[i]++;<br>        <span class="hljs-comment">// 我们每走一步 i，都要和 mx 比较，我们希望 mx 尽可能的远，</span><br>        <span class="hljs-comment">// 这样才能更有机会执行 if (i &lt; mx)这句代码，从而提高效率</span><br>        <span class="hljs-comment">// 更新 mx</span><br>        <span class="hljs-keyword">if</span> (mx &lt; i + p[i]) &#123;<br>            id = i;<br>            mx = i + p[i];<br>        &#125;<br>        max_len = <span class="hljs-built_in">max</span>(max_len, p[i] - <span class="hljs-number">1</span>);<br>    &#125;<br>    <span class="hljs-keyword">return</span> max_len;<br>&#125;<br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>    <span class="hljs-keyword">while</span> (<span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;请输入字符串：&quot;</span>)) &#123;<br>        <span class="hljs-built_in">scanf</span>(<span class="hljs-string">&quot;%s&quot;</span>, s);<br>        <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;最长回文长度为 %d\n\n&quot;</span>, <span class="hljs-built_in">Manacher</span>());<br>    &#125;<br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
-<h3 id="算法复杂度分析-2">算法复杂度分析</h3>
+<h3 id="算法复杂度分析">算法复杂度分析</h3>
 <p>根据（1）（2）（3），很容易推出 Manacher 算法的最坏情况，即为字符串内全是相同字符的时候。在这里我们重点研究 <code>Manacher()</code> 中的 for 语句，推算发现 for 语句内平均访问每个字符 5 次，即时间复杂度为：$T_{worst}(n)=O(n)$</p>
 <p>同理，我们也很容易知道最佳情况下的时间复杂度，即字符串内字符各不相同的时候。推算得平均访问每个字符 4 次，即时间复杂度为：$T_{best}(n)=O(n)$。</p>
 <p>综上，<strong>Manacher 算法的时间复杂度为 O(n)</strong>。</p>
-<h2 id="KMP算法-2">KMP算法</h2>
+<h2 id="KMP算法">KMP算法</h2>
 <p>解决字符串匹配问题，包括几个重点：</p>
 <ul class="lvl-0">
 <li class="lvl-2">
@@ -714,11 +714,11 @@
 <p>根据next数组来进行模式匹配</p>
 </li>
 </ul>
-<h3 id="求解next数组-2">求解next数组</h3>
+<h3 id="求解next数组">求解next数组</h3>
 <p>next数组的<strong>定义</strong>：针对pattern模式串<code>s</code>，<em><code>next[i]</code> 表示子串<code>s[0...i]</code>的【最长相等前后缀】中【前缀的最后一位】的下标。</em></p>
-<h5 id="手动模拟-2">手动模拟</h5>
+<h5 id="手动模拟">手动模拟</h5>
 <p>根据定义进行手动模拟即可，无对应相等前后缀的值赋 -1。</p>
-<h5 id="递推求解-代码实现-2">递推求解 / 代码实现</h5>
+<h5 id="递推求解-代码实现">递推求解 / 代码实现</h5>
 <p>两个指针的含义：</p>
 <ul class="lvl-0">
 <li class="lvl-2">
@@ -733,7 +733,7 @@
 <li class="lvl-4">
 <p>如果不能就要向前回溯，为了<strong>减少回溯次数</strong>（使找到的相等前后缀尽可能长，<code>j</code>尽可能大），每次回退使<code>j = next[j]</code> 直至其回退为 -1；</p>
 <p>为什么回退时使 <code>j = next[j]</code> 能够最小化回溯次数？我们根据后面讲解的“实际求解过程”进行手动模拟，并结合下图的例子来实际理解（用图中的字符串做求解next数组的实例练习）：</p>
-<img src="https://gcore.jsdelivr.net/gh/TAO1st/pics@master/202205111123247.png" srcset="/img/loading.gif" lazyload style="zoom:33%;" />
+<img src="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/pics-master/202205111123247.png" srcset="/img/loading.gif" lazyload style="zoom:33%;" />
 <p>此时，最长的相等前后缀为 $aabaa$，并且在 $i$ 处失配。为了使回溯次数尽可能少，就要使得 $j$ 尽可能地大，方法就是寻找 $aabaa$ 中的最长相等前后缀的位置。根据next数组的含义，自然应该将 $j$ 移动到 $next[j]$ 的位置。</p>
 </li>
 </ul>
@@ -755,15 +755,15 @@
 </li>
 </ol>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-function">vector&lt;<span class="hljs-type">int</span>&gt; <span class="hljs-title">getNext</span><span class="hljs-params">(string s)</span> </span>&#123;<br>	<span class="hljs-type">int</span> j = <span class="hljs-number">-1</span>;<br>    <span class="hljs-function">vector&lt;<span class="hljs-type">int</span>&gt; <span class="hljs-title">next</span><span class="hljs-params">(s.size())</span></span>;<br>    next[<span class="hljs-number">0</span>] = <span class="hljs-number">-1</span>;<br>    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt; s.<span class="hljs-built_in">size</span>(); i++) &#123;<br>        <span class="hljs-keyword">while</span>(j != <span class="hljs-number">-1</span> &amp;&amp; s[i] != s[j + <span class="hljs-number">1</span>]) &#123;<br>            j = next[j];<br>        &#125;<br>        <span class="hljs-keyword">if</span>(s[i] == s[j + <span class="hljs-number">1</span>]) &#123;<br>        	j++;<br>        &#125;<br>        next[i] = j;<br>    &#125;<br>    <span class="hljs-keyword">return</span> next;<br>&#125;<br></code></pre></td></tr></table></figure>
-<h3 id="模式匹配-2">模式匹配</h3>
+<h3 id="模式匹配">模式匹配</h3>
 <p>KMP的原则在于：<em>文本串的指针 <code>i</code> 绝对不回溯，而模式串的指针 <code>j</code>  也在回溯的过程中保持其尽可能大。</em></p>
 <p>在模式匹配中，next数组的<strong>含义</strong>：<strong>当 j + 1 位失配时，j 应该回退到的位置</strong>。</p>
 <p>模式匹配的求解过程与求解next数组非常相似，实际上求解next数组的过程就是模式串pattern进行自我匹配（并计算得到数组的值）的过程，而KMP算法是将pattern与目标串text进行匹配。</p>
 <p>KMP算法进行模式匹配的作用不唯一，可以用于求解<strong>匹配是否成功</strong>，也可以用于求解<strong>模式串出现的次数</strong>。</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-comment">// 匹配是否成功</span><br><span class="hljs-function"><span class="hljs-type">bool</span> <span class="hljs-title">kmp</span><span class="hljs-params">(string text, string pattern)</span> </span>&#123;<br>    <span class="hljs-type">int</span> n = text.<span class="hljs-built_in">size</span>(), m = pattern.<span class="hljs-built_in">size</span>();<br>    <span class="hljs-type">int</span> j = <span class="hljs-number">-1</span>;<br>    vector&lt;<span class="hljs-type">int</span>&gt; next = <span class="hljs-built_in">getNext</span>(pattern);<br>    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; n; i++) &#123;<br>        <span class="hljs-keyword">while</span>(j != <span class="hljs-number">-1</span> &amp;&amp; text[i] != pattern[j + <span class="hljs-number">1</span>]) &#123;<br>            j = next[j];<br>        &#125;<br>        <span class="hljs-keyword">if</span>(text[i] == pattern[j + <span class="hljs-number">1</span>]) &#123;<br>            j++;<br>        &#125;<br>        <span class="hljs-keyword">if</span>(j == m - <span class="hljs-number">1</span>) &#123;<br>            <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;<br>        &#125;<br>    &#125;<br>    <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;<br>&#125;<br><br><span class="hljs-comment">// 统计模式串出现的次数</span><br><span class="hljs-comment">// 重点要注意模式串在文本串中多次的出现可能会【重叠】</span><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">kmp</span><span class="hljs-params">(string text, string pattern)</span> </span>&#123;<br>    <span class="hljs-type">int</span> ans = <span class="hljs-number">0</span>;<br>    <span class="hljs-type">int</span> n = text.<span class="hljs-built_in">size</span>()， m = pattern.<span class="hljs-built_in">size</span>();<br>    <span class="hljs-type">int</span> j = <span class="hljs-number">-1</span>;<br>    vector&lt;<span class="hljs-type">int</span>&gt; next = <span class="hljs-built_in">getNext</span>(string pattern);<br>    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; n; i++) &#123;<br>        <span class="hljs-keyword">while</span>(j != <span class="hljs-number">-1</span> &amp;&amp; text[i] != pattern[j + <span class="hljs-number">1</span>]) &#123;<br>            j = next[j];<br>        &#125;<br>        <span class="hljs-keyword">if</span>(text[i] == pattern[j + <span class="hljs-number">1</span>]) &#123;<br>            j++;<br>        &#125;<br>        <br>        <span class="hljs-comment">// 统计次数的代码唯一的区别如下</span><br>        <span class="hljs-keyword">if</span>(j == m - <span class="hljs-number">1</span>) &#123;<br>            ans++;<br>            j = next[j];		<span class="hljs-comment">// 因为模式串的出现可能会重叠，所以不能从头开始匹配，否则会少统计重叠的部分</span><br>        &#125;<br>    &#125;<br>    <span class="hljs-keyword">return</span> ans;<br>&#125;<br></code></pre></td></tr></table></figure>
-<h3 id="优化-nextval数组-2">优化 - nextval数组</h3>
+<h3 id="优化-nextval数组">优化 - nextval数组</h3>
 <p>next数组对应的模式匹配在失配的情况下，<code>j</code> 指针有可能产生多次无用的回溯（一直失配，直至 <code>j</code> 为-1）。具体情况如下，结合图示例子来理解：</p>
-<img src="https://gcore.jsdelivr.net/gh/TAO1st/pics@master/202205111539729.png" srcset="/img/loading.gif" lazyload style="zoom:33%;" />
+<img src="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/pics-master/202205111539729.png" srcset="/img/loading.gif" lazyload style="zoom:33%;" />
 <p>图中黑色的指针 $i, j$ 代表生成 $nextval$ 数组时的指针，红色的指针 $i, j$ 代表进行模式匹配时的指针。此处失配后，根据 $next$ 数组可以看到，会不断进行回退：</p>
 <ul class="lvl-0">
 <li class="lvl-2">
@@ -781,7 +781,7 @@
 <p>在进行模式匹配时，模式串在 $i$ 处失配意味着 $i + 1$ 与文本串对应位置不符，即 $i + 1$ 处的字符有问题（上图例子中的$b$）。所以如果再次跳回一个同样的错误字符，即 $j + 1$ 处等于 $i + 1$处的失配字符时，肯定还需要再重复回退一次，所以具体实现代码如下。</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-function">vector&lt;<span class="hljs-type">int</span>&gt; <span class="hljs-title">getNextval</span><span class="hljs-params">(string pattern)</span> </span>&#123;<br>    <span class="hljs-type">int</span> n = pattern.<span class="hljs-built_in">size</span>();<br>    <span class="hljs-function">vector&lt;<span class="hljs-type">int</span>&gt; <span class="hljs-title">nextval</span><span class="hljs-params">(n)</span></span>;<br>    <span class="hljs-type">int</span> j = <span class="hljs-number">-1</span>;<br>    nextval[<span class="hljs-number">0</span>] = <span class="hljs-number">-1</span>;<br>    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt; n; i++) &#123;<br>        <span class="hljs-keyword">if</span>(j != <span class="hljs-number">-1</span> &amp;&amp; pattern[i] != pattern[j + <span class="hljs-number">1</span>]) &#123;		<br>        <span class="hljs-comment">// 根据nextval的定义，求解数组和模式匹配中的while都可以改成if，因为至多只会执行一次</span><br>        	j = <span class="hljs-built_in">nextval</span>(j)；    <br>        &#125;<br>        <span class="hljs-keyword">if</span>(pattern[i] == pattern[j + <span class="hljs-number">1</span>]) &#123;<br>            j++;<br>        &#125;<br>        <span class="hljs-keyword">if</span>(j == <span class="hljs-number">-1</span> || pattern[i + <span class="hljs-number">1</span>] != pattern[j + <span class="hljs-number">1</span>]) &#123;<br>            nextval[i] = j;<br>        &#125; <span class="hljs-keyword">else</span> &#123;<br>            nextval[i] = nextval[j];<br>        &#125;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
 <p>至此，$nextval$ 数组虽然失去了其定义中最大前后缀的含义，但是其指向了<strong>每次回退时的真正最佳位置</strong>，减少了无效的回退操作。</p>
-<h3 id="时间复杂度-2">时间复杂度</h3>
+<h3 id="时间复杂度">时间复杂度</h3>
 <p><code>O(n + m)</code> ： 其中 <code>n</code>为目标字符串text的长度， <code>m</code> 为模式串pattern的长度</p>
 <ul class="lvl-0">
 <li class="lvl-2">
@@ -791,7 +791,7 @@
 <p>进行模式匹配需要 <code>O(n)</code>；</p>
 </li>
 </ul>
-<h2 id="周期字符串判别问题-2">周期字符串判别问题</h2>
+<h2 id="周期字符串判别问题">周期字符串判别问题</h2>
 <p><strong>周期字符串判别问题</strong>有两种常见解法：</p>
 <ul class="lvl-0">
 <li class="lvl-2">
@@ -802,74 +802,74 @@
 </li>
 </ul>
 <p>本题的难点在于证明与推演，其解题思路与代码都比较简单。</p>
-<h3 id="问题-2">问题</h3>
+<h3 id="问题">问题</h3>
 <p>判断一个字符串是否由其一个子串重复多次构成。</p>
 <p>例如：字符串 <code>&quot;abcabc&quot;</code> 是由子串 <code>&quot;abc&quot;</code> 重复两次构成的。</p>
-<h3 id="双倍字符串方法-2">双倍字符串方法</h3>
+<h3 id="双倍字符串方法">双倍字符串方法</h3>
 <p>把字符串翻倍，掐头去尾，如果原字符串在其中，那么原字符串就是周期串 。</p>
 <p>假设字符串是 <code>s</code> ，把它的头尾字符分别染上黄色和蓝色：</p>
-<p><img src="https://gcore.jsdelivr.net/gh/TAO1st/pics@master/202205151303835.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<p><img src="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/pics-master/202205151303835.png" srcset="/img/loading.gif" lazyload alt=""></p>
 <p>把字符串 <code>s</code> 接到自身后面，然后掐头去尾，形成新字符串 <code>s'</code>：</p>
-<p><img src="https://gcore.jsdelivr.net/gh/TAO1st/pics@master/202205151303981.png" srcset="/img/loading.gif" lazyload alt=""></p>
-<h5 id="匹配意味着周期性-2">匹配意味着周期性</h5>
+<p><img src="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/pics-master/202205151303981.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<h5 id="匹配意味着周期性">匹配意味着周期性</h5>
 <p>下面讨论原字符串 <code>s</code> 在新字符串 <code>s'</code> 中存在的情况。</p>
 <p>一步一步对各部分涂色，使得相等的字符串颜色一样 。</p>
-<p><img src="https://gcore.jsdelivr.net/gh/TAO1st/pics@master/202205151304030.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<p><img src="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/pics-master/202205151304030.png" srcset="/img/loading.gif" lazyload alt=""></p>
 <p>经过几轮的染色，可以看到最终 <code>s</code> 确实是一个周期串。</p>
 <p>是否巧合？可以做一般性说明。</p>
 <p>下图，不妨设右边匹配的少一些。对其中的任一字符 <code>A</code> ，可以按照如下的规则推演：</p>
-<p><img src="https://gcore.jsdelivr.net/gh/TAO1st/pics@master/202205151304895.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<p><img src="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/pics-master/202205151304895.png" srcset="/img/loading.gif" lazyload alt=""></p>
 <p>如此，任一此区间上的字符 <code>A</code> 会在 <code>s</code> 中周期性出现。</p>
 <p>即说明字符串 <code>s</code> 是周期串。</p>
-<h5 id="周期性意味着匹配-2">周期性意味着匹配</h5>
+<h5 id="周期性意味着匹配">周期性意味着匹配</h5>
 <p>反过来，如果一个字符串 <code>s</code> 是周期串，那么它一定在对应的 <code>s'</code> 中吗？</p>
 <p>任何一个周期串可以表达为： 由某个模式子串的重复多次构成 。</p>
-<p><img src="https://gcore.jsdelivr.net/gh/TAO1st/pics@master/202205151305541.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<p><img src="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/pics-master/202205151305541.png" srcset="/img/loading.gif" lazyload alt=""></p>
 <p>将周期串 <code>s</code> 的头字符对齐在第一个模式串后面， 每次右移一个模式串的长度。</p>
 <p>可知，<code>s</code> 会在 <code>s'</code> 中有匹配，且可以有多个匹配。</p>
-<p><img src="https://gcore.jsdelivr.net/gh/TAO1st/pics@master/202205151305963.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<p><img src="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/pics-master/202205151305963.png" srcset="/img/loading.gif" lazyload alt=""></p>
 <p>图中可看出， 因为模式串重复 <code>n</code> 次，所以会有 <code>n</code> 次匹配 。</p>
 <p>构造双倍串 <code>s'</code> 时，移除头尾字符， 正是为了剔除最左和最右的两次必然匹配。 只有中间的 <code>n</code> 次匹配才用到了周期串重复模式串的性质。</p>
-<h5 id="结论-2">结论</h5>
+<h5 id="结论">结论</h5>
 <p>综上两方面说明了充分性和必要性，结论：</p>
 <p>如果字符串在其掐头去尾的双倍字符串中，它就是周期串 。</p>
-<h3 id="KMP-方法-2">KMP 方法</h3>
+<h3 id="KMP-方法">KMP 方法</h3>
 <p>假设要判断的字符串叫做 <code>s</code> ，将其尾巴字符标记为蓝色。</p>
 <p>取 <code>q</code> 为不包含尾巴字符的前缀。</p>
-<p><img src="https://gcore.jsdelivr.net/gh/TAO1st/pics@master/202205151305388.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<p><img src="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/pics-master/202205151305388.png" srcset="/img/loading.gif" lazyload alt=""></p>
 <p>取 <code>c</code> 为 <code>q</code> 的最长前后公共缀。</p>
 <p>前后公共缀的意思是，它是既出现在字符串的最前面，也出现在字符串的最后面的真子串 。</p>
 <p>举例来说，比如 <code>s</code> 是字符串串 <code>&quot;abcabcabc&quot;</code> ，<code>q</code> 则是 <code>&quot;abcabcab&quot;</code> 。</p>
 <p><code>q</code> 的最长前后公共缀 <code>c</code> 则是 <code>&quot;abcab&quot;</code> 。</p>
-<p><img src="https://gcore.jsdelivr.net/gh/TAO1st/pics@master/202205151305522.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<p><img src="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/pics-master/202205151305522.png" srcset="/img/loading.gif" lazyload alt=""></p>
 <p>将说明，<code>s</code> 是周期串等价于 <code>len(s)</code> 是 <code>len(q)-len(c)</code> 的倍数 。</p>
-<h5 id="必要性说明-2">必要性说明</h5>
+<h5 id="必要性说明">必要性说明</h5>
 <p>假设字符串 <code>s</code> 是一个周期串，它由模式串 <code>p</code> 重复多次构成。</p>
-<p><img src="https://gcore.jsdelivr.net/gh/TAO1st/pics@master/202205151305620.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<p><img src="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/pics-master/202205151305620.png" srcset="/img/loading.gif" lazyload alt=""></p>
 <p>现在， 取 <code>c1</code> 为 <code>q</code> 中剔去一个模式串 <code>p</code> 后的后缀 。</p>
-<p><img src="https://gcore.jsdelivr.net/gh/TAO1st/pics@master/202205151306852.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<p><img src="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/pics-master/202205151306852.png" srcset="/img/loading.gif" lazyload alt=""></p>
 <p>显然，字符串 <code>c1</code> 是 <code>q</code> 的一个 <a target="_blank" rel="noopener" href="https://writings.sh/post/algorithm-repeated-string-pattern#what-is-common-prefix-and-suffix">前后公共缀</a>。</p>
 <p>比如周期串 <code>&quot;abcabcabc&quot;</code> ，对应的 <code>c1</code> 是 <code>&quot;abcab&quot;</code> 。</p>
-<p><img src="https://gcore.jsdelivr.net/gh/TAO1st/pics@master/202205151306288.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<p><img src="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/pics-master/202205151306288.png" srcset="/img/loading.gif" lazyload alt=""></p>
 <p>可以证明，<code>c1</code> 就是 <code>q</code> <strong>最长的</strong>前后公共缀 <code>c</code> ，详细可展开下面内容。</p>
 <details open="" style="padding: 0px; margin: 0px;"><summary style="padding: 0px; margin: 0px; color: rgb(197, 142, 4); outline: 0px; cursor: pointer;"><span class="MathJax_Preview" style="padding: 0px; margin: 0px; color: inherit;"></span><span id="MathJax-Element-1-Frame" class="mjx-chtml MathJax_CHTML" tabindex="0" data-mathml="<math xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot;><mstyle displaystyle=&quot;true&quot;><mi>c</mi><mn>1</mn></mstyle></math>" role="presentation" style="padding: 1px 0px; margin: 0px; outline: 0px; display: inline-block; line-height: 0; text-indent: 0px; text-align: left; text-transform: none; font-style: normal; font-weight: normal; font-size: 20.4px; letter-spacing: normal; overflow-wrap: normal; word-spacing: normal; white-space: nowrap; float: none; direction: ltr; max-width: none; max-height: none; min-width: 0px; min-height: 0px; border: 0px; position: relative;"><span id="MJXc-Node-1" class="mjx-math" aria-hidden="true" style="padding: 0px; margin: 0px; display: inline-block; border-collapse: separate; border-spacing: 0px;"><span id="MJXc-Node-2" class="mjx-mrow" style="padding: 0px; margin: 0px; display: inline-block; text-align: left; box-sizing: content-box !important;"><span id="MJXc-Node-3" class="mjx-mstyle" style="padding: 0px; margin: 0px; display: inline-block; text-align: left; box-sizing: content-box !important;"><span id="MJXc-Node-4" class="mjx-mrow" style="padding: 0px; margin: 0px; display: inline-block; text-align: left; box-sizing: content-box !important;"><span id="MJXc-Node-5" class="mjx-mi" style="padding: 0px; margin: 0px; display: inline-block; text-align: left; box-sizing: content-box !important;"><span class="mjx-char MJXc-TeX-math-I" style="padding: 0.199em 0px 0.297em; margin: 0px; display: block; text-align: left; box-sizing: content-box !important; white-space: pre; font-family: MJXc-TeX-math-I, MJXc-TeX-math-Ix, MJXc-TeX-math-Iw;">c</span></span><span id="MJXc-Node-6" class="mjx-mn" style="padding: 0px; margin: 0px; display: inline-block; text-align: left; box-sizing: content-box !important;"><span class="mjx-char MJXc-TeX-main-R" style="padding: 0.395em 0px 0.346em; margin: 0px; display: block; text-align: left; box-sizing: content-box !important; white-space: pre; font-family: MJXc-TeX-main-R, MJXc-TeX-main-Rw;">1</span></span></span></span></span></span><span class="MJX_Assistive_MathML" role="presentation" style="padding: 1px 0px 0px !important; margin: 0px; top: 0px; left: 0px; clip: rect(1px, 1px, 1px, 1px); user-select: none; position: absolute !important; border: 0px !important; height: 1px !important; width: 1px !important; overflow: hidden !important; display: block !important;"><math xmlns="http://www.w3.org/1998/Math/MathML"><mstyle displaystyle="true"><mi>c</mi><mn>1</mn></mstyle></math></span></span><span>&nbsp;</span>就是<span>&nbsp;</span><span class="MathJax_Preview" style="padding: 0px; margin: 0px; color: inherit;"></span><span id="MathJax-Element-2-Frame" class="mjx-chtml MathJax_CHTML" tabindex="0" data-mathml="<math xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot;><mstyle displaystyle=&quot;true&quot;><mi>q</mi></mstyle></math>" role="presentation" style="padding: 1px 0px; margin: 0px; outline: 0px; display: inline-block; line-height: 0; text-indent: 0px; text-align: left; text-transform: none; font-style: normal; font-weight: normal; font-size: 20.4px; letter-spacing: normal; overflow-wrap: normal; word-spacing: normal; white-space: nowrap; float: none; direction: ltr; max-width: none; max-height: none; min-width: 0px; min-height: 0px; border: 0px; position: relative;"><span id="MJXc-Node-7" class="mjx-math" aria-hidden="true" style="padding: 0px; margin: 0px; display: inline-block; border-collapse: separate; border-spacing: 0px;"><span id="MJXc-Node-8" class="mjx-mrow" style="padding: 0px; margin: 0px; display: inline-block; text-align: left; box-sizing: content-box !important;"><span id="MJXc-Node-9" class="mjx-mstyle" style="padding: 0px; margin: 0px; display: inline-block; text-align: left; box-sizing: content-box !important;"><span id="MJXc-Node-10" class="mjx-mrow" style="padding: 0px; margin: 0px; display: inline-block; text-align: left; box-sizing: content-box !important;"><span id="MJXc-Node-11" class="mjx-mi" style="padding: 0px; margin: 0px; display: inline-block; text-align: left; box-sizing: content-box !important;"><span class="mjx-char MJXc-TeX-math-I" style="padding: 0.199em 0.014em 0.493em 0px; margin: 0px; display: block; text-align: left; box-sizing: content-box !important; white-space: pre; font-family: MJXc-TeX-math-I, MJXc-TeX-math-Ix, MJXc-TeX-math-Iw;">q</span></span></span></span></span></span><span class="MJX_Assistive_MathML" role="presentation" style="padding: 1px 0px 0px !important; margin: 0px; top: 0px; left: 0px; clip: rect(1px, 1px, 1px, 1px); user-select: none; position: absolute !important; border: 0px !important; height: 1px !important; width: 1px !important; overflow: hidden !important; display: block !important;"><math xmlns="http://www.w3.org/1998/Math/MathML"><mstyle displaystyle="true"><mi>q</mi></mstyle></math></span></span><span>&nbsp;</span>最长的前后公共缀<span>&nbsp;</span><span class="MathJax_Preview" style="padding: 0px; margin: 0px; color: inherit;"></span><span id="MathJax-Element-3-Frame" class="mjx-chtml MathJax_CHTML" tabindex="0" data-mathml="<math xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot;><mstyle displaystyle=&quot;true&quot;><mi>c</mi></mstyle></math>" role="presentation" style="padding: 1px 0px; margin: 0px; outline: 0px; display: inline-block; line-height: 0; text-indent: 0px; text-align: left; text-transform: none; font-style: normal; font-weight: normal; font-size: 20.4px; letter-spacing: normal; overflow-wrap: normal; word-spacing: normal; white-space: nowrap; float: none; direction: ltr; max-width: none; max-height: none; min-width: 0px; min-height: 0px; border: 0px; position: relative;"><span id="MJXc-Node-12" class="mjx-math" aria-hidden="true" style="padding: 0px; margin: 0px; display: inline-block; border-collapse: separate; border-spacing: 0px;"><span id="MJXc-Node-13" class="mjx-mrow" style="padding: 0px; margin: 0px; display: inline-block; text-align: left; box-sizing: content-box !important;"><span id="MJXc-Node-14" class="mjx-mstyle" style="padding: 0px; margin: 0px; display: inline-block; text-align: left; box-sizing: content-box !important;"><span id="MJXc-Node-15" class="mjx-mrow" style="padding: 0px; margin: 0px; display: inline-block; text-align: left; box-sizing: content-box !important;"><span id="MJXc-Node-16" class="mjx-mi" style="padding: 0px; margin: 0px; display: inline-block; text-align: left; box-sizing: content-box !important;"><span class="mjx-char MJXc-TeX-math-I" style="padding: 0.199em 0px 0.297em; margin: 0px; display: block; text-align: left; box-sizing: content-box !important; white-space: pre; font-family: MJXc-TeX-math-I, MJXc-TeX-math-Ix, MJXc-TeX-math-Iw;">c</span></span></span></span></span></span><span class="MJX_Assistive_MathML" role="presentation" style="padding: 1px 0px 0px !important; margin: 0px; top: 0px; left: 0px; clip: rect(1px, 1px, 1px, 1px); user-select: none; position: absolute !important; border: 0px !important; height: 1px !important; width: 1px !important; overflow: hidden !important; display: block !important;"><math xmlns="http://www.w3.org/1998/Math/MathML"><mstyle displaystyle="true"><mi>c</mi></mstyle></math></span></span><span>&nbsp;</span>的详细说明</summary><p style="padding: 0px; margin: 15px 0px; letter-spacing: 0.5px;">采用反证法，假设存在一个字符串<span>&nbsp;</span><code class="language-plaintext highlighter-rouge" style="padding: 1px 2px; margin: 0px 3px; font-family: Consolas, Menlo, monospace; display: inline-block; font-weight: 700; color: rgb(79, 50, 28);">c'</code><span>&nbsp;</span>也是<span>&nbsp;</span><code class="language-plaintext highlighter-rouge" style="padding: 1px 2px; margin: 0px 3px; font-family: Consolas, Menlo, monospace; display: inline-block; font-weight: 700; color: rgb(79, 50, 28);">q</code><span>&nbsp;</span>的前后公共缀，而且它比<span>&nbsp;</span><code class="language-plaintext highlighter-rouge" style="padding: 1px 2px; margin: 0px 3px; font-family: Consolas, Menlo, monospace; display: inline-block; font-weight: 700; color: rgb(79, 50, 28);">c1</code><span>&nbsp;</span>长一位。</p><p style="padding: 0px; margin: 15px 0px; letter-spacing: 0.5px;">另外，假设尾巴字符叫做<span>&nbsp;</span><code class="language-plaintext highlighter-rouge" style="padding: 1px 2px; margin: 0px 3px; font-family: Consolas, Menlo, monospace; display: inline-block; font-weight: 700; color: rgb(79, 50, 28);">A</code><span>&nbsp;</span>。</p><figure style="padding: 0px; margin: 30px auto; width: 768px;"><img class="post-img lazyload max-width-100 medium-zoom-image" src="https://writings.sh/assets/images/posts/algorithm-repeated-string-pattern/repeated-string-pattern-kmp-5-1.jpeg" data-src="/assets/images/posts/algorithm-repeated-string-pattern/repeated-string-pattern-kmp-5-1.jpeg" alt="" data-loaded="true" style="padding: 0px; margin: 0px auto; display: block; max-width: 100%; cursor: zoom-in; transition: transform 0.3s cubic-bezier(0.2, 0, 0.2, 1) 0s !important;"></figure><p style="padding: 0px; margin: 15px 0px; letter-spacing: 0.5px;"></p><p style="padding: 0px; margin: 15px 0px; letter-spacing: 0.5px;">现在有两条性质：</p><ol style="padding: 0px 0px 0px 30px; margin: 15px 0px; list-style: decimal;"><li style="padding: 0px; margin: 0px;">周期性质：字符串<span>&nbsp;</span><code class="language-plaintext highlighter-rouge" style="padding: 1px 2px; margin: 0px 3px; font-family: Consolas, Menlo, monospace; display: inline-block; font-weight: 700; color: rgb(79, 50, 28);">s</code><span>&nbsp;</span>的周期性。</li><li style="padding: 0px; margin: 0px;">前后公共缀性质：<code class="language-plaintext highlighter-rouge" style="padding: 1px 2px; margin: 0px 3px; font-family: Consolas, Menlo, monospace; display: inline-block; font-weight: 700; color: rgb(79, 50, 28);">c'</code><span>&nbsp;</span>是<span>&nbsp;</span><code class="language-plaintext highlighter-rouge" style="padding: 1px 2px; margin: 0px 3px; font-family: Consolas, Menlo, monospace; display: inline-block; font-weight: 700; color: rgb(79, 50, 28);">q</code><span>&nbsp;</span>的前后公共缀。</li></ol><p style="padding: 0px; margin: 15px 0px; letter-spacing: 0.5px;">以下，反复利用此两条性质：</p><ol style="padding: 0px 0px 0px 30px; margin: 15px 0px; list-style: decimal;"><li style="padding: 0px; margin: 0px;"><p style="padding: 0px; margin: 0px 0px 15px; letter-spacing: 0.5px;">由于「前后公共缀性质」，<code class="language-plaintext highlighter-rouge" style="padding: 1px 2px; margin: 0px 3px; font-family: Consolas, Menlo, monospace; display: inline-block; font-weight: 700; color: rgb(79, 50, 28);">q</code><span>&nbsp;</span>的第一个字符也是<span>&nbsp;</span><code class="language-plaintext highlighter-rouge" style="padding: 1px 2px; margin: 0px 3px; font-family: Consolas, Menlo, monospace; display: inline-block; font-weight: 700; color: rgb(79, 50, 28);">A</code>。</p><figure style="padding: 0px; margin: 30px auto; width: 738px;"><img class="post-img lazyload max-width-100 medium-zoom-image" src="https://writings.sh/assets/images/posts/algorithm-repeated-string-pattern/repeated-string-pattern-kmp-5-2.jpeg-small.svg" data-src="/assets/images/posts/algorithm-repeated-string-pattern/repeated-string-pattern-kmp-5-2.jpeg" alt="" style="padding: 0px; margin: 0px auto; display: block; max-width: 100%; cursor: zoom-in; transition: transform 0.3s cubic-bezier(0.2, 0, 0.2, 1) 0s !important;"></figure><p style="padding: 0px; margin: 15px 0px; letter-spacing: 0.5px;"></p></li><li style="padding: 0px; margin: 0px;"><p style="padding: 0px; margin: 0px 0px 15px; letter-spacing: 0.5px;">由于「周期性质」，后续的循环子串中的第一个字符也是<span>&nbsp;</span><code class="language-plaintext highlighter-rouge" style="padding: 1px 2px; margin: 0px 3px; font-family: Consolas, Menlo, monospace; display: inline-block; font-weight: 700; color: rgb(79, 50, 28);">A</code><span>&nbsp;</span>。</p><figure style="padding: 0px; margin: 30px auto; width: 738px;"><img class="post-img lazyload max-width-100 medium-zoom-image" src="https://writings.sh/assets/images/posts/algorithm-repeated-string-pattern/repeated-string-pattern-kmp-5-3.jpeg-small.svg" data-src="/assets/images/posts/algorithm-repeated-string-pattern/repeated-string-pattern-kmp-5-3.jpeg" alt="" style="padding: 0px; margin: 0px auto; display: block; max-width: 100%; cursor: zoom-in; transition: transform 0.3s cubic-bezier(0.2, 0, 0.2, 1) 0s !important;"></figure><p style="padding: 0px; margin: 15px 0px; letter-spacing: 0.5px;"></p></li><li style="padding: 0px; margin: 0px;"><p style="padding: 0px; margin: 0px 0px 15px; letter-spacing: 0.5px;">由于「前后公共缀性质」，<code class="language-plaintext highlighter-rouge" style="padding: 1px 2px; margin: 0px 3px; font-family: Consolas, Menlo, monospace; display: inline-block; font-weight: 700; color: rgb(79, 50, 28);">q</code><span>&nbsp;</span>的第二个字符也是<span>&nbsp;</span><code class="language-plaintext highlighter-rouge" style="padding: 1px 2px; margin: 0px 3px; font-family: Consolas, Menlo, monospace; display: inline-block; font-weight: 700; color: rgb(79, 50, 28);">A</code>。</p><figure style="padding: 0px; margin: 30px auto; width: 738px;"><img class="post-img lazyload max-width-100 medium-zoom-image" src="https://writings.sh/assets/images/posts/algorithm-repeated-string-pattern/repeated-string-pattern-kmp-5-4.jpeg-small.svg" data-src="/assets/images/posts/algorithm-repeated-string-pattern/repeated-string-pattern-kmp-5-4.jpeg" alt="" style="padding: 0px; margin: 0px auto; display: block; max-width: 100%; cursor: zoom-in; transition: transform 0.3s cubic-bezier(0.2, 0, 0.2, 1) 0s !important;"></figure><p style="padding: 0px; margin: 15px 0px; letter-spacing: 0.5px;"></p></li><li style="padding: 0px; margin: 0px;"><p style="padding: 0px; margin: 0px 0px 15px; letter-spacing: 0.5px;">由于「周期性质」，后续的循环子串中的第二个字符也是<span>&nbsp;</span><code class="language-plaintext highlighter-rouge" style="padding: 1px 2px; margin: 0px 3px; font-family: Consolas, Menlo, monospace; display: inline-block; font-weight: 700; color: rgb(79, 50, 28);">A</code><span>&nbsp;</span>。</p><figure style="padding: 0px; margin: 30px auto; width: 738px;"><img class="post-img lazyload max-width-100 medium-zoom-image" src="https://writings.sh/assets/images/posts/algorithm-repeated-string-pattern/repeated-string-pattern-kmp-5-5.jpeg-small.svg" data-src="/assets/images/posts/algorithm-repeated-string-pattern/repeated-string-pattern-kmp-5-5.jpeg" alt="" style="padding: 0px; margin: 0px auto; display: block; max-width: 100%; cursor: zoom-in; transition: transform 0.3s cubic-bezier(0.2, 0, 0.2, 1) 0s !important;"></figure><p style="padding: 0px; margin: 15px 0px; letter-spacing: 0.5px;"></p></li><li style="padding: 0px; margin: 0px;"><p style="padding: 0px; margin: 0px 0px 15px; letter-spacing: 0.5px;">如上反复进行，最终，推断整个<span>&nbsp;</span><code class="language-plaintext highlighter-rouge" style="padding: 1px 2px; margin: 0px 3px; font-family: Consolas, Menlo, monospace; display: inline-block; font-weight: 700; color: rgb(79, 50, 28);">q</code><span>&nbsp;</span>以及<span>&nbsp;</span><code class="language-plaintext highlighter-rouge" style="padding: 1px 2px; margin: 0px 3px; font-family: Consolas, Menlo, monospace; display: inline-block; font-weight: 700; color: rgb(79, 50, 28);">s</code><span>&nbsp;</span>都由字符<span>&nbsp;</span><code class="language-plaintext highlighter-rouge" style="padding: 1px 2px; margin: 0px 3px; font-family: Consolas, Menlo, monospace; display: inline-block; font-weight: 700; color: rgb(79, 50, 28);">A</code><span>&nbsp;</span>构成。</p><figure style="padding: 0px; margin: 30px auto; width: 738px;"><img class="post-img lazyload max-width-100 medium-zoom-image" src="https://writings.sh/assets/images/posts/algorithm-repeated-string-pattern/repeated-string-pattern-kmp-5-6.jpeg-small.svg" data-src="/assets/images/posts/algorithm-repeated-string-pattern/repeated-string-pattern-kmp-5-6.jpeg" alt="" style="padding: 0px; margin: 0px auto; display: block; max-width: 100%; cursor: zoom-in; transition: transform 0.3s cubic-bezier(0.2, 0, 0.2, 1) 0s !important;"></figure><p style="padding: 0px; margin: 15px 0px; letter-spacing: 0.5px;"></p><p style="padding: 0px; margin: 15px 0px; letter-spacing: 0.5px;">此时的模式串<span>&nbsp;</span><code class="language-plaintext highlighter-rouge" style="padding: 1px 2px; margin: 0px 3px; font-family: Consolas, Menlo, monospace; display: inline-block; font-weight: 700; color: rgb(79, 50, 28);">p</code><span>&nbsp;</span>即单个字符<span>&nbsp;</span><code class="language-plaintext highlighter-rouge" style="padding: 1px 2px; margin: 0px 3px; font-family: Consolas, Menlo, monospace; display: inline-block; font-weight: 700; color: rgb(79, 50, 28);">A</code><span>&nbsp;</span>。</p><p style="padding: 0px; margin: 15px 0px; letter-spacing: 0.5px;">根据<span>&nbsp;</span><a target="_blank" rel="noopener" href="https://writings.sh/post/algorithm-repeated-string-pattern#kmp-c1-definition" style="padding: 0px; margin: 0px; color: rgb(197, 142, 4); text-decoration: none;">前面的定义</a><span>&nbsp;</span>可以知道，此时的<span>&nbsp;</span><code class="language-plaintext highlighter-rouge" style="padding: 1px 2px; margin: 0px 3px; font-family: Consolas, Menlo, monospace; display: inline-block; font-weight: 700; color: rgb(79, 50, 28);">c1</code><span>&nbsp;</span>如上图，长度是<span>&nbsp;</span><code class="language-plaintext highlighter-rouge" style="padding: 1px 2px; margin: 0px 3px; font-family: Consolas, Menlo, monospace; display: inline-block; font-weight: 700; color: rgb(79, 50, 28);">len(q)-1</code><span>&nbsp;</span>。</p><p style="padding: 0px; margin: 15px 0px; letter-spacing: 0.5px;">前后公共缀是真子串，显然，不会存在比它更长的前后公共缀，造成矛盾。</p></li></ol><p style="padding: 0px; margin: 15px 0px; letter-spacing: 0.5px;">因此，所定义的<span>&nbsp;</span><code class="language-plaintext highlighter-rouge" style="padding: 1px 2px; margin: 0px 3px; font-family: Consolas, Menlo, monospace; display: inline-block; font-weight: 700; color: rgb(79, 50, 28);">c1</code><span>&nbsp;</span>就是<span>&nbsp;</span><code class="language-plaintext highlighter-rouge" style="padding: 1px 2px; margin: 0px 3px; font-family: Consolas, Menlo, monospace; display: inline-block; font-weight: 700; color: rgb(79, 50, 28);">q</code><span>&nbsp;</span>的最长前后公共缀<span>&nbsp;</span><code class="language-plaintext highlighter-rouge" style="padding: 1px 2px; margin: 0px 3px; font-family: Consolas, Menlo, monospace; display: inline-block; font-weight: 700; color: rgb(79, 50, 28);">c</code><span>&nbsp;</span>。</p></details>
 <p>根据 <a target="_blank" rel="noopener" href="https://writings.sh/post/algorithm-repeated-string-pattern#kmp-c1-definition">前面的定义</a> ，可知周期长度是 <code>len(p) = len(q)-len(c)</code> 。</p>
 <p>因为字符串 <code>s</code> 是周期串，所以其长度一定是周期长度的倍数。</p>
 <p>必要性得到说明。</p>
-<h5 id="充分性说明-2">充分性说明</h5>
+<h5 id="充分性说明">充分性说明</h5>
 <p>令 <code>d = len(q)-len(c)</code> ， 如果 <code>s</code> 的长度是 <code>d</code> 的倍数，是否 <code>s</code> 一定是周期串？</p>
 <p>此时 <code>s</code> 一定可以每 <code>d</code> 个字符一份，切分为整数个小份串：</p>
-<p><img src="https://gcore.jsdelivr.net/gh/TAO1st/pics@master/202205151307596.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<p><img src="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/pics-master/202205151307596.png" srcset="/img/loading.gif" lazyload alt=""></p>
 <p>同样假设尾巴字符是蓝色的 <code>A</code> ， 剔除尾巴字符后 <code>q</code> 和 其最长前后公共缀 <code>c</code> 如下所示：</p>
-<p><img src="https://gcore.jsdelivr.net/gh/TAO1st/pics@master/202205151307241.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<p><img src="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/pics-master/202205151307241.png" srcset="/img/loading.gif" lazyload alt=""></p>
 <p>首先，显然 <code>len(c)+1</code> 是 <code>d</code> 的倍数。</p>
 <details open="" style="padding: 0px; margin: 0px;"><summary style="padding: 0px; margin: 0px; color: rgb(197, 142, 4); outline: 0px; cursor: pointer;"><span class="MathJax_Preview" style="padding: 0px; margin: 0px; color: inherit;"></span><span id="MathJax-Element-4-Frame" class="mjx-chtml MathJax_CHTML" tabindex="0" data-mathml="<math xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot;><mstyle displaystyle=&quot;true&quot;><mi>c</mi></mstyle></math>" role="presentation" style="padding: 1px 0px; margin: 0px; outline: 0px; display: inline-block; line-height: 0; text-indent: 0px; text-align: left; text-transform: none; font-style: normal; font-weight: normal; font-size: 20.4px; letter-spacing: normal; overflow-wrap: normal; word-spacing: normal; white-space: nowrap; float: none; direction: ltr; max-width: none; max-height: none; min-width: 0px; min-height: 0px; border: 0px; position: relative;"><span id="MJXc-Node-17" class="mjx-math" aria-hidden="true" style="padding: 0px; margin: 0px; display: inline-block; border-collapse: separate; border-spacing: 0px;"><span id="MJXc-Node-18" class="mjx-mrow" style="padding: 0px; margin: 0px; display: inline-block; text-align: left; box-sizing: content-box !important;"><span id="MJXc-Node-19" class="mjx-mstyle" style="padding: 0px; margin: 0px; display: inline-block; text-align: left; box-sizing: content-box !important;"><span id="MJXc-Node-20" class="mjx-mrow" style="padding: 0px; margin: 0px; display: inline-block; text-align: left; box-sizing: content-box !important;"><span id="MJXc-Node-21" class="mjx-mi" style="padding: 0px; margin: 0px; display: inline-block; text-align: left; box-sizing: content-box !important;"><span class="mjx-char MJXc-TeX-math-I" style="padding: 0.199em 0px 0.297em; margin: 0px; display: block; text-align: left; box-sizing: content-box !important; white-space: pre; font-family: MJXc-TeX-math-I, MJXc-TeX-math-Ix, MJXc-TeX-math-Iw;">c</span></span></span></span></span></span><span class="MJX_Assistive_MathML" role="presentation" style="padding: 1px 0px 0px !important; margin: 0px; top: 0px; left: 0px; clip: rect(1px, 1px, 1px, 1px); user-select: none; position: absolute !important; border: 0px !important; height: 1px !important; width: 1px !important; overflow: hidden !important; display: block !important;"><math xmlns="http://www.w3.org/1998/Math/MathML"><mstyle displaystyle="true"><mi>c</mi></mstyle></math></span></span><span>&nbsp;</span>的长度加一是<span>&nbsp;</span><span class="MathJax_Preview" style="padding: 0px; margin: 0px; color: inherit;"></span><span id="MathJax-Element-5-Frame" class="mjx-chtml MathJax_CHTML" tabindex="0" data-mathml="<math xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot;><mstyle displaystyle=&quot;true&quot;><mi>d</mi></mstyle></math>" role="presentation" style="padding: 1px 0px; margin: 0px; outline: 0px; display: inline-block; line-height: 0; text-indent: 0px; text-align: left; text-transform: none; font-style: normal; font-weight: normal; font-size: 20.4px; letter-spacing: normal; overflow-wrap: normal; word-spacing: normal; white-space: nowrap; float: none; direction: ltr; max-width: none; max-height: none; min-width: 0px; min-height: 0px; border: 0px; position: relative;"><span id="MJXc-Node-22" class="mjx-math" aria-hidden="true" style="padding: 0px; margin: 0px; display: inline-block; border-collapse: separate; border-spacing: 0px;"><span id="MJXc-Node-23" class="mjx-mrow" style="padding: 0px; margin: 0px; display: inline-block; text-align: left; box-sizing: content-box !important;"><span id="MJXc-Node-24" class="mjx-mstyle" style="padding: 0px; margin: 0px; display: inline-block; text-align: left; box-sizing: content-box !important;"><span id="MJXc-Node-25" class="mjx-mrow" style="padding: 0px; margin: 0px; display: inline-block; text-align: left; box-sizing: content-box !important;"><span id="MJXc-Node-26" class="mjx-mi" style="padding: 0px; margin: 0px; display: inline-block; text-align: left; box-sizing: content-box !important;"><span class="mjx-char MJXc-TeX-math-I" style="padding: 0.493em 0.003em 0.297em 0px; margin: 0px; display: block; text-align: left; box-sizing: content-box !important; white-space: pre; font-family: MJXc-TeX-math-I, MJXc-TeX-math-Ix, MJXc-TeX-math-Iw;">d</span></span></span></span></span></span><span class="MJX_Assistive_MathML" role="presentation" style="padding: 1px 0px 0px !important; margin: 0px; top: 0px; left: 0px; clip: rect(1px, 1px, 1px, 1px); user-select: none; position: absolute !important; border: 0px !important; height: 1px !important; width: 1px !important; overflow: hidden !important; display: block !important;"><math xmlns="http://www.w3.org/1998/Math/MathML"><mstyle displaystyle="true"><mi>d</mi></mstyle></math></span></span><span>&nbsp;</span>的倍数的说明</summary><p style="padding: 0px; margin: 15px 0px; letter-spacing: 0.5px;">根据<span>&nbsp;</span><a target="_blank" rel="noopener" href="https://writings.sh/post/algorithm-repeated-string-pattern#kmp-d-definition" style="padding: 0px; margin: 0px; color: rgb(197, 142, 4); text-decoration: none;"><code class="language-plaintext highlighter-rouge" style="padding: 1px 2px; margin: 0px 3px; font-family: Consolas, Menlo, monospace; display: inline-block; font-weight: 700; color: rgb(79, 50, 28);">d</code><span>&nbsp;</span>的定义</a>， 得<span>&nbsp;</span><code class="language-plaintext highlighter-rouge" style="padding: 1px 2px; margin: 0px 3px; font-family: Consolas, Menlo, monospace; display: inline-block; font-weight: 700; color: rgb(79, 50, 28);">len(c) + 1 = len(q) - d + 1</code><span>&nbsp;</span>。</p><p style="padding: 0px; margin: 15px 0px; letter-spacing: 0.5px;">又因<span>&nbsp;</span><code class="language-plaintext highlighter-rouge" style="padding: 1px 2px; margin: 0px 3px; font-family: Consolas, Menlo, monospace; display: inline-block; font-weight: 700; color: rgb(79, 50, 28);">len(q) = len(s) - 1</code><span>&nbsp;</span>，且<span>&nbsp;</span><code class="language-plaintext highlighter-rouge" style="padding: 1px 2px; margin: 0px 3px; font-family: Consolas, Menlo, monospace; display: inline-block; font-weight: 700; color: rgb(79, 50, 28);">len(s)</code><span>&nbsp;</span>可以写作<span>&nbsp;</span><code class="language-plaintext highlighter-rouge" style="padding: 1px 2px; margin: 0px 3px; font-family: Consolas, Menlo, monospace; display: inline-block; font-weight: 700; color: rgb(79, 50, 28);">len(s) = k*d</code><span>&nbsp;</span>。</p><p style="padding: 0px; margin: 15px 0px; letter-spacing: 0.5px;">所以<span>&nbsp;</span><code class="language-plaintext highlighter-rouge" style="padding: 1px 2px; margin: 0px 3px; font-family: Consolas, Menlo, monospace; display: inline-block; font-weight: 700; color: rgb(79, 50, 28);">len(c) + 1 = k*d - d = (k-1)*d</code><span>&nbsp;</span>，是<span>&nbsp;</span><code class="language-plaintext highlighter-rouge" style="padding: 1px 2px; margin: 0px 3px; font-family: Consolas, Menlo, monospace; display: inline-block; font-weight: 700; color: rgb(79, 50, 28);">d</code><span>&nbsp;</span>的倍数。</p></details>
 <p>因此，在下图中， <code>c</code> 必然上下对齐于某个 <a target="_blank" rel="noopener" href="https://writings.sh/post/algorithm-repeated-string-pattern#kmp-small-pattern-p">小份串</a> 的开头。</p>
 <p>又因 <code>len(c)+1 = (k-1)*d</code> ，所以 <code>c</code> 就是 <code>q</code> 中剔除第一个小份串 <code>p1</code> 的后缀 。</p>
-<p><img src="https://gcore.jsdelivr.net/gh/TAO1st/pics@master/202205151307726.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<p><img src="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/pics-master/202205151307726.png" srcset="/img/loading.gif" lazyload alt=""></p>
 <p>下面将说明，<code>s</code> 是一个周期串。</p>
 <p>在最后一个小份串，从尾部取倒数第 <code>j</code> 个字符 <code>B</code> ，反复推演， 可以知道前面的所有小份串的相同位置，都是字符 <code>B</code> 。</p>
-<p><img src="https://gcore.jsdelivr.net/gh/TAO1st/pics@master/202205151307501.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<p><img src="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/pics-master/202205151307501.png" srcset="/img/loading.gif" lazyload alt=""></p>
 <p>上面的图中：</p>
 <ol>
 <li class="lvl-3">
@@ -885,7 +885,7 @@
 <p>对最后一个小份串上的所有字符， 都会在前面的小份串相同位置重复，那么 <code>s</code> 是一个周期串。</p>
 <details open="" style="padding: 0px; margin: 0px;"><summary style="padding: 0px; margin: 0px; color: rgb(197, 142, 4); outline: 0px; cursor: pointer;">推演的一个细节处理</summary><p style="padding: 0px; margin: 15px 0px; letter-spacing: 0.5px;">上面推演中的一个细节是，无法推演小份串的倒数第一个字符。</p><figure style="padding: 0px; margin: 30px auto; width: 768px;"><img class="post-img lazyload max-width-100 medium-zoom-image" src="https://writings.sh/assets/images/posts/algorithm-repeated-string-pattern/repeated-string-pattern-kmp-7-3.jpeg" data-src="/assets/images/posts/algorithm-repeated-string-pattern/repeated-string-pattern-kmp-7-3.jpeg" alt="" data-loaded="true" style="padding: 0px; margin: 0px auto; display: block; max-width: 100%; cursor: zoom-in; transition: transform 0.3s cubic-bezier(0.2, 0, 0.2, 1) 0s !important;"></figure><p style="padding: 0px; margin: 15px 0px; letter-spacing: 0.5px;"></p><p style="padding: 0px; margin: 15px 0px; letter-spacing: 0.5px;">原因在于，尾巴字符不在最长前后公共缀的范围内。</p><p style="padding: 0px; margin: 15px 0px; letter-spacing: 0.5px;">细节处理就是，需要判断一次尾巴字符<span>&nbsp;</span><code class="language-plaintext highlighter-rouge" style="padding: 1px 2px; margin: 0px 3px; font-family: Consolas, Menlo, monospace; display: inline-block; font-weight: 700; color: rgb(79, 50, 28);">A</code><span>&nbsp;</span>是否和 上一个小份串对应位置的字符相等。</p><p style="padding: 0px; margin: 15px 0px; letter-spacing: 0.5px;">一旦此细节满足，即可完成整体推演过程，<code class="language-plaintext highlighter-rouge" style="padding: 1px 2px; margin: 0px 3px; font-family: Consolas, Menlo, monospace; display: inline-block; font-weight: 700; color: rgb(79, 50, 28);">s</code><span>&nbsp;</span>就一定是一个周期串。</p><figure style="padding: 0px; margin: 30px auto; width: 768px;"><img class="post-img lazyload max-width-100 medium-zoom-image" src="https://writings.sh/assets/images/posts/algorithm-repeated-string-pattern/repeated-string-pattern-kmp-7-4.jpeg" data-src="/assets/images/posts/algorithm-repeated-string-pattern/repeated-string-pattern-kmp-7-4.jpeg" alt="" data-loaded="true" style="padding: 0px; margin: 0px auto; display: block; max-width: 100%; cursor: zoom-in; transition: transform 0.3s cubic-bezier(0.2, 0, 0.2, 1) 0s !important;"></figure><p style="padding: 0px; margin: 15px 0px; letter-spacing: 0.5px;"></p></details>
 <p>至此，充分性也说明完毕。</p>
-<h5 id="KMP-算法求解-2">KMP 算法求解</h5>
+<h5 id="KMP-算法求解">KMP 算法求解</h5>
 <p>KMP 算法中的 Next 数组的含义就是前后公共缀的长度 ，即 <code>len(c) = next[n-1]</code> 。</p>
 <p>由 KMP 算法预处理的时间复杂度 可知，此方法的时间复杂度是 <code>O(n)</code> ，空间复杂度是 <code>O(n)</code> 。</p>
 
