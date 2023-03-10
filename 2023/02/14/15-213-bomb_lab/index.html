@@ -30,7 +30,7 @@
 <meta property="og:image" content="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303061117722.png">
 <meta property="og:image" content="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303061115426.png">
 <meta property="article:published_time" content="2023-02-14T00:10:06.000Z">
-<meta property="article:modified_time" content="2023-03-06T11:53:30.988Z">
+<meta property="article:modified_time" content="2023-03-10T02:58:04.650Z">
 <meta property="article:author" content="tao1st">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303061115032.png">
@@ -268,10 +268,10 @@
               <div class="markdown-body">
                 
                 <h1>Bomb Lab</h1>
-<h2 id="题目">题目</h2>
+<h2 id="题目-2">题目</h2>
 <p>命令行中有几个阶段，每个阶段都要输入正确的字符串才能通过，否则炸弹就会爆炸。</p>
 <p>观察<code>bomb.c</code>文件代码，发现每个阶段即为如下语句组成：</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs c">input = read_line();<br>phase_1(input);<br>phase_defused();<br></code></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs shell">input = read_line();<br>phase_1(input);<br>phase_defused();<br></code></pre></td></tr></table></figure>
 <p>由上述代码可知，爆炸的具体操作在<code>phase_1</code>函数中实现。该函数为黑盒，无法解析其源代码文本，需要通过gdb来进行反汇编来获取其中的具体信息，从而得到正确答案。</p>
 <h2 id="phase-1">phase_1</h2>
 <p>首先，获得该函数反汇编内容：</p>

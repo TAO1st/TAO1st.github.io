@@ -269,7 +269,7 @@
                 <blockquote>
 <p>代码实现见<code>leetcode\sort.cpp</code></p>
 </blockquote>
-<h2 id="复杂度与稳定性">复杂度与稳定性</h2>
+<h2 id="复杂度与稳定性-2">复杂度与稳定性</h2>
 <table>
 <thead>
 <tr>
@@ -339,7 +339,7 @@
 </tr>
 </tbody>
 </table>
-<h2 id="插入排序-Insertion-Sort">插入排序 Insertion Sort</h2>
+<h2 id="插入排序-Insertion-Sort-2">插入排序 Insertion Sort</h2>
 <h3 id="循环不变式-Loop-Invariant">循环不变式 Loop Invariant</h3>
 <p>循环不变式 (loop invariant) 用于理解和证明算法的正确性。实际上，循环不变式并不是狭义上的式子，而是一个在算法起始、中间运算、中止的过程中保持为“真”的命题。即在循环体的每次执行前后均为真的谓词。循环不变式体现了循环程序中循环变量的变化规律。</p>
 <blockquote>
@@ -372,13 +372,13 @@
 <p><b>终止</b>：循环终止的条件为 $j &gt;A.length=n$，即 $j =A.length+1$ 时。此时子数组 $A[1… n]$ 由原来在 $A[1… n]$ 中的元素组成，但已按序排列。循环不变式成立，算法正确。</p>
 </li>
 </ul>
-<h3 id="效率-3">效率</h3>
+<h3 id="效率-4">效率</h3>
 <p>插入排序一个常见的优化即，在有序子序列部分选择插入位置时，使用 <b>二分查找</b> 来优化查找速度。但插入排序内层循环的时间消耗取决于 选择插入位置 + 移动元素 两部分。仅仅优化选择时间，元素的移动仍然为线性时间，所以时间复杂度仍然为平方级，而不能优化至 $O(nlogn)$。</p>
-<h2 id="快速排序-Quick-Sort">快速排序 Quick Sort</h2>
+<h2 id="快速排序-Quick-Sort-2">快速排序 Quick Sort</h2>
 <blockquote>
 <p>基于<strong>元素交换</strong>的排序。</p>
 </blockquote>
-<h4 id="基本思想">基本思想</h4>
+<h4 id="基本思想-3">基本思想</h4>
 <p>快速排序也是一个基于交换的分治算法，算法的基本思想：</p>
 <ol>
 <li class="lvl-3">
@@ -389,7 +389,7 @@
 <p>子集分治（partition）：以<code>pivot</code>为基准将元素分割成了两部分，分别是<strong>更小的左半部分</strong>和<strong>更大的右半部分</strong>，分别向两边进行分治处理。</p>
 </li>
 </ol>
-<h4 id="效率与特点">效率与特点</h4>
+<h4 id="效率与特点-2">效率与特点</h4>
 <p>效率的高低主要取决于分治基准的选取，通常默认采取第一个元素作为基准：</p>
 <ul class="lvl-0">
 <li class="lvl-2">
@@ -411,7 +411,7 @@
 <p>虽然快速排序在排序的中途不会产生任何有序子序列，但是每一次子集划分时，分治基准<code>pivot</code>都会被放在最终的正确位置。</p>
 </li>
 </ul>
-<h4 id="相关题目-7">相关题目</h4>
+<h4 id="相关题目-12">相关题目</h4>
 <blockquote>
 <p><em>TopK</em>类型题目常用于考察快速排序。</p>
 </blockquote>
@@ -450,11 +450,11 @@
 <p>解法为双指针，详见[双指针部分](##双指针 Two pointers)。</p>
 </li>
 </ul>
-<h2 id="堆-Heap">堆 Heap</h2>
+<h2 id="堆-Heap-3">堆 Heap</h2>
 <h3 id="基本实现">基本实现</h3>
-<h4 id="STL">STL</h4>
+<h4 id="STL-2">STL</h4>
 <p>STL中的优先级队列<code>priority_queue&lt;datatype&gt;</code>即为堆的实现。</p>
-<h4 id="手动实现">手动实现</h4>
+<h4 id="手动实现-2">手动实现</h4>
 <p>数据结构上采用<strong>顺序存储</strong>，用<strong>数组</strong>存放的<strong>完全二叉树</strong>，该种树具备一些特性使得其适合作为堆：数组的索引可以反映出节点之间的逻辑关系。</p>
 <p>数组存放有两种不同处理方式：一是从<strong>下标1</strong>处开始存放，二是从<strong>下标0</strong>处开始存放。这样对应的节点逻辑关系有所区别。</p>
 <ul class="lvl-0">
@@ -467,7 +467,7 @@
 </li>
 </ul>
 <p>具体代码见sort.cpp。</p>
-<h4 id="相关题目-8">相关题目</h4>
+<h4 id="相关题目-13">相关题目</h4>
 <ul class="lvl-0">
 <li class="lvl-2">
 <p><strong>215 Kth Largest Element in an Array 数组中的第K个最大元素 (Medium)</strong></p>
@@ -484,14 +484,14 @@
 <p><a target="_blank" rel="noopener" href="http://algorithm.openjudge.cn/2022hw2/solution/36783241/">POJ Dynamic Median</a></p>
 </li>
 </ul>
-<h2 id="归并排序-Merge-Sort">归并排序 Merge Sort</h2>
+<h2 id="归并排序-Merge-Sort-2">归并排序 Merge Sort</h2>
 <p>见分治。</p>
 <ul class="lvl-0">
 <li class="lvl-2">
 </li>
 </ul>
-<h2 id="分布式排序-Distribution-Sort">分布式排序 Distribution Sort</h2>
-<h3 id="桶排序-Bucket-Sort">桶排序 Bucket Sort</h3>
+<h2 id="分布式排序-Distribution-Sort-2">分布式排序 Distribution Sort</h2>
+<h3 id="桶排序-Bucket-Sort-2">桶排序 Bucket Sort</h3>
 <p>根据元素属性的值（可能是出现次数、也可能是其他属性）来进行排序。</p>
 <p>为每个可能取到的值建一个桶。用空间换时间，达到<strong>线性时间复杂度</strong>。</p>
 <img src="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/pics-master/202203151641820.png" srcset="/img/loading.gif" lazyload style="zoom:50%;" />
@@ -519,19 +519,19 @@
 <p>仍然可以用其他任何排序解法来做，但时间复杂度都会更高。</p>
 </li>
 </ul>
-<h3 id="基数排序-Radix-Sort">基数排序 Radix Sort</h3>
-<h2 id="Miscellaneous">Miscellaneous</h2>
+<h3 id="基数排序-Radix-Sort-2">基数排序 Radix Sort</h3>
+<h2 id="Miscellaneous-2">Miscellaneous</h2>
 <h3 id="计数排序">计数排序</h3>
 <ul class="lvl-0">
 <li class="lvl-2">
 <p>1051 Height Checker 高度检查器 (Easy)</p>
 </li>
 </ul>
-<h3 id="选择排序-Selection-Sort">选择排序 Selection Sort</h3>
-<h3 id="插入排序-Insertion-Sort-2">插入排序 Insertion Sort</h3>
-<h3 id="冒泡排序-Bubble-Sort">冒泡排序 Bubble Sort</h3>
-<h3 id="希尔排序-Shell-Sort">希尔排序 Shell Sort</h3>
-<h3 id="STL中的排序">STL中的排序</h3>
+<h3 id="选择排序-Selection-Sort-2">选择排序 Selection Sort</h3>
+<h3 id="插入排序-Insertion-Sort-3">插入排序 Insertion Sort</h3>
+<h3 id="冒泡排序-Bubble-Sort-2">冒泡排序 Bubble Sort</h3>
+<h3 id="希尔排序-Shell-Sort-2">希尔排序 Shell Sort</h3>
+<h3 id="STL中的排序-2">STL中的排序</h3>
 
                 
               </div>

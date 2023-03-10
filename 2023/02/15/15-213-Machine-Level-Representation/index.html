@@ -279,17 +279,17 @@
               <div class="markdown-body">
                 
                 <p>关注 x86-64 汇编语言：语法及其实际执行过程。</p>
-<h2 id="机器代码-Machine-Level-Code">机器代码 Machine-Level Code</h2>
-<h3 id="两种抽象机制">两种抽象机制</h3>
-<h4 id="指令集体系结构-Instruction-Architecture">指令集体系结构 Instruction Architecture</h4>
+<h2 id="机器代码-Machine-Level-Code-2">机器代码 Machine-Level Code</h2>
+<h3 id="两种抽象机制-2">两种抽象机制</h3>
+<h4 id="指令集体系结构-Instruction-Architecture-2">指令集体系结构 Instruction Architecture</h4>
 <p>即 ISA。对 CPU 的抽象。定义了处理器的状态、指令格式、指令对处理器状态的影响等等。机器级代码能够接触到很多对C语言隐藏的特性，其中很重要的一个就是CPU中的 <b>寄存器</b>。</p>
-<h4 id="虚拟存储器-Virtual-Memory">虚拟存储器 Virtual Memory</h4>
+<h4 id="虚拟存储器-Virtual-Memory-2">虚拟存储器 Virtual Memory</h4>
 <p>按字节寻址的一个大数组。<br>
 x86-64的虚拟地址由64位指定。目前的实现中，<b>高地址的16位必须置 0</b> ，所以一个地址实际能指向的范围是 $2^{48}$ 或 256TB 个字节。</p>
-<h3 id="x86-64-汇编">x86-64 汇编</h3>
-<h4 id="CISC">CISC</h4>
+<h3 id="x86-64-汇编-2">x86-64 汇编</h3>
+<h4 id="CISC-2">CISC</h4>
 <p>x86-64 属于 CISC 风格汇编语言。特性是指令长度不定长，从 1 到 15 个字节不等。常用的指令以及操作数较少的指令所需的字节数少，而那些不太常用或操作数较多的指令所需字节数较多。</p>
-<h4 id="C程序与汇编代码的结合">C程序与汇编代码的结合</h4>
+<h4 id="C程序与汇编代码的结合-2">C程序与汇编代码的结合</h4>
 <ol>
 <li class="lvl-3">
 <p>写单独的 .s 汇编文件编写完整的函数，放进独立的汇编代码文件中（.s），让 <b>汇编器</b> 和 <b>链接器</b> 来合并。</p>
@@ -299,9 +299,9 @@ x86-64的虚拟地址由64位指定。目前的实现中，<b>高地址的16位�
 </li>
 </ol>
 <p>需要注意的是，C 代码与汇编代码相结合会使得 这部分代码与特定机器相关。所以尽量减少这种方法的使用，除非当前机器的某些特性只能通过该种方式来访问。</p>
-<h4 id="ATT-与-Intel-格式">ATT 与 Intel 格式</h4>
+<h4 id="ATT-与-Intel-格式-2">ATT 与 Intel 格式</h4>
 <p>下文均采用 ATT 格式表述。</p>
-<h2 id="数据格式-Data-Formats">数据格式 Data Formats</h2>
+<h2 id="数据格式-Data-Formats-2">数据格式 Data Formats</h2>
 <p>如下表所示，为 x86-64 下 C语言中数据类型的相关信息。其中，通过在指令后加相应的后缀来指明操作数的大小：字节（<code>b</code>）、字（<code>w</code>）、双字（<code>l</code>） 与 四字（<code>q</code>）。</p>
 <table>
 <thead>
@@ -358,7 +358,7 @@ x86-64的虚拟地址由64位指定。目前的实现中，<b>高地址的16位�
 </tbody>
 </table>
 <p>浮点数与上述格式略有不同，<code>float</code>对应独有的后缀 <code>s</code>；而<code>double</code>对应的指令后缀也为<code>l</code>。这并不会与上述双字的情况产生歧义，因为 <b>浮点数采用的是一组完全不同的指令和寄存器</b>。</p>
-<h2 id="数据访问-Accessing-Data">数据访问 Accessing Data</h2>
+<h2 id="数据访问-Accessing-Data-2">数据访问 Accessing Data</h2>
 <p>访问的数据来源有两个：</p>
 <ol>
 <li class="lvl-3">
@@ -368,7 +368,7 @@ x86-64的虚拟地址由64位指定。目前的实现中，<b>高地址的16位�
 <p>内存。</p>
 </li>
 </ol>
-<h3 id="寄存器-Register">寄存器 Register</h3>
+<h3 id="寄存器-Register-2">寄存器 Register</h3>
 <p>如图所示，其中：</p>
 <ul class="lvl-0">
 <li class="lvl-2">
@@ -383,7 +383,7 @@ x86-64的虚拟地址由64位指定。目前的实现中，<b>高地址的16位�
 </li>
 </ul>
 <img src="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303061120011.png" srcset="/img/loading.gif" lazyload style="zoom: 50%;" />
-<h4 id="功能约定">功能约定</h4>
+<h4 id="功能约定-2">功能约定</h4>
 <p>不同的寄存器扮演不同的功能角色（如上图中右侧注释）。有一组标准的编程规范控制着如何使用寄存器。</p>
 <ul class="lvl-0">
 <li class="lvl-2">
@@ -396,7 +396,7 @@ x86-64的虚拟地址由64位指定。目前的实现中，<b>高地址的16位�
 <p>局部变量</p>
 </li>
 </ul>
-<h3 id="内存-Memory">内存 Memory</h3>
+<h3 id="内存-Memory-2">内存 Memory</h3>
 <p>从程序的角度访问的是专属的虚拟内存，分布如图。地址从下往上增大。</p>
 <ul class="lvl-0">
 <li class="lvl-2">
@@ -410,8 +410,8 @@ x86-64的虚拟地址由64位指定。目前的实现中，<b>高地址的16位�
 </li>
 </ul>
 <img src="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303061120825.png" srcset="/img/loading.gif" lazyload style="zoom:50%;" />
-<h3 id="操作数-Operand">操作数 Operand</h3>
-<h4 id="操作数格式">操作数格式</h4>
+<h3 id="操作数-Operand-2">操作数 Operand</h3>
+<h4 id="操作数格式-2">操作数格式</h4>
 <p>操作数格式分为三种：</p>
 <ol>
 <li class="lvl-3">
@@ -436,10 +436,10 @@ x86-64的虚拟地址由64位指定。目前的实现中，<b>高地址的16位�
 <p>目的操作数：存放在寄存器或者内存中。</p>
 </li>
 </ul>
-<h4 id="寻址模式">寻址模式</h4>
+<h4 id="寻址模式-2">寻址模式</h4>
 <p>操作数具体的寻址格式如下表：</p>
 <img src="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303061120834.png" srcset="/img/loading.gif" lazyload style="zoom: 33%;" />
-<h3 id="数据传送指令-Data-Management-Instructions">数据传送指令 Data Management Instructions</h3>
+<h3 id="数据传送指令-Data-Management-Instructions-2">数据传送指令 Data Management Instructions</h3>
 <ul class="lvl-0">
 <li class="lvl-2">
 <p>将数据从一个位置复制到另一个位置的指令。</p>
@@ -454,11 +454,11 @@ x86-64的虚拟地址由64位指定。目前的实现中，<b>高地址的16位�
 <p>唯一的例外就是：<b>当目的操作数为 双字 / long word / 32bits 大小的寄存器时，高位会全部置 0。</b></p>
 </li>
 </ul>
-<h4 id="基础传送指令类">基础传送指令类</h4>
+<h4 id="基础传送指令类-2">基础传送指令类</h4>
 <p>首先是最基础的 MOV 指令类，将数据简单的从源位置复制到目的位置，不作任何修改：</p>
 <img src="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303061120141.png" srcset="/img/loading.gif" lazyload style="zoom: 50%;" />
 <p><code>movabsq</code> 是一个特殊为 64 位立即数设置的指令。这是因为 <code>movq</code> 指令的源操作数只能接受 32 位补码立即数，然后将该值符号扩展得到 64 位的值后送入目的位置。而 <code>movabsq</code> 则可以直接以任意 64 位立即数值作为源操作数，并且只能以（64位）寄存器作为目的操作数。</p>
-<h4 id="扩展传送指令类">扩展传送指令类</h4>
+<h4 id="扩展传送指令类-2">扩展传送指令类</h4>
 <p>扩展传送指令即，将 尺寸较小的源值 复制到 尺寸较大的目的 中时使用。扩展时根据扩展形式分为以下两种：</p>
 <ol>
 <li class="lvl-3">
@@ -506,7 +506,7 @@ x86-64的虚拟地址由64位指定。目前的实现中，<b>高地址的16位�
 </li>
 </ul>
 </blockquote>
-<h3 id="压入和弹出栈指令">压入和弹出栈指令</h3>
+<h3 id="压入和弹出栈指令-2">压入和弹出栈指令</h3>
 <p>首先关注<strong>程序栈（Program Stack）</strong>：</p>
 <ul class="lvl-0">
 <li class="lvl-2">
@@ -539,10 +539,10 @@ x86-64的虚拟地址由64位指定。目前的实现中，<b>高地址的16位�
 </li>
 </ul>
 <p>栈相关指令的优势就在于编码长度更短。</p>
-<h2 id="算术与逻辑操作">算术与逻辑操作</h2>
+<h2 id="算术与逻辑操作-2">算术与逻辑操作</h2>
 <p>针对整数的算术与逻辑操作，如下：</p>
 <img src="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303061121100.png" srcset="/img/loading.gif" lazyload style="zoom:33%;" />
-<h3 id="加载有效地址-LEA">加载有效地址 LEA</h3>
+<h3 id="加载有效地址-LEA-2">加载有效地址 LEA</h3>
 <p>加载有效地址（load effective address）指令其实就是数据传送指令的简单变形。唯一的区别在于：<code>mov</code>指令根据寻址模式计算出地址后，读取或存储相应地址空间的数据；而 <code>lea</code> 指令则计算出地址后，直接操作地址数据（即有效地址EA），并没有任何访存相关的操作。</p>
 <p>该指令的作用非常灵活：</p>
 <ul class="lvl-0">
@@ -556,9 +556,9 @@ x86-64的虚拟地址由64位指定。目前的实现中，<b>高地址的16位�
 <p>目的操作数必须为寄存器，即计算结果存放至寄存器中。</p>
 </li>
 </ul>
-<h3 id="一元与二元算术操作">一元与二元算术操作</h3>
+<h3 id="一元与二元算术操作-2">一元与二元算术操作</h3>
 <p>没什么特别的。</p>
-<h3 id="移位操作">移位操作</h3>
+<h3 id="移位操作-2">移位操作</h3>
 <p>移位操作的操作数上有一定的功能性约束：</p>
 <ul class="lvl-0">
 <li class="lvl-2">
@@ -587,7 +587,7 @@ x86-64的虚拟地址由64位指定。目前的实现中，<b>高地址的16位�
 <p>逻辑右移和算术右移有区别：逻辑右移高位补零，算术右移高位补符号位。</p>
 </li>
 </ul>
-<h3 id="支持128位数的操作">支持128位数的操作</h3>
+<h3 id="支持128位数的操作-2">支持128位数的操作</h3>
 <p>64位数的<b>乘除法运算</b>会涉及128位数，Intel 将 128 位数按照规则命名为八字（octal word）。<br>
 128位数的存放通常使用两个寄存器分别存放高 64 与 低 64 位，如下表为相关的支持指令（均为<b>单操作数指令</b>）：</p>
 <img src="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303061122701.png" srcset="/img/loading.gif" lazyload style="zoom: 33%;" />
@@ -612,10 +612,10 @@ x86-64的虚拟地址由64位指定。目前的实现中，<b>高地址的16位�
 <p>以上的扩展操作，可以用指令 <code>cqto</code> 轻松完成。该条指令无需操作数，对于符号扩展可以隐含读取 <code>%rax</code> 中的符号位并复制到 <code>%rdx</code> 中的所有位。</p>
 </li>
 </ul>
-<h2 id="控制-Control">控制 Control</h2>
+<h2 id="控制-Control-2">控制 Control</h2>
 <p>机器代码提供了两种基本的低级机制来实现有条件的行为：测试数据值，然后通过测试的结果来改变控制流或者数据流。</p>
-<h3 id="基本机制">基本机制</h3>
-<h4 id="条件码-Condition-Code">条件码 Condition Code</h4>
+<h3 id="基本机制-2">基本机制</h3>
+<h4 id="条件码-Condition-Code-2">条件码 Condition Code</h4>
 <p>除了上述介绍的整数寄存器外，CPU 还维护了一组单个位的 <b>条件码（condition code）寄存器</b> 。条件码寄存器中的内容包括一系列 标志位，其描述了一系列最近的算术或者逻辑操作的属性。最常用的条件码为：</p>
 <ul class="lvl-0">
 <li class="lvl-2">
@@ -631,7 +631,7 @@ x86-64的虚拟地址由64位指定。目前的实现中，<b>高地址的16位�
 <p>OF（Overflow Flag）：操作导致补码溢出，可以分为正溢出与负溢出。</p>
 </li>
 </ul>
-<h4 id="设置条件码-CMP-TEST">设置条件码 CMP &amp; TEST</h4>
+<h4 id="设置条件码-CMP-TEST-2">设置条件码 CMP &amp; TEST</h4>
 <p>指令的结果会影响条件码的值，不同类型的指令作用结果不同。</p>
 <p>普通算术逻辑指令的注意事项：</p>
 <ul class="lvl-0">
@@ -666,7 +666,7 @@ x86-64的虚拟地址由64位指定。目前的实现中，<b>高地址的16位�
 </li>
 </ul>
 <img src="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303061122142.png" srcset="/img/loading.gif" lazyload style="zoom:50%;" />
-<h4 id="使用条件码-SET">使用条件码 SET</h4>
+<h4 id="使用条件码-SET-2">使用条件码 SET</h4>
 <p>条件码通常不会直接读取，我们可以使用如下指令，根据条件码的取值情况，将一个目标字节设置为0或者1。</p>
 <img src="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303061122475.png" srcset="/img/loading.gif" lazyload style="zoom:33%;" />
 <ul class="lvl-0">
@@ -689,10 +689,10 @@ x86-64的虚拟地址由64位指定。目前的实现中，<b>高地址的16位�
 Unlike in C, it does not associate a data type with each program value. Instead, it mostly uses the same instructions for the two cases, because many arithmetic operations have <b>the same bit-level behavior</b> for unsigned and two’s-complement arithmetic.<br>
 Some circumstances require different instructions to handle signed and unsigned operations, such as using different versions of right shifts, division and multiplication instructions, and different combinations of condition codes.</p>
 </blockquote>
-<h4 id="跳转指令-JMP">跳转指令 JMP</h4>
+<h4 id="跳转指令-JMP-2">跳转指令 JMP</h4>
 <p>作用即跳转到标号（label）指明的一个全新的位置。</p>
 <img src="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303061122968.png" srcset="/img/loading.gif" lazyload style="zoom:33%;" />
-<h4 id="分类">分类</h4>
+<h4 id="分类-2">分类</h4>
 <ul class="lvl-0">
 <li class="lvl-2">
 <p>无条件跳转：</p>
@@ -706,7 +706,7 @@ Some circumstances require different instructions to handle signed and unsigned 
 <p>条件跳转只能是直接跳转，无法进行间接寻址。</p>
 </li>
 </ul>
-<h4 id="目标地址编码">目标地址编码</h4>
+<h4 id="目标地址编码-2">目标地址编码</h4>
 <p>在产生目标代码文件时，汇编器会确定所有带标号指令（label）的地址，并将跳转目标（目的指令的地址）编码为跳转指令的一部分。对于目标地址的编码有两种方式，汇编器和链接器会选择适当的编码方式：</p>
 <ul class="lvl-0">
 <li class="lvl-2">
@@ -720,11 +720,11 @@ Some circumstances require different instructions to handle signed and unsigned 
 </ul>
 <hr>
 <p>利用上述基本机制，有多种实现高级语言中控制流变换的方法。</p>
-<h3 id="条件分支-if">条件分支 if</h3>
+<h3 id="条件分支-if-2">条件分支 if</h3>
 <p>首先，我们定义一个高级语言下的通用伪代码模板：</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs C"><span class="hljs-keyword">if</span> (test-expr) <br>    then-statement<br><span class="hljs-keyword">else</span><br>    <span class="hljs-keyword">else</span>-statement<br></code></pre></td></tr></table></figure>
 <p>实现条件分支（conditional branches）有两种方式：</p>
-<h4 id="1-使用JMP指令实现条件转移（Conditional-Control）">1 使用JMP指令实现条件转移（Conditional Control）</h4>
+<h4 id="1-使用JMP指令实现条件转移（Conditional-Control）-2">1 使用JMP指令实现条件转移（Conditional Control）</h4>
 <p>条件控制即使用跳转指令JMP来实现。汇编器为 $then-statement$ 与 $else-statement$ 产生各自的代码块，并插入条件与无条件跳转以实现执行正确的代码块。其基本实现逻辑如下：</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs c">	t = text-expr;<br>	<span class="hljs-keyword">if</span> (!t) <br>        <span class="hljs-keyword">goto</span> <span class="hljs-literal">false</span>;<br>	then-statement;<br>	<span class="hljs-keyword">goto</span> done;<br><span class="hljs-literal">false</span>:<br>	<span class="hljs-keyword">else</span>-statement;<br>done:<br></code></pre></td></tr></table></figure>
 <p>两种值得注意的特殊情况：</p>
@@ -738,10 +738,10 @@ Some circumstances require different instructions to handle signed and unsigned 
 <p>短路求值的情况下，相当于多次分支判断。（练习题3.16）</p>
 </li>
 </ul>
-<h4 id="2-基于数据的条件传送指令（Conditional-Moves）">2 基于数据的条件传送指令（Conditional Moves）</h4>
+<h4 id="2-基于数据的条件传送指令（Conditional-Moves）-2">2 基于数据的条件传送指令（Conditional Moves）</h4>
 <p>使用JMP指令进行跳转的方式会存在控制流大量的跳转，对于现代处理器架构中的<strong>流水线</strong>来说，这是一个很大的性能瓶颈。为了去掉控制流的分支跳转，我们引入基于数据的条件传送，其基本逻辑如下：</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs c">v = then-expr;<br>ve = <span class="hljs-keyword">else</span>-expr;<br>t = text-expr;<br><span class="hljs-keyword">if</span>(!t)                   <span class="hljs-comment">// 该部分条件传送由条件传送指令来实现</span><br>    v = ve;			     <span class="hljs-comment">// 仅当符合条件时，才会进行值的传送</span><br><span class="hljs-keyword">return</span> v;<br></code></pre></td></tr></table></figure>
-<h5 id="适用情况">适用情况</h5>
+<h5 id="适用情况-2">适用情况</h5>
 <p>条件传送的方式下，会对 then 与 else 两部分语句块提前计算出结果。这样做的方式使得：</p>
 <ul class="lvl-0">
 <li class="lvl-2">
@@ -754,16 +754,16 @@ Some circumstances require different instructions to handle signed and unsigned 
 <p>条件传送也不是总会提高代码的效率。如果两个分支语句块需要大量的计算，则流水线上的补偿也得不偿失。显然，编译器在做出判断时应该了解分支浪费的计算和分支预测错误的开销二者之间的大小关系，但实际很难有足够的信息做出正确的判断。实际应用中，通常只有两个表达式都很容易计算时，例如表达式分别都只是一条加法指令，它才会适用条件传送。根据经验来说，即使许多分支预测错误的开销是相对更大的，GCC也还是会使用条件控制转移（JMP指令）。总体来说，条件数据传送只能用于非常受限制的情况，但这些情况也是相当常见的，而且这种方式与现代处理器结构（流水线）更契合。</p>
 </li>
 </ul>
-<h5 id="条件传送指令">条件传送指令</h5>
+<h5 id="条件传送指令-2">条件传送指令</h5>
 <p>条件传送（Conditional Moves）需要借助条件传送指令来实现，具体如下表：</p>
 <img src="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303061123873.png" srcset="/img/loading.gif" lazyload style="zoom:33%;" />
 <p>普通的无条件传送指令MOV会将操作数的长短显式的编码在指令名中（<code>movl</code>, <code>movb</code>）。而条件传送指令不同，汇编器要从目标寄存器的名字来推断出操作数的实际长度，因此对所有的操作数长度，都可以使用同一个指令名。</p>
 <p>源操作数和目的操作数可以是16位、32位或64位长，不支持单字节的条件传送。</p>
-<h3 id="循环-while-for">循环 while &amp; for</h3>
-<h4 id="do-while">do-while</h4>
+<h3 id="循环-while-for-2">循环 while &amp; for</h3>
+<h4 id="do-while-2">do-while</h4>
 <p>do-while loop至少会对循环体语句执行一次，比较容易实现，逻辑如下：</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-keyword">do</span> &#123;<br>    body-statement<br>&#125; <span class="hljs-keyword">while</span> (text-expr);<br><br>loop:<br>	body-statement<br>    t = text-expr;<br>	<span class="hljs-keyword">if</span> (t) <br>        <span class="hljs-keyword">goto</span> loop;<br></code></pre></td></tr></table></figure>
-<h4 id="while">while</h4>
+<h4 id="while-2">while</h4>
 <p>while语句的区别在于，其需要先对 $text-expr$ 进行一次测试，如果首次测试就失败，则不会执行循环体。</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-keyword">while</span> (text-expr) <br>    body-statement<br></code></pre></td></tr></table></figure>
 <p>实现while循环有两种方式：</p>
@@ -781,17 +781,17 @@ Some circumstances require different instructions to handle signed and unsigned 
 <p>两种不同翻译的区别取决于优化的等级，使用较高优化等级编译时，例如使用命令行选项<code>-O1</code>，GCC会采用这种策略。其减少了开始一定会有的<code>goto</code>控制流变化，更适合现代处理器中的流水线。</p>
 </li>
 </ol>
-<h4 id="for">for</h4>
+<h4 id="for-2">for</h4>
 <p>通用逻辑形式如下：</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-keyword">for</span> (init-expr; test-expr; update-expr) <br>    body-statement<br></code></pre></td></tr></table></figure>
 <p>这种逻辑形式可以转换为如下等效的while循环：</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs c">init-expr;<br><span class="hljs-keyword">while</span> (test-expr) &#123;<br>    body-statement<br>    update-expr;<br>&#125;<br></code></pre></td></tr></table></figure>
 <p>所以，GCC会将 for 语句按照 while 循环的两种翻译形式产生对应代码。特殊的，如果 for 语句循环中存在<b> continue 语句</b>，则需要对代码进行适当修改，因为 update-expr 被放入了 while 循环的循环体，如果直接跳过循环，则意味着跳过 update-expr，导致进入死循环（Practice Problem 3.29）。应增加相应的 goto 语句与标签：</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs C">init-expr;<br><span class="hljs-keyword">while</span> (test-expr) &#123;<br>	body-statement;<br>	<span class="hljs-keyword">if</span> (<span class="hljs-keyword">continue</span>-test) &#123;<br>		<span class="hljs-keyword">goto</span> update;			<span class="hljs-comment">// implement continue</span><br>	&#125;<br>	update:<br>		update-expr;<br>&#125;<br></code></pre></td></tr></table></figure>
-<h3 id="多重分支-switch">多重分支 switch</h3>
+<h3 id="多重分支-switch-2">多重分支 switch</h3>
 <p>多重分支从高级语言逻辑来说，可以写成多个条件分支，但这样意味着可读性的降低，多次跳转对编译后的性能也并不友好。</p>
 <p>GCC引入了**跳转表（Jump Table）**来实现 switch 语句，其具体情况较复杂，不易抽象，详见书3.6.8节，结合实例理解。</p>
-<h2 id="过程-Procedures">过程 Procedures</h2>
+<h2 id="过程-Procedures-2">过程 Procedures</h2>
 <p>要提供对过程机制的机器级支持，包括以下几个方面：</p>
 <ul class="lvl-0">
 <li class="lvl-2">
@@ -808,7 +808,7 @@ Some circumstances require different instructions to handle signed and unsigned 
 </li>
 </ul>
 <p>显然，三种机制都依赖于一个内存中的数据结构，即<strong>运行时栈（Run-Time Stack）</strong>。</p>
-<h3 id="运行时栈-Run-Time-Stack">运行时栈 Run-Time Stack</h3>
+<h3 id="运行时栈-Run-Time-Stack-2">运行时栈 Run-Time Stack</h3>
 <p>栈后进先出的特性，非常适合实现过程的调用。运行时栈的特点：</p>
 <ul class="lvl-0">
 <li class="lvl-2">
@@ -825,11 +825,11 @@ Some circumstances require different instructions to handle signed and unsigned 
 </li>
 </ul>
 <p>当x86-64过程需要的存储空间超过寄存器能够存放的大小时，就需要从栈上分配空间。为每个过程分配的空间成为过程的<i>栈帧（stack frame）</i>。栈帧常见内容如图，包括：</p>
-<h4 id="返回地址-return-address">返回地址 return address</h4>
+<h4 id="返回地址-return-address-2">返回地址 return address</h4>
 <p>当过程调用了其他过程，就需要保存返回地址，即为<code>callq</code>指令的下一条指令地址；</p>
-<h4 id="参数-argument">参数 argument</h4>
+<h4 id="参数-argument-2">参数 argument</h4>
 <p>寄存器中至多能够传递6个参数（整数值），超出这个数量的参数（或者较大的容器如数组）就需要借助栈帧来传递；</p>
-<h4 id="被保存的寄存器-saved-registers">被保存的寄存器 saved registers</h4>
+<h4 id="被保存的寄存器-saved-registers-2">被保存的寄存器 saved registers</h4>
 <p>寄存器组时唯一被所有过程共享的资源。某些寄存器在函数调用时可能被覆盖，而其值后续会用到，需要保存。x86-64设置了一组统一的<b>寄存器使用惯例</b>，所有的过程都必须遵循。</p>
 <p>根据惯例（前寄存器图片有标注），寄存器分为两种：<b>callee-saved（被调用者保存）</b>与<b>caller-saved（调用者保存）</b>。因为寄存器组是所有过程共享的空间，所以要确保内容的正确性。</p>
 <ol>
@@ -851,7 +851,7 @@ Some circumstances require different instructions to handle signed and unsigned 
 <p>除了<code>%rsp</code>之外的所有寄存器，都为调用者保存寄存器。即任何过程可以任意对这些寄存器进行修改，保存寄存器值的责任由调用者本身承担。</p>
 </li>
 </ol>
-<h4 id="局部变量-local-variables">局部变量 local variables</h4>
+<h4 id="局部变量-local-variables-2">局部变量 local variables</h4>
 <p>过程中创建的局部变量，在过程运行时创建，过程结束就会随着栈帧一起回收/销毁；对于局部变量，如果寄存器空间足够也会优先使用寄存器空间。在以下几种情况时，必须使用内存/栈来存放：</p>
 <ul class="lvl-0">
 <li class="lvl-2">
@@ -869,7 +869,7 @@ Some circumstances require different instructions to handle signed and unsigned 
 <p>栈帧可能存放的内容大体上就这些，但实际情况中很多函数根本不需要栈帧，比如不超过6个整数大小参数的叶子过程（即不存在调用其他过程的过程）。也就是说，不存在调用，且寄存器够用的情况下，函数无需借助栈帧。</p>
 <img src="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303061127544.png" srcset="/img/loading.gif" lazyload style="zoom:33%;" />
 <p>运行时帧作为内存的一部分，是实现过程的有利支撑，接下来关注实现过程的三个重要方面。</p>
-<h3 id="控制传送-Control-Transfer">控制传送 Control Transfer</h3>
+<h3 id="控制传送-Control-Transfer-2">控制传送 Control Transfer</h3>
 <p>转移控制的本质其实就是跳转到正确的代码位置，并在执行完子过程后返回正确的地址。这个过程会借助程序计数器PC（<code>%rip</code>寄存器）与运行时栈，使用如下两条指令完成：</p>
 <img src="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303061128044.png" srcset="/img/loading.gif" lazyload style="zoom: 50%;" />
 <ul class="lvl-0">
@@ -889,7 +889,7 @@ Some circumstances require different instructions to handle signed and unsigned 
 <p><code>ret</code>：从栈帧中弹出返回地址，并将PC / <code>%rip</code> 的值设置为返回地址。</p>
 </li>
 </ul>
-<h3 id="数据传送-Data-Transfer">数据传送 Data Transfer</h3>
+<h3 id="数据传送-Data-Transfer-2">数据传送 Data Transfer</h3>
 <p>数据传送主要包括两部分：<b>参数</b>与<b>返回值</b>。返回值按照规定通常都由<code>%rax</code>传递。参数如前所述，6个整数以内由寄存器传递，多出的部分需要开辟（调用者的）栈帧来传递。</p>
 <p>寄存器传递参数的规则如图所示：</p>
 <img src="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303061128851.png" srcset="/img/loading.gif" lazyload style="zoom:50%;" />
@@ -902,10 +902,10 @@ Some circumstances require different instructions to handle signed and unsigned 
 <p>所有的数据大小按8的倍数对齐（按字节寻址）；</p>
 </li>
 </ul>
-<h3 id="递归过程-Recursive-Process">递归过程 Recursive Process</h3>
+<h3 id="递归过程-Recursive-Process-2">递归过程 Recursive Process</h3>
 <p>没什么特别的，和普通函数调用基本一致。由于递归函数的参数形式都是一样的，caller要按需保存参数的值（参数寄存器均为 caller-saved），可能会占用 callee-saved register。</p>
 <h2 id="数组">数组</h2>
-<h3 id="基本原则">基本原则</h3>
+<h3 id="基本原则-2">基本原则</h3>
 <p>对于数据类型 T 与整型常数 N，定义：<code>T = A[N]</code>。该语句相当于以下几步工作：</p>
 <ul class="lvl-0">
 <li class="lvl-2">
@@ -918,20 +918,20 @@ Some circumstances require different instructions to handle signed and unsigned 
 <p>生成索引：通过整数索引 $0\sim N- 1$ 来访问数组中的元素。</p>
 </li>
 </ul>
-<h3 id="访问与指针">访问与指针</h3>
+<h3 id="访问与指针-2">访问与指针</h3>
 <h4 id="指针运算">指针运算</h4>
 <p>C语言中的指针运算会自动根据数据类型大小进行伸缩。即，对于数据类型 $T$，有一个指向该类型的指针 $p$，其中 $p$ 的具体值记为 $x_p$，那么 $p+ i$ 就相当于 $x_p + L \times i$。其中 $L$ 是该数据类型的大小。</p>
-<h4 id="数组元素的访问">数组元素的访问</h4>
+<h4 id="数组元素的访问-2">数组元素的访问</h4>
 <p>通常，数组的起始地址存放在寄存器<code>%rdx</code>中，而索引则存放在<code>%rcx</code>中。可以利用内存引用指令来简化数组的访问，其具体实现如下表（假定结果都存放在<code>%rax</code>/<code>%eax</code>中）：</p>
 <img src="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303061128037.png" srcset="/img/loading.gif" lazyload style="zoom: 33%;" />
-<h4 id="嵌套数组-多维数组的访问">嵌套数组 / 多维数组的访问</h4>
+<h4 id="嵌套数组-多维数组的访问-2">嵌套数组 / 多维数组的访问</h4>
 <p>与一维数组基本无差。以二维数组为例，对于数组<code>T D[R][C]</code>，其数组元素<code>D[i][j]</code>的地址为：$x_D + L(C\times i + j)$。较复杂的地址计算可能无法使用单句 <code>mov </code>指令来实现，可以利用 <code>lea</code> 指令进行地址的辅助计算。</p>
-<h3 id="定长数组">定长数组</h3>
+<h3 id="定长数组-2">定长数组</h3>
 <p>对于定长数组，GCC能够对其操作进行性能上的优化。3.8.4节给出了在<code>O1</code>优化等级下的例子。</p>
-<h3 id="变长数组">变长数组</h3>
+<h3 id="变长数组-2">变长数组</h3>
 <p>具体优化见3.8.5节。</p>
-<h2 id="异质的数据结构-Heterogeneous-Data-Structures">异质的数据结构 Heterogeneous Data Structures</h2>
-<h3 id="struct">struct</h3>
+<h2 id="异质的数据结构-Heterogeneous-Data-Structures-2">异质的数据结构 Heterogeneous Data Structures</h2>
+<h3 id="struct-2">struct</h3>
 <ul class="lvl-0">
 <li class="lvl-2">
 <p>将不同类型的对象聚合到一个对象中；</p>
@@ -945,7 +945,7 @@ Some circumstances require different instructions to handle signed and unsigned 
 </ul>
 </li>
 </ul>
-<h3 id="union">union</h3>
+<h3 id="union-2">union</h3>
 <ul class="lvl-0">
 <li class="lvl-2">
 <p>以多种类型来引用同一个对象。</p>
@@ -959,7 +959,7 @@ Some circumstances require different instructions to handle signed and unsigned 
 </li>
 </ul>
 <p>详见3.9.2节。</p>
-<h3 id="数据对齐">数据对齐</h3>
+<h3 id="数据对齐-2">数据对齐</h3>
 <ul class="lvl-0">
 <li class="lvl-2">
 <p>x86-64的对齐原则：任何$K$字节的基本对象的地址必须是$K$的倍数。</p>
