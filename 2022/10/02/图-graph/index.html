@@ -261,11 +261,11 @@
             
               <div class="markdown-body">
                 
-                <h2 id="图的遍历-Traversal">图的遍历 Traversal</h2>
+                <h2 id="图的遍历-Traversal-2">图的遍历 Traversal</h2>
 <ul class="lvl-0">
 <li class="lvl-2">565 Array Nesting 数组嵌套 (Medium)</li>
 </ul>
-<h2 id="拓扑排序-Topological-Sort">拓扑排序 Topological Sort</h2>
+<h2 id="拓扑排序-Topological-Sort-2">拓扑排序 Topological Sort</h2>
 <p>拓扑排序就是对有向无环图（Directed Acyclic Graph, DAG）进行排序，其本质还是一个<strong>广度优先搜索</strong>。</p>
 <p>一些性质：</p>
 <ul class="lvl-0">
@@ -280,9 +280,9 @@
 </ul>
 </li>
 </ul>
-<h3 id="适用情况-3">适用情况</h3>
+<h3 id="适用情况-4">适用情况</h3>
 <p>常用于处理<strong>有向图中的依赖性问题</strong>（后继依赖前驱），并能够<strong>判断图中是否存在环路</strong>。而对于无向图的连通性问题，更多考虑使用 [并查集](##并查集 Union-find Set)。</p>
-<h3 id="算法实现">算法实现</h3>
+<h3 id="算法实现-2">算法实现</h3>
 <p>具体流程如下：</p>
 <ol>
 <li class="lvl-3">
@@ -328,7 +328,7 @@
 </li>
 </ul>
 <p>在整个深度优先搜索的过程结束后，如果我们没有找到图中的环，那么栈中存储这所有的 $n$ 个节点，从栈顶到栈底的顺序即为一种拓扑排序。</p>
-<h3 id="效率-2">效率</h3>
+<h3 id="效率-3">效率</h3>
 <ul class="lvl-0">
 <li class="lvl-2">
 <p>使用邻接表：每个节点输出一次 $O(V)$，每个边处理一次 $O(E)$，总时间复杂度为 $O(V+E)$。</p>
@@ -337,7 +337,7 @@
 <p>使用邻接矩阵：因为处理边时需要遍历矩阵的一行，所以相当于内层循环也为 $O(V)$，总时间复杂度为 $O(V^2)$。</p>
 </li>
 </ul>
-<h3 id="相关题目-4">相关题目</h3>
+<h3 id="相关题目-9">相关题目</h3>
 <ul class="lvl-0">
 <li class="lvl-2">
 <p>210 Course Schedule II 课程表 II (Medium)</p>
@@ -350,7 +350,7 @@
 <p><a target="_blank" rel="noopener" href="http://algorithm.openjudge.cn/2022hw2/solution/36786354/">POJ Genealogical Tree</a></p>
 </li>
 </ul>
-<h2 id="二分图-Bipartite-Graph">二分图 Bipartite Graph</h2>
+<h2 id="二分图-Bipartite-Graph-2">二分图 Bipartite Graph</h2>
 <blockquote>
 <p>二分图的定义：图中所有顶点可以分割为两个子集合，图中所有边的两个顶点来自于不同的集合，即同一集合中的任意两点之间没有边。</p>
 <p>二分图是图论中一个比较经典的问题，对于其判定除了常见的染色法还有其他的做法待补充（对面试作用不大）。</p>
@@ -368,7 +368,7 @@
 <p><a target="_blank" rel="noopener" href="http://algorithm.openjudge.cn/2022hw2/solution/36536600/">POJ Butterfly</a></p>
 </li>
 </ul>
-<h2 id="欧拉通路-回路">欧拉通路/回路</h2>
+<h2 id="欧拉通路-回路-2">欧拉通路/回路</h2>
 <p>简单的来讲，就是<strong>图的遍历</strong> + <strong>栈</strong>，要注意的点是</p>
 <ol>
 <li class="lvl-3">
@@ -383,7 +383,7 @@
 </ol>
 <h3 id="算法原理">算法原理</h3>
 <p>即给定一个起点的<strong>一笔画</strong>问题。</p>
-<h4 id="1-定义">1 定义</h4>
+<h4 id="1-定义-2">1 定义</h4>
 <ul class="lvl-0">
 <li class="lvl-2">
 <p>通过图中所有边恰好一次且行遍所有顶点的通路称为欧拉通路。</p>
@@ -398,7 +398,7 @@
 <p>具有欧拉通路但不具有欧拉回路的无向图称为半欧拉图。</p>
 </li>
 </ul>
-<h4 id="2-判断">2 判断</h4>
+<h4 id="2-判断-2">2 判断</h4>
 <p>如果没有保证至少存在一种合理的路径，我们需要判别这张图是否是欧拉图或者半欧拉图，具体地：</p>
 <ul class="lvl-0">
 <li class="lvl-2">
@@ -430,7 +430,7 @@
 </li>
 </ul>
 <p>判断及证明放到离散数学/算法导论中具体了解。</p>
-<h4 id="3-求解">3 求解</h4>
+<h4 id="3-求解-2">3 求解</h4>
 <p><strong>Heirholzer算法</strong>：</p>
 <ol>
 <li class="lvl-3">
@@ -443,7 +443,7 @@
 <p>如果没有可移动的路径，则将所在节点加入到栈中，并返回。</p>
 </li>
 </ol>
-<h3 id="相关题目-5">相关题目</h3>
+<h3 id="相关题目-10">相关题目</h3>
 <ul class="lvl-0">
 <li class="lvl-2">
 <p><em>332 Reconstruct Itinerary 重新安排行程 (Hard)</em></p>

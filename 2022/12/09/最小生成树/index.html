@@ -262,7 +262,7 @@
             
               <div class="markdown-body">
                 
-                <h2 id="最小生成树-Minimum-Spanning-Tree">最小生成树 Minimum Spanning Tree</h2>
+                <h2 id="最小生成树-Minimum-Spanning-Tree-2">最小生成树 Minimum Spanning Tree</h2>
 <p>基本概念与性质：</p>
 <ul class="lvl-0">
 <li class="lvl-2">
@@ -287,7 +287,7 @@
 <blockquote>
 <p>基本思想：让一颗小树长大从某一起点出发，不断选择 <b>与当前集合 距离最近的节点</b> 加入。</p>
 </blockquote>
-<h4 id="实现-7">实现</h4>
+<h4 id="实现-5">实现</h4>
 <p>实现中有两个重点概念：</p>
 <ol>
 <li class="lvl-3">
@@ -318,7 +318,7 @@
 <blockquote>
 <p>Dijkstra算法和prim算法其实是相同的思路（贪心+松弛），只是在其中记录距离的 $dist$ 数组的含义发生了变化：Dijkstra中代表与源点的距离，而Prim中代表与集合的距离。</p>
 </blockquote>
-<h4 id="效率-4">效率</h4>
+<h4 id="效率-5">效率</h4>
 <p>最外层循环共执行 $V$ 次；</p>
 <ul class="lvl-0">
 <li class="lvl-2">
@@ -352,7 +352,7 @@
 <blockquote>
 <p>基本思想：将森林合并成树每次选取 <b>权值最小</b> 且 <b>不会构成回路</b> 的边，加入集合。</p>
 </blockquote>
-<h4 id="实现-8">实现</h4>
+<h4 id="实现-6">实现</h4>
 <p>实现中的重点：</p>
 <ol>
 <li class="lvl-3">
@@ -389,7 +389,7 @@
 <p>如果结束循环时，加入集合的边数量不对（$|E| \neq |V| - 1$），则说明图不连通/生成树不存在。</p>
 </li>
 </ol>
-<h4 id="效率-5">效率</h4>
+<h4 id="效率-6">效率</h4>
 <ul class="lvl-0">
 <li class="lvl-2">
 <p>排序：$O(ElogE)$</p>
@@ -401,7 +401,7 @@
 </ul>
 <p>综上，总渐进时间复杂度为 $O(ElogE)$。</p>
 <p>考虑到 $|V| - 1\leq|E| &lt; |V|^2$ ，如果是稀疏图，即边的数量接近顶点数量的情况，Kruskal接近$O(VlogV)$。绝大多数情况下，Kruskal的实际性能都更优。</p>
-<h3 id="相关题目-12">相关题目</h3>
+<h3 id="相关题目-15">相关题目</h3>
 <ul class="lvl-0">
 <li class="lvl-2">
 <p><a target="_blank" rel="noopener" href="http://bailian.openjudge.cn/practice/solution/37220720/">POJ Agri-Net</a></p>
