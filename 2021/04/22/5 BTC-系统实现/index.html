@@ -1,0 +1,881 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/avatar.png">
+  <link rel="icon" href="/img/avatar.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#98a5ac">
+  <meta name="author" content="tao1st">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="5 系统实现 1 基于交易的账本模式  区块链就是一个去中心化的账本    比特币系统：基于交易的账本模式 Transaction-based Ledger  与之对应，以太坊（Ethereum）是基于账户的账本模式（Account-based Ledger）。基于账户就意味着系统中会显式的记录每个账户有多少个币，不需要显式说明币的来源。 相对而言，比特币系统基于交易的模式隐私性更好；但与此同时在">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Blockchain: 5 System Realization">
+<meta property="og:url" content="https://tao1st.github.io/2021/04/22/5%20BTC-%E7%B3%BB%E7%BB%9F%E5%AE%9E%E7%8E%B0/index.html">
+<meta property="og:site_name" content="tao1st.github.io">
+<meta property="og:description" content="5 系统实现 1 基于交易的账本模式  区块链就是一个去中心化的账本    比特币系统：基于交易的账本模式 Transaction-based Ledger  与之对应，以太坊（Ethereum）是基于账户的账本模式（Account-based Ledger）。基于账户就意味着系统中会显式的记录每个账户有多少个币，不需要显式说明币的来源。 相对而言，比特币系统基于交易的模式隐私性更好；但与此同时在">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="c:%5CUsers%5CTAO1st%5CDesktop%5C%E5%8C%BA%E5%9D%97%E9%93%BE%5Cpic%5C4.png">
+<meta property="og:image" content="c:/Users/TAO1st/AppData/Roaming/Typora/typora-user-images/image-20201020193827065.png">
+<meta property="og:image" content="c:/Users/TAO1st/Desktop/区块链/pic/7.png">
+<meta property="og:image" content="c:/Users/TAO1st/Desktop/区块链/pic/9.jpg">
+<meta property="og:image" content="c:/Users/TAO1st/Desktop/区块链/pic/8.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200301134130433.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2E5NzI2NjkwMTU=,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200301134916212.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2E5NzI2NjkwMTU=,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200301135518508.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2E5NzI2NjkwMTU=,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200216145604165.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L011X1hpYW95ZQ==,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200216145628985.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200216145658163.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/2020021614571328.png">
+<meta property="og:image" content="c:/Users/TAO1st/AppData/Roaming/Typora/typora-user-images/image-20201019171021583.png">
+<meta property="article:published_time" content="2021-04-22T15:44:32.000Z">
+<meta property="article:modified_time" content="2023-03-16T07:11:27.261Z">
+<meta property="article:author" content="tao1st">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="c:%5CUsers%5CTAO1st%5CDesktop%5C%E5%8C%BA%E5%9D%97%E9%93%BE%5Cpic%5C4.png">
+  
+  
+  
+  <title>Blockchain: 5 System Realization - tao1st.github.io</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"tao1st.github.io","root":"/","version":"1.9.2","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":3},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.2.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>TAO1st</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/bk.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.5)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Blockchain: 5 System Realization"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2021-04-22 23:44" pubdate>
+          2021年4月22日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          7k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          59 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">Blockchain: 5 System Realization</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1>5 系统实现</h1>
+<h3 id="1-基于交易的账本模式">1 基于交易的账本模式</h3>
+<blockquote>
+<p>区块链就是一个<strong>去中心化</strong>的<strong>账本</strong></p>
+</blockquote>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>比特币系统：基于<strong>交易</strong>的<strong>账本</strong>模式 <strong>Transaction-based Ledger</strong></p>
+<blockquote>
+<p>与之对应，<strong>以太坊（Ethereum）<strong>是基于</strong>账户</strong>的账本模式（<strong>Account-based Ledger</strong>）。基于账户就意味着系统中会<strong>显式的记录每个账户有多少个币</strong>，不需要显式说明币的来源。</p>
+<p>相对而言，比特币系统基于交易的模式<strong>隐私性更好</strong>；但与此同时在进行交易时，比特币系统<strong>没有账户的概念</strong>，也就无法知道账户真正的余额，所以要对<strong>币的来源</strong>进行说明以供溯源验证，防止双花攻击。</p>
+</blockquote>
+<p>区块中记录着交易信息，但并没有系统记录每个账户有多少币。只能通过交易记录推算。</p>
+</li>
+<li class="lvl-2">
+<p><strong>UTXO</strong></p>
+<blockquote>
+<p>比特币系统中，<strong>全节点</strong>维护一个名为<strong>UTXO（Unspent Transaction Output，还未花掉的交易输出）<strong>的数据结构，以便于</strong>快速检测双花攻击</strong>。</p>
+<p><img src="C:%5CUsers%5CTAO1st%5CDesktop%5C%E5%8C%BA%E5%9D%97%E9%93%BE%5Cpic%5C4.png" srcset="/img/loading.gif" lazyload alt="4"></p>
+<p>例如上图，A给B和C分别转账（多个输出），B在之后花掉了此处交易收到的5BTC，所以此处的币不在UTXO中；C还没花掉此处交易收到的币，所以此处的币在UTXO中。</p>
+</blockquote>
+<ul class="lvl-2">
+<li class="lvl-4">
+<p><strong>内容：</strong></p>
+<p>UTXO集合中每个元素存放两个信息：</p>
+<ul class="lvl-4">
+<li class="lvl-6">
+<p>产生这个输出的交易的哈希值</p>
+</li>
+<li class="lvl-6">
+<p>在该交易里是第几个输出</p>
+</li>
+</ul>
+<p>根据这两个信息即可定位UTXO中任一具体的输出。</p>
+</li>
+<li class="lvl-4">
+<p><strong>作用：</strong></p>
+<p>币的溯源可以直接查询UTXO，能够快速检测出双花攻击。 付款者使用的币必须要在这个集合中。如果监测发现币不在集合中，则该交易非法。</p>
+</li>
+<li class="lvl-4">
+<p>每次交易会消耗UTXO中的某个输出，同时又会产生新的输出。</p>
+</li>
+</ul>
+</li>
+<li class="lvl-2">
+<p><strong>交易费 Transaction Fee</strong></p>
+<blockquote>
+<p>区块中是打包的交易记录，获得记账权的节点在发布新的区块时会获得出块奖励，那么这些节点会不会<strong>只想获得出块奖励</strong>，而<strong>不去打包其他人的交易记录</strong>？</p>
+<p>获得记账权的节点在发布区块时<strong>打包别人的交易是有开销的</strong>。比如验证交易合法性，如果块中打包的交易记录较多，那么验证的计算会占用大量的带宽资源，在网络上传播的速度也会减慢。</p>
+</blockquote>
+<p>每个交易可以有多个输入，也可以有多个输出。所有输入的金额要等于所有输出的金额，即 <strong>total inputs = total outputs</strong>。有些交易会出现<strong>input &gt; output</strong>，那么这个<strong>差额</strong>就是给获得记账权的节点的<strong>交易费</strong>。</p>
+<p>比特币系统为了激励获得记账权的节点去打包交易记录，就设计了<strong>交易费（transaction fee）</strong>。</p>
+<blockquote>
+<p>对于获得记账权的节点，比特币系统给出了两种<strong>激励机制</strong>：</p>
+<ul class="lvl-3">
+<li class="lvl-2"><strong>Block Reward</strong>：出块奖励。</li>
+<li class="lvl-2"><strong>Transaction Fee</strong>：交易费，打包交易记录会获得交易费。</li>
+</ul>
+<p>目前，获得记账权主要还是为了<strong>出块奖励</strong>，但随着出块奖励不断折半变小，<strong>交易费</strong>会成为未来区块链维护的主要依赖。</p>
+</blockquote>
+</li>
+</ul>
+<h3 id="2-比特币系统实例">2 比特币系统实例</h3>
+<h4 id="1-区块信息实例">(1) 区块信息实例</h4>
+<img src="C:\Users\TAO1st\AppData\Roaming\Typora\typora-user-images\image-20201020193827065.png" srcset="/img/loading.gif" lazyload alt="image-20201020193827065" style="zoom: 33%;" />
+<blockquote>
+<p>来源：<a target="_blank" rel="noopener" href="https://www.blockchain.com/btc/block/529709">https://www.blockchain.com/btc/block/529709</a></p>
+<p>图为在Blockchain.com查询到的BTC区块信息（块头部分）。</p>
+</blockquote>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>Hash: 区块块头哈希</p>
+<blockquote>
+<p>没有在表中的一些重要数据：</p>
+<ul class="lvl-3">
+<li class="lvl-2">Previous Block：即前一区块块头哈希</li>
+</ul>
+<p>挖矿：</p>
+<p>​        挖矿的过程是尝试各种nonce使得产生的块头哈希小于目标阈值target/nBits。这个目标阈值表示成相同位的16进制数时，前面就含有一大串0（哈希值位较多，目标阈值又没那么大），所以我们得到的块头哈希开头一般都是一大串0。</p>
+</blockquote>
+</li>
+<li class="lvl-2">
+<p>Confirmations:</p>
+</li>
+<li class="lvl-2">
+<p>Timestamp: <strong>时间戳</strong>，即<strong>区块产生时间</strong></p>
+</li>
+<li class="lvl-2">
+<p>Height: 即<strong>区块序号</strong>，就是最上面的区块号</p>
+</li>
+<li class="lvl-2">
+<p>Miner: 矿工</p>
+</li>
+<li class="lvl-2">
+<p>Number of Tranactions: 区块中打包的交易数</p>
+</li>
+<li class="lvl-2">
+<p>Difficulty: 挖矿难度，每隔2016个区块进行调整</p>
+</li>
+<li class="lvl-2">
+<p>Merkle root: Merkle Tree的根哈希值</p>
+</li>
+<li class="lvl-2">
+<p>Version:</p>
+</li>
+<li class="lvl-2">
+<p>Bits: nBits，即目标阈值target</p>
+</li>
+<li class="lvl-2">
+<p>Weight:</p>
+</li>
+<li class="lvl-2">
+<p>Size:</p>
+</li>
+<li class="lvl-2">
+<p>Nonce: 挖矿时尝试的符合要求的随机数</p>
+</li>
+<li class="lvl-2">
+<p>Transaction Volume:</p>
+</li>
+<li class="lvl-2">
+<p>Block Reward: 出块奖励</p>
+</li>
+<li class="lvl-2">
+<p>Fee Reward: 区块总交易费</p>
+</li>
+</ul>
+<h4 id="2-块头数据结构">(2) 块头数据结构</h4>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-comment">/** Nodes collect new transactions into a block, hash them into a hash tree,</span><br><span class="hljs-comment"> * and scan through nonce values to make the block&#x27;s hash satisfy proof-of-work</span><br><span class="hljs-comment"> * requirements.  When they solve the proof-of-work, they broadcast the block</span><br><span class="hljs-comment"> * to everyone and the block is added to the block chain.  The first transaction</span><br><span class="hljs-comment"> * in the block is a special one that creates a new coin owned by the creator</span><br><span class="hljs-comment"> * of the block.</span><br><span class="hljs-comment"> */</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">CBlockHeader</span><br>&#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-comment">// header</span><br>    <span class="hljs-type">int32_t</span> nVersion;<br>    uint256 hashPrevBlock;<br>    uint256 hashMerkleRoot;<br>    <span class="hljs-type">uint32_t</span> nTime;<br>    <span class="hljs-type">uint32_t</span> nBits;<br>    <span class="hljs-type">uint32_t</span> nNonce;         <span class="hljs-comment">//nonce是一个32位的无符号整数，这意味着对nonce的尝试只有2^32种</span><br>    ...<br></code></pre></td></tr></table></figure>
+<blockquote>
+<p>来源：<a target="_blank" rel="noopener" href="https://github.com/bitcoin/bitcoin/blob/master/src/primitives/block.h">https://github.com/bitcoin/bitcoin/blob/master/src/primitives/block.h</a></p>
+</blockquote>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>近年来矿工越来越多，为了保证出块时间（<em><u>后面会讲到</u></em>），挖矿难度difficulty已经调整的比较大了，仅仅$$2^{32}$$的搜索空间意味着很有可能遍历了整个搜索空间也无法找到正确的结果。这意味着搜索空间太小，也就是说还需要调整<strong>块头中其他的域</strong>来增大搜索空间，那么还有哪些域可以调整呢？</p>
+<img src="C:\Users\TAO1st\Desktop\区块链\pic\7.png" srcset="/img/loading.gif" lazyload alt="7" style="zoom:33%;" />
+<blockquote>
+<p>来源：<a target="_blank" rel="noopener" href="https://developer.bitcoin.org/reference/block_chain.html">https://developer.bitcoin.org/reference/block_chain.html</a></p>
+</blockquote>
+<ul class="lvl-2">
+<li class="lvl-4">
+<p>version：协议版本号，<strong>无法修改</strong></p>
+</li>
+<li class="lvl-4">
+<p>previous block header hash：前一区块的块头哈希，<strong>无法修改</strong></p>
+</li>
+<li class="lvl-4">
+<p><strong>merkle root hash</strong>：<strong>可以修改</strong></p>
+</li>
+<li class="lvl-4">
+<p>time：时间戳，即区块产生的时间。其精确度要求不高，所以<strong>有一定调整的空间</strong></p>
+</li>
+<li class="lvl-4">
+<p>nBits：An encoded version of target threshold，只能按照协议定期调整的目标阈值</p>
+</li>
+</ul>
+</li>
+<li class="lvl-2">
+<p>比特币系统中，通常通过修改<strong>Merkle root hash</strong>，即<strong>merkle tree的根哈希值</strong>。那么根哈希值为什么可以修改？不是根据merkle tree来确定的吗？</p>
+<ul class="lvl-2">
+<li class="lvl-4">
+<p>首先来看一个Coinbase交易的实例，即出块奖励交易：</p>
+<img src="C:\Users\TAO1st\Desktop\区块链\pic\9.jpg" srcset="/img/loading.gif" lazyload alt="9" style="zoom: 50%;" />
+<blockquote>
+<p>来源：<a target="_blank" rel="noopener" href="https://www.blockchain.com/btc/tx/99ffa15c268a5aee6a0a0381ec2666654fa283fe7cdd7ced583c57738e8dadd3">https://www.blockchain.com/btc/tx/99ffa15c268a5aee6a0a0381ec2666654fa283fe7cdd7ced583c57738e8dadd3</a></p>
+<p>上图为Blockchain.com查询到的BTC交易具体信息。</p>
+</blockquote>
+<img src="C:\Users\TAO1st\Desktop\区块链\pic\8.png" srcset="/img/loading.gif" lazyload alt="8" style="zoom: 25%;" />
+<blockquote>
+<p>交易信息图中能够看到该交易是一个Coinbase交易，所以其<strong>输入为空</strong>。</p>
+<p>在Inputs部分能够发现有一个<strong>Sigscript域</strong>（存疑），此处在课上图中即为<strong>CoinBase域</strong>，该处可以写入任何内容。</p>
+<p>通过改变coinbase交易的这个域，会导致merkle tree中从该交易叶节点开始自底向上影响整个树的值，即沿着上图中红色部分自底向上变化，最终改变merkle root hash。</p>
+<p>所以，在实际的挖矿中，通常包含两层循环：外层循环调整coinbase域、内层循环调整nonce。</p>
+</blockquote>
+<p><strong><u>普通交易图片</u></strong></p>
+</li>
+</ul>
+</li>
+<li class="lvl-2">
+<p>通过<strong>脚本</strong>进行溯源检查</p>
+<p>将前一交易（即提供币的来源的交易）的输出脚本与本交易的输入脚本拼接后运行验证，若验证通过则该交易合法。</p>
+<p>此处即为Inputs和Outputs中的<strong>Pkscript</strong>和<strong>Sigscript</strong>域。</p>
+</li>
+</ul>
+<h4 id="3-挖矿中的概率分析">(3) 挖矿中的概率分析</h4>
+<blockquote>
+<p>简单了解，此处涉及<strong>随机过程</strong></p>
+</blockquote>
+<p>挖矿就是不断地尝试nonce，来求解puzzle。每一次尝试可以看作是一次<strong>Bernoulli trial</strong>（a random experiment with binary outcome）。大量Bernoulli trial就够成了一个<strong>Bernoulli process</strong>（a sequence of <em>independent</em> Bernoulli trials）。Bernoulli process一个性质是<strong>无记忆性（memoryless），即做大量的实验，前面的结果对后面没有影响。</strong></p>
+<p>对于挖矿来说，每次尝试nonce，成功的可能性很小，需要尝试大量的nonce才能符合要求，即要做大量的独立重复试验（Bernoulli trial），此时Bernoulli process可以用<strong>Poisson process</strong>来近似。</p>
+<p>根据比特币协议的设计，每隔2016个区块就调整挖矿难度difficulty来保证<strong>平均出块时间（time to next block 整个系统的下一个出块时间）为10min</strong>。</p>
+<p>出块时间服从指数分布（exponential distribution）。指数分布也是无记忆的，即<strong>progess free</strong>。只有progress free才能保证挖矿公平，否则挖到矿的概率就不是呈算力的比例了。</p>
+<blockquote>
+<p>如果先前工作量会影响挖到矿的概率，则算力强的节点会积累更多的工作量，从而使挖到矿的概率增加，而非按照算力的比例体现概率反而超过了这个比例，这样才是不公平的体现（不成比例的优势）。</p>
+<p>挖到矿的概率应该严格按照<strong>算力</strong>成比例。</p>
+</blockquote>
+<h4 id="4-比特币总量计算">(4) 比特币总量计算</h4>
+<p>根据前面的叙述，每21w个区块后，出块奖励减半，且出块奖励是唯一获得新比特币的来源，所以出块奖励呈<strong>几何级数（geometric series）</strong>。</p>
+<p>对级数求和，可计算得<br>
+$$<br>
+21W \times 50+21W \times 25 + 21W\times 12.5 +\space ······ \= 21W\times50\times(1+\frac{1}{2}+\frac{1}{4}+···)=2100W<br>
+$$<br>
+即比特币的总量（已挖出和未挖出的总和）为<strong>2100万</strong>个。</p>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p><strong>Bitcoin is secured by mining</strong></p>
+</li>
+</ul>
+<p>挖矿这一操作无法通过数学方法进行简化或加速，只是<strong>单纯的算力比拼</strong>。挖矿这一过程并没有实际意义，但挖矿这一过程，却是对比特币系统的稳定起到重要维护作用。挖矿提供了一种凭借算力投票的有效手段，只要大多数算力掌握在好的节点手中，便能够保障比特币系统的稳定，即Bitcoin is secured by mining。</p>
+<p>比特币越来越难被挖到，是因为出块奖励被人为减少了，比特币的稀缺性是人为造成的。</p>
+<blockquote>
+<p>那么既然比特币越来越难被挖到，且出块奖励越来越少，是否说明未来挖矿的动力会越来越低呢？实际上，恰恰相反。在早期比特币很容易挖到的时候，比特币并不被人们所看好。结果后来比特币估值上涨，吸引其他人参与挖矿，又进一步促进了比特币价值上涨，进而又吸引更多人参与进来。当出块奖励趋于0时，则整个系统将依赖于<strong>交易费</strong>运行，届时<strong>交易费将成为维护比特币系统运行的重要保障。</strong></p>
+</blockquote>
+<h4 id="5-比特币系统安全性">(5) 比特币系统安全性</h4>
+<p>回头再补，此处为CSDN笔记</p>
+<blockquote>
+<p>前提假设大部分算力掌握在诚实的人的手里。挖矿给出的只是概率上的保证，只能说有比较大的概率下一个区块是由一个诚实的矿工发布的，但是不能保证记账权不会落在有恶意的人手里。如果有恶意的节点获得记账权，他可能会做的事：</p>
+<p>1.<strong>伪造一笔不合法交易</strong>，比如把别人账上的钱转到自己的账户上，但是由于自己不知道别人的私钥，所以不合法，验证不通过。那么其他诚实节点不会认同该区块，因为包含不合法交易，所以还会接着上一个区块去扩展，那么根据最长合法链，该区块不会获得block reward，而且浪费大量电力，人力。</p>
+<p><img src="https://img-blog.csdnimg.cn/20200301134130433.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2E5NzI2NjkwMTU=,size_16,color_FFFFFF,t_70" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>2.<strong>通过forking attack想把花出去的钱再次花出去</strong>，比如M转账给A,已经写到区块链中，那么现在M获得记账权，又发布另一个交易，把这个钱转回给自己。新的区块不能写在上次转账的区块后面，因为double spending很明显，只能写在上次转账的前一个区块后面，即forking attack。区块插入的位置是在设计区块的时候就决定的，这种情况下攻击难度很大，有恶意节点获得一次记账权是不够的，还需要不断地获得记账权。防范这种攻击就需要多等几个区块确认 confirmation，<strong>缺省情况下需要6个confirmation</strong>，这个时候认为前面的交易不可篡改，等待时间大概是一个小时左右。</p>
+<p><img src="https://img-blog.csdnimg.cn/20200301134916212.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2E5NzI2NjkwMTU=,size_16,color_FFFFFF,t_70" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>3.恶意节点获得记账权，<strong>故意不写合法的交易</strong>，但是合法的交易可以被写到下一个区块里，总会有诚实的节点写合法交易。正常情况下也会出现合法交易没有被写到区块中，因为可能某段时间交易数目太多，比特币协议中规定每个区块大小是有限制的，<strong>区块大小不能超过1M字节</strong>，所以如果交易太多那么有些交易只能等到下一区块发布。</p>
+<p>4.<strong>selfish mining</strong>。正常情况下如果挖到区块会及时发布，以免别人挖到后自己的区块无效，作废了。但是在selfish mining中，挖到区块先不发布，隐藏一条链，等待超过最长合法链时发布。</p>
+<p>目的：1）forking attack的一种手段，但是恶意节点需要超过51%的算力，难以实现。</p>
+<p>​      2）就是为了赚取正常的出块奖励，挖到第一时间不发布，那么其他人还会接着上一个区块挖，自己延着已挖到区块的挖，减少该区块的竞争。如果自己已经挖到第二个区块，当其他人宣称挖到第一个区块之后，自己把手里的两个一起发布，成为最长合法链。这种做法风险大，要以为别人挖出第一个区块时，自己能够挖出第二个，否则当别人挖出第一个发布时，自己手里只有一个，这时候是等长链，只能去竞争。</p>
+<p><img src="https://img-blog.csdnimg.cn/20200301135518508.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2E5NzI2NjkwMTU=,size_16,color_FFFFFF,t_70" srcset="/img/loading.gif" lazyload alt="img"></p>
+</blockquote>
+<blockquote>
+<blockquote>
+<p>大多数算力掌握在好的用户手中，能否保障不良交易记录不会被写入区块链？需要注意的是，算力低的用户并非完全不能获得记账权，仅仅是概率上较低的问题。但实际上，即使拥有少量算力的恶意节点，也有一定概率获得某个区块的记账权。</p>
+</blockquote>
+<ul class="lvl-1">
+<li class="lvl-2">
+<ol>
+<li class="lvl-5">可否&quot;偷币&quot;？（恶意节点能不能将其他账户上比特币转给自己？）答案：不能。因为转账交易需要签名，恶意节点无法伪造他人签名。加入其获得记账权并硬往区块中写入该交易，大多数用户会认为其是一个非法区块，大多数算力将不认可该区块，从而沿着其他路径挖矿，随着时间推移，拥有大多数算力的诚实的节点将会仍然沿着原来区块挖矿，从而形成一条“最长合法链”，该区块变成孤儿区块。对于攻击者来说，不仅不能偷到其他人的比特币，而且得不到出块奖励，还浪费了挖矿花费的电费等成本。</li>
+</ol>
+</li>
+<li class="lvl-2">
+<ol start="2">
+<li class="lvl-5">可否将已经话过的币再花一遍？如下图1，若M已经将钱转给B，现在想再转给自己，假设其获得记账权，若按照图1方式，很明显为一个非法区块，不会被其他节点承认。所以，M只能选择图2方式，将M转账给B的记录回滚掉。这样就有了两条等长合法链，取决于哪一个会胜出。（如果上面交易产生不可逆的外部效果，下面交易回滚便又拿回钱，从而不当获益）</li>
+</ol>
+</li>
+</ul>
+<blockquote>
+<p>需要注意的是，再挖矿之初便要选择上一个区块是谁。也就是说，并不是获得记账权之后才选择插入到哪一个区块之后。<br>
+<img src="https://img-blog.csdnimg.cn/20200216145604165.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L011X1hpYW95ZQ==,size_16,color_FFFFFF,t_70" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"></p>
+</blockquote>
+<p>如何防范这种攻击？？？如果再M-&gt;B这个交易之后还延续有几个区块，如下图所示，则大多数诚实节点不会承认下面的链。所以，便变成了恶意节点挖下面的链，其他节点挖上面的链的算力比拼。由于区块链中大多数节点为善意节点，则最终上面链会胜出，而恶意节点的链会不被认可，从而导致投入成本白费。<img src="https://img-blog.csdnimg.cn/20200216145628985.png" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"><br>
+所以，一种简单防范防范便是多等几个确认区块。比特币协议中，缺省需要等6个确认区块，此时才认为该记录是不可篡改的。平均出块时间10min，六个确认区块便需要1小时，可见等待时间还是相对较长的。</p>
+<ul class="lvl-1">
+<li class="lvl-2">
+<ol start="3">
+<li class="lvl-5">可否故意不包含合法交易？可以，但是可以等待后续区块包含，所以问题不大。实际运行中，可能由于某段时间实际交易数太多，而一个区块包含交易数存在最大值，导致某些合法交易并未被写入区块链（等待后续区块写入）。</li>
+</ol>
+</li>
+<li class="lvl-2">
+<ol start="4">
+<li class="lvl-5">selfish mining<br>
+提前挖到但不发布，继续挖下去，等到想要攻击的交易等了6次确认认为安全之后将整条链发布出去，试图回滚原来记录。这种情况，需要恶意节点掌握系统中半数以上算力才行，否则无法成为最长合法链。</li>
+</ol>
+</li>
+</ul>
+<blockquote>
+<p>selfish mining有好处吗？如图所示，假使挖到2号时候先不发布，则其他人仍然需要挖1号区块，若其算力足够强，能保证别人挖出1之后可以挖出3.可以此时将2和3一起发布，从而将1区块所在链最长合法链挤掉（减少了别人和自己竞争挖3号区块）。但这样存在风险，如果别人已经挖出1，自己还没挖出3，则需要尽快发布2和别人竞争最长合法链地位。<br>
+<img src="https://img-blog.csdnimg.cn/20200216145658163.png" srcset="/img/loading.gif" lazyload alt="img"></p>
+</blockquote>
+<p>需要注意的是，比特币系统中，假如发生以下情况，各个节点以自己先收到的区块所在链为主链，对后收到的合法区块会不予认可（但会先保存起来）。此时便变成了两批算力分布挖1和2，具体哪一个成为主链，取决于哪一条链先挖到下一个区块，使得两个等长合法链出现长短不一致，最终胜者成为最长合法链。<br>
+<img src="https://img-blog.csdnimg.cn/2020021614571328.png" srcset="/img/loading.gif" lazyload alt="img"></p>
+</blockquote>
+<p>不可篡改的账本：irrevocable ledger</p>
+<p>并不是写入区块链的内容就不可篡改，不可篡改性只是<strong>概率</strong>上的保证。刚刚写入区块链的内容，相对来说是比较容易被篡改的，随着等待时间和新的区块确认之后，被篡改的概率会按照指数级别大幅度下降。</p>
+<p>？？zero confirmation：转账交易已经发布，但还<strong>未写入区块链</strong>。？？</p>
+<img src="C:\Users\TAO1st\AppData\Roaming\Typora\typora-user-images\image-20201019171021583.png" srcset="/img/loading.gif" lazyload alt="image-20201019171021583" style="zoom: 25%;" />
+<p>-故意不包含合法交易</p>
+<p>selfish mining 提前挖到但恶意保留先不发布。（正常挖到一个区块就会立刻发布）</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Blockchain/" class="category-chain-item">Blockchain</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+</div>
+
+
+              
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2021/05/08/14%20ETH-%E4%BB%A5%E5%A4%AA%E5%9D%8A%E6%A6%82%E8%BF%B0/" title="Blockchain: 14 Ethereum">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Blockchain: 14 Ethereum</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2021/04/12/4%20BTC-Consensus%20Protocols/" title="Blockchain: 4 Consensus Protocols">
+                        <span class="hidden-mobile">Blockchain: 4 Consensus Protocols</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>2022</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>TAO1st</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      headingSelector : CONFIG.toc.headingSelector || 'h1,h2,h3,h4,h5,h6',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      collapseDepth   : CONFIG.toc.collapseDepth || 0,
+      scrollSmooth    : true,
+      headingsOffset  : -boardTop
+    });
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.10/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.1/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

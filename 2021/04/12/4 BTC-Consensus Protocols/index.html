@@ -1,0 +1,784 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/avatar.png">
+  <link rel="icon" href="/img/avatar.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#98a5ac">
+  <meta name="author" content="tao1st">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="4 Consensus Protocols 1 双花攻击  花两次攻击  Double Spending Attack：数字货币面临的主要挑战 实体货币无法花两次，且有难以复制的防伪措施。而数字货币即使经过了数字签名，仍然能够轻易被复制，从而导致double spending attack。    中心化解决方案：给数字货币编号。 央行（第三方）保存一个数据库，内容中记录对应着每一个编号的货币对应">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Blockchain: 4 Consensus Protocols">
+<meta property="og:url" content="https://tao1st.github.io/2021/04/12/4%20BTC-Consensus%20Protocols/index.html">
+<meta property="og:site_name" content="tao1st.github.io">
+<meta property="og:description" content="4 Consensus Protocols 1 双花攻击  花两次攻击  Double Spending Attack：数字货币面临的主要挑战 实体货币无法花两次，且有难以复制的防伪措施。而数字货币即使经过了数字签名，仍然能够轻易被复制，从而导致double spending attack。    中心化解决方案：给数字货币编号。 央行（第三方）保存一个数据库，内容中记录对应着每一个编号的货币对应">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="c:/Users/TAO1st/Desktop/区块链/pic/1.png">
+<meta property="og:image" content="c:%5CUsers%5CTAO1st%5CDesktop%5C%E5%8C%BA%E5%9D%97%E9%93%BE%5Cpic%5C2.png">
+<meta property="og:image" content="c:%5CUsers%5CTAO1st%5CDesktop%5C%E5%8C%BA%E5%9D%97%E9%93%BE%5Cpic%5C3.png">
+<meta property="article:published_time" content="2021-04-12T07:09:22.000Z">
+<meta property="article:modified_time" content="2023-03-16T07:10:25.781Z">
+<meta property="article:author" content="tao1st">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="c:/Users/TAO1st/Desktop/区块链/pic/1.png">
+  
+  
+  
+  <title>Blockchain: 4 Consensus Protocols - tao1st.github.io</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"tao1st.github.io","root":"/","version":"1.9.2","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":3},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.2.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>TAO1st</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/bk.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.5)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Blockchain: 4 Consensus Protocols"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2021-04-12 15:09" pubdate>
+          2021年4月12日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          3.3k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          28 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">Blockchain: 4 Consensus Protocols</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1>4 Consensus Protocols</h1>
+<h3 id="1-双花攻击"><strong>1 双花攻击</strong></h3>
+<blockquote>
+<h5 id="花两次攻击-Double-Spending-Attack：数字货币面临的主要挑战">花两次攻击  Double Spending Attack：<strong>数字货币</strong>面临的主要挑战</h5>
+<p>实体货币无法花两次，且有难以复制的防伪措施。而数字货币即使经过了数字签名，仍然能够轻易被<strong>复制</strong>，从而导致double spending attack。</p>
+</blockquote>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p><strong>中心化</strong>解决方案：给数字货币<strong>编号</strong>。</p>
+<p>央行（<u>第三方</u>）保存一个<u>数据库</u>，内容中记录对应着每一个编号的货币对应的持有者。</p>
+<p>验证时不仅验证数字签名，还要对照央行数据库，即<strong>依赖第三方机构</strong>。</p>
+<p>政府背书，<strong>可信度</strong>较高。</p>
+</li>
+</ul>
+<h3 id="2-去中心化的问题">2 去中心化的问题</h3>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>数字货币的发行：<strong>发行权</strong>？<strong>发行量</strong>？</p>
+<blockquote>
+<p>比特币系统：通过<strong>挖矿</strong>来决定<strong>发行权</strong>（铸币权）和<strong>发行量</strong>。</p>
+</blockquote>
+</li>
+<li class="lvl-2">
+<p>如何验证<strong>交易有效性</strong>？如何防止<strong>Double Spending Attack</strong>？</p>
+<blockquote>
+<p>所有用户共同维护一个数据结构，即<strong>区块链</strong>。区块链中记录交易和货币使用情况。</p>
+</blockquote>
+</li>
+</ul>
+<h3 id="3-交易的实际流程（实例）">3 交易的实际流程（实例）</h3>
+<img src="C:\Users\TAO1st\Desktop\区块链\pic\1.png" srcset="/img/loading.gif" lazyload alt="1" style="zoom:150%;" />
+<p><img src="C:%5CUsers%5CTAO1st%5CDesktop%5C%E5%8C%BA%E5%9D%97%E9%93%BE%5Cpic%5C2.png" srcset="/img/loading.gif" lazyload alt="2"></p>
+<blockquote>
+<p>上图中讲的是<strong>简化</strong>的区块链，每个区块只有一条交易记录，实际则有多个，以merkle tree形式组织。</p>
+<ul class="lvl-1">
+<li class="lvl-2"><strong>铸币权</strong>：产生新的Bitcoins</li>
+<li class="lvl-2"><strong>铸币交易 Coinbase tx</strong>：即铸币的那条交易。其输出中存在<strong>铸币者的公钥hash</strong>。</li>
+</ul>
+</blockquote>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>交易记录：每条交易记录有一个或多个<strong>输入</strong>和一个或多个<strong>输出</strong>，以及<strong>付款者的签名</strong></p>
+<ul class="lvl-2">
+<li class="lvl-4">
+<p><strong>输入</strong>：一个<strong>hash pointer</strong>，指出<strong>币的来源</strong>（可能有多个）。</p>
+<p>多个输入代表着多个付款者/转账来源，每一个付款者都要用私钥对交易进行签名，即<strong>一个交易可能有多个数字签名</strong>。</p>
+<blockquote>
+<ul class="lvl-5">
+<li class="lvl-2">
+<p>见图：比特币系统中有<strong>两种hash pointer</strong>。第一种指向前一个区块，即串起整条链表的指针，在图中为<strong>白色指针</strong>；第二个即交易记录中的输入，指明本次交易的比特币的<strong>来源</strong>，在图中为<strong>红色指针</strong>。</p>
+</li>
+<li class="lvl-2">
+<p><strong>冒充</strong>：冒充者用自己的私钥签名并发送自己的公钥验证，交易区块是能够验证正确的，但是向前追溯到<strong>铸币交易</strong>时，铸币交易中存在着真正的铸币者的公钥hash，对比后即可发现恶意冒充行为。即在对称加密算法下，<strong>区块的发布</strong>可能被冒充，但由于交易中存在着<strong>指出币的来源的（红色）哈希指针</strong>，所以尽管区块发布验证成功，币的来源却无法验证成功，阻止了冒充者攻击。</p>
+</li>
+<li class="lvl-2">
+<p><strong>脚本 Bitcoin Script</strong> ：这里对于币的溯源检测是通过执行脚本实现的。每个输入是一段脚本，每个输出也是一个脚本。每次把<strong>输入脚本</strong>和<strong>提供来源的上一个区块的输出脚本</strong>拼接到一块执行，看能否通过，通过则交易合法。</p>
+</li>
+</ul>
+</blockquote>
+</li>
+<li class="lvl-4">
+<p><strong>输出：<strong>交易记录重要包含</strong>收款人的地址/账号</strong>，即其<strong>公钥的hash</strong></p>
+<p>可能有多个，即转账给多个账户。</p>
+</li>
+<li class="lvl-4">
+<p><strong>付款者</strong>用<strong>私钥</strong>对交易记录进行<strong>签名</strong>，即图中的<strong>signed by X</strong>，即利用非对称加密确保区块的合法性。</p>
+<p>非对称加密本身无法阻止冒充，但是有币的溯源所以冒充是无意义的。</p>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="4-分布式共识">4 分布式共识</h3>
+<blockquote>
+<p>该部分仅为分布式背景知识，了解即可，后续通过分布式系统深入学习。</p>
+<p>各个节点若独立打包交易，本地形成区块链，无法避免区块链内容上的不一致。所以不能让各个节点独立完成区块链的构建。</p>
+<p>账本的内容要取得<strong>分布式的共识 Distributed Consensus</strong>，保证区块链内容在所有节点上的一致性。</p>
+<p>Distributed Hash Table：系统中很多机器共同维护一个全局的hash table，即table中保存了哪些key-value pair。</p>
+</blockquote>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>FLP impossibility result 不可能结论：在一个<strong>异步</strong>（Asynchronous）的系统中，只要有一个成员出现了问题（faulty），该系统就无法取得共识。</p>
+<blockquote>
+<p>FLP是三个分布式系统领域大牛的名字首字母组合。</p>
+<p>Asynchronous：异步，即网络传输<strong>时延没有上限</strong>的系统特征。</p>
+</blockquote>
+</li>
+<li class="lvl-2">
+<p>CAP therom：任何一个分布式系统，CAP三个性质中最多只能满足两个（只能三选二）。</p>
+<blockquote>
+<p>C：Consistency 一致性</p>
+<p>A：Availability 可靠性</p>
+<p>P：Partition tolerance 分区容错性</p>
+</blockquote>
+</li>
+<li class="lvl-2">
+<p>Paxos：分布式共识中一个较著名的协议</p>
+<blockquote>
+<p>Paxos能保持一致性。如果协议达成了共识，该共识一定一致的，即所有成员的共识是相同的。某些情况下Paxos有可能一直达不成共识。</p>
+</blockquote>
+</li>
+</ul>
+<h3 id="5-比特币中的共识协议">5 比特币中的共识协议</h3>
+<blockquote>
+<p>Consensus in BitCoin：比特币系统中要取得的分布式共识是<strong>去中心化账本</strong>中的内容。</p>
+</blockquote>
+<h4 id="（1）传统方案：投票">（1）传统方案：投票</h4>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>背景：Bitcoin系统中有些节点可能是恶意的，所以我们假设大多数是非恶意节点，大多数为“好“的节点。</p>
+</li>
+<li class="lvl-2">
+<p>解决方案：<strong>投票</strong></p>
+<p>将交易记录打包好为一个区块并发布给链中其他用户，用户进行投票决定该区块中交易记录是否合法。若票数过半，则该区块加入区块链。</p>
+</li>
+<li class="lvl-2">
+<p>缺陷：</p>
+<ul class="lvl-2">
+<li class="lvl-4">
+<p>1 恶意节点不断打包不合法区块，导致一直无法达成共识，<strong>时间浪费在投票上</strong>；</p>
+</li>
+<li class="lvl-4">
+<p>2 不会强迫节点投票，某些节点选择不投票（<strong>行政不作为</strong>）；</p>
+</li>
+<li class="lvl-4">
+<p>3 <strong>效率</strong>问题：一个异步的<strong>网络延迟</strong>是未知的，投票等待时间不确定，可能很长，影响效率。</p>
+</li>
+<li class="lvl-4">
+<p><strong>4 女巫/预言家攻击 Sybil Attack</strong>：产生大量恶意账户至超过半数（Bitcoin系统中创建新账户<u>仅需产生一对公私钥</u>即可），利用**投票权（membership）**来控制整个链。</p>
+<ul class="lvl-4">
+<li class="lvl-6">
+<p>对于<strong>联盟链</strong>，其成员准入是有要求的，可以选择基于投票的方案。</p>
+</li>
+<li class="lvl-6">
+<p>对于<strong>依靠算力</strong>、<strong>没有membership控制</strong>的<u>比特币系统</u>中，女巫攻击也没有意义，因为账户再多，<strong>算力</strong>未增加，<strong>hash rate</strong>也不会变化，获得记账权的可能性并不会变大。</p>
+</li>
+</ul>
+<blockquote>
+<p><strong>算力（Hash rate）<strong>是</strong>计算机能够完成一个数学程序的速度</strong>，譬如接收任何一组信息，并将其转换成字母和一定长度的数字的速度就称为算力。在比特币“挖矿”中，对于数学难题的求解需要找到相应的数学解，而对于任意一个给定范围内的Hash值，其求解只能通过自动生成的随机数，因此<strong>一个挖矿机（miner）每秒能做多少次求解过程</strong>就是算力的代表，其单位为 Hash/s。</p>
+</blockquote>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="（2）比特币系统的解决方案：算力">（2）比特币系统的解决方案：算力</h4>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>解决方案：<strong>算力</strong>决定记账权。</p>
+<p>所有节点进行<strong>挖矿（mining）</strong>，找到符合要求的nouce后即获得记账权。</p>
+<blockquote>
+<p>共识：比特币系统中要取得的分布式共识是<strong>去中心化账本</strong>中的内容。只有<strong>获得记账权</strong>的人即<strong>解出puzzle、找到nonce</strong>的人才能写入账本。所以是通过<strong>算力</strong>来进行投票的，而非一人一票，仅仅是通过算力来体现，算力越强，获得记账权的可能性（hash rate）越大。</p>
+</blockquote>
+</li>
+<li class="lvl-2">
+<p><strong>分叉攻击 forking attack</strong> ：</p>
+<p><img src="C:%5CUsers%5CTAO1st%5CDesktop%5C%E5%8C%BA%E5%9D%97%E9%93%BE%5Cpic%5C3.png" srcset="/img/loading.gif" lazyload alt="3"></p>
+<ul class="lvl-2">
+<li class="lvl-4">
+<p><strong>回滚</strong>：往区块链<strong>中间位置</strong>插入区块，来回滚某个<strong>已经发生了的交易</strong>。</p>
+<blockquote>
+<p>例：图中的A–&gt;A’的区块，此处A先把钱转给了B,又把钱转给了自己A’，这个交易<strong>无法验证出双花</strong>，因为<strong>检验双花攻击</strong>是检查<strong>从当前区块到币的来源之间，中间的区块是否有花过这些币</strong>。所以此处A–&gt;A’是想把A–&gt;B的交易回滚掉，把钱再转给自己。</p>
+</blockquote>
+<p>插入区块来回滚会导致区块链分叉，这就是<strong>分叉攻击</strong>。</p>
+</li>
+<li class="lvl-4">
+<p><strong>最长合法链 Longest Valid Chain</strong>:</p>
+<p>回滚导致了区块链分叉，且无法检验出双花。于是比特币系统中引入了<strong>最长合法链</strong>，即只有最长的分叉链才是合法的，所以从中间插入区块试图回滚尽管验证不出双花，但若其不在最长合法链中也只是无效的区块。</p>
+</li>
+<li class="lvl-4">
+<p><strong>同时发布区块</strong>造成的<strong>分叉</strong>:</p>
+<p>有两个节点<strong>同时获得记账权</strong>，即同时找到了符合要求的nonce并发布区块，此时会导致两个位于链表结尾的<strong>等长的分叉</strong>。两个分叉都是最长的合法链。等长的情况会持续一小段时间，直至某个区块胜出，即有继续扩展的区块从而变成了唯一的最长链。而败者就会被丢弃，称其为<strong>orphan block</strong>。如果orphan block里是coinbase tx，得到的Bitcoin是无效的。</p>
+<blockquote>
+<p>比特币系统的协议在缺省/默认情况下，每个协议接受<strong>最早</strong>收到的区块。不同的区块根据网络等环境不同，可能接收顺序不同。<br>
+<strong>implicit consent</strong> 沿着最新区块往下继续扩展就说明<strong>默许</strong>了该区块。</p>
+</blockquote>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="6-比特币中的激励机制">6 比特币中的激励机制</h3>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>为何节点要争夺记账权：比特币的<strong>激励机制</strong></p>
+<p><strong>出块奖励 Block Reward</strong>：获得记账权的节点，在发布的区块中可以有一种特殊的交易，即<strong>铸币交易</strong>（<strong>Coinbase transaction</strong>）。在该交易中可以发布一定数量的比特币。这是<strong>发行新的比特币</strong>的<strong>唯一方法</strong>。</p>
+<blockquote>
+<p>比特币系统设计规定：一开始每个区块可以发布的比特币数量为<strong>50BTC</strong>，每<strong>21W</strong>后减半，目前为<strong>12.5BTC</strong>。</p>
+</blockquote>
+</li>
+</ul>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Blockchain/" class="category-chain-item">Blockchain</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+</div>
+
+
+              
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2021/04/22/5%20BTC-%E7%B3%BB%E7%BB%9F%E5%AE%9E%E7%8E%B0/" title="Blockchain: 5 System Realization">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Blockchain: 5 System Realization</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2021/04/08/3%20BTC-Data%20Structure/" title="Blockchain: 3 Data Structure">
+                        <span class="hidden-mobile">Blockchain: 3 Data Structure</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>2022</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>TAO1st</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      headingSelector : CONFIG.toc.headingSelector || 'h1,h2,h3,h4,h5,h6',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      collapseDepth   : CONFIG.toc.collapseDepth || 0,
+      scrollSmooth    : true,
+      headingsOffset  : -boardTop
+    });
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.10/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.1/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

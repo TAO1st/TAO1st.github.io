@@ -16,22 +16,22 @@
   <meta name="author" content="tao1st">
   <meta name="keywords" content="">
   
-    <meta name="description" content="数组 Array 一维   448 Find All Numbers Disappeared in an Array 找到所有数组中消失的数字 (Easy) 题目要求空间上原地完成。结合数组大小为 $n$ 的信息，使用原地哈希。   769 Max Chunks To Make Sorted 最多能完成排序的块 (Medium) 见[单调栈](###单调栈 Monotone Stack)部分">
+    <meta name="description" content="数组 Array 一维   448 Find All Numbers Disappeared in an Array 找到所有数组中消失的数字 (Easy, I) 题目要求空间上原地完成。结合数组大小为 $n$ 的信息，使用原地哈希。   769 Max Chunks To Make Sorted 最多能完成排序的块 (Medium) 见[单调栈](###单调栈 Monotone Stack)部分">
 <meta property="og:type" content="article">
 <meta property="og:title" content="数组 Array">
 <meta property="og:url" content="https://tao1st.github.io/2023/03/09/%E6%95%B0%E7%BB%84-Array/index.html">
 <meta property="og:site_name" content="tao1st.github.io">
-<meta property="og:description" content="数组 Array 一维   448 Find All Numbers Disappeared in an Array 找到所有数组中消失的数字 (Easy) 题目要求空间上原地完成。结合数组大小为 $n$ 的信息，使用原地哈希。   769 Max Chunks To Make Sorted 最多能完成排序的块 (Medium) 见[单调栈](###单调栈 Monotone Stack)部分">
+<meta property="og:description" content="数组 Array 一维   448 Find All Numbers Disappeared in an Array 找到所有数组中消失的数字 (Easy, I) 题目要求空间上原地完成。结合数组大小为 $n$ 的信息，使用原地哈希。   769 Max Chunks To Make Sorted 最多能完成排序的块 (Medium) 见[单调栈](###单调栈 Monotone Stack)部分">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://gcore.jsdelivr.net/gh/TAO1st/pics@master/202204061409369.png">
-<meta property="og:image" content="https://gcore.jsdelivr.net/gh/TAO1st/pics@master/202204061102316.png">
-<meta property="og:image" content="https://gcore.jsdelivr.net/gh/TAO1st/pics@master/202204061102867.png">
+<meta property="og:image" content="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303131450904.png">
+<meta property="og:image" content="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303131450604.png">
+<meta property="og:image" content="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303131451703.png">
 <meta property="article:published_time" content="2023-03-09T14:46:39.000Z">
-<meta property="article:modified_time" content="2023-03-09T15:10:36.838Z">
+<meta property="article:modified_time" content="2023-03-15T03:42:00.661Z">
 <meta property="article:author" content="tao1st">
 <meta property="article:tag" content="数组">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://gcore.jsdelivr.net/gh/TAO1st/pics@master/202204061409369.png">
+<meta name="twitter:image" content="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303131450904.png">
   
   
   
@@ -211,7 +211,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          1k 字
+          1.4k 字
         
       </span>
     
@@ -222,7 +222,7 @@
         
         
         
-          9 分钟
+          13 分钟
         
       </span>
     
@@ -269,7 +269,7 @@
 <h2 id="一维">一维</h2>
 <ul class="lvl-0">
 <li class="lvl-2">
-<p>448 Find All Numbers Disappeared in an Array 找到所有数组中消失的数字 (Easy)</p>
+<p>448 Find All Numbers Disappeared in an Array 找到所有数组中消失的数字 (Easy, I)</p>
 <p>题目要求空间上原地完成。结合数组大小为 $n$ 的信息，使用<b>原地哈希</b>。</p>
 </li>
 <li class="lvl-2">
@@ -277,52 +277,19 @@
 <p>见[单调栈](###单调栈 Monotone Stack)部分</p>
 </li>
 </ul>
-<h2 id="矩阵-2">矩阵</h2>
-<blockquote>
-<p>即二维数组。</p>
-</blockquote>
+<h2 id="矩阵">矩阵</h2>
+<p>矩阵其实就是二维数组。</p>
 <ul class="lvl-0">
 <li class="lvl-2">
-<p><strong>48 Rotate Image 旋转图像 (Medium)</strong></p>
-<p>纯矩阵坐标转换数学题。</p>
-<p>解法一：</p>
-<ol>
-<li class="lvl-5">
-<p>坐标转换公式：规律为第一行 变 倒数第一列，第二行 变 倒数第二列，依次类推。即从原坐标$(x,y)$到新坐标$(x’,y’)$的变换公式为：</p>
-<p>$$<br>
-x’ = y \ y’ = n - 1 -x<br>
-$$<br>
-每次进行四次翻转，根据上述坐标翻转公式计算新的位置坐标：</p>
-<img src="https://gcore.jsdelivr.net/gh/TAO1st/pics@master/202204061409369.png" srcset="/img/loading.gif" lazyload style="zoom:50%;" />
-$$
-\left\{ \begin{array}{ll}
-temp&= &matrix[y][n - 1 - x] \\
-matrix[y][n-1-x] &= &matrix[x][y] \\
-matrix[x][y] &= &matrix[n - 1 - y][x] \\
-matrix[n - 1 - y][x] &= &matrix[n - 1 - x][n - 1 -y]\\
-matrix[n - 1-x][n - 1 -y] &= &matrix[y][n - 1 - x]
-\end{array}\right.
-$$
-四个值为一组组成一次循环，用一个中间变量来防止覆盖即可，从环路的哪一处开始结果都是一样的。
-</li>
-<li class="lvl-5">
-<p>确定翻转的范围，分为 $n$ 为奇数和 $n$ 为偶数两种情况。</p>
-<img src="https://gcore.jsdelivr.net/gh/TAO1st/pics@master/202204061102316.png" srcset="/img/loading.gif" lazyload style="zoom: 25%;" />
-<img src="https://gcore.jsdelivr.net/gh/TAO1st/pics@master/202204061102867.png" srcset="/img/loading.gif" lazyload style="zoom:25%;" />
-</li>
-</ol>
-<p>解法二：先水平翻转，再按照对角线翻转，即可得结果。</p>
-</li>
-<li class="lvl-2">
-<p>240 Search in a Matrix II 搜索二维矩阵 II (Medium)</p>
+<p><strong>240 Search in a Matrix II 搜索二维矩阵 II (Medium, I)</strong></p>
 <ul class="lvl-2">
 <li class="lvl-4">
 <p>解法一：逐行搜索，对列进行二分。</p>
 <p>二分可以直接使用库函数<code>lower_bound(v.begin(), v.end(), target)</code>，也可以手写二分。</p>
-<p>复杂度从$O(mn)$降至$O(mlogn)$。</p>
+<p>复杂度从$O(mn)$降至$O(mlogn)$。速度不够优秀。</p>
 </li>
 <li class="lvl-4">
-<p>解法二：利用矩阵的特性，从<strong>右上</strong>开始搜索。即当前元素的右侧以及上侧的元素均为扫描过的元素。</p>
+<p><strong>解法二</strong>：利用矩阵的特性，从<strong>右上</strong>开始搜索。即当前元素的右侧以及上侧的元素均为扫描过的元素。</p>
 <ul class="lvl-4">
 <li class="lvl-6">
 <p>如果当前元素比目标元素小，则当前行可以排除，因为当前行前面（左侧）的元素都只会更小；</p>
@@ -335,8 +302,64 @@ $$
 </li>
 </ul>
 </li>
+</ul>
+<h4 id="矩阵的对称与翻转">矩阵的对称与翻转</h4>
+<ul class="lvl-0">
 <li class="lvl-2">
-<p>566 Reshape the Matrix 重塑矩阵 (Easy)</p>
+<p><strong>48 Rotate Image 旋转图像 (Medium, I)</strong></p>
+<p>纯矩阵坐标转换数学题。既然原地转换，显然应该立马去找规律，总结转换公式。</p>
+<p>解法一：</p>
+<ol>
+<li class="lvl-5">
+<p>坐标转换公式：规律为第一行 变 倒数第一列，第二行 变 倒数第二列，依次类推。即从原坐标$(x,y)$到新坐标$(x’,y’)$的变换公式为：<br>
+$$<br>
+x’ = y \ y’ = n - 1 -x<br>
+$$<br>
+每次进行四次翻转，根据上述坐标翻转公式计算新的位置坐标：</p>
+<img src="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303131450904.png" srcset="/img/loading.gif" lazyload alt="image-20230313145043793" style="zoom:50%;" />
+<p>$$<br>
+\left{ \begin{array}{ll}<br>
+temp&amp;= &amp;matrix[y][n - 1 - x] \<br>
+matrix[y][n-1-x] &amp;= &amp;matrix[x][y] \<br>
+<input type="checkbox" id="checkbox15" checked="true"><label for="checkbox15">\</label><br>
+<input type="checkbox" id="checkbox14" checked="true"><label for="checkbox14">&amp;= &amp;matrix[n - 1 - x][n - 1 -y]\</label><br>
+matrix[n - 1-x][n - 1 -y] &amp;= &amp;temp<br>
+\end{array}\right.<br>
+$$<br>
+四个值为一组组成一次循环，用一个中间变量来防止覆盖即可，从环路的哪一处开始结果都是一样的。</p>
+</li>
+</ol>
+</li>
+</ul>
+<ol start="2">
+<li class="lvl-3">
+<p>确定翻转的范围，分为 $n$ 为奇数和 $n$ 为偶数两种情况。</p>
+<img src="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303131450604.png" srcset="/img/loading.gif" lazyload alt="image-20230313145057523" style="zoom:25%;" />
+<img src="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303131451703.png" srcset="/img/loading.gif" lazyload alt="image-20230313145113616" style="zoom:25%;" />
+</li>
+</ol>
+<p>解法二：先上下对称翻转，再按照主对角线翻转，即可得结果。</p>
+<p>对于矩阵各种对称与转换，可以总结如下：</p>
+<ul class="lvl-0">
+<li class="lvl-4">
+<p>上下对称 / 列坐标保持不变：$(i, j) \rightarrow (n - 1 - i, j)$</p>
+</li>
+<li class="lvl-4">
+<p>左右对称 / 行坐标保持不变：$(i, j) \rightarrow (i, n - 1 - j)$</p>
+</li>
+<li class="lvl-4">
+<p>主对角线对称 / 行列互换：$(i, j) \rightarrow (j , i)$</p>
+</li>
+<li class="lvl-5">
+<p>副对角线对称 / 行列互换，且值均变换：$(i, j ) \rightarrow (n - 1 - j, n - 1 - i)$；</p>
+</li>
+</ul>
+<p>那么，对于不同的翻转与对称，我们可以通过这四种转换方式叠加而得。比如题目是顺时针旋转90°，推导出转换公式为$(i, j) \rightarrow (j, n - 1 - i)$，相当于列坐标不变 + 行列互换，即上下对称 + 主对角线对称（顺序不能变）。</p>
+<h4 id="Flatten">Flatten</h4>
+<p>将二维数组“扁平化”，映射到一个一维数组上。对于一个 $n * m$ 的矩阵中的坐标$(x, y)$，对于映射后一维数组上的坐标 $ptr$，有：<code>x = ptr / m, y = ptr % m</code>；</p>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>566 Reshape the Matrix 重塑矩阵 (Easy, I)</p>
 <p>普通的二维数组模拟题，一个可以使用的小技巧是 $flatten$ 操作，即将二维数组的坐标映射到一个一维数组上。</p>
 </li>
 </ul>
@@ -407,8 +430,8 @@ $$
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2023/03/04/ELF/" title="Executable and Linkable Format - ELF">
-                        <span class="hidden-mobile">Executable and Linkable Format - ELF</span>
+                      <a href="/2023/02/25/Makefile/" title="Makefile">
+                        <span class="hidden-mobile">Makefile</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>

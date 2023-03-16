@@ -16,17 +16,17 @@
   <meta name="author" content="tao1st">
   <meta name="keywords" content="">
   
-    <meta name="description" content="单调栈 Monotone Stack  单调栈的定义与特点非常简单，即栈内元素呈递增&#x2F;递减的趋势。以从底到顶递减为例，当元素入栈时：  若当前插入元素小于栈顶元素，则直接入栈； 若当前插入元素大于栈顶元素，则将栈顶元素弹出，直至 栈顶元素大于待插入元素 或 栈空 为止，然后再进行入栈操作。  单调栈通常用于解决【在线性时间复杂度内寻找相邻的下一个最大&#x2F;最小元素】问题。    739 每日温度 Da">
+    <meta name="description" content="单调栈 Monotone Stack  单调栈的定义与特点非常简单，即栈内元素呈递增&#x2F;递减的趋势。以从底到顶递减为例，当元素入栈时：  若当前插入元素小于栈顶元素，则直接入栈； 若当前插入元素大于栈顶元素，则将栈顶元素弹出，直至 栈顶元素大于待插入元素 或 栈空 为止，然后再进行入栈操作。  单调栈通常用于解决【在线性时间复杂度内寻找数组中每一个元素的下一个最大&#x2F;最小元素】问题。    739 每">
 <meta property="og:type" content="article">
 <meta property="og:title" content="单调栈 Monotone Stack">
 <meta property="og:url" content="https://tao1st.github.io/2022/08/22/%E5%8D%95%E8%B0%83%E6%A0%88-Monotone-Stack/index.html">
 <meta property="og:site_name" content="tao1st.github.io">
-<meta property="og:description" content="单调栈 Monotone Stack  单调栈的定义与特点非常简单，即栈内元素呈递增&#x2F;递减的趋势。以从底到顶递减为例，当元素入栈时：  若当前插入元素小于栈顶元素，则直接入栈； 若当前插入元素大于栈顶元素，则将栈顶元素弹出，直至 栈顶元素大于待插入元素 或 栈空 为止，然后再进行入栈操作。  单调栈通常用于解决【在线性时间复杂度内寻找相邻的下一个最大&#x2F;最小元素】问题。    739 每日温度 Da">
+<meta property="og:description" content="单调栈 Monotone Stack  单调栈的定义与特点非常简单，即栈内元素呈递增&#x2F;递减的趋势。以从底到顶递减为例，当元素入栈时：  若当前插入元素小于栈顶元素，则直接入栈； 若当前插入元素大于栈顶元素，则将栈顶元素弹出，直至 栈顶元素大于待插入元素 或 栈空 为止，然后再进行入栈操作。  单调栈通常用于解决【在线性时间复杂度内寻找数组中每一个元素的下一个最大&#x2F;最小元素】问题。    739 每">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/pics-master/202204211941410.png">
 <meta property="og:image" content="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/pics-master/202206161502854.png">
 <meta property="article:published_time" content="2022-08-22T09:08:46.000Z">
-<meta property="article:modified_time" content="2023-03-09T14:47:40.154Z">
+<meta property="article:modified_time" content="2023-03-14T11:19:55.389Z">
 <meta property="article:author" content="tao1st">
 <meta property="article:tag" content="单调栈（Monotone Stack）">
 <meta name="twitter:card" content="summary_large_image">
@@ -271,11 +271,11 @@
 <li class="lvl-2">若当前插入元素小于栈顶元素，则直接入栈；</li>
 <li class="lvl-2">若当前插入元素大于栈顶元素，则将栈顶元素弹出，直至 栈顶元素大于待插入元素 或 栈空 为止，然后再进行入栈操作。</li>
 </ul>
-<p>单调栈通常用于解决【在<strong>线性时间复杂度</strong>内寻找<strong>相邻的下一个最大/最小元素</strong>】问题。</p>
+<p>单调栈通常用于解决【在<strong>线性时间复杂度</strong>内寻找数组中<strong>每一个元素</strong>的<strong>下一个最大/最小元素</strong>】问题。</p>
 </blockquote>
 <ul class="lvl-0">
 <li class="lvl-2">
-<p>739 每日温度 Daily Temperatures (Medium)</p>
+<p>739 每日温度 Daily Temperatures (Medium, I)</p>
 <p>很直白的，寻找数组中下一个更大的元素$^{[1]}$ ，并求解其和本身的下标差 $^{[2]}$。</p>
 <ol>
 <li class="lvl-5">
@@ -290,7 +290,7 @@
 </ol>
 </li>
 <li class="lvl-2">
-<p><em>42 Trapping Rain Water 接雨水 (Hard)</em></p>
+<p><em>42 Trapping Rain Water 接雨水 (Hard, I)</em></p>
 <p>首先思考朴素暴力解法：对每一个位置，寻找其左侧与右侧的最高点，取二者中的较小者减去当前位置的高度即为此处能接的雨水。如果该值小于当前高度，则此处无法接住雨水。</p>
 <ol>
 <li class="lvl-5">
@@ -475,16 +475,16 @@
 <p><em>相似题目</em>：</p>
 <ul class="lvl-0">
 <li class="lvl-4">
-<p><input type="checkbox" id="checkbox5" checked="true"><label for="checkbox5">907 子数组的最小值之和</label></p>
+<p><input type="checkbox" id="checkbox10" checked="true"><label for="checkbox10">907 子数组的最小值之和</label></p>
 </li>
 <li class="lvl-4">
-<p><input type="checkbox" id="checkbox6"><label for="checkbox6">1508 子数组和排序后的区间和</label></p>
+<p><input type="checkbox" id="checkbox11"><label for="checkbox11">1508 子数组和排序后的区间和</label></p>
 </li>
 <li class="lvl-4">
-<p><input type="checkbox" id="checkbox7"><label for="checkbox7">1856 子数组最小乘积的最大值</label></p>
+<p><input type="checkbox" id="checkbox12"><label for="checkbox12">1856 子数组最小乘积的最大值</label></p>
 </li>
 <li class="lvl-4">
-<p><input type="checkbox" id="checkbox8"><label for="checkbox8">2104 子数组范围和</label></p>
+<p><input type="checkbox" id="checkbox13"><label for="checkbox13">2104 子数组范围和</label></p>
 </li>
 </ul>
 

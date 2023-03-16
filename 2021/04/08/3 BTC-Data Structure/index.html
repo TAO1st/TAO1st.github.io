@@ -16,21 +16,23 @@
   <meta name="author" content="tao1st">
   <meta name="keywords" content="">
   
-    <meta name="description" content="ELF文件格式 ELF 格式详解_elf格式_shanandqiu的博客-CSDN博客 ELF文件格式简介 — 见过最细致的ELF讲解 - 易先讯 - 博客园 (cnblogs.com)">
+    <meta name="description" content="3 Data Structure 区块中的数据结构 1 Hash Pointers 哈希指针  hash pointer保存了1-区块的地址和2-hash value哈希值。 实际上Hash仅针对block header取。 不仅能找到区块的位置，还能验证内容是否被篡改。    区块链基本组成：  Block chain is a linked list using hash pointers.">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Executable and Linkable Format - ELF">
-<meta property="og:url" content="https://tao1st.github.io/2023/03/04/ELF/index.html">
+<meta property="og:title" content="Blockchain: 3 Data Structure">
+<meta property="og:url" content="https://tao1st.github.io/2021/04/08/3%20BTC-Data%20Structure/index.html">
 <meta property="og:site_name" content="tao1st.github.io">
-<meta property="og:description" content="ELF文件格式 ELF 格式详解_elf格式_shanandqiu的博客-CSDN博客 ELF文件格式简介 — 见过最细致的ELF讲解 - 易先讯 - 博客园 (cnblogs.com)">
+<meta property="og:description" content="3 Data Structure 区块中的数据结构 1 Hash Pointers 哈希指针  hash pointer保存了1-区块的地址和2-hash value哈希值。 实际上Hash仅针对block header取。 不仅能找到区块的位置，还能验证内容是否被篡改。    区块链基本组成：  Block chain is a linked list using hash pointers.">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2023-03-04T08:03:15.000Z">
-<meta property="article:modified_time" content="2023-03-08T08:08:56.503Z">
+<meta property="og:image" content="c:%5CUsers%5CTAO1st%5CDesktop%5C%E5%8C%BA%E5%9D%97%E9%93%BE%5Cpic%5C0.png">
+<meta property="article:published_time" content="2021-04-08T05:17:32.000Z">
+<meta property="article:modified_time" content="2023-03-16T07:09:55.667Z">
 <meta property="article:author" content="tao1st">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="c:%5CUsers%5CTAO1st%5CDesktop%5C%E5%8C%BA%E5%9D%97%E9%93%BE%5Cpic%5C0.png">
   
   
   
-  <title>Executable and Linkable Format - ELF - tao1st.github.io</title>
+  <title>Blockchain: 3 Data Structure - tao1st.github.io</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -183,7 +185,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="Executable and Linkable Format - ELF"></span>
+            <span id="subtitle" data-typed-text="Blockchain: 3 Data Structure"></span>
           
         </div>
 
@@ -194,8 +196,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2023-03-04 16:03" pubdate>
-          2023年3月4日 下午
+        <time datetime="2021-04-08 13:17" pubdate>
+          2021年4月8日 下午
         </time>
       </span>
     
@@ -206,7 +208,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          83 字
+          1.6k 字
         
       </span>
     
@@ -217,7 +219,7 @@
         
         
         
-          1 分钟
+          13 分钟
         
       </span>
     
@@ -255,14 +257,142 @@
         <div id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">Executable and Linkable Format - ELF</h1>
+            <h1 style="display: none">Blockchain: 3 Data Structure</h1>
             
             
               <div class="markdown-body">
                 
-                <h1>ELF文件格式</h1>
-<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/shanandqiu/article/details/115206426">ELF 格式详解_elf格式_shanandqiu的博客-CSDN博客</a></p>
-<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/gongxianjin/p/16906719.html">ELF文件格式简介 — 见过最细致的ELF讲解 - 易先讯 - 博客园 (cnblogs.com)</a></p>
+                <h1>3 Data Structure 区块中的数据结构</h1>
+<h3 id="1-Hash-Pointers-哈希指针"><strong>1 Hash Pointers</strong> 哈希指针</h3>
+<blockquote>
+<p>hash pointer保存了1-<u>区块的地址</u>和2-<u>hash value哈希值</u>。</p>
+<p>实际上Hash仅针对<em><strong>block header</strong></em>取。</p>
+<p>不仅能找到区块的位置，还能验证内容是否被篡改。</p>
+</blockquote>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>区块链基本组成：</p>
+<blockquote>
+<p>Block chain is a <em><strong>linked list</strong></em> using <em><strong>hash pointers</strong></em>.</p>
+<p><em>区块链就是使用哈希指针的链表。</em></p>
+</blockquote>
+<ul class="lvl-2">
+<li class="lvl-4">
+<p>genesis block <strong>创世区块</strong></p>
+</li>
+<li class="lvl-4">
+<p>most recent block</p>
+</li>
+<li class="lvl-4">
+<p>tamper-evident log : 不论哪个部位改动，都会顺着链表的逆向影响most recent block的hash value</p>
+<p>类似多米诺骨牌的效应，无需保存所有区块的信息，只需保存近期的一部分hash value即可确认链中是否出现了篡改</p>
+</li>
+</ul>
+</li>
+<li class="lvl-2">
+<p>区块内容：</p>
+<ul class="lvl-2">
+<li class="lvl-4">
+<p><strong>块头 block header</strong></p>
+<ul class="lvl-4">
+<li class="lvl-6">
+<p><strong>root hash</strong>： mekle tree的根哈希</p>
+</li>
+<li class="lvl-6">
+<p><strong>version</strong>： 协议的版本号</p>
+</li>
+<li class="lvl-6">
+<p><strong>hash of previous block header</strong>  指向的前一区块的hash指针</p>
+<blockquote>
+<p>只需要计算前一块block header的hash即可，root hash可用于证明block body内容不被篡改，所以只记录block header就可保证整个区块内容未被篡改。</p>
+</blockquote>
+</li>
+<li class="lvl-6">
+<p><strong>nonce</strong>：随机数</p>
+</li>
+<li class="lvl-6">
+<p><strong>target</strong>/<strong>nBits</strong> ：挖矿的难度目标阈值</p>
+</li>
+<li class="lvl-6">
+<p>时间戳</p>
+</li>
+</ul>
+</li>
+<li class="lvl-4">
+<p><strong>块身 block body</strong></p>
+<ul class="lvl-4">
+<li class="lvl-6">transaction list：区块内所有信息/交易列表</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="lvl-2">
+<p>区块分类:</p>
+<ul class="lvl-2">
+<li class="lvl-4">
+<p><strong>全节点 full node</strong>（fully validating node）：拥有所有的交易信息。<strong>block body</strong> + <strong>block header</strong></p>
+<blockquote>
+<p>全节点是是拥有<strong>完整区块链账本</strong>的节点，全节点需要占用内存同步所有的区块链数据，能够独立校验区块链上的所有交易并实时更新数据，主要负责区块链的交易的广播和<strong>验证</strong>。</p>
+</blockquote>
+</li>
+<li class="lvl-4">
+<p><strong>轻节点 light node</strong>：仅保留<strong>block header</strong>，即***没有merkle tree的具体内容。</p>
+<blockquote>
+<p>轻节点是没有区块链账本的节点。比如，手机比特币钱包客户端就是一个轻节点，其没有必要去保存所有的账本。无法独立验证交易的合法性。</p>
+<p>系统中大多节点都是轻节点。</p>
+</blockquote>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="2-Merkle-Tree-默克尔树">2 Merkle Tree 默克尔树</h3>
+<blockquote>
+<p>区块链中以二叉树/默克尔树的数据结构来组织交易记录。</p>
+</blockquote>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>区块中存放了root hash，merkle tree保证<strong>只需检查root hash就能检测出该树下的任何数据的篡改</strong>。</p>
+<blockquote>
+<p>若某一data block被篡改，其父节点中存放的hash value就会改变，从而影响其父节点的父节点中的hash，依此向上改变root hash的值。</p>
+</blockquote>
+</li>
+<li class="lvl-2">
+<p><strong>Merkle proof</strong>：轻节点如何确认交易的发生？Merkle Tree就用于提供Merkle Proof，这种交易记录的存储组织方式能够实现更小级别的复杂度。</p>
+<ul class="lvl-2">
+<li class="lvl-4">
+<p><strong>proof of membership</strong>/inclusion</p>
+<ul class="lvl-4">
+<li class="lvl-6"><em><strong>见图</strong></em>：向全节点请求图中所有红色的hash value，通过tx自己计算绿色的hash value，一层一层向上，对比最终计算出的root hash是否正确。</li>
+<li class="lvl-6">根据collision resistance，全节点若为<strong>恶意节点</strong>试图提供虚假的hash值，无法伪造出能够计算出正确的root hash的值，即无法人为制造哈希碰撞。</li>
+<li class="lvl-6">时间/空间复杂度：均为 $O(logn)$，仅需从下至上一条路线，复杂度为二叉树树高。</li>
+</ul>
+</li>
+<li class="lvl-4">
+<p><strong>proof of</strong> <strong>non-membership</strong>/exclusion</p>
+<blockquote>
+<p>Bitcoins中一般没有这种需求。</p>
+</blockquote>
+<ul class="lvl-4">
+<li class="lvl-6">
+<p>方法1：遍历整棵树，查找是否有该tx。</p>
+<p>时间复杂度为$O(n)$。</p>
+</li>
+<li class="lvl-6">
+<p>方法2：对data blocks求hash value，并按其值进行排列。（二分法）</p>
+<blockquote>
+<p><strong>sorted merkle tree</strong></p>
+<p>找到欲求的tx大小前后的两个tx，自底向上计算hash value，若最终和root hash一致，证明这两个tx是相邻的，不存在欲求tx。</p>
+</blockquote>
+</li>
+<li class="lvl-6">
+<p>时间复杂度为$O(logn)$。</p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p><img src="C:%5CUsers%5CTAO1st%5CDesktop%5C%E5%8C%BA%E5%9D%97%E9%93%BE%5Cpic%5C0.png" srcset="/img/loading.gif" lazyload alt="0"></p>
 
                 
               </div>
@@ -281,7 +411,7 @@
     
       <span class="category-chain">
         
-  <a href="/categories/Linux/" class="category-chain-item">Linux</a>
+  <a href="/categories/Blockchain/" class="category-chain-item">Blockchain</a>
   
   
 
@@ -303,9 +433,9 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2023/03/09/%E6%95%B0%E7%BB%84-Array/" title="数组 Array">
+                      <a href="/2021/04/12/4%20BTC-Consensus%20Protocols/" title="Blockchain: 4 Consensus Protocols">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">数组 Array</span>
+                        <span class="hidden-mobile">Blockchain: 4 Consensus Protocols</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
@@ -313,8 +443,8 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2023/02/25/Makefile/" title="Makefile">
-                        <span class="hidden-mobile">Makefile</span>
+                      <a href="/2021/04/07/2%20BTC-Cryptography/" title="Blockchain: 2 Cryptography">
+                        <span class="hidden-mobile">Blockchain: 2 Cryptography</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>

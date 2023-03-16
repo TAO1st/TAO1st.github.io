@@ -265,9 +265,9 @@
             
               <div class="markdown-body">
                 
-                <h2 id="Floating-Point-2">Floating Point</h2>
+                <h2 id="Floating-Point">Floating Point</h2>
 <blockquote>
-<h4 id="基本二进制表示与IEEE-754标准-2">基本二进制表示与IEEE 754标准</h4>
+<h4 id="基本二进制表示与IEEE-754标准">基本二进制表示与IEEE 754标准</h4>
 <p>Fractional Binary Numbers ：小数部分分数表示</p>
 <ul class="lvl-1">
 <li class="lvl-2">
@@ -289,18 +289,18 @@
 </li>
 </ul>
 </blockquote>
-<h3 id="组成-2">组成</h3>
+<h3 id="组成">组成</h3>
 <p>IEEE 754标准由三部分组成，长度分布如图所示。</p>
 <p><img src="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/pics-master/20211210152223.png" srcset="/img/loading.gif" lazyload alt=""></p>
 <blockquote>
 <p>区分数值（Numerical Form）与编码（Encoding）</p>
 </blockquote>
-<h4 id="1-Sign-标志位-2">1 Sign 标志位</h4>
+<h4 id="1-Sign-标志位">1 Sign 标志位</h4>
 <blockquote>
 <p>MSB $s$ is sign bit s.</p>
 </blockquote>
 <p>一位的正负标志位，没什么可说的。</p>
-<h4 id="2-Significand-尾数-2">2 Significand 尾数</h4>
+<h4 id="2-Significand-尾数">2 Significand 尾数</h4>
 <blockquote>
 <p>$frac$ field encodes Significand M (but is not equal to M)</p>
 </blockquote>
@@ -312,7 +312,7 @@
 <p>前面有<strong>隐含1</strong>，即位数M的值为 <strong>$1.frac$</strong></p>
 </li>
 </ul>
-<h4 id="3-Exponent-指数-2">3 Exponent 指数</h4>
+<h4 id="3-Exponent-指数">3 Exponent 指数</h4>
 <blockquote>
 <p>$exp$ field encodes exponent E (but is not equal to E)</p>
 </blockquote>
@@ -326,14 +326,14 @@
 <p>指数<strong>编码</strong>为特殊值如全0和全1有特别含义，见<a href="###%E7%8A%B6%E6%80%81">状态部分</a>。</p>
 </li>
 </ul>
-<h3 id="状态-2">状态</h3>
+<h3 id="状态">状态</h3>
 <p>根据**指数域（exp）**的不同来划分为三种状态，这三种状态对于encoding的解读是不一样的。</p>
-<h4 id="1-Normalized-规格化-2">1 Normalized 规格化</h4>
+<h4 id="1-Normalized-规格化">1 Normalized 规格化</h4>
 <blockquote>
 <p>$exp\neq000\ldots0$ 且 $exp\neq111\ldots1$</p>
 <p>表示正常区间的浮点数。</p>
 </blockquote>
-<h5 id="指数部分-3">指数部分</h5>
+<h5 id="指数部分">指数部分</h5>
 <ul class="lvl-0">
 <li class="lvl-2">
 <p>移码表示，见[指数部分](####Exponent 指数)。</p>
@@ -351,7 +351,7 @@
 </ul>
 </li>
 </ul>
-<h5 id="尾数部分-3">尾数部分</h5>
+<h5 id="尾数部分">尾数部分</h5>
 <ul class="lvl-0">
 <li class="lvl-2">
 <p>前有隐含1，见[尾数部分](####Significand 尾数)。</p>
@@ -364,12 +364,12 @@
 </ul>
 </li>
 </ul>
-<h4 id="2-Denormalized-非规格化-2">2 Denormalized 非规格化</h4>
+<h4 id="2-Denormalized-非规格化">2 Denormalized 非规格化</h4>
 <blockquote>
 <p>$exp = 000\ldots0$ ，即<strong>指数域全0</strong>。</p>
 <p>表示接近0的情况。</p>
 </blockquote>
-<h5 id="指数部分-4">指数部分</h5>
+<h5 id="指数部分-2">指数部分</h5>
 <p>$E=1-bias$ 而非 $0-bias$，即此时指数 $E$ 为固定值：</p>
 <ul class="lvl-0">
 <li class="lvl-2">
@@ -380,7 +380,7 @@
 </li>
 </ul>
 <p>均为指数域最小值，用于表示接近0的实数域，即 $0.xx \times 2^{-126/-1022}$。</p>
-<h5 id="尾数部分-4">尾数部分</h5>
+<h5 id="尾数部分-2">尾数部分</h5>
 <ul class="lvl-0">
 <li class="lvl-2">
 <p>前有<strong>隐含0</strong>（而非隐含1），以用于表示接近0的实数域；</p>
@@ -395,7 +395,7 @@
 <p>$frac \neq000\ldots0$ 表示最接近0的实数域部分，该部分为<strong>等间距的（equispaced）</strong>，关于间距问题详见<a href="####%E9%97%B4%E8%B7%9D">间距部分</a>。</p>
 </li>
 </ul>
-<h4 id="3-Special-特殊值-2">3 Special 特殊值</h4>
+<h4 id="3-Special-特殊值">3 Special 特殊值</h4>
 <blockquote>
 <p>$exp=111\ldots1$，即指数域全1。</p>
 <p>用于表示<strong>无穷大</strong>与<strong>非法值（NaN）</strong>。</p>
@@ -425,16 +425,16 @@
 <p>$frac$ 尾数部分不会为其他值，无意义。</p>
 </li>
 </ul>
-<h3 id="分布-2">分布</h3>
-<h4 id="Visualization-2">Visualization</h4>
+<h3 id="分布">分布</h3>
+<h4 id="Visualization">Visualization</h4>
 <p>通过数轴图来直观地感受IEEE 754在整个实数中的分布及其表示范围</p>
 <p><a target="_blank" rel="noopener" href="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/pics-master/20211210152318.png">https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/pics-master/20211210152318.png</a></p>
 <p><img src="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/pics-master/20211210152318.png" srcset="/img/loading.gif" lazyload alt=""></p>
-<h4 id="间距-2">间距</h4>
+<h4 id="间距">间距</h4>
 <p><img src="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/pics-master/20211210164457.png" srcset="/img/loading.gif" lazyload alt=""></p>
-<h4 id="临界点-2">临界点</h4>
-<h3 id="计算-2">计算</h3>
-<h4 id="Comparison-比较-2">Comparison 比较</h4>
+<h4 id="临界点">临界点</h4>
+<h3 id="计算">计算</h3>
+<h4 id="Comparison-比较">Comparison 比较</h4>
 <blockquote>
 <p>Can (Almost) use unsigned integer comparison</p>
 </blockquote>
@@ -462,7 +462,7 @@
 </ul>
 </li>
 </ul>
-<h4 id="Rounding-舍入-2">Rounding 舍入</h4>
+<h4 id="Rounding-舍入">Rounding 舍入</h4>
 <blockquote>
 <p>Basic idea:</p>
 <ul class="lvl-1">
@@ -511,8 +511,8 @@
 </ul>
 </li>
 </ul>
-<h4 id="Addition-加法-2">Addition 加法</h4>
-<h5 id="1-计算步骤-3">1 计算步骤</h5>
+<h4 id="Addition-加法">Addition 加法</h4>
+<h5 id="1-计算步骤">1 计算步骤</h5>
 <ul class="lvl-0">
 <li class="lvl-2">
 <p>对阶：将指数小的进行左移至二者指数相同后再相加，最终结果的指数跟着指数大的走。</p>
@@ -539,7 +539,7 @@
 </ul>
 </li>
 </ul>
-<h5 id="2-Mathematical-Properties-数学性质-3">2 Mathematical Properties 数学性质</h5>
+<h5 id="2-Mathematical-Properties-数学性质">2 Mathematical Properties 数学性质</h5>
 <ul class="lvl-0">
 <li class="lvl-2">
 <p>Closed under addition 加法封闭</p>
@@ -566,8 +566,8 @@ $$</p>
 <p>除了特殊值情况（无穷大与非法值）之外，均符合单调性。即 $a\geq b\space \Rightarrow a+c \geq b+c $ 。</p>
 </li>
 </ul>
-<h4 id="Multiplication-乘法-2">Multiplication 乘法</h4>
-<h5 id="1-计算步骤-4">1 计算步骤</h5>
+<h4 id="Multiplication-乘法">Multiplication 乘法</h4>
+<h5 id="1-计算步骤-2">1 计算步骤</h5>
 <ul class="lvl-0">
 <li class="lvl-2">
 <p>Exact Result 实际计算值</p>
@@ -592,7 +592,7 @@ $$</p>
 </ul>
 </li>
 </ul>
-<h5 id="2-Mathematical-Properties-数学性质-4">2 Mathematical Properties 数学性质</h5>
+<h5 id="2-Mathematical-Properties-数学性质-2">2 Mathematical Properties 数学性质</h5>
 <ul class="lvl-0">
 <li class="lvl-2">
 <p>Closed under multiplication 乘法封闭</p>
@@ -617,9 +617,9 @@ $$</p>
 <p>除了特殊值情况之外都满足。</p>
 </li>
 </ul>
-<h3 id="C语言中的表示-2">C语言中的表示</h3>
+<h3 id="C语言中的表示">C语言中的表示</h3>
 <p>提供了两种类型，即单精度float与双精度double。</p>
-<h4 id="Conversion-and-casting-类型转换-2">Conversion and casting 类型转换</h4>
+<h4 id="Conversion-and-casting-类型转换">Conversion and casting 类型转换</h4>
 <p>C中要注意的是<strong>不同类型之间的转换</strong>：</p>
 <ul class="lvl-0">
 <li class="lvl-2">
@@ -700,8 +700,8 @@ $$</p>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2023/02/15/15-213-Machine-Level-Representation/" title="15-213: Machine-Level Representation">
-                        <span class="hidden-mobile">15-213: Machine-Level Representation</span>
+                      <a href="/2023/02/14/15-213-bomb_lab/" title="15-213: Bomb Lab">
+                        <span class="hidden-mobile">15-213: Bomb Lab</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>

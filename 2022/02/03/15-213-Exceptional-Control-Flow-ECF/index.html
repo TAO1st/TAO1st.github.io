@@ -1,0 +1,1070 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/avatar.png">
+  <link rel="icon" href="/img/avatar.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#98a5ac">
+  <meta name="author" content="tao1st">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="Exceptional Control Flow 在高级语言的普通控制流基础上，通过系统调用使用操作系统提供的服务，进入异常控制流。关注上层应用与操作系统之间的交互。 首先，作为支撑性的底层机制（low level mechanism），介绍异常机制。其次理解进程与信号的概念（higher level mechanisms），了解运行任务流在操作系统中的模型。 异常 Exception 为了实现应">
+<meta property="og:type" content="article">
+<meta property="og:title" content="15-213: Exceptional Control Flow">
+<meta property="og:url" content="https://tao1st.github.io/2022/02/03/15-213-Exceptional-Control-Flow-ECF/index.html">
+<meta property="og:site_name" content="tao1st.github.io">
+<meta property="og:description" content="Exceptional Control Flow 在高级语言的普通控制流基础上，通过系统调用使用操作系统提供的服务，进入异常控制流。关注上层应用与操作系统之间的交互。 首先，作为支撑性的底层机制（low level mechanism），介绍异常机制。其次理解进程与信号的概念（higher level mechanisms），了解运行任务流在操作系统中的模型。 异常 Exception 为了实现应">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303142146280.png">
+<meta property="og:image" content="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303151155905.png">
+<meta property="og:image" content="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303151155591.png">
+<meta property="og:image" content="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303151736986.png">
+<meta property="og:image" content="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303151830168.png">
+<meta property="og:image" content="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303151831593.png">
+<meta property="og:image" content="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303151833895.png">
+<meta property="og:image" content="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303151833704.png">
+<meta property="og:image" content="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303151846008.png">
+<meta property="og:image" content="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303151858573.png">
+<meta property="og:image" content="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303151959134.png">
+<meta property="og:image" content="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303152020856.png">
+<meta property="og:image" content="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303151930925.png">
+<meta property="og:image" content="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303151931159.png">
+<meta property="og:image" content="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303151931727.png">
+<meta property="og:image" content="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303151932818.png">
+<meta property="og:image" content="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303151932440.png">
+<meta property="og:image" content="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303151933735.png">
+<meta property="og:image" content="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303161118773.png">
+<meta property="og:image" content="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303151933270.png">
+<meta property="og:image" content="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303161119742.png">
+<meta property="og:image" content="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303161118568.png">
+<meta property="og:image" content="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303161118391.png">
+<meta property="og:image" content="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303161119135.png">
+<meta property="article:published_time" content="2022-02-03T13:08:54.000Z">
+<meta property="article:modified_time" content="2023-03-16T06:47:51.425Z">
+<meta property="article:author" content="tao1st">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303142146280.png">
+  
+  
+  
+  <title>15-213: Exceptional Control Flow - tao1st.github.io</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"tao1st.github.io","root":"/","version":"1.9.2","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":3},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.2.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>TAO1st</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/bk.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.5)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="15-213: Exceptional Control Flow"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2022-02-03 21:08" pubdate>
+          2022年2月3日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          8.3k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          70 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">15-213: Exceptional Control Flow</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1>Exceptional Control Flow</h1>
+<p>在高级语言的普通控制流基础上，通过系统调用使用操作系统提供的服务，进入异常控制流。关注上层应用与操作系统之间的交互。</p>
+<p>首先，作为支撑性的底层机制（low level mechanism），介绍异常机制。其次理解进程与信号的概念（higher level mechanisms），了解运行任务流在操作系统中的模型。</p>
+<h2 id="异常-Exception">异常 Exception</h2>
+<p>为了实现应用与操作系统的交互，必须借助<b>异常（exception）</b>机制。其一部分由硬件实现，一部分由操作系统实现。</p>
+<h3 id="概念-Concept">概念 Concept</h3>
+<img src="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303142146280.png" srcset="/img/loading.gif" lazyload alt="image-20230314214609170" style="zoom:50%;" />
+<h4 id="异常-Exception-2">异常 Exception</h4>
+<p>An <strong>exception</strong> is a transfer of control to the OS <i>kernel</i> in response to some <i>event</i>.<br>
+如图所示的一个事件驱动的控制流转换（至内核/操作系统）。</p>
+<h4 id="内核-Kernel">内核 Kernel</h4>
+<p><i>Kernel</i> is the memory-resident part of the OS. 操作系统常驻内存的部分。</p>
+<h4 id="事件-Event">事件 Event</h4>
+<p>The process <i>state</i> is encoded in various bits and signals inside the processor.<br>
+The change in state is known as <i>event</i>.</p>
+<h4 id="异常表与异常处理程序-Exception-Table-and-Exception-Handler">异常表与异常处理程序 Exception Table and Exception Handler</h4>
+<p>系统启动/计算机上电时，操作系统分配和初始化一张叫做<b>异常表（Exception Table）</b>的跳转表。表的第$k$条目对应异常$k$的<b>异常处理程序（Exception handler）</b>地址（的又叫中断向量，interrupt vector）。</p>
+<img src="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303151155905.png" srcset="/img/loading.gif" lazyload alt="image-20230315115524691" style="zoom:33%;" />
+<h4 id="异常地址转换-Generating-Addresses">异常地址转换 Generating Addresses</h4>
+<p>异常表基址寄存器中存储异常表的起始地址。</p>
+<img src="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303151155591.png" srcset="/img/loading.gif" lazyload alt="image-20230315115544517" style="zoom:33%;" />
+<h3 id="处理流程-Handling">处理流程 Handling</h3>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>硬件触发异常</p>
+</li>
+<li class="lvl-2">
+<p>Exception handler</p>
+</li>
+<li class="lvl-2">
+<p>“从中断返回（return from interrupt）”</p>
+</li>
+</ul>
+<h3 id="特点-Features">特点 Features</h3>
+<p>相对于普通过程调用的区别：</p>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>返回地址：过程调用将返回地址压入栈中，执行结束后弹出并返回。异常返回的地址只会是当前指令、下一条、终止这三种可能之一。</p>
+</li>
+<li class="lvl-2">
+<p>保护与恢复现场：处理器也会根据返回后被中断的程序需要来讲一些处理器状态压入栈中保存。</p>
+</li>
+<li class="lvl-2">
+<p>内核栈：控制转到内核态后，使用的都是内核栈而非用户栈。</p>
+</li>
+<li class="lvl-2">
+<p>权限：异常处理程序运行在<b>内核态（kernel mode）</b>，对所有的系统资源都有完全的访问权限。</p>
+</li>
+</ul>
+<h3 id="类别-Classes">类别 Classes</h3>
+<p>四种中断的同步/异步、返回地址见表：</p>
+<p><img src="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303151736986.png" srcset="/img/loading.gif" lazyload alt="image-20230315173650909"></p>
+<h4 id="中断-Interrupt">中断 Interrupt</h4>
+<img src="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303151830168.png" srcset="/img/loading.gif" lazyload alt="image-20230315183051116" style="zoom: 50%;" />
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>触发: 来自外部I/O设备的信号。</p>
+<p>异步意味着不是任何一条专门的指令造成的，而是在正常的执行流中异步的根据外部设备需求来打断原执行流，中断切换至内核态。</p>
+</li>
+<li class="lvl-2">
+<p>执行流程：</p>
+<ul class="lvl-2">
+<li class="lvl-4">外部设备向处理器芯片上的<b>中断引脚（interrupt pin）</b>发送信号，并将指明引起中断设备的异常号送至<b>总线（system bus）</b>；</li>
+<li class="lvl-4">处理器执行完指令后，进入中断周期，检查到中断引脚的电压升高，于是从系统总线读取异常号，跳转到相应的异常处理程序中；</li>
+</ul>
+</li>
+<li class="lvl-2">
+<p>返回：下一条指令。上一条指令已经执行完毕，处理完中断就回归原控制流，仿佛没有发生过中断一样。</p>
+</li>
+</ul>
+<h4 id="陷阱与系统调用-Trap-and-System-Calls">陷阱与系统调用 Trap and System Calls</h4>
+<img src="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303151831593.png" srcset="/img/loading.gif" lazyload alt="image-20230315183109545" style="zoom:50%;" />
+<p>系统调用：在用户程序和内核之间提供了一个类似过程调用的接口，封装了操作系统提供的一系列服务。</p>
+<p><code>syscall</code>主动发起陷入，所以一定返回下一条指令继续执行。</p>
+<h4 id="故障-Fault">故障 Fault</h4>
+<img src="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303151833895.png" srcset="/img/loading.gif" lazyload alt="image-20230315183334844" style="zoom:50%;" />
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>可修复：转换至 fault handler；</p>
+</li>
+<li class="lvl-2">
+<p>不可修复：转换至 abort handler；</p>
+</li>
+</ul>
+<h4 id="终止-Abort">终止 Abort</h4>
+<img src="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303151833704.png" srcset="/img/loading.gif" lazyload alt="image-20230315183351654" style="zoom:50%;" />
+<h3 id="x86-64中的异常">x86-64中的异常</h3>
+<p>异常表共256种：</p>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>0-31：Intel架构师定义，对所有使用x86-64的操作系统都保持一致；</p>
+</li>
+<li class="lvl-2">
+<p>32-255：操作系统定义的中断与陷入。</p>
+</li>
+</ul>
+<img src="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303151846008.png" srcset="/img/loading.gif" lazyload alt="image-20230315184642957" style="zoom:50%;" />
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>Divide error：除0错误。Unix会直接abort，Linux shell将除法错误报告为 <i>Floating exception</i>.</p>
+</li>
+<li class="lvl-2">
+<p>General protection fault: 一般故障错误。最常见的情况是：</p>
+<ul class="lvl-2">
+<li class="lvl-4">引用/读未定义的虚存位置；</li>
+<li class="lvl-4">写一个只读权限的文本段；</li>
+</ul>
+<p>Linux不会尝试修复，直接 abort，并报告为大名鼎鼎的<b>段错误（segmentation fault）</b></p>
+</li>
+<li class="lvl-2">
+<p>Page fault: 缺页异常。</p>
+</li>
+<li class="lvl-2">
+<p>Machine check: 导致故障的指令执行中检测到<b>致命的硬件错误（fatal hardware error）</b>。从不返回，必定结束。</p>
+</li>
+</ul>
+<h3 id="Linux中的系统调用">Linux中的系统调用</h3>
+<p>Linux中提供几百种系统调用，内核中有一个<b>不同于异常表</b>的<b>系统调用跳转表</b>。</p>
+<p><img src="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303151858573.png" srcset="/img/loading.gif" lazyload alt="image-20230315185844509"></p>
+<p>The C standard library provides a set of convenient <i>wrapper functions</i> for most system calls (No need to call <code>syscall</code> directly). The wrapper functions package up the arguments, trap to the kernel with the appropriate system call instruction, and then pass the return status of the system call back to the calling program.</p>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>系统调用号由<code>%rax</code> 传递，返回值也是；</p>
+</li>
+<li class="lvl-2">
+<p>参数由常规的6个寄存器传递；</p>
+</li>
+<li class="lvl-2">
+<p>callee-saved寄存器<code>%rcx</code>和<code>$r11$</code>会被破坏。</p>
+</li>
+<li class="lvl-2">
+<p>返回值如果为 -4095 ~ -1 则说明发生了错误，返回值对应 <code>errno</code>。</p>
+</li>
+</ul>
+<h2 id="进程-Process">进程 Process</h2>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>控制抽象：独占处理器；</p>
+</li>
+<li class="lvl-2">
+<p>存储抽象：独占内存系统，虚拟存储器。</p>
+</li>
+</ul>
+<h3 id="概念-Concept-2">概念 Concept</h3>
+<h4 id="私有地址空间-Private-Address-Space">私有地址空间 Private Address Space</h4>
+<p>又见进程地址空间（已经在运行的可执行文件）：</p>
+<img src="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303151959134.png" srcset="/img/loading.gif" lazyload alt="image-20230315195926064" style="zoom: 50%;" />
+<p>从高到低：</p>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>内核/操作系统常驻部分；</p>
+</li>
+<li class="lvl-2">
+<p>用户栈：</p>
+<ul class="lvl-2">
+<li class="lvl-4">向下增长；</li>
+<li class="lvl-4">主要用于过程调用，存储局部变量、返回地址等信息。由编译器分配管理；</li>
+<li class="lvl-4">可以使用<code>alloca</code>显式申请分配栈空间。</li>
+</ul>
+</li>
+<li class="lvl-2">
+<p>共享库映射区域；</p>
+</li>
+<li class="lvl-2">
+<p>运行时堆。动态申请分配；</p>
+</li>
+<li class="lvl-2">
+<p>从可执行文件中加载的内容：</p>
+<ul class="lvl-2">
+<li class="lvl-4">Read/write data segment:
+<ul class="lvl-4">
+<li class="lvl-6"><code>.data</code>: 已经初始化的全局变量与静态变量；</li>
+<li class="lvl-6"><code>.bss</code>: 未初始化的全局变量与静态变量；</li>
+</ul>
+</li>
+<li class="lvl-4">Read-only code segment:
+<ul class="lvl-4">
+<li class="lvl-6"><code>.text</code>: 代码段</li>
+<li class="lvl-6"><code>.rodata</code>: 只读内容如<code>switch</code>中的跳转表。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="用户模式和内核模式-User-and-Kernel-Modes">用户模式和内核模式  User and Kernel Modes</h4>
+<p>In order for the operating system kernel to provide an airtight process abstraction, the processor must provide a mechanism that restricts the instructions that an application can execute, as well as the portions of the address space that it can access.</p>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>通过<b>修改控制寄存器中的模式位（mode bit）</b>来设置。</p>
+</li>
+<li class="lvl-2">
+<p>用户态：不能执行特权指令（privileged instructions）、不能引用高地址内核区内容。</p>
+<p>内核态：可以执行任何指令，访问任何地址。</p>
+</li>
+<li class="lvl-2">
+<p><code>/proc</code>文件系统：以文件形式提供给用户一些内核数据信息。</p>
+</li>
+</ul>
+<h4 id="进程调度与上下文切换-Scheduling-and-Context-Switch">进程调度与上下文切换 Scheduling and Context Switch</h4>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>上下文切换就是进程调度过程中需要做的内容。</p>
+</li>
+<li class="lvl-2">
+<p>调度由内核中的<b>调度器（Scheduler）</b>处理。调度的时机和原因很多，这里只是简单举例：</p>
+<ul class="lvl-2">
+<li class="lvl-4">
+<p>A进程访问磁盘。磁盘DMA访问过程慢，调度器判断应该切换至B先运行，而不是A空等；</p>
+<p>磁盘读取完成，发出中断信号。调度器判断B已经运行一段时间，且磁盘读取已经结束，就可以切换回A。</p>
+</li>
+<li class="lvl-4">
+<p>时间片轮转。周期性定时的中断进行调度。</p>
+</li>
+<li class="lvl-4">
+<p>…</p>
+</li>
+</ul>
+</li>
+</ul>
+<img src="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303152020856.png" srcset="/img/loading.gif" lazyload alt="image-20230315202029799" style="zoom:50%;" />
+<h3 id="控制-Control-2">控制 Control</h3>
+<blockquote>
+<p>注意对应系统调用的头文件。</p>
+</blockquote>
+<h4 id="错误处理-Error-Handling">错误处理 Error Handling</h4>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p><code>errno</code>: Unix系统级函数遇到错误时，就会返回-1，并设置全局整数变量<code>errno</code>。</p>
+</li>
+<li class="lvl-2">
+<p><code>strerror(errno)</code>: 返回一个文本串，内容为<code>errno</code>相关联的错误信息；</p>
+</li>
+<li class="lvl-2">
+<p>Error-handling Wrappers: 通常在调用系统调用时，我们必须要养成检查返回值的习惯来确定其是否正常执行（<b>系统调用不能忽略错误检查！</b>）。通过编写Wrappers能够使得代码大大简化。见下例：</p>
+</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs C"><span class="hljs-keyword">if</span> ((pid = fork()) &lt; <span class="hljs-number">0</span>) &#123;<br>    <span class="hljs-built_in">fprintf</span>(<span class="hljs-built_in">stderr</span>, <span class="hljs-string">&quot;fork error: %s\n&quot;</span>, strerror(errno));<br>    <span class="hljs-built_in">exit</span>(<span class="hljs-number">0</span>);<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>上述代码的目的是创建新的进程，并检查其是否出现错误。首先我们可以将循环体内部打包为一个简单的函数：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">void</span> <span class="hljs-title function_">unix_error</span><span class="hljs-params">(<span class="hljs-type">char</span>* msg)</span> &#123;<br>    <span class="hljs-built_in">fprintf</span>(<span class="hljs-built_in">stderr</span>, <span class="hljs-string">&quot;%s: %s\n&quot;</span>, msg, sterrror(errno));<br>    <span class="hljs-built_in">exit</span>(<span class="hljs-number">0</span>);<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>则此时可以简化至：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-keyword">if</span> ( (pid = fork()) &lt; <span class="hljs-number">0</span>) &#123;<br>    unix_error(<span class="hljs-string">&quot;fork error&quot;</span>);<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>此时，继续编写Wrapper包装：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">pid_t</span> <span class="hljs-title function_">Fork</span><span class="hljs-params">(<span class="hljs-type">void</span>)</span> &#123;<br>    <span class="hljs-type">pid_t</span> pid;<br>    <span class="hljs-keyword">if</span>( (pid = fork()) &lt; <span class="hljs-number">0</span>) &#123;<br>        unix_error(<span class="hljs-string">&quot;fork error&quot;</span>);<br>    &#125;<br>    <span class="hljs-keyword">return</span> pid;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>至此，对<code>fork()</code>的调用与错误检查合为一体，可以缩减成一行：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c">pid = Fork();<br></code></pre></td></tr></table></figure>
+<blockquote>
+<p>Wrapper名通常都采用首字母大写。如<code>fork()</code> -&gt; <code>Fork()</code>。</p>
+</blockquote>
+<h4 id="获取进程ID-Obtaining-Process-IDs">获取进程ID Obtaining Process IDs</h4>
+<p>每个进程都有一个非负ID，调用如下函数返回其PID。</p>
+<img src="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303151930925.png" srcset="/img/loading.gif" lazyload alt="image-20230315193054867" style="zoom:50%;" />
+<ul class="lvl-0">
+<li class="lvl-2">
+<p><code>pid_t</code>：定义在<code>types.h</code>头文件中，整数值。</p>
+</li>
+<li class="lvl-2">
+<p><code>getppid(void)</code>：get papa pid hahaha</p>
+</li>
+</ul>
+<h4 id="终止-Terminating">终止 Terminating</h4>
+<p>进程状态可以通过三状态模型与五状态模型来描述。这里不深入详细介绍。</p>
+<p>进程终止有三种情况：</p>
+<ol>
+<li class="lvl-3">
+<p>收到特定信号（<code>SIGKILL</code>）；</p>
+</li>
+<li class="lvl-3">
+<p>从主程序返回（执行结束）；</p>
+</li>
+<li class="lvl-3">
+<p>调用<code>exit</code>函数: The <code>exit</code> function terminates the process with an <i>exit status</i> of <code>status</code>.</p>
+</li>
+</ol>
+<img src="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303151931159.png" srcset="/img/loading.gif" lazyload alt="image-20230315193114112" style="zoom:50%;" />
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>Argument: normal return status is 0, nonzero on error.</p>
+</li>
+<li class="lvl-2">
+<p>Called once but never returns.</p>
+</li>
+</ul>
+<h4 id="创建-Creating">创建 Creating</h4>
+<p>Linux中的进程组织为树的形式，进程之间呈现父子关系，通过父进程调用<code>fork()</code>来创建子进程。</p>
+<img src="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303151931727.png" srcset="/img/loading.gif" lazyload alt="image-20230315193121676" style="zoom:50%;" />
+<ul class="lvl-0">
+<li class="lvl-2">
+<p><b>调用一次，返回两次</b>：父进程与子进程各返回一次；</p>
+<ul class="lvl-2">
+<li class="lvl-4">父进程：创建成功时返回子进程PID；</li>
+<li class="lvl-4">子进程：返回0；</li>
+</ul>
+</li>
+<li class="lvl-2">
+<p><b>并发执行</b>：二者异步并发独立运行，且无法预测其执行顺序。绝对不能对不同进程中的指令交替执行顺序做任何假设。</p>
+<p>了解其顺序可以通过<b>画进程图（process graph）</b>的形式来清晰逻辑。图中节点的拓扑序即合理的执行顺序。</p>
+</li>
+<li class="lvl-2">
+<p><b>相同但独立的地址空间（identical but separate）</b>：使用了<b>写时复制</b>（Copy on Write）。</p>
+<p>初始状态下二者的虚拟地址空间一致（只分配了指向对应位置的指针）但各自独立（修改或者写时才创造副本开辟新空间）。任何修改都是相互独立的，不会影响到另一个进程的地址空间。</p>
+</li>
+<li class="lvl-2">
+<p><b>共享文件（shared open files）</b>：子进程继承了父进程的所有<b>打开文件（open files）</b>，即复制了一份一样的文件标识符（identical copies of the parent’s open file descriptors）。</p>
+<p>比如，父进程调用<code>fork()</code>时，标准输出流<code>stdout</code>文件处于打开状态且指向屏幕。子进程也会继承这个文件，因此其输出也会指向屏幕。</p>
+</li>
+</ul>
+<h4 id="回收子进程-Reaping">回收子进程 Reaping</h4>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p><b>僵尸进程 Zombie</b>: Linux系统中，进程由于某种原因终止的时候，内核并不会将其从系统中完全清除。进程会处于一种已终止（terminated）但仍然保留某些状态、消耗系统内存资源的僵尸状态（Zombie）。</p>
+</li>
+<li class="lvl-2">
+<p><b>回收 Reaping</b>：对于僵尸进程，其父进程负责对其进行回收。</p>
+<ul class="lvl-2">
+<li class="lvl-4">内核将子进程的<b>退出状态</b>传递给父进程，然后该进程才彻底消失。</li>
+<li class="lvl-4">如果父进程提前终止且还未回收其子进程，内核安排<code>init</code>进程（PID = 1）负责回收。</li>
+</ul>
+</li>
+</ul>
+<p>进程调用<code>waitpid</code>来回收指定子进程，其回收的对象、父进程的默认行为、回收的结果都取决于其参数：</p>
+<img src="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303151932818.png" srcset="/img/loading.gif" lazyload alt="image-20230315193200765" style="zoom:50%;" />
+<ul class="lvl-0">
+<li class="lvl-2">
+<p><b>判定等待集合（wait set）的成员</b>：根据参数<code>pid</code>指定回收的子进程，可能是某单个子进程，也可能是某个子进程集合。</p>
+<ol>
+<li class="lvl-5"><code>pid &gt; 0</code>: 回收<code>pid</code>指定的单个子进程。等待集合中为单个成员。</li>
+<li class="lvl-5"><code>pid = 0</code>: 回收一个Unix进程组，该组ID为调用者本身的PID。</li>
+<li class="lvl-5"><code>pid = -1</code>: 回收调用者所有的子进程。</li>
+<li class="lvl-5"><code>pid &lt; -1</code>: ???</li>
+</ol>
+<p>回收的顺序是不确定的，不要随意做假设。</p>
+</li>
+<li class="lvl-2">
+<p><b>修改默认行为</b>：即父进程的默认操作。通过将参数<code>options</code>设置为内核中的三个预定义的常量值（系统头文件中定义）的组合来修改默认行为：</p>
+<ul class="lvl-2">
+<li class="lvl-4">
+<p><code>0</code>: 默认情况即<code>options  = 0</code>。默认行为有两种情况：</p>
+<ol>
+<li class="lvl-7">挂起调用者，等待集合中任一子进程结束后，返回该结束子进程的PID。</li>
+<li class="lvl-7">等待集合中的一个进程在刚调用的时刻就已经终止，立刻返回该结束子进程的PID。</li>
+</ol>
+</li>
+<li class="lvl-4">
+<p><code>WNOHANG</code>: NO HANG(不阻塞模式). 任何情况下，均不予等待直接返回。</p>
+<p>Return immediately (with a return value of 0) if none of the child processes in the wait set has terminated yet.<br>
+This option is useful in those cases where you want to continue doing useful work while waiting for a child to terminate.</p>
+</li>
+<li class="lvl-4">
+<p><code>WUNTRACED</code>: Suspend execution of the calling process until a process in the wait set becomes either terminated or stopped. Return the PID of the terminated or stopped child that caused the return. The default behavior returns only for terminated children; this option is useful when you want to check for both terminated and stopped children.</p>
+</li>
+<li class="lvl-4">
+<p><code>WCONTINUED</code>: Suspend execution of the calling process until a running process in the wait set is terminated or until a stopped process in the wait set has been resumed by the receipt of a SIGCONT signal.</p>
+</li>
+</ul>
+<p>上述常量选项可以通过或运算进行组合。</p>
+</li>
+<li class="lvl-2">
+<p><b>检查已回收子进程的退出状态</b>: 如果<code>statusp</code>指针非空，那么<code>waitpid</code>会在<code>statusp</code>指向的值（即<code>status</code>）中放上导致子进程返回的状态信息。</p>
+<p><code>wait.h</code>头文件中定义了解释返回的<code>status</code>参数的宏。</p>
+</li>
+<li class="lvl-2">
+<p><b>错误条件（Error Conditions）</b>:</p>
+<ul class="lvl-2">
+<li class="lvl-4">调用者无子进程，返回<code>-1</code>，设置<code>errno</code>为<code>ECHILD</code>；</li>
+<li class="lvl-4"><code>waitpid</code>被信号中断，返回<code>-1</code>，设置<code>errno</code>为<code>EINTR</code>。</li>
+</ul>
+</li>
+</ul>
+<p><code>wait</code>属于特殊的<code>waitpid</code>，等价于<code>waitpid(-1, &amp;status, 0)</code>。</p>
+<img src="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303151932440.png" srcset="/img/loading.gif" lazyload alt="image-20230315193235393" style="zoom:50%;" />
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">void</span> <span class="hljs-title function_">fork10</span><span class="hljs-params">()</span> &#123;<br>	<span class="hljs-type">pid_t</span> pid[N];<br>	<span class="hljs-type">int</span> i, child_status;<br>	<span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>; i &lt; N; i++)<br>		<span class="hljs-keyword">if</span> ((pid[i] = fork()) == <span class="hljs-number">0</span>) &#123;<br>            <span class="hljs-built_in">exit</span>(<span class="hljs-number">100</span>+i); <span class="hljs-comment">/* Child */</span><br>		&#125;<br> 	<span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>; i &lt; N; i++) &#123; <span class="hljs-comment">/* Parent */</span><br>		<span class="hljs-type">pid_t</span> wpid = wait(&amp;child_status);<br> 		<span class="hljs-keyword">if</span> (WIFEXITED(child_status))<br> 			<span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;Child %d terminated with exit status %d\n&quot;</span>,<br> 				wpid, WEXITSTATUS(child_status));<br> 		<span class="hljs-keyword">else</span><br> 			<span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;Child %d terminate abnormally\n&quot;</span>, wpid);<br> 	&#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<h4 id="休眠-Sleep">休眠 Sleep</h4>
+<p><code>sleep</code>将一个进程挂起一段指定的时间。如果函数被信号中断，则返回剩余秒数。正常情况返回0。</p>
+<img src="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303151933735.png" srcset="/img/loading.gif" lazyload alt="image-20230315193307669" style="zoom:50%;" />
+<p><code>pause</code>将一个函数挂起，直至接收到信号为止。</p>
+<img src="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303161118773.png" srcset="/img/loading.gif" lazyload alt="image-20230316111805670" style="zoom:50%;" />
+<h4 id="加载与运行-Loading-and-Running">加载与运行 Loading and Running</h4>
+<img src="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303151933270.png" srcset="/img/loading.gif" lazyload alt="image-20230315193319227" style="zoom:50%;" />
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>Loads and runs in the <i>current</i> process:</p>
+<ul class="lvl-2">
+<li class="lvl-4">Executable file <code>filename</code>: Can be <i>object file</i> or <i>script file</i> beginning with shebang(<code>#!interpreter</code>).</li>
+<li class="lvl-4"><code>argv</code>：Argument array. By convention <code>argv[0] == filename</code>.</li>
+<li class="lvl-4"><code>envp</code>：Environment variable list. <code>name=value</code> strings.</li>
+</ul>
+<p>Both array finishes with a <code>NULL</code> pointer.</p>
+<img src="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303161119742.png" srcset="/img/loading.gif" lazyload alt="image-20230316111937682" style="zoom:50%;" />
+</li>
+<li class="lvl-2">
+<p>Overwrites code, data, and stack. Retains PID, open files and signal context.</p>
+<p>理解为同一进程加载并运行不同的程序实体。保留进程的动态属性，替换代码、数据、栈等程序静态实体。</p>
+<blockquote>
+<h5 id="Program-Process">Program &amp; Process</h5>
+<ul class="lvl-3">
+<li class="lvl-2">
+<p>A program is a collection of code and data; programs can exist as object files on disk or as segments in an address space.</p>
+<p>The <code>execve</code> function loads and runs a new program in the context of the current process.</p>
+</li>
+<li class="lvl-2">
+<p>A process is a specific instance of a program in execution; a program always runs in the context of some process.</p>
+<p>The <code>fork</code> function runs the same program in a new child process that is a duplicate of the parent.</p>
+</li>
+</ul>
+<p>程序是进程的静态实体。程序想要运行必须在某个进程的上下文中。而同一进程中可以通过系统调用<code>execve</code>等运行多个不同的程序。</p>
+</blockquote>
+</li>
+<li class="lvl-2">
+<p>Called once and never returns. Except if there is an error(e.g. wrong name in <code>filename</code>).</p>
+</li>
+</ul>
+<hr>
+<p>The <code>getenv</code> function searches the environment array for a string name=value. If found, it returns a pointer to value; otherwise, it returns NULL.</p>
+<img src="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303161118568.png" srcset="/img/loading.gif" lazyload alt="image-20230316111838519" style="zoom:50%;" />
+<p>If the environment array contains a string of the form <code>name=oldvalue</code>, then <code>unsetenv</code> deletes it and <code>setenv</code> replaces <code>oldvalue</code> with <code>newvalue</code>, but only if overwrite is nonzero. If name does not exist, then <code>setenv</code> adds <code>name=newvalue</code> to the array.</p>
+<p>k<img src="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303161118391.png" srcset="/img/loading.gif" lazyload alt="image-20230316111853336" style="zoom:50%;" /></p>
+<blockquote>
+<h5 id="程序的加载过程-加载器的工作过程">程序的加载过程/加载器的工作过程</h5>
+<p>从Shell开始运行一个程序的过程如下：</p>
+<ol>
+<li class="lvl-3">
+<p>父shell进程调用<code>fork()</code>生成子进程；</p>
+</li>
+<li class="lvl-3">
+<p>子进程调用<code>execve()</code>函数启动<b>加载器</b>；</p>
+</li>
+<li class="lvl-3">
+<p>加载器开始工作（考虑到写时复制）：</p>
+<ul class="lvl-3">
+<li class="lvl-5">
+<p>删除子进程的现有虚拟内存段（继承自父亲）；</p>
+</li>
+<li class="lvl-5">
+<p>创建新的代码、数据、堆以及栈段。新的栈和堆段均被初始化为0；</p>
+</li>
+<li class="lvl-5">
+<p>将程序页表对应的内容<b>映射</b>到可执行文件的相应位置。新的代码和数据段就会被初始化为可执行文件的内容；</p>
+<p>除了一些头部信息，加载过程<b>没有</b>任何从磁盘到内存的数据复制，直至CPU引用一个被映射的虚拟页时才开始进行复制（虚拟内存中的请求调页）。</p>
+</li>
+</ul>
+</li>
+<li class="lvl-3">
+<p>加载器跳转至<code>_start</code>地址，其最终会调用引用程序的<code>main</code>函数。</p>
+</li>
+<li class="lvl-3">
+<p>控制传递给程序的主函数，其原型如下，两种格式等价：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">int</span> <span class="hljs-title function_">main</span><span class="hljs-params">(<span class="hljs-type">int</span> argc, <span class="hljs-type">char</span> **argv, <span class="hljs-type">char</span> **envp)</span>;<br><span class="hljs-type">int</span> <span class="hljs-title function_">main</span><span class="hljs-params">(<span class="hljs-type">int</span> argc, <span class="hljs-type">char</span> *argv[], <span class="hljs-type">char</span> *envp[])</span>;<br></code></pre></td></tr></table></figure>
+<p>用户栈空间如图所示：</p>
+</li>
+</ol>
+<img src="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303161119135.png" srcset="/img/loading.gif" lazyload alt="image-20230316111918068" style="zoom:50%;" />
+</blockquote>
+<h2 id="信号-Signal">信号 Signal</h2>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/15-213/" class="category-chain-item">15-213</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+</div>
+
+
+              
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2022/02/23/%E5%8C%BA%E9%97%B4%E4%BF%A1%E6%81%AF%E7%9A%84%E7%BB%B4%E6%8A%A4%E4%B8%8E%E6%9F%A5%E8%AF%A2/" title="区间信息的维护与查询">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">区间信息的维护与查询</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2021/05/22/15%20ETH-Accounts/" title="Blockchain: 15 ETH Accounts">
+                        <span class="hidden-mobile">Blockchain: 15 ETH Accounts</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>2022</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>TAO1st</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      headingSelector : CONFIG.toc.headingSelector || 'h1,h2,h3,h4,h5,h6',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      collapseDepth   : CONFIG.toc.collapseDepth || 0,
+      scrollSmooth    : true,
+      headingsOffset  : -boardTop
+    });
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.10/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.1/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

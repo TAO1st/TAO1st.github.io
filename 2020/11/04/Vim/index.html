@@ -1,0 +1,1048 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/avatar.png">
+  <link rel="icon" href="/img/avatar.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#98a5ac">
+  <meta name="author" content="tao1st">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="Vim-Adventure level 1   h j k l   不同长短的行末尾   level 2   w b e   level 3   x X : 删除前面的字符，不包括当前所在字符    B W : WORD and word   level 4   E   r :  replace   level 5   d : 相当于剪贴，删除的内容送进寄存器（可以是指定的寄存器） db: 向前删">
+<meta property="og:type" content="article">
+<meta property="og:title" content="The Vim Adventure">
+<meta property="og:url" content="https://tao1st.github.io/2020/11/04/Vim/index.html">
+<meta property="og:site_name" content="tao1st.github.io">
+<meta property="og:description" content="Vim-Adventure level 1   h j k l   不同长短的行末尾   level 2   w b e   level 3   x X : 删除前面的字符，不包括当前所在字符    B W : WORD and word   level 4   E   r :  replace   level 5   d : 相当于剪贴，删除的内容送进寄存器（可以是指定的寄存器） db: 向前删">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-11-03T18:10:33.000Z">
+<meta property="article:modified_time" content="2023-03-16T07:00:28.158Z">
+<meta property="article:author" content="tao1st">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>The Vim Adventure - tao1st.github.io</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"tao1st.github.io","root":"/","version":"1.9.2","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":3},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.2.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>TAO1st</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/bk.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.5)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="The Vim Adventure"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2020-11-04 02:10" pubdate>
+          2020年11月4日 凌晨
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          7.1k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          60 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">The Vim Adventure</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1>Vim-Adventure</h1>
+<h2 id="level-1">level 1</h2>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p><code>h j k l</code></p>
+</li>
+<li class="lvl-2">
+<p>不同长短的行末尾</p>
+</li>
+</ul>
+<h2 id="level-2">level 2</h2>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p><code>w b e</code></p>
+</li>
+</ul>
+<h2 id="level-3">level 3</h2>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p><code>x</code></p>
+<p><code>X</code> : 删除前面的字符，<strong>不包括当前所在字符</strong></p>
+</li>
+<li class="lvl-2">
+<p><code> B W</code> : WORD and word</p>
+</li>
+</ul>
+<h2 id="level-4">level 4</h2>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p><code>E</code></p>
+</li>
+<li class="lvl-2">
+<p><code>r</code> :  replace</p>
+</li>
+</ul>
+<h2 id="level-5">level 5</h2>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p><code>d</code> : 相当于剪贴，删除的内容送进寄存器（可以是指定的寄存器）</p>
+<p><code>db</code>: 向前删除，注意删除的内容<strong>不包括当前所在字符</strong></p>
+<p><code>D</code> == <code>d$</code></p>
+<p><code>dd</code></p>
+</li>
+</ul>
+<h2 id="level-6">level 6</h2>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p><code>~</code> ：大小写变换，注意<strong>后可接数字</strong>，实现批量大小写转换</p>
+</li>
+<li class="lvl-2">
+<p><code>0 $</code></p>
+</li>
+<li class="lvl-2">
+<p><code>^</code> : <u> <strong>first non-blank character of the line</strong> (USEFUL)</u></p>
+</li>
+</ul>
+<h2 id="level-7-NOT-FAMILIAR-YET">level 7 (NOT FAMILIAR YET)</h2>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p><code>t</code><br>
+<code>T</code><br>
+<code>f</code><br>
+<code>F</code></p>
+<p><code>;</code> : repeat latest f,t,F or T</p>
+<p><code>,</code> : repeat latest f,t,F or T <strong>in opposite direction</strong></p>
+</li>
+<li class="lvl-2">
+<p><code>zt</code>  :  scroll to top<br>
+<code>zb</code> :  scroll to bottom<br>
+<code>zz</code> :   scroll to middle</p>
+</li>
+<li class="lvl-2">
+<p><code>%</code>  :   在对应匹配的括号和中括号之间移动，即使你当前没有在括号上也可以</p>
+<blockquote>
+<p>Find the next item in this line after or under the cursor and jump to its match.</p>
+<p>Items can be: ( [ { } ] ) /* */ #if #ifdef #else #elif #endif.</p>
+<p>No count is allowed, {count}% jumps to a line {count} percentage down the file (isn’t supported in the game).</p>
+</blockquote>
+</li>
+</ul>
+<h2 id="level-8-NOT-FAMILIAR-YET">level 8 (NOT FAMILIAR YET)</h2>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p><code>*</code>  :  匹配的下一个词</p>
+<p><code>#</code>  :  匹配的上一个词</p>
+<p><code>n, N</code>  :  重复<code>*</code> 和 <code>#</code></p>
+</li>
+</ul>
+<h2 id="level-9">level 9</h2>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p><code>[count] + $</code></p>
+<p><code>[count] + r</code>  :  批量修改成相同字符</p>
+</li>
+</ul>
+<p>反复运用7、8关的重点命令，可以多次重复玩来熟悉。</p>
+<h2 id="level-10">level 10</h2>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p><code>p</code></p>
+<p><code>P</code></p>
+</li>
+<li class="lvl-2">
+<p><code>y</code></p>
+<p><code>yl </code> : 复制单个字符<br>
+<code>yy</code> : 复制整行，sysnonym for yy.hkkjjjjkjjjkk</p>
+</li>
+</ul>
+<h3 id="Register">Register</h3>
+<blockquote>
+<p>以 <code>&quot;</code> 为开头的名字代表寄存器。</p>
+</blockquote>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>寄存器的分类：</p>
+<ul class="lvl-2">
+<li class="lvl-4">
+<p>the unnamed register: <code>&quot;&quot;</code></p>
+<p>默认的寄存器</p>
+</li>
+<li class="lvl-4">
+<p>the named registers: <code>&quot;a</code> - <code>&quot;z</code></p>
+<p><code>&quot;A</code> - <code>&quot;Z</code>当输入大写字母时，会 append 而非 replace</p>
+</li>
+<li class="lvl-4">
+<p>the numbered registers: <code>&quot;1</code> - <code>&quot;9</code></p>
+<p>删除的内容会依次存在编号的寄存器中，超过9个就丢弃最老的；</p>
+</li>
+<li class="lvl-4">
+<p>the Black Hole register: <code>&quot;_</code></p>
+<p>相当于一个garbage dump</p>
+</li>
+<li class="lvl-4">
+<p><code>&quot;-</code> 等其他见 Practical Vim</p>
+</li>
+</ul>
+</li>
+<li class="lvl-2">
+<p><code>:reg</code> : 命令行输入 reg 以查询当前所有寄存器的名字及其中的内容；</p>
+</li>
+<li class="lvl-2">
+<p>以寄存器名为开头来指定命令的结果存储到哪，如：<code>&quot;2p</code>, <code>&quot;adw</code></p>
+</li>
+</ul>
+<h2 id="level-11">level 11</h2>
+<h3 id="buffer">buffer</h3>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p><code>:ls</code></p>
+</li>
+<li class="lvl-2">
+<p><code>:b buffer_name</code> / <code>:b#</code></p>
+</li>
+<li class="lvl-2">
+<p><code>c</code> : <strong>change</strong>, which means <strong>delete</strong> <em><u>text</u></em> and <strong>start insert mode</strong></p>
+<p><code>cw</code> : 代表 change word，这里的 w 并不是指位置，所以单词后的空格并不包含在内。</p>
+<p>“cw” and “cW” are treated like “ce” and “cE” if the cursor is on a non-blank. This is because “cw” is interpreted as change-word, and a word does not include the following white space.</p>
+<p><code>C</code> : synonym for <code>c$</code></p>
+<p><code>cc</code> : synonym for <code>S</code> , delete the whole line and start insert mode</p>
+<blockquote>
+<p>通过 <code>c</code> 指令删掉的内容会自动存到寄存器中</p>
+</blockquote>
+</li>
+<li class="lvl-2">
+<p><code>s</code> : substitute, which means <strong>delete</strong> <em><u>characters</u></em> and <strong>start insert mode</strong></p>
+<p>synonym for <code>cl</code></p>
+</li>
+<li class="lvl-2">
+<p><code>i</code> : insert before the cursor</p>
+<p>后接数字意味着会把你输入的文本翻几倍</p>
+<p><code>I</code> : insert before the first non-blank character in the line</p>
+</li>
+<li class="lvl-2">
+<p><code>a</code> : append after the cursor</p>
+<p>后接数字意味着会把你<em>输入</em>的文本翻几倍</p>
+<p><code>A</code> : append at the end of the line</p>
+</li>
+<li class="lvl-2">
+<p><code>o</code></p>
+<p><code>O</code></p>
+</li>
+</ul>
+<h2 id="level-12">level 12</h2>
+<blockquote>
+<p>text-objects见下</p>
+</blockquote>
+<ul class="lvl-0">
+<li class="lvl-4">
+<p><code>&#123; &#125;</code>   [count] <strong>paragraphs</strong> forward/backward</p>
+<blockquote>
+<p>Paragraphs are seperated by empty lines.</p>
+<p>{ : Move the cursor to the empty line before the current paragraph, or before the previous paragraph if the cursor isn’t in a paragraph.</p>
+<p>} : Move the cursor to the empty line after the current paragraph, or after the next paragraph if the cursor isn’t in a paragraph.</p>
+</blockquote>
+</li>
+<li class="lvl-2">
+<p><code>( )</code>   [count] <strong>sentence</strong> forward/backward</p>
+</li>
+<li class="lvl-2">
+<p><code>[ ]</code>  go to [count] <u>previous</u> (or next) unmatched ‘{’ (or ‘)’) starting at, but not including, cursor position.</p>
+</li>
+<li class="lvl-2">
+<p><code>ia</code></p>
+</li>
+<li class="lvl-2">
+<p><code>.</code>  : Repeat the last simple change. Without a count, the count of the last change is used. If you enter a count, it will replace the last one.</p>
+<p>If the last change included a specification of a numbered register, the register number will be incremented.</p>
+<p>Does not repeat a command-line command.</p>
+</li>
+</ul>
+<h2 id="level-14">level 14</h2>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p><code>H</code> : To line [count] from first line on the window (<strong>H</strong>igh) on the first non-blank character (linewise), without scrolling the screen.</p>
+</li>
+<li class="lvl-2">
+<p><code>L</code></p>
+</li>
+<li class="lvl-2">
+<p><code>M</code></p>
+</li>
+<li class="lvl-2">
+<p><code>:&lt;count&gt;</code> : 可以同样起到跳转至某行的作用</p>
+</li>
+<li class="lvl-2">
+<p>nu, nonu</p>
+<p>Show the <strong>line number</strong> in front of each line in the text. Off by default.</p>
+<p>Makes it really easy to jump to a specific line using ‘:’ and the line number, or the line number followed by G or gg.</p>
+<p><code>:set nu</code> - shows line numbers.<br>
+<code>:set nonu</code> - hides line numbers.<br>
+<code>:set nu!</code> - toggle line numbers.<br>
+<code>:set nonu!</code>- toggle line numbers.</p>
+<p>如果想要默认进入Vim即显示行号，则需要修改~/.vimrc配置文件，在配置文件中写入<code>set nu</code>即可。</p>
+</li>
+<li class="lvl-2">
+<p>：<code>|</code> : To column [count] in the current line.</p>
+</li>
+</ul>
+<hr>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p><code>&lt;Ctrl-a&gt;</code>, <code>&lt;Ctrl-x&gt;</code> 把当前光标之上或之后的数值加上/减去<code>[count]</code>，不带次数默认为1</p>
+</li>
+<li class="lvl-2">
+<p>vim中把以0开头的数字解释为八进制而非十进制</p>
+<ul class="lvl-2">
+<li class="lvl-4">例如 007 + 001 = 010</li>
+<li class="lvl-4">vimrc中加入<code>set nrformats=</code> 会让vim把所有数字都当成十进制，无论是否0开头。</li>
+</ul>
+</li>
+<li class="lvl-2">
+<p>Operator-pending Mode：在operator和motion之间默认开启的一个模式。</p>
+<p>只有操作符才会激活该模式。两个按键的操作符（例如<code>gU</code>）之间不会激活该模式。</p>
+</li>
+</ul>
+<hr>
+<h2 id="Operator-Motion-Action">Operator + Motion = Action</h2>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>一次**操作（Action）<strong>由一个</strong>操作符（operator）<strong>后接一个</strong>动作命令（motion）**组成。</p>
+<figure class="highlight dust"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs dust"><span class="language-xml">d</span><span class="hljs-template-variable">&#123;motion&#125;</span><span class="language-xml">, c</span><span class="hljs-template-variable">&#123;motion&#125;</span><span class="language-xml">, y</span><span class="hljs-template-variable">&#123;motion&#125;</span><span class="language-xml">, gu</span><span class="hljs-template-variable">&#123;motion&#125;</span><span class="language-xml">, gU</span><span class="hljs-template-variable">&#123;motion&#125;</span><br></code></pre></td></tr></table></figure>
+</li>
+<li class="lvl-2">
+<p>当一个操作符命令被来<strong>连续调用两次</strong>时，它会<strong>作用于当前行</strong>。例如：</p>
+<ul class="lvl-2">
+<li class="lvl-4"><code>dd</code>：删除当前行</li>
+<li class="lvl-4"><code>&gt;&gt;</code>：缩进当前行</li>
+<li class="lvl-4"><code>gUgU</code>, <code>gUU</code> : 当前行大写</li>
+</ul>
+</li>
+<li class="lvl-2">
+<p><strong>自定义</strong>操作符（operator）与动作（motion）命令：一些插件</p>
+<ul class="lvl-2">
+<li class="lvl-4"><a target="_blank" rel="noopener" href="https://github.com/tpope/vim-commentary">commentary.vim</a> : <code>gc&#123;motion&#125;</code>，其中<code>gcc</code>注释当前行。</li>
+<li class="lvl-4"><a target="_blank" rel="noopener" href="https://github.com/kana/vim-textobj-entire">textobj-entire</a> : 定义了新的motion，针对整个文件</li>
+<li class="lvl-4">自己编写自定义操作符或动作：
+<ul class="lvl-4">
+<li class="lvl-6"><code>:h :map-operator</code></li>
+<li class="lvl-6"><code>:h omap-info</code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="text-objects">text-objects</h2>
+<p>Text objects are two characters used after an operator (‘d’, ‘y’, ‘c’ etc.) to select a range to operate on. The first character is either ‘a’ (for “an object”, including white space) or ‘i’ (for “inner” object, without surrounding white space, or only the white space). The second character denotes the object type and is one of the following:</p>
+<p><strong>w</strong>ord, <strong>W</strong>ORD, <strong>s</strong>entence, <strong>p</strong>aragraph,**<br>
+<strong>&quot;</strong> or <strong>’</strong> or <strong>`</strong> - a <u>&quot;, ', or `</u> quoted string<br>
+<strong>{</strong> ,  <strong>}</strong>, or <strong>B</strong> - A { } block<br>
+<strong>(</strong>, <strong>)</strong>, or <strong>b</strong> - A ( ) block<br>
+<strong>[</strong> or <strong>]</strong><input type="checkbox" id="checkbox9"><label for="checkbox9">block</label><br>
+<strong>&lt;</strong> or <strong>&gt;</strong> - A &lt; &gt; block<br>
+<strong>t</strong> - A HTML or XML tag block</p>
+<h3 id="word-w">word <code>w</code></h3>
+<p>A word consists of a sequence of letters, digits and underscores, or a sequence of other non-blank characters, separated with white space (spaces, tabs, <EOL>). An empty line is also considered to be a word.</p>
+<p>Use ‘w’, ‘e’, and ‘b’ to navigate words.</p>
+<p>Special case: “cw” is treated like “ce” if the cursor is on a non-blank. This is because “cw” is interpreted as change-word, and a word does not include the following white space.</p>
+<h3 id="WORD-W">WORD <code>W</code></h3>
+<p>A WORD consists of a sequence of non-blank characters, separated with white space. An empty line is also considered to be a WORD.</p>
+<p>Use ‘W’, ‘E’, and ‘B’ to navigate WORDs.</p>
+<p>Special case: “cW” is treated like “cE” if the cursor is on a non-blank. This is because “cW” is interpreted as change-WORD, and a WORD does not include the following white space.</p>
+<h3 id="paragraph-p">paragraph <code>p</code></h3>
+<p>A paragraph begins after each empty line. A blank line (only containing white space) is NOT a paragraph boundary.</p>
+<p>Use ‘{’ and ‘}’ to navigate paragraphs. Paragraph text objects are denoted with ‘p’.</p>
+<h3 id="sentence-s">sentence <code>s</code></h3>
+<p>A sentence is defined as ending at a ‘.’, ‘!’ or ‘?’ followed by either the end of a line, or by a space or tab. Any number of closing ‘)’, ‘]’, ‘&quot;’ and ‘’’ characters may appear after the ‘.’, ‘!’ or ‘?’ before the spaces, tabs or end of line. A paragraph boundary is also a sentence boundary.</p>
+<p>Use ‘(’ and ‘)’ to navigate sentences. Sentence text object is denoted by ‘s’.</p>
+<h2 id="搜索">搜索</h2>
+<blockquote>
+<p>不要再 <code>Ctrl-F</code>了。</p>
+</blockquote>
+<ol>
+<li class="lvl-3">
+<p>命令模式下，输入<code>/</code>字符串</p>
+<p>比如搜索<code>user</code>，输入<code>/user</code>，按下回车之后，可以看到vim已经把光标移动到该字符处和高亮了匹配的字符串</p>
+</li>
+<li class="lvl-3">
+<p>查看下一个匹配，按下<code>n</code></p>
+</li>
+<li class="lvl-3">
+<p>跳转到上一个匹配，按下<code>N</code></p>
+</li>
+<li class="lvl-3">
+<p>搜索后，我们打开别的文件，发现也被高亮了，怎么关闭高亮？</p>
+<p>命令模式下，输入<code>:nohlsearch</code>  也可以<code>:set nohlsearch</code></p>
+<p>简写：<code>:set hls</code> / <code>:set nohls</code></p>
+</li>
+</ol>
+<hr>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>scan document for next match: <code>/pattern&lt;CR&gt;</code></p>
+</li>
+<li class="lvl-2">
+<p>scan document for previous match: <code>?pattern&lt;CR&gt;</code></p>
+</li>
+</ul>
+<h2 id="替换">替换</h2>
+<p>语法: <code>:[addr]s/源字符串/目的字符串/[option]</code></p>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p><code>[addr]</code> 表示检索范围,如:</p>
+<ul class="lvl-2">
+<li class="lvl-4"><code>1,n</code> 表示从第1行到n行</li>
+<li class="lvl-4"><code>%</code> 表示整个文件,同<code>1,$</code></li>
+<li class="lvl-4"><code>.,$</code> 表示从当前行到文件尾</li>
+<li class="lvl-4">省略时表示当前行</li>
+</ul>
+</li>
+<li class="lvl-2">
+<p><code>s</code> 表示替换操作,其为substitute的缩写</p>
+</li>
+<li class="lvl-2">
+<p><code>[option]</code> : 表示操作类型,如:</p>
+<ul class="lvl-2">
+<li class="lvl-4"><code>g</code> globe,表示全局替换</li>
+<li class="lvl-4"><code>c</code> confirm,表示进行确认</li>
+<li class="lvl-4"><code>p</code> 表示替代结果逐行显示(Ctrl + L恢复屏幕)</li>
+<li class="lvl-4"><code>i</code> ignore,不区分大小写</li>
+<li class="lvl-4">省略时仅对每行第一个匹配串进行替换</li>
+</ul>
+</li>
+<li class="lvl-2">
+<p>如果在源字符串和目的字符串中出现特殊字符,如’/‘,’&lt;‘,’&gt;‘,’,'等需要前面加反斜杠\进行转义</p>
+</li>
+<li class="lvl-2">
+<p><code>&amp;</code> to repeat, <code>u</code> to reverse</p>
+</li>
+</ul>
+<h2 id="vim多行缩进或缩出方法">vim多行缩进或缩出方法</h2>
+<h3 id="Visual-mode">Visual mode</h3>
+<p>按<code>v</code>进入visual状态，选定多行，用<code>&gt;</code>缩进，用<code>&lt;</code>缩出</p>
+<h3 id="缩进">缩进</h3>
+<h4 id="单行缩进">单行缩进</h4>
+<p>在要缩进的那一行按下<code>&gt;&gt;</code>, 即连按两下<code>&gt;</code>。</p>
+<h4 id="多行缩进">多行缩进</h4>
+<p>在要缩进的<strong>起始行</strong>按下<code>n&gt;&gt;</code>，n是要缩进的行数。</p>
+<h3 id="多行缩出">多行缩出</h3>
+<h4 id="单行缩出">单行缩出</h4>
+<p>在要缩出的那一行按下<code>&lt;&lt;</code>, 即连按两下<code>&lt;</code>。</p>
+<h4 id="多行缩出-2">多行缩出</h4>
+<p>在要缩出的<strong>起始行</strong>按下<code>n&lt;&lt;</code>，n是要缩出的行数。</p>
+<h2 id="撤销与重做">撤销与重做</h2>
+<p><code>u</code></p>
+<p><code>Ctrl-r</code></p>
+<p><code>U</code></p>
+<p>对于撤销/重做 (undo/redo) 来说，“U” 命令和其他命令是同等对待的。所以 “u” 可以</p>
+<p>撤销一个 “U” 命令、‘CTRL-R’ 也可以重做对 “U” 命令的撤销。当 “U”、“u” 和</p>
+<p>‘CTRL-R’ 三个命令混合使用时，你将注意到 “U” 命令决意将被该行还原到前一个 “U”</p>
+<p>命令之前的状态。这或许会令你困惑。多试试，你会习惯的。</p>
+<p>“U” 命令总是把缓冲区标记为已改变。即使它把修改过的缓冲区重做到未改变的状态也是</p>
+<p>如此。为此，只有使用 “u” 命令，才能令缓冲区正确地回复到未改变的标记。</p>
+<h2 id="控制撤销操作的粒度">控制撤销操作的粒度</h2>
+<blockquote>
+<p>control the granularity of the undo command</p>
+</blockquote>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>按照喜好，每次思考后停顿（可能是一句、一个词、一段等）的过程都退出insert mode，使其成为一个撤销块。这样更好控制撤销的粒度。</p>
+</li>
+<li class="lvl-2">
+<p>另起一行时也可以用<code>&lt;Esc&gt;o</code>来代替保持insert mode下<code>&lt;CR&gt;</code>。原因与上同理。</p>
+</li>
+<li class="lvl-2">
+<p>Moving Around in Insert Mode Resets the Change 每次在插入模式中使用上下左右光标移动时，都会产生一个新的撤销块</p>
+<p>When I said that the undo command would revert all characters entered (or deleted) during a trip into Insert mode and back, I was glossing over a small detail. If we use the  ,  ,  , or  cursor keys while in Insert mode, a new undo chunk is created. It’s just as though we had switched back to Normal mode to move around with the h , j , k , or l commands, except that we don’t have to leave Insert mode. This also has implications on the operation of the dot command.</p>
+</li>
+</ul>
+<h2 id="Insert-Mode">Insert Mode</h2>
+<blockquote>
+<p>核心是在插入模式如何使用一些在普通模式能使用的操作，从而简化插入过程。</p>
+</blockquote>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>从insert mode返回normal mode:</p>
+<ul class="lvl-2">
+<li class="lvl-4"><code>Esc</code>: 已经和Caps Lock进行了交换，要逐步习惯这种布局</li>
+<li class="lvl-4"><code>&lt;Ctrl-[&gt;</code>: 比传统Esc距离更近，但替换后意义不大</li>
+</ul>
+</li>
+<li class="lvl-2">
+<p>在<strong>插入模式</strong>中可以进行的操作</p>
+<ul class="lvl-2">
+<li class="lvl-4">
+<p>删除操作：</p>
+<ul class="lvl-4">
+<li class="lvl-6">
+<p><code>&lt;Ctrl-h&gt;</code> : 删除前一个字符</p>
+</li>
+<li class="lvl-6">
+<p><code>&lt;Ctrl-w&gt;</code> : 删除前一个单词</p>
+</li>
+<li class="lvl-6">
+<p><code>&lt;Ctrl-u&gt;</code> : 删至行首</p>
+</li>
+</ul>
+<blockquote>
+<p>这些在bash shell中也是可以通用的。</p>
+</blockquote>
+</li>
+<li class="lvl-4">
+<p>执行一条普通模式下的指令：<code>&lt;Ctrl-o&gt;</code></p>
+<blockquote>
+<p><strong>Insert-Normal Mode</strong></p>
+<p><strong>非常重要</strong>，在插入模式中进入插入-正常模式，允许你在不离开插入模式的情况下执行<em>一条</em>普通模式下的指令。</p>
+</blockquote>
+</li>
+<li class="lvl-4">
+<p>粘贴操作：<code>&lt;Ctrl-r&gt;&#123;register&#125;</code></p>
+<p>将<code>&#123;register&#125;</code>指定的内容粘贴。</p>
+</li>
+</ul>
+</li>
+</ul>
+<p><a href="mailto:976928595@qq.com">976928595@qq.com</a><br>
+lds12346</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Vim/" class="category-chain-item">Vim</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+</div>
+
+
+              
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2020/12/04/git-book/" title="Git-Book">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Git-Book</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2020/04/29/%E6%90%9C%E7%B4%A2/" title="搜索">
+                        <span class="hidden-mobile">搜索</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>2022</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>TAO1st</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      headingSelector : CONFIG.toc.headingSelector || 'h1,h2,h3,h4,h5,h6',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      collapseDepth   : CONFIG.toc.collapseDepth || 0,
+      scrollSmooth    : true,
+      headingsOffset  : -boardTop
+    });
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.10/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.1/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
