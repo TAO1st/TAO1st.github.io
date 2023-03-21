@@ -372,7 +372,7 @@
 <p><b>终止</b>：循环终止的条件为 $j &gt;A.length=n$，即 $j =A.length+1$ 时。此时子数组 $A[1… n]$ 由原来在 $A[1… n]$ 中的元素组成，但已按序排列。循环不变式成立，算法正确。</p>
 </li>
 </ul>
-<h3 id="效率-4">效率</h3>
+<h3 id="效率-6">效率</h3>
 <p>插入排序一个常见的优化即，在有序子序列部分选择插入位置时，使用 <b>二分查找</b> 来优化查找速度。但插入排序内层循环的时间消耗取决于 选择插入位置 + 移动元素 两部分。仅仅优化选择时间，元素的移动仍然为线性时间，所以时间复杂度仍然为平方级，而不能优化至 $O(nlogn)$。</p>
 <h2 id="快速排序-Quick-Sort-2">快速排序 Quick Sort</h2>
 <blockquote>
@@ -411,7 +411,7 @@
 <p>虽然快速排序在排序的中途不会产生任何有序子序列，但是每一次子集划分时，分治基准<code>pivot</code>都会被放在最终的正确位置。</p>
 </li>
 </ul>
-<h4 id="相关题目-12">相关题目</h4>
+<h4 id="相关题目-13">相关题目</h4>
 <blockquote>
 <p><em>TopK</em>类型题目常用于考察快速排序。</p>
 </blockquote>
@@ -450,7 +450,7 @@
 <p>解法为双指针，详见[双指针部分](##双指针 Two pointers)。</p>
 </li>
 </ul>
-<h2 id="堆-Heap-3">堆 Heap</h2>
+<h2 id="堆-Heap-4">堆 Heap</h2>
 <h3 id="基本实现">基本实现</h3>
 <h4 id="STL-2">STL</h4>
 <p>STL中的优先级队列<code>priority_queue&lt;datatype&gt;</code>即为堆的实现。</p>
@@ -467,7 +467,7 @@
 </li>
 </ul>
 <p>具体代码见sort.cpp。</p>
-<h4 id="相关题目-13">相关题目</h4>
+<h4 id="相关题目-14">相关题目</h4>
 <ul class="lvl-0">
 <li class="lvl-2">
 <p><strong>215 Kth Largest Element in an Array 数组中的第K个最大元素 (Medium)</strong></p>

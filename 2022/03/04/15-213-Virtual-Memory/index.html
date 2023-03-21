@@ -1,0 +1,1287 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/avatar.png">
+  <link rel="icon" href="/img/avatar.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#98a5ac">
+  <meta name="author" content="tao1st">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="Virtual Memory 虚存的三个功能视角：   将主存视作缓存，提升效率；   提供所有进程都统一的地址空间，方便内存管理；   保护了每个进程的地址空间不会被其他进程破坏。   基本概念 基本概念（地址转换、页式存储、TLB等等）都在操作系统里学过比较熟悉，这里只记录一些容易混淆的点： Terminology   页面调度&#x2F;交换页面：paging &#x2F; swapping   缺页：page">
+<meta property="og:type" content="article">
+<meta property="og:title" content="15-213: Virtual Memory">
+<meta property="og:url" content="https://tao1st.github.io/2022/03/04/15-213-Virtual-Memory/index.html">
+<meta property="og:site_name" content="tao1st.github.io">
+<meta property="og:description" content="Virtual Memory 虚存的三个功能视角：   将主存视作缓存，提升效率；   提供所有进程都统一的地址空间，方便内存管理；   保护了每个进程的地址空间不会被其他进程破坏。   基本概念 基本概念（地址转换、页式存储、TLB等等）都在操作系统里学过比较熟悉，这里只记录一些容易混淆的点： Terminology   页面调度&#x2F;交换页面：paging &#x2F; swapping   缺页：page">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303172233750.png">
+<meta property="og:image" content="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303181109598.png">
+<meta property="og:image" content="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303181134027.png">
+<meta property="og:image" content="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303181143168.png">
+<meta property="og:image" content="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303181153482.png">
+<meta property="og:image" content="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303181153036.png">
+<meta property="og:image" content="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303181221783.png">
+<meta property="og:image" content="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303191053752.png">
+<meta property="og:image" content="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303191106599.png">
+<meta property="og:image" content="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303191217195.png">
+<meta property="og:image" content="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303191221665.png">
+<meta property="og:image" content="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303191221970.png">
+<meta property="og:image" content="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303191511394.png">
+<meta property="og:image" content="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303191510408.png">
+<meta property="og:image" content="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303191510857.png">
+<meta property="og:image" content="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303191510695.png">
+<meta property="og:image" content="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303191622834.png">
+<meta property="og:image" content="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303191622590.png">
+<meta property="og:image" content="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303192158647.png">
+<meta property="og:image" content="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303192200273.png">
+<meta property="og:image" content="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303192205880.png">
+<meta property="og:image" content="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303192212480.png">
+<meta property="og:image" content="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303200004150.png">
+<meta property="og:image" content="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303200005914.png">
+<meta property="og:image" content="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303201604708.png">
+<meta property="og:image" content="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303201451759.png">
+<meta property="og:image" content="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303202038691.png">
+<meta property="og:image" content="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303202039580.png">
+<meta property="og:image" content="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303202044754.png">
+<meta property="og:image" content="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303202045786.png">
+<meta property="og:image" content="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303202046161.png">
+<meta property="og:image" content="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303202046495.png">
+<meta property="og:image" content="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303202115924.png">
+<meta property="article:published_time" content="2022-03-04T14:09:33.000Z">
+<meta property="article:modified_time" content="2023-03-20T13:20:06.920Z">
+<meta property="article:author" content="tao1st">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303172233750.png">
+  
+  
+  
+  <title>15-213: Virtual Memory - tao1st.github.io</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"tao1st.github.io","root":"/","version":"1.9.2","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":3},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.2.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>TAO1st</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/bk.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.5)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="15-213: Virtual Memory"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2022-03-04 22:09" pubdate>
+          2022年3月4日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          8.9k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          75 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">15-213: Virtual Memory</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h2 id="Virtual-Memory">Virtual Memory</h2>
+<p>虚存的三个功能视角：</p>
+<ol>
+<li class="lvl-3">
+<p>将主存视作缓存，提升效率；</p>
+</li>
+<li class="lvl-3">
+<p>提供所有进程都统一的地址空间，方便内存管理；</p>
+</li>
+<li class="lvl-3">
+<p>保护了每个进程的地址空间不会被其他进程破坏。</p>
+</li>
+</ol>
+<h3 id="基本概念">基本概念</h3>
+<p>基本概念（地址转换、页式存储、TLB等等）都在操作系统里学过比较熟悉，这里只记录一些容易混淆的点：</p>
+<h4 id="Terminology">Terminology</h4>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>页面调度/交换页面：paging / swapping</p>
+</li>
+<li class="lvl-2">
+<p>缺页：page fault</p>
+<p>命中：page hit</p>
+</li>
+<li class="lvl-2">
+<p>Page Table</p>
+<p>Page Table Entry</p>
+</li>
+<li class="lvl-2">
+<p>请求调页/按需调页 demand paging: Waiting until the miss to copy the page to DRAM.</p>
+</li>
+<li class="lvl-2">
+<p>工作集/常驻集合 working set / resident set</p>
+</li>
+<li class="lvl-2">
+<p>抖动 thrashing</p>
+</li>
+<li class="lvl-2">
+<p>统计缺页次数：Linux中的<code>getrusage</code>函数。</p>
+</li>
+</ul>
+<h4 id="虚拟页面的状态">虚拟页面的状态</h4>
+<p>虚拟页面的三个（不相交的）子集 / 三种状态：</p>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>未分配 Unallocated: Pages that have not yet been allocated (or created) by the VM system.</p>
+<p>Unallocated blocks do not have any data associated with them, and thus <i>do not occupy any space on disk</i>. 不占用磁盘空间</p>
+</li>
+<li class="lvl-2">
+<p>缓存的 Cached: 已经调入主存（physical memory）的页</p>
+</li>
+<li class="lvl-2">
+<p>未缓存的 Uncached: 未调入主存，但在磁盘上。</p>
+</li>
+</ul>
+<img src="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303172233750.png" srcset="/img/loading.gif" lazyload alt="image-20230317223357677" style="zoom:50%;" />
+<p>从页表项内容来看：</p>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p><code>NULL</code>: 代表未分配，即磁盘上都还未分配，此时 Valid 必定为 0；</p>
+</li>
+<li class="lvl-2">
+<p><code>Valid = 0</code>: 说明页还未被调进主存，此时页表项的内容为<b>磁盘地址（disk address）</b>。此时访问该页会导致缺页（Page Fault）。</p>
+</li>
+<li class="lvl-2">
+<p><code>Valid = 1</code>: 说明页已经调入主存，访问即为命中（Page Hit）。</p>
+</li>
+</ul>
+<img src="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303181109598.png" srcset="/img/loading.gif" lazyload alt="image-20230318110909751" style="zoom:50%;" />
+<h4 id="缓存视角">缓存视角</h4>
+<p>从缓存层次上来看</p>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>SRAM:  The L1, L2, and L3 cache memories between the CPU and main memory.</p>
+</li>
+<li class="lvl-2">
+<p>DRAM: 主存/内存</p>
+</li>
+</ul>
+<p>DRAM 比 SRAM 慢大约10倍，磁盘比 DRAM 慢大约100000多倍。这意味着 DRAM 的 miss 开销是非常巨大的，这导致：</p>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>页面比较大（一次调入的块大一点，尽可能减少不命中）：通常在 4KB 到 2MB 之间。</p>
+</li>
+<li class="lvl-2">
+<p>虚拟页面均为全相联（fully associative）。</p>
+</li>
+<li class="lvl-2">
+<p>精密的替换算法：见操作系统相应部分。</p>
+</li>
+<li class="lvl-2">
+<p>替换策略：尽量推迟写磁盘，所以一般选择 write-back 而不是 write-through。</p>
+</li>
+</ul>
+<h4 id="内存管理视角">内存管理视角</h4>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>Simplify Linking：每个进程一个页表，地址空间统一。</p>
+</li>
+<li class="lvl-2">
+<p>Simplify Loading and Sharing：页表辅助实现了内存映射与请求调页机制，可以尽可能晚的推迟从磁盘读内容的操作。同时不同的虚拟页（虚拟地址）可以映射到统一物理页上，实现进程间共享。</p>
+<p>内存映射帮助我们实现了重要的<b>写时复制（Copy on Write）</b>。加载器的工作大大简化（真正需要从慢速磁盘载入的内容很少，而是按需后续载入）。</p>
+</li>
+<li class="lvl-2">
+<p>Simplify Dynamic Memory Allocation：在虚拟存储/堆中分配连续的地址空间时，其实际<b>物理页面无需连续</b>，可以分散存放（所以<b>物理内存/主存如何高效组织、分配、回收</b>是后面的一个重要话题）。</p>
+</li>
+</ul>
+<h4 id="内存保护视角">内存保护视角</h4>
+<p>MMU需要根据虚拟地址计算转换，并读取页表项（PTE），而不是直接读取物理存储的实际地址。这就意味着我们可以<b>在页表项中添加一些额外的许可位</b>来提供页面控制。</p>
+<img src="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303181134027.png" srcset="/img/loading.gif" lazyload alt="image-20230318113412965" style="zoom:50%;" />
+<p>如果某个进程的指令试图进行违背权限的操作，处理器触发一个一般保护故障（general protection fault，见异常部分）。Linux通常将这种异常报告为大名鼎鼎的<strong>段错误（segmentation fault）</strong>！</p>
+<h3 id="地址转换-Address-Translation">地址转换 Address Translation</h3>
+<h4 id="使用页表的基本寻址">使用页表的基本寻址</h4>
+<img src="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303181143168.png" srcset="/img/loading.gif" lazyload style="zoom:50%;" />
+<h4 id="MMU-Page-Hit">MMU Page Hit</h4>
+<img src="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303181153482.png" srcset="/img/loading.gif" lazyload alt="image-20230318115332429" style="zoom:50%;" />
+<ol>
+<li class="lvl-3">
+<p>处理器给出 VA，传递给 MMU;</p>
+<ul class="lvl-2">
+<li class="lvl-5">VA = VPN : VPO</li>
+</ul>
+</li>
+<li class="lvl-3">
+<p>MMU 生成 PTEA，传递给主存希望获得对应位置的 PTE。（一次访存）</p>
+<ul class="lvl-2">
+<li class="lvl-5">PTEA = PTBR + VPN （Base + Offset）</li>
+<li class="lvl-5">PTE = *PTEA</li>
+</ul>
+</li>
+<li class="lvl-3">
+<p>主存返回PTE，读取发现 PTE 中的 Valid 位为 1，即命中（Page Hit）。</p>
+<ul class="lvl-2">
+<li class="lvl-5">PTE  = Valid : PPN</li>
+</ul>
+</li>
+<li class="lvl-3">
+<p>MMU 根据 PTE 生成 PA，并传递给主存希望获得实际数据 Data。（二次访存）</p>
+<ul class="lvl-2">
+<li class="lvl-5">PA  = PPN : VPO = PPN : PPO （VPO == PPO）</li>
+<li class="lvl-5">Data = *PA</li>
+</ul>
+</li>
+<li class="lvl-3">
+<p>主存返回 Data 给处理器。</p>
+</li>
+</ol>
+<h4 id="MMU-Page-Fault-Swap">MMU Page Fault &amp; Swap</h4>
+<img src="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303181153036.png" srcset="/img/loading.gif" lazyload alt="image-20230318115353979" style="zoom:50%;" />
+<p>前两步与命中一致：</p>
+<ol start="3">
+<li class="lvl-3">
+<p>主存返回 PTE，读取发现 PTE 中 Valid = 0，即未命中（Page Fault / Miss）；</p>
+</li>
+<li class="lvl-3">
+<p>调用缺页异常处理程序；</p>
+</li>
+<li class="lvl-3">
+<p>Exception Handler 根据某种算法选出 Victim Page 移出主存：</p>
+<ul class="lvl-2">
+<li class="lvl-5">如果 Victim Page 的 Dirty 位为1，说明被修改过，需要 write back （一次访存写）</li>
+<li class="lvl-5">如果为0，则无需写回；</li>
+</ul>
+</li>
+<li class="lvl-3">
+<p>Exception Handler 会将缺失的页面调入内存，并更新相应 PTE 中的 Valid 位。</p>
+</li>
+<li class="lvl-3">
+<p>Handler 返回控制给用户进程，从导致缺页的指令开始重新执行。从头再来一遍，只是这次肯定命中。</p>
+</li>
+</ol>
+<h4 id="Caches-and-VM">Caches and VM</h4>
+<img src="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303181221783.png" srcset="/img/loading.gif" lazyload alt="image-20230318122103720" style="zoom:50%;" />
+<p>L1 Cache就是在普通DRAM前加了一个SRAM Cache来做多一级的缓冲。其工作形式和原来一模一样。但SRAM Cache的寻址方式会有所不同：</p>
+<p>In any system that uses both virtual memory and SRAM caches, there is the issue of whether to use <b>virtual</b> or <b>physical</b> addresses to access the SRAM cache. Although a detailed discussion of the trade-offs is beyond our scope here, <i>most systems opt for physical addressing</i>. With physical addressing, it is straightforward for <b>multiple processes to have blocks in the cache at the same time</b> and to <b>share blocks from the same virtual pages</b>. Further, the cache does not have to deal with protection issues, because access rights are checked as part of the address translation process.</p>
+<p>Figure above shows how a physically addressed cache might be integrated with virtual memory. <b>The main idea is that the address translation occurs before the cache lookup.</b> Notice that page table entries can be cached, just like any other data words.</p>
+<h4 id="TLB">TLB</h4>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>如果直接物理寻址，只需要访存一次：即发送物理地址给主存，主存返回相应位置数据内容；</p>
+</li>
+<li class="lvl-2">
+<p>如果使用虚拟寻址，访存次数会至少增加一次：</p>
+<ul class="lvl-2">
+<li class="lvl-4">
+<p>先发送页表项地址，主存第一次返回的是页表项内容（也就是PPN）；</p>
+</li>
+<li class="lvl-4">
+<p>如果页命中：再根据PPN生成PA，主存第二次返回实际的数据；</p>
+<p>如果页不命中：还需要请求调页后重新再来一次。</p>
+</li>
+</ul>
+</li>
+</ul>
+<p>显然，虽然局部性原理保证了页式虚拟存储的基本效率，但是额外引入的访存次数仍然有优化的空间。所以在MMU硬件中多引入一级关于页表的缓存，即TLB（Translation look-aside Buffer）。</p>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>TLB的内容：顾名思义，显然TLB中的内容<b>只关注地址翻译部分</b>，也就是<b>只保存页表（项）</b>。</p>
+</li>
+<li class="lvl-2">
+<p>TLB通常为相联存储器，采用组相联的方式组织。地址翻译如下图；</p>
+</li>
+</ul>
+<img src="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303191053752.png" srcset="/img/loading.gif" lazyload alt="image-20230319105326637" style="zoom:50%;" />
+<p>显然，局部性保证命中率的前提下，第一次请求页表项的访存可以由TLB来负责，大大减少访存带来的额外开销。</p>
+<blockquote>
+<p><strong>相联 Associated</strong></p>
+<p>概念在组成原理已经了解过，相联根据其英文名字就可以理解成关联：</p>
+<ul class="lvl-1">
+<li class="lvl-2">
+<p>全相联：虚拟地址 与 物理存储中的 <b>全部内容</b>  均相关联，意味着其可能在任意的位置；</p>
+</li>
+<li class="lvl-2">
+<p>$M$路组相联：虚拟地址 与 物理存储中的 <b>大小为 $M$ 的一组空间 </b> 相关联，其可能在组内 $M$ 个位置中的任意一个；</p>
+<p>组相联通常意味着该相联存储器可以<b>并行</b> $M$ 路进行 <code>tag</code> 位的比对。</p>
+</li>
+<li class="lvl-2">
+<p>直接映射：即 1 路组相联，每一个虚拟地址与一个确定的物理空间相对应。</p>
+</li>
+</ul>
+</blockquote>
+<h4 id="多级页表-Multi-Level-Page-Table">多级页表 Multi-Level Page Table</h4>
+<p>页表本身占用很多空间，为了节省空间，引入多级页表。</p>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>一级页表中某一条 PTE 为空/未分配，则该二级页表都不会存在。由于进程虚拟地址空间可能有大量的未分配情况（考虑到写时复制的情况），这能带来巨大的空间节约。</p>
+</li>
+<li class="lvl-2">
+<p>只有一级页表总是需要在主存中，其他的可以在需要的时候按需调整。</p>
+</li>
+</ul>
+<p>值得注意的是，如果所有页都已分配的情况下，多级页表占用的空间并不会减少。而且多级页表在时间方面由于多级意味着多次访存，效率反倒是降低的。</p>
+<img src="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303191106599.png" srcset="/img/loading.gif" lazyload alt="image-20230319110650542" style="zoom:50%;" />
+<blockquote>
+<p>整体流程：CPU -&gt; MMU -&gt; TLB -&gt; L1 Cache -&gt; Physical Memory -&gt; Disk</p>
+<p>Intel Core i7 + 64位Linux实现细节见书。</p>
+</blockquote>
+<h3 id="内存映射-Memory-Mapping">内存映射 Memory Mapping</h3>
+<img src="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303191217195.png" srcset="/img/loading.gif" lazyload alt="image-20230319121746125" style="zoom:50%;" />
+<p>虚拟内存的映射机制，支持了许多其他机制的实现：</p>
+<h4 id="共享对象">共享对象</h4>
+<img src="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303191221665.png" srcset="/img/loading.gif" lazyload alt="image-20230319122143600" style="zoom:50%;" />
+<h4 id="写时复制">写时复制</h4>
+<img src="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303191221970.png" srcset="/img/loading.gif" lazyload alt="image-20230319122135894" style="zoom:50%;" />
+<ul class="lvl-0">
+<li class="lvl-2">
+<p><code>fork</code></p>
+</li>
+<li class="lvl-2">
+<p><code>execve</code></p>
+</li>
+<li class="lvl-2">
+<p><code>mmap</code></p>
+</li>
+<li class="lvl-2">
+<p><code>munmap</code></p>
+</li>
+</ul>
+<h2 id="动态内存分配-Dynamic-Memory-Allocation">动态内存分配 Dynamic Memory Allocation</h2>
+<blockquote>
+<p><strong>为什么要使用动态内存分配</strong>？</p>
+<p>经常直到程序实际运行时，我们才知道某些数据结构的大小。</p>
+</blockquote>
+<h3 id="分配器-Allocator">分配器 Allocator</h3>
+<h4 id="堆-Heap-3">堆 Heap</h4>
+<p>动态分配器维护的是虚拟存储空间中的堆。</p>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>位置：紧接在<code>.bss</code>上，向上增长；</p>
+</li>
+<li class="lvl-2">
+<p><code>brk</code>：内核为每个进程维护一个堆顶指针<code>brk</code>；</p>
+</li>
+</ul>
+<img src="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303191511394.png" srcset="/img/loading.gif" lazyload alt="image-20230319151144340" style="zoom:50%;" />
+<h4 id="块-Block">块 Block</h4>
+<p>Allocator maintains heap as collection of variable sized <b>blocks</b> (a contiguous chunk of virtual memory), which are  either <i>allocated</i> or <i>free</i>.</p>
+<h4 id="两种风格-Two-Basic-Styles">两种风格 Two Basic Styles</h4>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p><i>Explicit Allocators</i>: <code>malloc</code>, <code>free</code> in C, <code>new</code>, <code>delete</code> in C++;</p>
+</li>
+<li class="lvl-2">
+<p><i>Implicit Allocators</i>: <i>Garbage collectors</i> take charge of freeing unused allocated blocks.</p>
+</li>
+</ul>
+<h3 id="malloc-free">malloc &amp; free</h3>
+<h4 id="malloc">malloc</h4>
+<img src="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303191510408.png" srcset="/img/loading.gif" lazyload alt="image-20230319151004338" style="zoom:50%;" />
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>正确分配时：返回值为<code>void*</code>类型内存指针，指向大小<b>至少</b>为<code>size</code>的内存块（可以存放任意类型）。除非<code>size == 0</code>，则返回<code>nullptr</code>。</p>
+<p>“至少”是因为对齐（alignment）。对齐依赖于编译器工作模式：</p>
+<ul class="lvl-2">
+<li class="lvl-4">
+<p>32位模式（<code>gcc -m32</code>）：对齐至8的倍数；</p>
+</li>
+<li class="lvl-4">
+<p>64位模式（默认）：对齐至16的倍数。</p>
+</li>
+</ul>
+</li>
+<li class="lvl-2">
+<p>失败：返回<code>nullptr</code>，并设置<code>errno</code>。</p>
+</li>
+</ul>
+<h4 id="free">free</h4>
+<img src="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303191510857.png" srcset="/img/loading.gif" lazyload alt="image-20230319151049815" style="zoom:50%;" />
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>唯一的要求：<code>ptr</code> must come from a previous call to <code>malloc</code>, <code>realloc</code> or <code>calloc</code>.</p>
+</li>
+<li class="lvl-2">
+<p>无返回值。可能会引发一些潜在不易发现的错误。</p>
+</li>
+</ul>
+<h4 id="其他-4">其他</h4>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p><code>calloc</code>：对分配的地址空间会进行<b>初始化（为0）</b>，是一个基于<code>malloc</code>的 wrapper。</p>
+<p>这意味着<code>malloc</code>是不会对返回的内存进行初始化的。</p>
+</li>
+<li class="lvl-2">
+<p><code>realloc</code>：改变一个已经分配的块的大小。</p>
+</li>
+<li class="lvl-2">
+<p><code>sbrk</code>：Used <i>internally</i> by allocators (<code>malloc</code>, <code>free</code>) to grow or shrink the heap.</p>
+<p>通过将内核的<code>brk</code>指针增加<code>incr</code>来操作对的大小（grow or shrink）。</p>
+<img src="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303191510695.png" srcset="/img/loading.gif" lazyload alt="image-20230319151026652" style="zoom:50%;" />
+<ul class="lvl-2">
+<li class="lvl-4">
+<p>如果成功，返回<code>brk</code>的旧值；如果<code>incr == 0</code>，则返回<code>brk</code>当前值。</p>
+<p>可以理解为返回新分配的地址的开头，结尾是新的<code>brk</code>；</p>
+</li>
+<li class="lvl-4">
+<p>如果错误：返回<code>-1</code>，并将<code>errno</code>设置为<code>ENOMEM</code>。</p>
+</li>
+<li class="lvl-4">
+<p><code>incr</code>可以接收负值。值得注意的是堆是向上增长，即扩展是指针增大，收缩时指针减小，和栈正好相反。</p>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="显式分配器-Explicit-Allocator">显式分配器 Explicit Allocator</h3>
+<h4 id="要求-Requirements">要求 Requirements</h4>
+<h5 id="1-能处理任意的请求序列">1 能处理任意的请求序列</h5>
+<p>Can issue arbitrary sequence of <code>malloc</code> and <code>free</code> requests</p>
+<h5 id="2-立即响应请求">2 立即响应请求</h5>
+<p>Must respond immediately to requests. No <i>reorder</i> or <i>buffer</i>.<br>
+这意味着不能重新排列或者缓冲</p>
+<h5 id="3-对齐">3 对齐</h5>
+<p>Must align blocks so they satisfy all alignment requirements</p>
+<h5 id="4-不能修改已经分配的块">4 不能修改已经分配的块</h5>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>Can <i>manipulate</i> and <i>modify</i> only free memory.</p>
+</li>
+<li class="lvl-2">
+<p>Can’t <i>move</i> the allocated blocks once they are “<code>malloc'd</code>”.</p>
+<p>这意味着紧凑 / 压缩（compaction）已分配块之类的操作是不可行的。这就代表空间利用率必须在分配和回收策略上进行优化，一旦分配后就不可变更。</p>
+</li>
+</ul>
+<h4 id="目标-Performance-Goals">目标 Performance Goals</h4>
+<h5 id="1-Throughput-吞吐量">1 Throughput 吞吐量</h5>
+<p>单位时间内完成的请求数。要注意请求都必须立刻响应，所以不能调节顺序来降低整体周转率（当然这对整体吞吐量倒也没有帮助）。</p>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>分配请求：worst-case running time is <i>linear</i> in <i>the number of free blocks</i>.</p>
+<p>效率与空闲块数成正比；</p>
+</li>
+<li class="lvl-2">
+<p>释放请求：运行时间为常数。</p>
+</li>
+</ul>
+<h5 id="2-Peak-Memory-Utilization">2 Peak Memory Utilization</h5>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>Payload $p$: 即一次分配请求返回的块中有效载荷的部分。</p>
+<p>返回的块可能因为管理信息以及对齐等原因，总是会比申请的有效载荷大小要大一些。从空间效率来看我们当然希望其尽可能接近。</p>
+</li>
+<li class="lvl-2">
+<p>Aggregate payload $P_k$: 前 $k$ 次操作的载荷总和。</p>
+</li>
+<li class="lvl-2">
+<p>Current heap size $H_k$: Assume $H_k$ is monotonically nondecreasing.</p>
+<p>因为假定了其单调非递减，其实代表的是整个请求序列过程中堆大小的最大值/峰值。</p>
+</li>
+<li class="lvl-2">
+<p>Peak memory utilization after $k + 1$ requests<br>
+$$<br>
+U_k = \frac{max_{i \leq k}P_i}{H_k}$<br>
+$$</p>
+</li>
+</ul>
+<p>上述两个目标是相互冲突、相互牵制的。重点就是在两个目标之间找到一个适当的平衡。</p>
+<h4 id="实现上需要注意的问题-Implementation-Issues">实现上需要注意的问题 Implementation Issues</h4>
+<p>要保证合理的实现，还要再上述两个性能指标之间找到一个适当的平衡，每种分配器的实现方式都要考虑以下这些问题：</p>
+<h5 id="碎片-Fragmentation">碎片 Fragmentation</h5>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p><b>Internal Fragmentation</b></p>
+</li>
+</ul>
+<img src="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303191622834.png" srcset="/img/loading.gif" lazyload alt="image-20230319162206762" style="zoom:33%;" />
+<ul class="lvl-0">
+<li class="lvl-2">
+<p><b>External Fragmentation</b></p>
+</li>
+</ul>
+<img src="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303191622590.png" srcset="/img/loading.gif" lazyload alt="image-20230319162237518" style="zoom: 33%;" />
+<h5 id="块的释放-Free">块的释放 Free</h5>
+<p><code>free</code>函数的参数只需要一个指针，这种情况下如何知道要释放的块的大小？</p>
+<p>显然，块内需要增加额外的信息来记录块的大小：</p>
+<img src="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303192158647.png" srcset="/img/loading.gif" lazyload alt="image-20230319215846528" style="zoom:33%;" />
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>任何的分配器都需要一些数据结构，因为有效载荷前会记录一些块相关的信息（比如这里的大小），这个位置通常被称为 header field 或者 header；大多数分配器都将这些信息嵌入了块内。</p>
+</li>
+<li class="lvl-2">
+<p>显然会增加地址空间消耗，但不可避免。</p>
+</li>
+</ul>
+<h5 id="空闲块组织-Free-Block-Organization">空闲块组织 Free Block Organization</h5>
+<p>如何记录空闲块？</p>
+<ol>
+<li class="lvl-3">
+<p><b>Implicit List 隐式空闲链表</b></p>
+<p>使用长度来按照位置顺序组织起所有空闲块。</p>
+<img src="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303192200273.png" srcset="/img/loading.gif" lazyload alt="image-20230319220031225" style="zoom:33%;" />
+</li>
+<li class="lvl-3">
+<p><b>Explicit List 显式空闲链表</b></p>
+<p>显式的像链表一样记录指针来串联。</p>
+<ul class="lvl-2">
+<li class="lvl-5">
+<p>可以不按照地址先后顺序来阻止；</p>
+</li>
+<li class="lvl-5">
+<p>指针的存在意味着多消耗一些空间。</p>
+</li>
+</ul>
+<img src="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303192205880.png" srcset="/img/loading.gif" lazyload style="zoom: 33%;" />
+</li>
+<li class="lvl-3">
+<p><b>Segregated Free List 分离空闲链表</b></p>
+<p>不同尺寸的块设置不同的链表来组织。</p>
+</li>
+<li class="lvl-3">
+<p><b>Blocks Sorted by Size 按照大小顺序组织空闲块</b></p>
+<p>有了大小顺序显然能在很短时间内实现最优适配（Best Fit）；但是同时也要考虑组织上的开销，可以使用平衡树（比如红黑树）来实现。</p>
+</li>
+</ol>
+<h5 id="分配策略-Placement-Policy">分配策略 Placement Policy</h5>
+<p>多个满足大小要求空闲的块，选择哪个进行分配？</p>
+<h5 id="分割策略-Splitting">分割策略 Splitting</h5>
+<p>一个空闲块分配一部分之后，剩下的部分怎么处理？</p>
+<h5 id="合并-Coalescing">合并 Coalescing</h5>
+<p>一个块被释放后，如何重新加入到空闲块的集合中？如何与其相邻的空闲块合并组织？</p>
+<blockquote>
+<p>以下的内容均有以下假设：</p>
+<ul class="lvl-1">
+<li class="lvl-2">字为4B，即32位</li>
+<li class="lvl-2">寻址空间为32位</li>
+<li class="lvl-2">对齐：双字对齐，即8B / 64bits对齐。</li>
+</ul>
+</blockquote>
+<h3 id="隐式空闲链表-Implicit-Free-List">隐式空闲链表 Implicit Free List</h3>
+<h4 id="块的基本结构">块的基本结构</h4>
+<img src="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303192212480.png" srcset="/img/loading.gif" lazyload alt="image-20230319221253421" style="zoom:50%;" />
+<p>块的结构上：</p>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>头部 Header：</p>
+<p>因为双字对齐，所以大小的永远是8的倍数，低三位必定是0，故将最低位作为分配位（a/f位）。</p>
+<p>Header的实际值即为 <code>块的长度 | a/f</code>。 读取块大小时要注意屏蔽最低位。</p>
+</li>
+<li class="lvl-2">
+<p>有效载荷 Payload：实际的有效数据部分</p>
+</li>
+<li class="lvl-2">
+<p>填充 Padding：填充是可选的，通常会因为以下几个原因存在：</p>
+<ul class="lvl-2">
+<li class="lvl-4">分配器的分配策略，用于减少外部碎片等；</li>
+<li class="lvl-4">满足对齐要求。</li>
+</ul>
+</li>
+</ul>
+<h4 id="边界标记-Boundary-Tag">边界标记 Boundary Tag</h4>
+<p>考虑到释放时的合并问题，只记录 Header 只能确定下一个块的状态（相当于一个隐式单向链表），无法找到前一块的头部（不知道前一块的大小）。但实际合并情况显然还要考虑前面的块的状态，故再引入一个 Footer（相当于变成隐式双向链表）。</p>
+<img src="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303200004150.png" srcset="/img/loading.gif" lazyload alt="image-20230320000446080" style="zoom:50%;" />
+<img src="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303200005914.png" srcset="/img/loading.gif" lazyload alt="image-20230320000508864" style="zoom:50%;" />
+<p>这种情况下，空间上的额外开销更多，对于小块显然不是很友好。综合对齐要求和块的格式，最小块大小应该为8B（只包含头尾部，如果加载器允许有效载荷为空）。</p>
+<blockquote>
+<p>脚部优化：只有前一块处于空闲时，才会用到当前块的脚部。</p>
+<p>那么我们进行如下原则的优化：将前一块的已分配位（a/f位）存放于当前块头部低位多出来的那两位中。</p>
+<ul class="lvl-1">
+<li class="lvl-2">
+<p>对于已分配块：去除其脚部。</p>
+</li>
+<li class="lvl-2">
+<p>对于空闲块：仍然保留脚部。</p>
+</li>
+</ul>
+<p>可以分析：</p>
+<p>如果当前块是已分配块、后面的块是空闲块且想要查看是否需要向前合并，查看自己的头部，发现已分配，无需合并也用不到脚部。</p>
+</blockquote>
+<h4 id="边界情况-Edge-Condition">边界情况 Edge Condition</h4>
+<p>为了简化边界处理情况（在头、尾处进行分配与释放），我们在首尾增设了如图所示特殊的块：</p>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>填充字</p>
+</li>
+<li class="lvl-2">
+<p>序言块 Prologue Block：8字节已分配块，仅包含一个头部一个尾部。</p>
+<ul class="lvl-2">
+<li class="lvl-4">初始化分配器时创建，永不释放。</li>
+<li class="lvl-4">分配器维护一个私有的全局指针<code>heap_listp</code>来指向序言块（指向下一块也可以）。</li>
+</ul>
+</li>
+<li class="lvl-2">
+<p>结尾块 Epilogue Block：大小为0，仅一个头部，标识为已分配。</p>
+</li>
+</ul>
+<p><img src="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303201604708.png" srcset="/img/loading.gif" lazyload alt="image-20230320160416642"></p>
+<h4 id="分配与分割-Placement-and-Splitting">分配与分割 Placement and Splitting</h4>
+<h5 id="分配">分配</h5>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>效率：需要从头向后搜索大小合适的空闲块，效率显然为 $O(n)$，与系统中的总块数成线性关系。</p>
+</li>
+<li class="lvl-2">
+<p>策略：</p>
+<ol>
+<li class="lvl-5">
+<p><b>首次适配 First Fit</b>：每次都从头开始寻找；</p>
+<ul class="lvl-4">
+<li class="lvl-7">速度上：大的空闲块都保留在链表的后面，增加了对大块的搜索时间；</li>
+<li class="lvl-7">空间上：前面可能会出现很多小的碎片；</li>
+</ul>
+</li>
+<li class="lvl-5">
+<p><b>下一次适配 Next Fit</b>：从上一次结束的位置寻找；</p>
+<p>符合直觉：相邻的分配操作很可能相似，上次搜索命中的位置剩下的块很可能还会满足命中；</p>
+<ul class="lvl-4">
+<li class="lvl-7">
+<p>速度上：比首次适配明显快一些；</p>
+</li>
+<li class="lvl-7">
+<p>空间上：某些研究表明，空间利用率反倒不如首次适配。</p>
+</li>
+</ul>
+</li>
+<li class="lvl-5">
+<p><b>最佳适配 Best Fit</b>：选择符合大小要求的最小块；</p>
+<ul class="lvl-4">
+<li class="lvl-7">速度上：每次都必须要全部遍历，相对会慢一些；</li>
+<li class="lvl-7">空间上：本身就是牺牲速度提升空间效率。空间上比上述两种都要好。</li>
+</ul>
+</li>
+</ol>
+</li>
+</ul>
+<h5 id="分割">分割</h5>
+<p>空闲块可能会比申请的块要大，所以是否进行分割需要综合需求考虑：</p>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>不分割，整个分配：实现简单，速度快，造成大量内部碎片；</p>
+<p>效率：$O(1)$ 常数时间内完成，仅需要修改目标空闲块的头尾部中的 a/f 位即可。</p>
+</li>
+<li class="lvl-2">
+<p>分割空闲块：更新设置头部尾部信息即可；</p>
+<p>效率：$O(1)$ 常数时间内完成：修改分配部分的头部 + 增加分配部分的尾部 + 增加剩余空闲部分的头部。</p>
+</li>
+</ul>
+<h4 id="释放与合并-Free-and-Coalescing">释放与合并 Free and Coalescing</h4>
+<h5 id="释放">释放</h5>
+<p>释放操作：仅需修改头部尾部的分配位即可。但释放空闲块后，其前后可能会有其他的空闲块。如果不做合并处理，可能会导致假碎片（Fault Fragmentation）。</p>
+<h5 id="合并">合并</h5>
+<p>任何分配器都要对相邻空闲块进行合并。合并的过程通过头部和尾部向两侧检查即可。一个重要的策略决定是何时执行合并：</p>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p><b>立即合并 Immediate Coalescing</b>：每一个块被释放时，就合并所有的相邻块，常数时间内就能完成操作；</p>
+<p>但是！可能会产生<b>抖动（thrashing）</b>，即块会反复进行合并后再分割。</p>
+</li>
+<li class="lvl-2">
+<p><b>推迟合并 Deferred Coalescing</b>：等到某个请求分配失败，再扫描整个堆对相邻的空闲块统一进行合并。</p>
+<p>快速的分配器通常会选择某种形式的推迟合并（避免抖动等带来的性能损失）。</p>
+</li>
+</ul>
+<h4 id="申请更多的堆内存-Getting-Additional-Heap-Memory">申请更多的堆内存 Getting Additional Heap Memory</h4>
+<p>分配器搜索了整个链表发现都无法满足要求，即向内核申请更大的堆空闲块（通过调用<code>sbrk</code>）。分配器将返回的额外内存转换成一个大的空闲块并插入到空闲链表中。</p>
+<blockquote>
+<p>实例见书和malloc lab。</p>
+</blockquote>
+<h3 id="显式空闲链表-Explicit-Free-List">显式空闲链表 Explicit Free List</h3>
+<p>仅组织空闲块。因为空闲块的载荷部分显然没有意义，所以利用这部分增加两个显式指针（<code>pred</code>与<code>succ</code>）将所有空闲块组织成一个显式的双向链表。显然这在带来时间效率提升的同时，提升了最小块的大小，潜在的提高了内部碎片的程度。</p>
+<h4 id="块的基本结构-2">块的基本结构</h4>
+<p>仍然要保留头部和尾部，方便空闲块的合并等操作。</p>
+<img src="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303201451759.png" srcset="/img/loading.gif" lazyload alt="image-20230320145129637" style="zoom:50%;" />
+<p>整个链在逻辑上是一个双向的线性链表，实际组织上的顺序取决于排序策略。</p>
+<img src="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303202038691.png" srcset="/img/loading.gif" lazyload alt="image-20230320203843582" style="zoom: 33%;" />
+<h4 id="操作的效率">操作的效率</h4>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>分配与分割：只需要扫描空闲块，从块总数的线性时间降低至<b>空闲块数量的线性时间</b>。</p>
+<p>如果大部分块是已分配状态，效率会高很多。</p>
+<img src="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303202039580.png" srcset="/img/loading.gif" lazyload alt="image-20230320203946478" style="zoom: 33%;" />
+</li>
+<li class="lvl-2">
+<p>释放与合并：即向链表中插入新的空闲块，<b>效率取决于链表的排序策略</b>。</p>
+</li>
+</ul>
+<h4 id="排序策略">排序策略</h4>
+<ol>
+<li class="lvl-3">
+<p><b>后进先出 LIFO</b></p>
+<ul class="lvl-2">
+<li class="lvl-5">Pro: 释放能够常数时间内完成，只需要在链表头部插入即可。合并操作如果存在边界标记也能在常数时间内完成。</li>
+<li class="lvl-5">Con: 研究表明，碎片问题要比地址顺序排序的方法要更严重。</li>
+</ul>
+<img src="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303202044754.png" srcset="/img/loading.gif" lazyload alt="image-20230320204458637" style="zoom:33%;" />
+<img src="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303202045786.png" srcset="/img/loading.gif" lazyload alt="image-20230320204528658" style="zoom: 33%;" />
+<img src="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303202046161.png" srcset="/img/loading.gif" lazyload alt="image-20230320204617034" style="zoom:33%;" />
+<img src="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303202046495.png" srcset="/img/loading.gif" lazyload alt="image-20230320204644369" style="zoom:33%;" />
+</li>
+<li class="lvl-3">
+<p><b>照地址从低到高的顺序</b></p>
+<ul class="lvl-2">
+<li class="lvl-5">Pro: 研究表明，按照地址排序的首次适配比后进先出的内存利用率更高，接近最佳适配。</li>
+<li class="lvl-5">Con: 每次释放插入新节点都要扫描空闲链表，线性时间确定插入位置。</li>
+</ul>
+</li>
+</ol>
+<h3 id="分离空闲链表-Segregated-Free-List">分离空闲链表 Segregated Free List</h3>
+<p>经过优化后，分配时间已经从总块数的线性降低至空闲块的线性关系了。一种进一步提升分配效率的方法是<b>分离存储（segregated storage）</b></p>
+<ol>
+<li class="lvl-3">
+<p><b>简单分离存储 Simple Segregated Storage</b></p>
+</li>
+<li class="lvl-3">
+<p><b>分离适配 Segregated Fit</b></p>
+</li>
+<li class="lvl-3">
+<p><b>伙伴系统 Buddy System</b></p>
+</li>
+</ol>
+<blockquote>
+<p>磁盘上的交换区 Swap Space</p>
+</blockquote>
+<h2 id="垃圾收集-Garbage-Collection">垃圾收集 Garbage Collection</h2>
+<h3 id="可达图-Reachability-Graph">可达图 Reachability Graph</h3>
+<p><img src="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303202115924.png" srcset="/img/loading.gif" lazyload alt="image-20230320211511856"></p>
+<h3 id="Mark-Sweep">Mark &amp; Sweep</h3>
+<h2 id="C程序中常见的与内存相关的错误">C程序中常见的与内存相关的错误</h2>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/15-213/" class="category-chain-item">15-213</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/15-213/Operating-System/" class="category-chain-item">Operating System</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+</div>
+
+
+              
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2022/03/20/15-213-Network-Programming/" title="15-213-Network-Programming">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">15-213-Network-Programming</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2022/02/23/%E5%8C%BA%E9%97%B4%E4%BF%A1%E6%81%AF%E7%9A%84%E7%BB%B4%E6%8A%A4%E4%B8%8E%E6%9F%A5%E8%AF%A2/" title="区间信息的维护与查询">
+                        <span class="hidden-mobile">区间信息的维护与查询</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>2022</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>TAO1st</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      headingSelector : CONFIG.toc.headingSelector || 'h1,h2,h3,h4,h5,h6',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      collapseDepth   : CONFIG.toc.collapseDepth || 0,
+      scrollSmooth    : true,
+      headingsOffset  : -boardTop
+    });
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.10/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.1/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

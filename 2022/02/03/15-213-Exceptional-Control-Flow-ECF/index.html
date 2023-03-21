@@ -47,9 +47,28 @@
 <meta property="og:image" content="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303161118568.png">
 <meta property="og:image" content="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303161118391.png">
 <meta property="og:image" content="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303161119135.png">
+<meta property="og:image" content="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303161535877.png">
+<meta property="og:image" content="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303161715277.png">
+<meta property="og:image" content="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303161621752.png">
+<meta property="og:image" content="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303161621801.png">
+<meta property="og:image" content="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303161715277.png">
+<meta property="og:image" content="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303161806671.png">
+<meta property="og:image" content="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303161739832.png">
+<meta property="og:image" content="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303161739376.png">
+<meta property="og:image" content="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303171104181.png">
+<meta property="og:image" content="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303171630705.png">
+<meta property="og:image" content="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303171631245.png">
+<meta property="og:image" content="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303171110207.png">
+<meta property="og:image" content="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303171311067.png">
+<meta property="og:image" content="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303161632546.png">
+<meta property="og:image" content="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303171547755.png">
+<meta property="og:image" content="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303172112454.png">
 <meta property="article:published_time" content="2022-02-03T13:08:54.000Z">
-<meta property="article:modified_time" content="2023-03-16T06:47:51.425Z">
+<meta property="article:modified_time" content="2023-03-17T15:22:27.409Z">
 <meta property="article:author" content="tao1st">
+<meta property="article:tag" content="Exception">
+<meta property="article:tag" content="Process in Linux">
+<meta property="article:tag" content="Signal in Linux">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303142146280.png">
   
@@ -231,7 +250,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          8.3k 字
+          17k 字
         
       </span>
     
@@ -242,7 +261,7 @@
         
         
         
-          70 分钟
+          146 分钟
         
       </span>
     
@@ -643,7 +662,30 @@ This option is useful in those cases where you want to continue doing useful wor
 </li>
 <li class="lvl-2">
 <p><b>检查已回收子进程的退出状态</b>: 如果<code>statusp</code>指针非空，那么<code>waitpid</code>会在<code>statusp</code>指向的值（即<code>status</code>）中放上导致子进程返回的状态信息。</p>
-<p><code>wait.h</code>头文件中定义了解释返回的<code>status</code>参数的宏。</p>
+<p><code>wait.h</code>头文件中定义了解释返回的<code>status</code>参数的宏：</p>
+<ul class="lvl-2">
+<li class="lvl-4">
+<p>WIFEXITED(status). Returns true if the child terminated normally, via a call to exit or a return.</p>
+</li>
+<li class="lvl-4">
+<p>WEXITSTATUS(status). Returns the exit status of a normally terminated child. This status is only defined if WIFEXITED() returned true.</p>
+</li>
+<li class="lvl-4">
+<p>WIFSIGNALED(status). Returns true if the child process terminated because of a signal that was not caught.</p>
+</li>
+<li class="lvl-4">
+<p>WTERMSIG(status). Returns the number of the signal that caused the child process to terminate. This status is only defined if WIFSIGNALED() returned true.</p>
+</li>
+<li class="lvl-4">
+<p>WIFSTOPPED(status). Returns true if the child that caused the return is currently stopped.</p>
+</li>
+<li class="lvl-4">
+<p>WSTOPSIG(status). Returns the number of the signal that caused the child to stop. This status is only defined if WIFSTOPPED() returned true.</p>
+</li>
+<li class="lvl-4">
+<p>WIFCONTINUED(status). Returns true if the child process was restarted by receipt of a SIGCONT signal.</p>
+</li>
+</ul>
 </li>
 <li class="lvl-2">
 <p><b>错误条件（Error Conditions）</b>:</p>
@@ -738,6 +780,366 @@ This option is useful in those cases where you want to continue doing useful wor
 <img src="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303161119135.png" srcset="/img/loading.gif" lazyload alt="image-20230316111918068" style="zoom:50%;" />
 </blockquote>
 <h2 id="信号-Signal">信号 Signal</h2>
+<h3 id="概念-Concepts">概念 Concepts</h3>
+<h4 id="信号-Signal-2">信号 Signal</h4>
+<p>A <i>signal</i> is a <i>small message</i> that notifies a process that an event of some type has occurred in the system.</p>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>Sent from the <i>kernel</i> to a process;</p>
+</li>
+<li class="lvl-2">
+<p>Only information in a signal is its <i>ID</i> and the fact that it arrived.</p>
+</li>
+</ul>
+<img src="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303161535877.png" srcset="/img/loading.gif" lazyload alt="image-20230316153506717" style="zoom:50%;" />
+<blockquote>
+<p>a.  dump core是一个历史术语，就是把代码和数据内存段的映像写到磁盘上；<br>
+b. 该信号既不能被捕获，也不能被忽略；</p>
+</blockquote>
+<h4 id="进程组-Process-Group">进程组 Process Group</h4>
+<p>进程组ID为正整数。默认情况下，子进程与父进程同属一个进程组。</p>
+<img src="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303161715277.png" srcset="/img/loading.gif" lazyload alt="image-20230316171519191" style="zoom:50%;" />
+<p>获取当前进程所在的组ID:</p>
+<img src="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303161621752.png" srcset="/img/loading.gif" lazyload alt="image-20230316162122699" style="zoom:50%;" />
+<p>改变指定进程 $pid$ 到其他组 $pgid$ 中：</p>
+<img src="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303161621801.png" srcset="/img/loading.gif" lazyload alt="image-20230316162147749" style="zoom:50%;" />
+<ul class="lvl-0">
+<li class="lvl-2">
+<p><code>pid = 0</code>: 使用当前调用者的PID；</p>
+</li>
+<li class="lvl-2">
+<p><code>pgid = 0</code>: 使用<code>pid</code>指定的<b>进程的PID</b>作为进程组ID。</p>
+<p>例如：进程15213调用<code>setpgid(0, 0)</code>，即创建一个组号为15213的新进程组，并将进程15213本身加入。</p>
+</li>
+</ul>
+<h4 id="待处理的信号-Pending-Signal">待处理的信号 Pending Signal</h4>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>发出但还没被接收，即为Pending状态;</p>
+</li>
+<li class="lvl-2">
+<p><b><i>Signals are not queued.</i></b></p>
+<p>There can be at most one pending signal of any particular type. If a process has a pending signal of type k, then subsequent signal of type k that are sent to that process are <i>discarded</i>.</p>
+</li>
+<li class="lvl-2">
+<p>A pending signal is received at most <i>once</i>. 一个待处理信号只能被接收一次。</p>
+</li>
+</ul>
+<h4 id="信号掩码-位向量-Signal-Mask-Bit-Vector">信号掩码 / 位向量 Signal Mask / Bit Vector</h4>
+<p>内核为每个进程维护：</p>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p><code>pending</code> 位向量：待处理信号的集合；</p>
+<ul class="lvl-2">
+<li class="lvl-4">Kernel <i>sets</i> bit $k$ in <code>pending</code> when a signal of type $k$ is delivered;</li>
+<li class="lvl-4">Kernel <i>clears</i> bit $k$ in <code>pending</code> when a signal of type $k$ is received.</li>
+</ul>
+</li>
+<li class="lvl-2">
+<p><code>blocked</code> 位向量：被阻塞的信号的集合。</p>
+<ul class="lvl-2">
+<li class="lvl-4">Can be set and cleared by using the <code>sigprocmask</code> function.</li>
+</ul>
+</li>
+</ul>
+<h4 id="作业-Job">作业 Job</h4>
+<p>Unix引入作业的概念来表示<b>一条命令行</b>中求值创建的进程。任何时刻下，至多只有一个前台作业和若干个后台作业。注意一个作业不代表一个进程，作业可以表示为若干个进程或者一个进程组。</p>
+<img src="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303161715277.png" srcset="/img/loading.gif" lazyload alt="image-20230316171519191" style="zoom:50%;" />
+<h3 id="发送信号-Sending-a-signal">发送信号 Sending a signal</h3>
+<p>Kernels <strong>sends (delivers)</strong> a signal to a <i> destination process</i> by updating some <b>state</b> in the <b>context</b> of the destination process.<br>
+发送信号即更新目标进程<b>上下文</b>中的一些<b>状态</b>。</p>
+<h4 id="1-系统事件导致信号发送-System-Event">1 系统事件导致信号发送 System Event</h4>
+<p>内核检测到一些系统事件，比如：</p>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>divide-by-zero： <code>SIGFPE</code></p>
+</li>
+<li class="lvl-2">
+<p>子进程结束：<code>SIGCHLD</code></p>
+</li>
+</ul>
+<h4 id="2-用-bin-kill程序发送信号">2 用<code>/bin/kill</code>程序发送信号</h4>
+<p>Shell程序。向指定进程（组）发送指定信号。</p>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p><code>kill -9 15213</code>: 发送9号信号（<code>SIGKILL</code>）给进程15213；</p>
+</li>
+<li class="lvl-2">
+<p><code>kill -9 -15213</code>: 发送9号信号（<code>SIGKILL</code>）给进程组15213中的每一个进程。</p>
+</li>
+</ul>
+<h4 id="3-从键盘发送信号">3 从键盘发送信号</h4>
+<p>发给<b>前台进程组</b>中的每个进程。</p>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p><code>CTRL+C</code>：<code>SIGINT</code>  终止作业。</p>
+</li>
+<li class="lvl-2">
+<p><code>CTRL+Z</code>：<code>SIGSTP</code> 暂停/挂起（stop/suspend）前台作业。</p>
+</li>
+</ul>
+<img src="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303161806671.png" srcset="/img/loading.gif" lazyload alt="image-20230316180639538" style="zoom:33%;" />
+<h4 id="4-调用kill函数">4 调用<code>kill</code>函数</h4>
+<p>用户调用函数。发送信号给其他进程，包括自己。</p>
+<img src="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303161739832.png" srcset="/img/loading.gif" lazyload alt="image-20230316173900767" style="zoom:50%;" />
+<ul class="lvl-0">
+<li class="lvl-2">
+<p><code>pid &gt; 0</code>: 即目标进程PID。</p>
+</li>
+<li class="lvl-2">
+<p><code>pid = 0</code>: 调用进程所在进程组中的每个进程，包括调用者本身。</p>
+</li>
+<li class="lvl-2">
+<p><code>pid &lt; 0</code>: 进程组<code>|sig|</code>中的每个进程。</p>
+</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">pid_t</span> pid;<br><span class="hljs-keyword">if</span>((pid = Fork()) == <span class="hljs-number">0</span>) &#123;<br>    <span class="hljs-comment">// ... child behavior</span><br>    <span class="hljs-built_in">exit</span>(<span class="hljs-number">0</span>);<br>&#125;<br><br>Kill(pid, SIGKILL);<br></code></pre></td></tr></table></figure>
+<h4 id="5-调用alarm函向自身发送信号">5 调用<code>alarm</code>函向自身发送信号</h4>
+<p>闹钟：<code>secs</code>秒后发送一个<code>SIGALRM</code>给调用进程本身。<code>secs = 0</code>时不会调度安排新的闹钟；</p>
+<img src="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303161739376.png" srcset="/img/loading.gif" lazyload alt="image-20230316173924323" style="zoom:50%;" />
+<h3 id="接收信号-Receiving-a-Signal">接收信号 Receiving a Signal</h3>
+<h4 id="接收时机-Timing">接收时机 Timing</h4>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p><b>内核准备从异常控制流中返回用户态</b>，进程 $p$ 已经准备好接收控制；</p>
+<p>即，调度时触发信号的接收。由于用户态和内核态的切换是很频繁的，因而信号通常能很快地得到目标进程的响应，看起来就跟中断的效果一样。</p>
+</li>
+<li class="lvl-2">
+<p>返回前，内核检查进程 $p$ 的<b>信号等待集合（pending nonblocked signals set）</b>，<code>pnb = pending &amp; ~blocked</code>。</p>
+</li>
+<li class="lvl-2">
+<p><code>pnb == 0</code>: 将控制流返还给进程 $p$ ，回到用户态原控制流；</p>
+</li>
+<li class="lvl-2">
+<p><code>pnb != 0</code>: 即存在未处理的信号，强制进程进行处理：</p>
+<ul class="lvl-2">
+<li class="lvl-4">选择最小的非零位，强制进程接收并处理该信号；</li>
+<li class="lvl-4">对集合中所有非零位（所有待处理信号）重复上述处理过程；</li>
+<li class="lvl-4">控制流返还给进程 $p$ ，回到用户态原控制流。</li>
+</ul>
+</li>
+</ul>
+<h4 id="默认行为-Default-Action">默认行为 Default Action</h4>
+<p>进程接收到信号执行的默认行为，可见上面信号图中。默认行为是下面四种情况之一：</p>
+<ol>
+<li class="lvl-3">
+<p>The process <i>terminates</i>.</p>
+</li>
+<li class="lvl-3">
+<p>The process <i>terminates</i> and <i>dumps core</i>.</p>
+</li>
+<li class="lvl-3">
+<p>The process <i>stops (suspends)</i> until restarted by a <code>SIGCONT</code> signal.</p>
+</li>
+<li class="lvl-3">
+<p>The process <i>ignores</i> the signal.</p>
+</li>
+</ol>
+<h4 id="设置信号处理程序-Installing-Signal-Handlers">设置信号处理程序 Installing Signal Handlers</h4>
+<p>即修改进程接收到信号的默认行为（<code>SIGSTOP</code>和<code>SIGKILL</code>除外，默认行为不能被修改）。通过调用<code>signal</code>函数实现：</p>
+<img src="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303171104181.png" srcset="/img/loading.gif" lazyload alt="image-20230317110429075" style="zoom:50%;" />
+<ul class="lvl-0">
+<li class="lvl-2">
+<p><code>handler == SIG_IGN</code>: IGNORE 忽略该信号；</p>
+</li>
+<li class="lvl-2">
+<p><code>handler == SIG_DFL</code>: DEFAULT 恢复为默认行为；</p>
+</li>
+<li class="lvl-2">
+<p><code>handler</code>为传入的函数指针。该用户定义的函数即<b>信号处理程序（Signal Handlers）</b>。</p>
+<ul class="lvl-2">
+<li class="lvl-4">将处理程序地址传给<code>signal</code>函数从而修改默认行为，即为<strong>设置信号处理程序（installing signal handlers）</strong>;</li>
+<li class="lvl-4">对 signal handler 的调用称为 <strong>捕获信号（catching）</strong>；</li>
+<li class="lvl-4">执行 signal handler 称为 <strong>处理信号（handling）</strong>。</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">void</span> <span class="hljs-title function_">sigint_handler</span><span class="hljs-params">(<span class="hljs-type">int</span> sig)</span> <span class="hljs-comment">/* SIGINT handler */</span><br>&#123;<br>     <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;So you think you can stop the bomb with ctrl-c, do you?\n&quot;</span>);<br>     <span class="hljs-comment">// ... example from bomb lab</span><br>     <span class="hljs-built_in">exit</span>(<span class="hljs-number">0</span>);<br>&#125;<br><span class="hljs-type">int</span> <span class="hljs-title function_">main</span><span class="hljs-params">()</span><br>&#123;<br>     <span class="hljs-comment">/* Install the SIGINT handler */</span><br>     <span class="hljs-keyword">if</span> (signal(SIGINT, sigint_handler) == SIG_ERR)<br>     	unix_error(<span class="hljs-string">&quot;signal error&quot;</span>);<br>     <span class="hljs-comment">// 默认CTRL+C发送SIGINT会直接结束前台作业，此时修改后会输出想要输出的内容后再结束</span><br>    <br>     Pause();     <span class="hljs-comment">/* Wait for the receipt of a signal */</span><br>     <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">// Practice 8.7</span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;csapp.h&quot;</span></span><br><span class="hljs-type">void</span> <span class="hljs-title function_">signal_handler</span><span class="hljs-params">()</span> &#123;<br>    <span class="hljs-comment">// originally, SIGINT will terminate the job and won&#x27;t return</span><br>    <span class="hljs-keyword">return</span>;<br>&#125;<br><br><span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> <span class="hljs-title function_">snooze</span><span class="hljs-params">(<span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> secs)</span> &#123;<br>    <span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> remain = sleep(secs); 	 <span class="hljs-comment">// originally where the SIGINT end the process </span><br>    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;Slept for %d of %d secs.\n&quot;</span>, secs - remain, secs);<br>    <span class="hljs-keyword">return</span> remain;<br> &#125;<br><span class="hljs-type">int</span> <span class="hljs-title function_">main</span><span class="hljs-params">(<span class="hljs-type">int</span> argc, <span class="hljs-type">char</span>* argv[], <span class="hljs-type">char</span>* enpv[])</span> &#123;<br>    <span class="hljs-keyword">if</span>(signal(SIGINT, signal_handler) == SIG_ERR) &#123;<br>        unix_error(<span class="hljs-string">&quot;signal error&quot;</span>);<br>    &#125;<br>    <span class="hljs-keyword">if</span>(argc != <span class="hljs-number">2</span>) &#123;<br>        <span class="hljs-built_in">fprintf</span>(<span class="hljs-built_in">stderr</span>, <span class="hljs-string">&quot;usage: %s &lt;secs&gt;\n&quot;</span>, argv[<span class="hljs-number">0</span>]);<br>       <span class="hljs-built_in">exit</span>(<span class="hljs-number">0</span>);<br>   &#125;<br>   snooze(atoi(argv[<span class="hljs-number">1</span>]));<br>   <span class="hljs-built_in">exit</span>(<span class="hljs-number">0</span>);<br>&#125;<br></code></pre></td></tr></table></figure>
+<img src="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303171630705.png" srcset="/img/loading.gif" lazyload alt="image-20230317163057625" style="zoom:50%;" />
+<img src="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303171631245.png" srcset="/img/loading.gif" lazyload alt="image-20230317163115149" style="zoom:50%;" />
+<h4 id="嵌套信号处理-Nested-Signal-Handlers">嵌套信号处理 Nested Signal Handlers</h4>
+<p>信号处理程序可以被其他信号打断。</p>
+<img src="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303171110207.png" srcset="/img/loading.gif" lazyload alt="image-20230317111018145" style="zoom:50%;" />
+<h3 id="阻塞与解除阻塞信号-Blocking-and-Unblocking-Signals">阻塞与解除阻塞信号 Blocking and Unblocking Signals</h3>
+<h4 id="隐式阻塞-Implicit-Blocking-Mechanism">隐式阻塞 Implicit Blocking Mechanism</h4>
+<p><b><i>Signals are not queued.</i></b></p>
+<h4 id="显式阻塞-Explicit-Blocking-Mechanism">显式阻塞 Explicit Blocking Mechanism</h4>
+<p>使用<code>sigprocmask</code>及其辅助函数显式修改阻塞集合/位向量<code>blocked</code>。</p>
+<img src="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303171311067.png" srcset="/img/loading.gif" lazyload alt="image-20230317131129982" style="zoom:50%;" />
+<ul class="lvl-0">
+<li class="lvl-2">
+<p><code>sigprocmask</code>: 根据参数<code>how</code>的值来改变调用进程的<code>blocked</code>向量；</p>
+<ul class="lvl-2">
+<li class="lvl-4">SIG_BLOCK: 将<code>set</code>中信号添加到<code>blocked</code>中，即<code>blocked = blocked | set</code></li>
+<li class="lvl-4">SIG_UNBLOCK: 将<code>set</code>中的信号从<code>blocked</code>中删除，即<code>blocked = blocked &amp; ~set</code></li>
+<li class="lvl-4">SIG_SETMASK: 将<code>blocked</code>设置为<code>set</code>，即<code>blocked = set</code></li>
+</ul>
+</li>
+<li class="lvl-2">
+<p>如果<code>oldset</code>非空，则原始位向量值存入<code>oldset</code>。（保存与恢复）</p>
+</li>
+</ul>
+<p>辅助函数对<code>set</code>信号集合进行相关操作：</p>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p><code>sigemptyset</code>: 清空<code>set</code>，初始化为空集；</p>
+</li>
+<li class="lvl-2">
+<p><code>sigfillset</code>: 所有信号送入集合（填满，fill）；</p>
+</li>
+<li class="lvl-2">
+<p><code>sigaddset</code>: 将<code>signum</code>添加至集合</p>
+</li>
+<li class="lvl-2">
+<p><code>sigdelset</code>: 集合中删除<code>signum</code></p>
+</li>
+<li class="lvl-2">
+<p><code>sigismember</code>: 判断<code>signum</code>是否属于<code>set</code></p>
+</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">/* use sigprocmask to temporarily block the receipt of SIGINT signals */</span><br><span class="hljs-type">sigset_t</span> mask, prev_mask;<br><br>Sigemptyset(&amp;mask);<br>Sigaddset(&amp;mask, SIGINT);<br><br><span class="hljs-comment">/* Block SIGINT and save previous blocked set */</span><br>Sigprocmask(SIG_BLOCK, &amp;mask, &amp;prev_mask);<br><br><span class="hljs-comment">// Code region that will not be interrupted by SIGINT</span><br><br><span class="hljs-comment">/* Restore previous blocked set, unblocking SIGINT */</span><br>Sigprocmask(SIG_SETMASK, &amp;prev_mask, <span class="hljs-literal">NULL</span>);<br></code></pre></td></tr></table></figure>
+<h3 id="编写信号处理程序-Writing-Signal-Handler">编写信号处理程序 Writing Signal Handler</h3>
+<img src="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303161632546.png" srcset="/img/loading.gif" lazyload alt="image-20230316163230487" style="zoom:50%;" />
+<h4 id="Safe-Signal-Handling-Concurrent">Safe Signal Handling: Concurrent</h4>
+<p>安全性：信号处理程序均与主函数<b>并发</b>运行，并<b>共享全局数据信息</b>。很容易出现相互干扰（Corruption）导致不可预测的结果。</p>
+<blockquote>
+<p>这里只是一些保守的策略，具体的并发见单独讲解的部分。</p>
+</blockquote>
+<p>对于Signal Handler的编写，遵守以下的原则以防止并发带来的错误：</p>
+<ol>
+<li class="lvl-3">
+<p><strong>编写的尽量简单！</strong></p>
+<p>E.g., Set a global flag and return.</p>
+</li>
+<li class="lvl-3">
+<p><strong>只调用 async-signal-safe functions！</strong></p>
+<p>Function is <i>async-signal-safe</i> if either:</p>
+<ul class="lvl-2">
+<li class="lvl-5">
+<p>reentrant 可重入的，比如只访问局部变量，所有的变量都保存在栈帧上。</p>
+</li>
+<li class="lvl-5">
+<p>non-interruptible by signals 不能被信号中断。</p>
+</li>
+</ul>
+<p>常见的很多函数都不是异步信号安全的。</p>
+<ul class="lvl-2">
+<li class="lvl-5">
+<p>不安全但超常用的例子：<code>printf</code>, <code>sprintf</code>, <code>malloc</code>，<code>exit</code></p>
+</li>
+<li class="lvl-5">
+<p><code>write</code>是唯一一个异步信号安全的产生输出的函数！<code>csapp.h</code>中定义了SIO（Safe I/O）包以供调用。</p>
+</li>
+</ul>
+<p>异步信号安全的函数如下：</p>
+<img src="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303171547755.png" srcset="/img/loading.gif" lazyload alt="image-20230317154757638" style="zoom: 50%;" />
+</li>
+<li class="lvl-3">
+<p><strong>对<code>errno</code>保存和恢复！</strong></p>
+<p>即使函数 async-signal-safe，仍然也会在出错时设置<code>errno</code>的值。这种情况下<code>errno</code>就成为了临界资源。只要 Signal Handler 会返回，就必须对<code>errno</code>进行恢复与保存！（如果调用了<code>_exit</code>直接终止程序，不会回到主程序，也当然就不会跟主程序冲突）</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">void</span> <span class="hljs-title function_">handler</span><span class="hljs-params">(<span class="hljs-type">int</span> sig)</span> &#123;<br>	<span class="hljs-type">int</span> olderrno = errno; 		<span class="hljs-comment">/* save */</span><br>    <br>    <span class="hljs-comment">// ...</span><br>    <br>    errno = olderrno;			<span class="hljs-comment">/* restore */</span><br>&#125;<br></code></pre></td></tr></table></figure>
+</li>
+<li class="lvl-3">
+<p><strong>访问共享全局数据结构时，阻塞所有的信号！</strong></p>
+<p>类似PV操作。保证访问操作的原子性，保证数据的一致性。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">void</span> <span class="hljs-title function_">handler</span><span class="hljs-params">(<span class="hljs-type">int</span> sig)</span> &#123;<br>    <span class="hljs-type">sigset_t</span> mask, prev_mask;<br><br>    Sigfillset(&amp;mask);			<span class="hljs-comment">/* 包含所有信号的集合 */</span><br>    Sigprocmask(SIG_BLOCK, &amp;mask, &amp;prev_mask);	 <span class="hljs-comment">/* Block sigs */</span><br>    <span class="hljs-comment">// ... 数据访问等不希望被信号打断的原子操作</span><br>    Sigprocmask(SIG_SETMASK, &amp;prev_mask, <span class="hljs-literal">NULL</span>);  <span class="hljs-comment">/* Restore sigs */</span><br>    <br>    _exit(<span class="hljs-number">0</span>);		<span class="hljs-comment">/* 不会返回用户进程，所以无需保存和恢复errno */</span><br>&#125;<br></code></pre></td></tr></table></figure>
+</li>
+<li class="lvl-3">
+<p><strong>使用<code>volatile</code>声明全局变量</strong></p>
+<p>编译器对于全局变量可能缓存在寄存器中，且意识不到Signal Handler对变量的修改。该声明防止编译器利用寄存器缓存全局变量。</p>
+</li>
+<li class="lvl-3">
+<p><strong>Declare global flags as <code>volatile sig_atomic_t</code>!</strong></p>
+<blockquote>
+<ul class="lvl-3">
+<li class="lvl-2">flag: variable that is only read or written.</li>
+<li class="lvl-2">Flag declared this way does not need to be protected like other globals.</li>
+</ul>
+<p>In one common handler design, the handler records the receipt of the signal by writing to a global flag. The main program periodically reads the flag, responds to the signal, and clears the flag. For flags that are shared in this way, C provides an <i>integer</i> data type, <code>sig_atomic_t</code>, for which reads and writes are <i>guaranteed to be atomic (uninterruptible)</i> because they can be implemented with a single instruction:<br>
+<code>volatile sig_atomic_t flag;</code><br>
+Since they can’t be interrupted, you can safely read from and write to <code>sig_atomic_t</code> variables without temporarily blocking signals. Note that the guarantee of atomicity only applies to <i>individual reads and writes</i>. It does not apply to updates such as <code>flag++</code> or <code>flag = flag + 10</code>, which might require multiple instructions.</p>
+</blockquote>
+</li>
+</ol>
+<h4 id="Correct-Signal-Handling">Correct Signal Handling</h4>
+<p><b><i>Signals are not queued!</i></b></p>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>多次同样的信号传递给进程时，会存在丢弃的情况，导致无法对每个信号都做出正确的反应；</p>
+</li>
+<li class="lvl-2">
+<p>不能用信号对其他进程中发生的事件计数。</p>
+<p>存在一个 pending 的信号只能代表 <b>至少一个</b> 该类型信号已到达。</p>
+</li>
+</ul>
+<blockquote>
+<p>比如类似 shell 和 Web 服务器这类程序，基本结构都是<b>父进程创建一系列子进程，子进程各自运行一段时间后终止</b>。</p>
+<ul class="lvl-1">
+<li class="lvl-2">父进程必须<b>负责回收子进程</b>以防止大量僵尸进程；</li>
+<li class="lvl-2">父进程在子进程运行时也能<b>自由的进行其他的工作</b>；</li>
+</ul>
+<p>我们通过 install <code>SIGCHLD</code> handler 来实现上述需求。考虑如下实际场景：</p>
+<ul class="lvl-1">
+<li class="lvl-2">
+<p>共有三个子进程，父进程等待他们运行结束后进行回收；</p>
+</li>
+<li class="lvl-2">
+<p>第一个子进程结束，调用 handler，执行期间<code>SIGCHLD</code>信号处于阻塞状态；</p>
+</li>
+<li class="lvl-2">
+<p>第二、三个子进程在执行第一个 handler 期间全部到达，由于同一个类型信号只能有一个 pending ，第三个到达的信号会被丢弃。该子进程可能无法被回收。</p>
+</li>
+</ul>
+<p>存在一个 pending 的信号只能代表<strong>至少一个</strong>该类型信号已到达。我们应该尽可能在每次调用<code>SIGCHLD</code> handler 时回收尽可能多的僵死子进程。</p>
+<p>详细代码见书本对应章节分析。</p>
+</blockquote>
+<h4 id="Portable-Signal-Handling">Portable Signal Handling</h4>
+<p>Unix信号处理的另一个缺陷在于不同的系统有不同的信号处理语义。</p>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>不同系统的信号操作语义可能不同；</p>
+</li>
+<li class="lvl-2">
+<p>系统调用可以被中断。</p>
+<p>System calls can be interrupted. System calls such as <code>read</code>, <code>wait</code>, and <code>accept</code> that can potentially block the process for a long period of time are called slow system calls. On some older versions of Unix, slow system calls that are interrupted when a handler catches a signal do not resume when the signal handler returns but instead return immediately to the user with an error condition and <code>errno</code> set to <code>EINTR</code>. On these systems, programmers must include code that manually restarts interrupted system calls.</p>
+</li>
+</ul>
+<p>解决这些问题，POSIX标准定义了<code>sigaction</code>，但运用并不广泛。我们这里都采用 <code>csapp.c</code> 中定义的Wrapper, <code>Signal</code>函数。</p>
+<p><img src="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303172112454.png" srcset="/img/loading.gif" lazyload alt="image-20230317211234327"></p>
+<h3 id="同步并发流-Synchronize-the-Concurrent-Flow">同步并发流 Synchronize the Concurrent Flow</h3>
+<p>类似PV操作，在不能分割执行的两个操作外嵌套信号的阻塞（P操作）与解除（V操作）。</p>
+<p>比如 父进程的<code>Fork</code>语句 与 父进程根据新添加的子进程做出操作的语句 之间，如果子进程已经结束，则后面的语句就会造成错误。这样的两个语句之间就存在竞争（race）。</p>
+<p>概念并不复杂，详细理解见书代码（P541）</p>
+<h3 id="显式等待信号-Explicit-Waiting-for-Signals">显式等待信号 Explicit Waiting for Signals</h3>
+<p>有些时候主程序需要显式声明要等待某个信号处理程序运行。比如当 shell 创建了一个前台作业，必须要等待该作业结束（变为 zombie），被<code>SIGCHLD</code>处理回收后，才能接收用户的下一条命令。</p>
+<blockquote>
+<p>详细逻辑见书代码（P545）</p>
+</blockquote>
+<p>父进程等待信号时：</p>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>使用循环不断测试子进程是否已被回收。</p>
+</li>
+</ul>
+<h2 id="操作进程的工具">操作进程的工具</h2>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p><code>STRACE</code>: Prints a trace of each system call invoked by a running program and its children. It is a fascinating tool for the curious student. Compile your program with -static to get a cleaner trace without a lot of output related to shared libraries.</p>
+</li>
+<li class="lvl-2">
+<p><code>PS</code>: Lists processes (including zombies) currently in the system.</p>
+</li>
+<li class="lvl-2">
+<p><code>top</code>: Prints information about the resource usage of current processes.</p>
+</li>
+<li class="lvl-2">
+<p><code>pmap</code>: Displays the memory map of a process.</p>
+</li>
+<li class="lvl-2">
+<p><code>/proc</code>. A virtual filesystem that exports the contents of numerous kernel data structures in an ASCII text form that can be read by user programs. For example, type “cat /proc/loadavg” to see the current load average on your Linux system.</p>
+</li>
+</ul>
 
                 
               </div>
@@ -759,6 +1161,13 @@ This option is useful in those cases where you want to continue doing useful wor
   <a href="/categories/15-213/" class="category-chain-item">15-213</a>
   
   
+    <span>></span>
+    
+  <a href="/categories/15-213/Linux/" class="category-chain-item">Linux</a>
+  
+  
+
+  
 
       </span>
     
@@ -767,6 +1176,17 @@ This option is useful in those cases where you want to continue doing useful wor
 
     </div>
   
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/Exception/">#Exception</a>
+      
+        <a href="/tags/Process-in-Linux/">#Process in Linux</a>
+      
+        <a href="/tags/Signal-in-Linux/">#Signal in Linux</a>
+      
+    </div>
   
 </div>
 
