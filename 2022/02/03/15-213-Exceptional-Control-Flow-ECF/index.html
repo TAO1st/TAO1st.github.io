@@ -64,7 +64,7 @@
 <meta property="og:image" content="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303171547755.png">
 <meta property="og:image" content="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303172112454.png">
 <meta property="article:published_time" content="2022-02-03T13:08:54.000Z">
-<meta property="article:modified_time" content="2023-03-17T15:22:27.409Z">
+<meta property="article:modified_time" content="2023-03-21T18:42:06.981Z">
 <meta property="article:author" content="tao1st">
 <meta property="article:tag" content="Exception">
 <meta property="article:tag" content="Process in Linux">
@@ -320,7 +320,7 @@
 <p>The process <i>state</i> is encoded in various bits and signals inside the processor.<br>
 The change in state is known as <i>event</i>.</p>
 <h4 id="异常表与异常处理程序-Exception-Table-and-Exception-Handler">异常表与异常处理程序 Exception Table and Exception Handler</h4>
-<p>系统启动/计算机上电时，操作系统分配和初始化一张叫做<b>异常表（Exception Table）</b>的跳转表。表的第$k$条目对应异常$k$的<b>异常处理程序（Exception handler）</b>地址（的又叫中断向量，interrupt vector）。</p>
+<p>系统启动/计算机上电时，操作系统分配和初始化一张叫做<b>异常表（Exception Table）</b>的跳转表。表的第$k$条目对应异常$k$的<b>异常处理程序（Exception handler）</b>地址（又叫中断向量，interrupt vector）。</p>
 <img src="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303151155905.png" srcset="/img/loading.gif" lazyload alt="image-20230315115524691" style="zoom:33%;" />
 <h4 id="异常地址转换-Generating-Addresses">异常地址转换 Generating Addresses</h4>
 <p>异常表基址寄存器中存储异常表的起始地址。</p>
@@ -390,7 +390,8 @@ The change in state is known as <i>event</i>.</p>
 </ul>
 <h4 id="终止-Abort">终止 Abort</h4>
 <img src="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303151833704.png" srcset="/img/loading.gif" lazyload alt="image-20230315183351654" style="zoom:50%;" />
-<h3 id="x86-64中的异常">x86-64中的异常</h3>
+<h3 id="实例">实例</h3>
+<h4 id="x86-64中的异常">x86-64中的异常</h4>
 <p>异常表共256种：</p>
 <ul class="lvl-0">
 <li class="lvl-2">
@@ -420,7 +421,7 @@ The change in state is known as <i>event</i>.</p>
 <p>Machine check: 导致故障的指令执行中检测到<b>致命的硬件错误（fatal hardware error）</b>。从不返回，必定结束。</p>
 </li>
 </ul>
-<h3 id="Linux中的系统调用">Linux中的系统调用</h3>
+<h4 id="Linux中的系统调用">Linux中的系统调用</h4>
 <p>Linux中提供几百种系统调用，内核中有一个<b>不同于异常表</b>的<b>系统调用跳转表</b>。</p>
 <p><img src="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303151858573.png" srcset="/img/loading.gif" lazyload alt="image-20230315185844509"></p>
 <p>The C standard library provides a set of convenient <i>wrapper functions</i> for most system calls (No need to call <code>syscall</code> directly). The wrapper functions package up the arguments, trap to the kernel with the appropriate system call instruction, and then pass the return status of the system call back to the calling program.</p>
@@ -524,7 +525,7 @@ The change in state is known as <i>event</i>.</p>
 </li>
 </ul>
 <img src="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303152020856.png" srcset="/img/loading.gif" lazyload alt="image-20230315202029799" style="zoom:50%;" />
-<h3 id="控制-Control-2">控制 Control</h3>
+<h3 id="控制-Control">控制 Control</h3>
 <blockquote>
 <p>注意对应系统调用的头文件。</p>
 </blockquote>
@@ -560,7 +561,7 @@ The change in state is known as <i>event</i>.</p>
 <p><code>pid_t</code>：定义在<code>types.h</code>头文件中，整数值。</p>
 </li>
 <li class="lvl-2">
-<p><code>getppid(void)</code>：get papa pid hahaha</p>
+<p><code>getppid(void)</code>：get parent pid</p>
 </li>
 </ul>
 <h4 id="终止-Terminating">终止 Terminating</h4>
@@ -739,6 +740,7 @@ This option is useful in those cases where you want to continue doing useful wor
 </li>
 </ul>
 <hr>
+<h4 id="环境变量-Environment-Variables">环境变量 Environment Variables</h4>
 <p>The <code>getenv</code> function searches the environment array for a string name=value. If found, it returns a pointer to value; otherwise, it returns NULL.</p>
 <img src="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303161118568.png" srcset="/img/loading.gif" lazyload alt="image-20230316111838519" style="zoom:50%;" />
 <p>If the environment array contains a string of the form <code>name=oldvalue</code>, then <code>unsetenv</code> deletes it and <code>setenv</code> replaces <code>oldvalue</code> with <code>newvalue</code>, but only if overwrite is nonzero. If name does not exist, then <code>setenv</code> adds <code>name=newvalue</code> to the array.</p>
@@ -1198,9 +1200,9 @@ Since they can’t be interrupted, you can safely read from and write to <code>s
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2022/02/23/%E5%8C%BA%E9%97%B4%E4%BF%A1%E6%81%AF%E7%9A%84%E7%BB%B4%E6%8A%A4%E4%B8%8E%E6%9F%A5%E8%AF%A2/" title="区间信息的维护与查询">
+                      <a href="/2022/02/18/15-213-Shell-Lab/" title="15-213: Shell Lab">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">区间信息的维护与查询</span>
+                        <span class="hidden-mobile">15-213: Shell Lab</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     

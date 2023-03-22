@@ -1,0 +1,716 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/avatar.png">
+  <link rel="icon" href="/img/avatar.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#98a5ac">
+  <meta name="author" content="tao1st">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="Introduction A Tiny Unix Shell with job control. Goals 已有的轮子： 123456789101112131415161718192021&#x2F;* Here are helper routines that we&amp;#x27;ve provided for you *&#x2F;int parseline(const char *cmdline, char **">
+<meta property="og:type" content="article">
+<meta property="og:title" content="15-213: Shell Lab">
+<meta property="og:url" content="https://tao1st.github.io/2022/02/18/15-213-Shell-Lab/index.html">
+<meta property="og:site_name" content="tao1st.github.io">
+<meta property="og:description" content="Introduction A Tiny Unix Shell with job control. Goals 已有的轮子： 123456789101112131415161718192021&#x2F;* Here are helper routines that we&amp;#x27;ve provided for you *&#x2F;int parseline(const char *cmdline, char **">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-02-18T03:08:11.000Z">
+<meta property="article:modified_time" content="2023-03-21T18:42:05.228Z">
+<meta property="article:author" content="tao1st">
+<meta property="article:tag" content="Exception">
+<meta property="article:tag" content="Process in Linux">
+<meta property="article:tag" content="Signal in Linux">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>15-213: Shell Lab - tao1st.github.io</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"tao1st.github.io","root":"/","version":"1.9.2","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":3},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.2.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>TAO1st</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/bk.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.5)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="15-213: Shell Lab"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2022-02-18 11:08" pubdate>
+          2022年2月18日 上午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          8.3k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          70 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">15-213: Shell Lab</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h2 id="Introduction">Introduction</h2>
+<p>A Tiny Unix Shell with <i>job control</i>.</p>
+<h3 id="Goals">Goals</h3>
+<p>已有的轮子：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">/* Here are helper routines that we&#x27;ve provided for you */</span><br><br><span class="hljs-type">int</span> <span class="hljs-title function_">parseline</span><span class="hljs-params">(<span class="hljs-type">const</span> <span class="hljs-type">char</span> *cmdline, <span class="hljs-type">char</span> **argv)</span>;  <span class="hljs-comment">// 解析命令行参数，如果后台运行则返回 1</span><br><span class="hljs-type">void</span> <span class="hljs-title function_">sigquit_handler</span><span class="hljs-params">(<span class="hljs-type">int</span> sig)</span>;<br><br><span class="hljs-type">void</span> <span class="hljs-title function_">clearjob</span><span class="hljs-params">(<span class="hljs-keyword">struct</span> <span class="hljs-type">job_t</span> *job)</span>;               <span class="hljs-comment">// 清除job结构体</span><br><span class="hljs-type">void</span> <span class="hljs-title function_">initjobs</span><span class="hljs-params">(<span class="hljs-keyword">struct</span> <span class="hljs-type">job_t</span> *jobs)</span>;              <span class="hljs-comment">// 初始化jobs列表</span><br><span class="hljs-type">int</span> <span class="hljs-title function_">maxjid</span><span class="hljs-params">(<span class="hljs-keyword">struct</span> <span class="hljs-type">job_t</span> *jobs)</span>;                 <span class="hljs-comment">// 返回jobs列表中jid最大值</span><br><span class="hljs-type">int</span> <span class="hljs-title function_">addjob</span><span class="hljs-params">(<span class="hljs-keyword">struct</span> <span class="hljs-type">job_t</span> *jobs, <span class="hljs-type">pid_t</span> pid, <span class="hljs-type">int</span> state, <span class="hljs-type">char</span> *cmdline)</span>;    <span class="hljs-comment">// 在jobs列表中添加job</span><br><span class="hljs-type">int</span> <span class="hljs-title function_">deletejob</span><span class="hljs-params">(<span class="hljs-keyword">struct</span> <span class="hljs-type">job_t</span> *jobs, <span class="hljs-type">pid_t</span> pid)</span>;   <span class="hljs-comment">// 在jobs列表中删除pid对应的job</span><br><span class="hljs-type">pid_t</span> <span class="hljs-title function_">fgpid</span><span class="hljs-params">(<span class="hljs-keyword">struct</span> <span class="hljs-type">job_t</span> *jobs)</span>;                <span class="hljs-comment">// 返回前台运行的job的pid</span><br><span class="hljs-keyword">struct</span> <span class="hljs-type">job_t</span> *<span class="hljs-title function_">getjobpid</span><span class="hljs-params">(<span class="hljs-keyword">struct</span> <span class="hljs-type">job_t</span> *jobs, <span class="hljs-type">pid_t</span> pid)</span>; <span class="hljs-comment">// 返回对应pid的job</span><br><span class="hljs-keyword">struct</span> <span class="hljs-type">job_t</span> *<span class="hljs-title function_">getjobjid</span><span class="hljs-params">(<span class="hljs-keyword">struct</span> <span class="hljs-type">job_t</span> *jobs, <span class="hljs-type">int</span> jid)</span>;   <span class="hljs-comment">// 返回对应jid的job</span><br><span class="hljs-type">int</span> <span class="hljs-title function_">pid2jid</span><span class="hljs-params">(<span class="hljs-type">pid_t</span> pid)</span>;     <span class="hljs-comment">// 返回对应pid的job的jid</span><br><span class="hljs-type">void</span> <span class="hljs-title function_">listjobs</span><span class="hljs-params">(<span class="hljs-keyword">struct</span> <span class="hljs-type">job_t</span> *jobs)</span>;  <span class="hljs-comment">// 打印jobs列表，即jobs内置命令的工作内容</span><br><br><span class="hljs-type">void</span> <span class="hljs-title function_">usage</span><span class="hljs-params">(<span class="hljs-type">void</span>)</span>;   <span class="hljs-comment">// 帮助信息</span><br><span class="hljs-type">void</span> <span class="hljs-title function_">unix_error</span><span class="hljs-params">(<span class="hljs-type">char</span> *msg)</span>; <span class="hljs-comment">// 错误信息</span><br><span class="hljs-type">void</span> <span class="hljs-title function_">app_error</span><span class="hljs-params">(<span class="hljs-type">char</span> *msg)</span>;<br><span class="hljs-keyword">typedef</span> <span class="hljs-type">void</span> <span class="hljs-title function_">handler_t</span><span class="hljs-params">(<span class="hljs-type">int</span>)</span>;<br><span class="hljs-type">handler_t</span> *<span class="hljs-title function_">Signal</span><span class="hljs-params">(<span class="hljs-type">int</span> signum, <span class="hljs-type">handler_t</span> *handler)</span>;<br></code></pre></td></tr></table></figure>
+<p>剩余需要实现的：</p>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p><code>eval</code>: Main routine that parses and interprets the command line. [70 lines]</p>
+<p>Shell的入口，命令行的读入与解析。</p>
+</li>
+<li class="lvl-2">
+<p><code>builtin_cmd</code>: Recognizes and interprets the built-in commands: <code>quit</code>, <code>fg</code>, <code>bg</code>, and <code>jobs</code>. [25 lines]</p>
+<p>识别并执行Shell的几个内置命令。</p>
+</li>
+<li class="lvl-2">
+<p><code>do_bgfg</code>: Implements the <code>bg</code> and <code>fg</code> built-in commands. [50 lines]</p>
+<p>实现<code>bg</code>与<code>fg</code>，即命令在shell中执行的前台后台切换。</p>
+</li>
+<li class="lvl-2">
+<p><code>waitfg</code>: Waits for a foreground job to complete. [20 lines]</p>
+<p>shell等待一个前台工作完成。</p>
+</li>
+</ul>
+<p>三个 Signal Handler:</p>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p><code>sigchld_handler</code>: Catches SIGCHILD signals. [80 lines]</p>
+</li>
+<li class="lvl-2">
+<p><code>sigint_handler</code>: Catches SIGINT (ctrl-c) signals. [15 lines]</p>
+</li>
+<li class="lvl-2">
+<p><code>sigtstp_handler</code>: Catches SIGTSTP (ctrl-z) signals. [15 lines]</p>
+</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">/* Here are the functions that you will implement */</span><br><span class="hljs-type">void</span> <span class="hljs-title function_">eval</span><span class="hljs-params">(<span class="hljs-type">char</span> *cmdline)</span>;<br><span class="hljs-type">int</span> <span class="hljs-title function_">builtin_cmd</span><span class="hljs-params">(<span class="hljs-type">char</span> **argv)</span>;<br><span class="hljs-type">void</span> <span class="hljs-title function_">do_bgfg</span><span class="hljs-params">(<span class="hljs-type">char</span> **argv)</span>;<br><span class="hljs-type">void</span> <span class="hljs-title function_">waitfg</span><span class="hljs-params">(<span class="hljs-type">pid_t</span> pid)</span>;<br><br><span class="hljs-type">void</span> <span class="hljs-title function_">sigchld_handler</span><span class="hljs-params">(<span class="hljs-type">int</span> sig)</span>;<br><span class="hljs-type">void</span> <span class="hljs-title function_">sigtstp_handler</span><span class="hljs-params">(<span class="hljs-type">int</span> sig)</span>;<br><span class="hljs-type">void</span> <span class="hljs-title function_">sigint_handler</span><span class="hljs-params">(<span class="hljs-type">int</span> sig)</span>;<br></code></pre></td></tr></table></figure>
+<p>其他要求：</p>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>Shell 的提示标记符为 &quot;tsh&gt; &quot;</p>
+</li>
+<li class="lvl-2">
+<p>用户键入的命令行应包括命令名称和 0 个或多个参数，所有参数以一个或多个空格分隔。如果 name 是一个内置命令，则 tsh 应该立即处理它并等待下一个命令行。否则，tsh 假定该名称是一个可执行程序的路径，并在在一个初始子进程的上下文中加载并运行</p>
+</li>
+<li class="lvl-2">
+<p>tsh 不需要支持管道（|）或 I/O 重定向（&lt; 和 &gt;）</p>
+</li>
+<li class="lvl-2">
+<p>键入 ctrl-c（ctrl-z）应该会发送一个 SIGINT（SIGTSTP）信号给当前的前台作业以及它的子进程。如果没有前台作业，则该信号应该没有任何作用</p>
+</li>
+<li class="lvl-2">
+<p>如果命令行以 ＆ 结束，则 tsh 应该在后台运行该作业。否则，它应该在前台运行</p>
+</li>
+<li class="lvl-2">
+<p>每个作业都可以由一个进程 ID（PID）或一个作业 ID（JID）标识，该 ID 是一个由 tsh 分配的正整数。 JID应该在命令行上以前缀 “％” 表示。例如，“％5” 表示 JID 5，“ 5” 表示 PID 5</p>
+</li>
+<li class="lvl-2">
+<p>tsh 应该支持以下内置命令：</p>
+</li>
+<li class="lvl-2">
+<ul class="lvl-2">
+<li class="lvl-4">quit：终止 tsh 程序。</li>
+<li class="lvl-4">jobs：列出所有后台作业</li>
+<li class="lvl-4">bg ：向作业发送 SIGCONT 信号来重新启动 ，然后在后台运行</li>
+<li class="lvl-4">fg ：向作业发送 SIGCONT 信号来重新启动 ，然后在前台运行</li>
+</ul>
+</li>
+<li class="lvl-2">
+<p>tsh 必须回收所有的僵死进程</p>
+</li>
+</ul>
+<h3 id="Shell">Shell</h3>
+<h2 id="Realization">Realization</h2>
+<h3 id="wait-fg"><code>wait_fg</code></h3>
+<p><code>do_bgfg</code>中的一部分，等待前台进程执行完毕。实现方式：挂起/阻塞父进程（即Shell），直至前台进程执行完毕发来信号<code>SIGCHLD</code>。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">void</span> <span class="hljs-title function_">waitfg</span><span class="hljs-params">(<span class="hljs-type">pid_t</span> pid)</span><br>&#123;<br>    <span class="hljs-type">sigset_t</span> mask;<br>    Sigemptyset(&amp;mask);   <br>    <span class="hljs-keyword">while</span> (fgpid(jobs) != <span class="hljs-number">0</span>)&#123;<br>        sigsuspend(&amp;mask);  <br>    &#125;<br>    <span class="hljs-keyword">return</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+<h3 id="do-bgfg"><code>do_bgfg</code></h3>
+<p>内置命令的实现。功能是发送<code>SIGCONT</code>信号使其重启。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">/* </span><br><span class="hljs-comment"> * do_bgfg - Execute the builtin bg and fg commands</span><br><span class="hljs-comment"> */</span><br><span class="hljs-type">void</span> <span class="hljs-title function_">do_bgfg</span><span class="hljs-params">(<span class="hljs-type">char</span> **argv)</span> <br>&#123;<br>    <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">job_t</span> *<span class="hljs-title">job</span> =</span> <span class="hljs-literal">NULL</span>;        <span class="hljs-comment">// 要处理的job</span><br>    <span class="hljs-type">int</span> state;                       <span class="hljs-comment">// 输入的命令</span><br>    <span class="hljs-type">int</span> id;                          <span class="hljs-comment">// 存储jid或pid</span><br>    <br>    <span class="hljs-comment">// bg or fg</span><br>    <span class="hljs-keyword">if</span>(!<span class="hljs-built_in">strcmp</span>(argv[<span class="hljs-number">0</span>], <span class="hljs-string">&quot;bg&quot;</span>)) &#123;<br>        state = BG;<br>    &#125;<br>    <span class="hljs-keyword">else</span> &#123;<br>        state = FG;  <br>    &#125;<br>    <br>    <span class="hljs-comment">/* 无参数，输出错误提示信息 */</span><br>    <span class="hljs-keyword">if</span>(argv[<span class="hljs-number">1</span>]==<span class="hljs-literal">NULL</span>)&#123;                <br>        <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;%s command requires PID or %%jobid argument\n&quot;</span>, argv[<span class="hljs-number">0</span>]);<br>        <span class="hljs-keyword">return</span>;<br>    &#125;<br>    <br>    <span class="hljs-comment">/* %开头为jid, 纯数字为pid */</span><br>    <span class="hljs-comment">/* jid */</span><br>    <span class="hljs-keyword">if</span>(argv[<span class="hljs-number">1</span>][<span class="hljs-number">0</span>]==<span class="hljs-string">&#x27;%&#x27;</span>)&#123;              <span class="hljs-comment">// 说明是jid</span><br>       <span class="hljs-keyword">if</span>(<span class="hljs-built_in">sscanf</span>(&amp;argv[<span class="hljs-number">1</span>][<span class="hljs-number">1</span>], <span class="hljs-string">&quot;%d&quot;</span>, &amp;id) &gt; <span class="hljs-number">0</span>)&#123;<br>            job = getjobjid(jobs, id);  <span class="hljs-comment">//获得job</span><br>            <span class="hljs-keyword">if</span>(job == <span class="hljs-literal">NULL</span>)&#123;<br>                <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;%%%d: No such job\n&quot;</span>, id);<br>                <span class="hljs-keyword">return</span>;<br>            &#125;<br>        &#125;<br>    &#125;<br>    <span class="hljs-comment">/* 其它符号，非法输入 */</span><br>    <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(!<span class="hljs-built_in">isdigit</span>(argv[<span class="hljs-number">1</span>][<span class="hljs-number">0</span>])) &#123;  <br>        <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;%s: argument must be a PID or %%jobid\n&quot;</span>, argv[<span class="hljs-number">0</span>]);<br>        <span class="hljs-keyword">return</span>;<br>    &#125;<br>    <span class="hljs-comment">/* pid */</span><br>    <span class="hljs-keyword">else</span> &#123;                       <br>        id = atoi(argv[<span class="hljs-number">1</span>]);<br>        job = getjobpid(jobs, id);<br>        <span class="hljs-keyword">if</span>(job == <span class="hljs-literal">NULL</span>)&#123;<br>            <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;(%d): No such process\n&quot;</span>, id);<br>            <span class="hljs-keyword">return</span>;<br>        &#125;<br><br>    &#125;<br>    Kill( -(job-&gt;pid), SIGCONT);       <span class="hljs-comment">//重启进程, 这里发送到进程组</span><br>    job-&gt;state = state;<br>    <span class="hljs-keyword">if</span>(state == BG)<br>        <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;[%d] (%d) %s&quot;</span>,job-&gt;jid, job-&gt;pid, job-&gt;cmdline);<br>    <span class="hljs-keyword">else</span> <br>        waitfg(job-&gt;pid);<br>    <span class="hljs-keyword">return</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+<h3 id="buildtin-cmd"><code>buildtin_cmd</code></h3>
+<p><code>eval</code>的实现中需要判断内置指令。<code>argv[0]</code>中默认存放程序名，对其检查并判断是哪个内置指令即可，无复杂逻辑。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">/* </span><br><span class="hljs-comment"> * builtin_cmd - If the user has typed a built-in command then execute</span><br><span class="hljs-comment"> *    it immediately.  </span><br><span class="hljs-comment"> */</span><br><span class="hljs-type">int</span> <span class="hljs-title function_">builtin_cmd</span><span class="hljs-params">(<span class="hljs-type">char</span> **argv)</span> <br>&#123;<br>    <span class="hljs-keyword">if</span> (!<span class="hljs-built_in">strcmp</span>(argv[<span class="hljs-number">0</span>], <span class="hljs-string">&quot;quit&quot;</span>))<br>        <span class="hljs-built_in">exit</span>(<span class="hljs-number">0</span>);<br>    <span class="hljs-keyword">if</span> (!<span class="hljs-built_in">strcmp</span>(argv[<span class="hljs-number">0</span>], <span class="hljs-string">&quot;bg&quot;</span>) || !<span class="hljs-built_in">strcmp</span>(argv[<span class="hljs-number">0</span>], <span class="hljs-string">&quot;fg&quot;</span>)) &#123;<br>        do_bgfg(argv);<br>        <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>;<br>    &#125;<br>    <span class="hljs-keyword">if</span> (!<span class="hljs-built_in">strcmp</span>(argv[<span class="hljs-number">0</span>], <span class="hljs-string">&quot;jobs&quot;</span>)) &#123;<br>        listjobs(jobs);<br>        <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>;<br>    &#125;<br>    <span class="hljs-keyword">if</span> (!<span class="hljs-built_in">strcmp</span>(argv[<span class="hljs-number">0</span>], <span class="hljs-string">&quot;&amp;&quot;</span>))<br>        <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>;<br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;     <span class="hljs-comment">/* not a builtin command */</span><br>&#125;<br></code></pre></td></tr></table></figure>
+<h3 id="eval"><code>eval</code></h3>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">/* </span><br><span class="hljs-comment"> * eval - Evaluate the command line that the user has just typed in</span><br><span class="hljs-comment"> * </span><br><span class="hljs-comment"> * If the user has requested a built-in command (quit, jobs, bg or fg)</span><br><span class="hljs-comment"> * then execute it immediately. Otherwise, fork a child process and</span><br><span class="hljs-comment"> * run the job in the context of the child. If the job is running in</span><br><span class="hljs-comment"> * the foreground, wait for it to terminate and then return.  Note:</span><br><span class="hljs-comment"> * each child process must have a unique process group ID so that our</span><br><span class="hljs-comment"> * background children don&#x27;t receive SIGINT (SIGTSTP) from the kernel</span><br><span class="hljs-comment"> * when we type ctrl-c (ctrl-z) at the keyboard.  </span><br><span class="hljs-comment">*/</span><br><span class="hljs-type">void</span> <span class="hljs-title function_">eval</span><span class="hljs-params">(<span class="hljs-type">char</span> *cmdline)</span> <br>&#123;<br>    <span class="hljs-type">char</span> *argv[MAXARGS];        <span class="hljs-comment">// 参数</span><br>    <span class="hljs-type">char</span> buf[MAXLINE];          <span class="hljs-comment">// 命令</span><br>    <span class="hljs-type">int</span> bg;                     <span class="hljs-comment">// 判断程序是前台还是后台执行</span><br>    <span class="hljs-type">int</span> state;                  <span class="hljs-comment">// 指示前台还是后台运行状态</span><br>    <span class="hljs-type">pid_t</span> pid;                  <span class="hljs-comment">// 执行程序的子进程的pid</span><br><br>    <span class="hljs-built_in">strcpy</span>(buf, cmdline);   <br>    bg = parseline(buf, argv);  <span class="hljs-comment">// 解析参数,后台运行时parseline返回1</span><br>    state = bg ? BG : FG;          <br>    <span class="hljs-keyword">if</span>(argv[<span class="hljs-number">0</span>] == <span class="hljs-literal">NULL</span>)         <span class="hljs-comment">// 空行，直接返回</span><br>        <span class="hljs-keyword">return</span>;<br>    <br>    <span class="hljs-comment">// 信号阻塞常规操作，生成对应的阻塞掩码</span><br>    <span class="hljs-type">sigset_t</span> mask_all, mask_one, prev_one;<br>    Sigfillset(&amp;mask_all);<br>    Sigemptyset(&amp;mask_one);<br>    Sigaddset(&amp;mask_one, SIGCHLD);<br>    <br>    <span class="hljs-keyword">if</span>(!builtin_cmd(argv)) &#123;                                <span class="hljs-comment">// 判断是否为内置命令</span><br>        Sigprocmask(SIG_BLOCK, &amp;mask_one, &amp;prev_one);       <span class="hljs-comment">// 解除父进程addjob和deletejob的竞争</span><br>        <span class="hljs-keyword">if</span>((pid = Fork()) == <span class="hljs-number">0</span>) &#123;                           <span class="hljs-comment">// 创建子进程</span><br>            Sigprocmask(SIG_SETMASK, &amp;prev_one, <span class="hljs-literal">NULL</span>);     <br>            Setpgid(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>);                                  <span class="hljs-comment">// 创建新进程组，ID设置为进程PID</span><br>            Execve(argv[<span class="hljs-number">0</span>], argv, environ);                 <span class="hljs-comment">// 执行</span><br>            <span class="hljs-built_in">exit</span>(<span class="hljs-number">0</span>);                                        <span class="hljs-comment">// 子线程执行完毕后一定要退出</span><br>        &#125;<br>        <span class="hljs-keyword">if</span>(state == FG)&#123;<br>            Sigprocmask(SIG_BLOCK, &amp;mask_all, <span class="hljs-literal">NULL</span>);            <span class="hljs-comment">// 添加工作前阻塞所有信号</span><br>            addjob(jobs, pid, state, cmdline);                  <span class="hljs-comment">// 添加至作业列表</span><br>            Sigprocmask(SIG_SETMASK, &amp;mask_one, <span class="hljs-literal">NULL</span>);<br>            waitfg(pid);                                        <span class="hljs-comment">// 等待前台进程执行完毕</span><br>        &#125;    <br>        <span class="hljs-comment">// BG</span><br>        <span class="hljs-keyword">else</span> &#123;<br>            <span class="hljs-comment">/* 使用rio代替printf? */</span><br>            Sigprocmask(SIG_BLOCK, &amp;mask_all, <span class="hljs-literal">NULL</span>);            <span class="hljs-comment">// 添加工作前阻塞所有信号</span><br>            addjob(jobs, pid, state, cmdline);                  <span class="hljs-comment">// 添加至作业列表</span><br>            Sigprocmask(SIG_SETMASK, &amp;mask_one, <span class="hljs-literal">NULL</span>);                                 <br>            <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;[%d] (%d) %s&quot;</span>, pid2jid(pid), pid, cmdline);  <span class="hljs-comment">// 打印后台进程信息</span><br>        &#125;<br>        Sigprocmask(SIG_SETMASK, &amp;prev_one, <span class="hljs-literal">NULL</span>);          <span class="hljs-comment">// 解除阻塞 </span><br>    &#125;<br>    <span class="hljs-keyword">return</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+<blockquote>
+<p>After the fork, but before the <code>execve</code>, the child process should call <code>setpgid(0, 0)</code>, which puts the child in a new process group whose group ID is identical to the child’s PID. This ensures that there will be only one process, your shell, in the foreground process group. 从而防止子进程不会跟Shell同一组</p>
+</blockquote>
+<h3 id="SIGCHLD-HANDLER">SIGCHLD_HANDLER</h3>
+<p>子进程结束就会发送SIGCHLD。如果不重写，默认操作父进程会直接忽略该信号。工作内容：</p>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p><code>deletejob</code></p>
+</li>
+<li class="lvl-2">
+<p>Reap zombies</p>
+</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">/* </span><br><span class="hljs-comment"> * sigchld_handler - The kernel sends a SIGCHLD to the shell whenever</span><br><span class="hljs-comment"> *     a child job terminates (becomes a zombie), or stops because it</span><br><span class="hljs-comment"> *     received a SIGSTOP or SIGTSTP signal. The handler reaps all</span><br><span class="hljs-comment"> *     available zombie children, but doesn&#x27;t wait for any other</span><br><span class="hljs-comment"> *     currently running children to terminate.  </span><br><span class="hljs-comment"> */</span><br><span class="hljs-type">void</span> <span class="hljs-title function_">sigchld_handler</span><span class="hljs-params">(<span class="hljs-type">int</span> sig)</span> <br>&#123;<br>    <span class="hljs-type">int</span> olderrno = errno;   <span class="hljs-comment">// 保存 errno</span><br>    <span class="hljs-type">int</span> status;<br>    <span class="hljs-type">pid_t</span> pid;<br>    <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">job_t</span> *<span class="hljs-title">job</span>;</span>		<span class="hljs-comment">// jcb</span><br>    <br>    <span class="hljs-type">sigset_t</span> mask, prev;<br>    sigfillset(&amp;mask);<br>    <br>    <span class="hljs-keyword">while</span> ((pid = waitpid(<span class="hljs-number">-1</span>, &amp;status, WNOHANG | WUNTRACED)) &gt; <span class="hljs-number">0</span>)&#123;      <span class="hljs-comment">// 立即返回该子进程的pid</span><br>        sigprocmask(SIG_BLOCK, &amp;mask, &amp;prev);   <span class="hljs-comment">// 阻塞所有信号</span><br>        <span class="hljs-keyword">if</span> (WIFEXITED(status))&#123;                 <span class="hljs-comment">// 1 正常终止</span><br>        <span class="hljs-comment">// Returns true if the child terminated normally, via a call to exit or a return. </span><br>            deletejob(jobs, pid);<br>        &#125;<br>        <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (WIFSIGNALED(status))&#123;          <span class="hljs-comment">// 2 因为信号而终止, 打印</span><br>        <span class="hljs-comment">// Returns true if the child process terminated because of a signal that was not caught. </span><br>            <span class="hljs-built_in">printf</span> (<span class="hljs-string">&quot;Job [%d] (%d) terminated by signal %d\n&quot;</span>, pid2jid(pid), pid, WTERMSIG(status));<br>            deletejob(jobs, pid);<br>        &#125;<br>        <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (WIFSTOPPED(status))&#123;           <span class="hljs-comment">// 3 因为信号而停止, 打印</span><br>        <span class="hljs-comment">// Returns true if the child that caused the return is currently stopped. </span><br>            <span class="hljs-built_in">printf</span> (<span class="hljs-string">&quot;Job [%d] (%d) stoped by signal %d\n&quot;</span>, pid2jid(pid), pid, WSTOPSIG(status));<br>            job = getjobpid(jobs, pid);<br>            job-&gt;state = ST;<br>        &#125;<br>        sigprocmask(SIG_SETMASK, &amp;prev, <span class="hljs-literal">NULL</span>);          <br>    &#125;<br>    errno = olderrno;      <span class="hljs-comment">// 恢复 errno</span><br>    <span class="hljs-keyword">return</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+<h3 id="SIGINT-HANDLER">SIGINT_HANDLER</h3>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs C"><span class="hljs-comment">/* </span><br><span class="hljs-comment"> * sigint_handler - The kernel sends a SIGINT to the shell whenver the</span><br><span class="hljs-comment"> *    user types ctrl-c at the keyboard.  Catch it and send it along</span><br><span class="hljs-comment"> *    to the foreground job.  </span><br><span class="hljs-comment"> */</span><br><span class="hljs-type">void</span> <span class="hljs-title function_">sigint_handler</span><span class="hljs-params">(<span class="hljs-type">int</span> sig)</span> <br>&#123;<br>    <span class="hljs-type">int</span> olderrno = errno;<br>    <span class="hljs-type">int</span> pid;<br>    <span class="hljs-type">sigset_t</span> mask_all, prev;<br>    Sigfillset(&amp;mask_all);<br>    Sigprocmask(SIG_BLOCK, &amp;mask_all, &amp;prev);   <span class="hljs-comment">// jobs为全局变量</span><br>    <span class="hljs-keyword">if</span>((pid = fgpid(jobs)) != <span class="hljs-number">0</span>) &#123;<br>        Sigprocmask(SIG_SETMASK, &amp;prev, <span class="hljs-literal">NULL</span>);<br>        Kill(-pid, SIGINT);<br>    &#125;<br>    errno = olderrno;<br>    <span class="hljs-keyword">return</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+<h3 id="SIGSTP-HANDLER">SIGSTP_HANDLER</h3>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">/*</span><br><span class="hljs-comment"> * sigtstp_handler - The kernel sends a SIGTSTP to the shell whenever</span><br><span class="hljs-comment"> *     the user types ctrl-z at the keyboard. Catch it and suspend the</span><br><span class="hljs-comment"> *     foreground job by sending it a SIGTSTP.  </span><br><span class="hljs-comment"> */</span><br><span class="hljs-type">void</span> <span class="hljs-title function_">sigtstp_handler</span><span class="hljs-params">(<span class="hljs-type">int</span> sig)</span> <br>&#123;<br>    <span class="hljs-type">int</span> olderrno = errno;<br>    <span class="hljs-type">int</span> pid;<br>    <span class="hljs-type">sigset_t</span> mask_all, prev;<br>    Sigfillset(&amp;mask_all);<br>    Sigprocmask(SIG_BLOCK, &amp;mask_all, &amp;prev);<br>    <span class="hljs-keyword">if</span>((pid = fgpid(jobs)) &gt; <span class="hljs-number">0</span>)&#123;<br>        Sigprocmask(SIG_SETMASK, &amp;prev, <span class="hljs-literal">NULL</span>);<br>        Kill(-pid, SIGSTOP);<br>    &#125;<br>    errno = olderrno;<br>    <span class="hljs-keyword">return</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/15-213/" class="category-chain-item">15-213</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/15-213/Linux/" class="category-chain-item">Linux</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/Exception/">#Exception</a>
+      
+        <a href="/tags/Process-in-Linux/">#Process in Linux</a>
+      
+        <a href="/tags/Signal-in-Linux/">#Signal in Linux</a>
+      
+    </div>
+  
+</div>
+
+
+              
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2022/02/23/%E5%8C%BA%E9%97%B4%E4%BF%A1%E6%81%AF%E7%9A%84%E7%BB%B4%E6%8A%A4%E4%B8%8E%E6%9F%A5%E8%AF%A2/" title="区间信息的维护与查询">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">区间信息的维护与查询</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2022/02/03/15-213-Exceptional-Control-Flow-ECF/" title="15-213: Exceptional Control Flow">
+                        <span class="hidden-mobile">15-213: Exceptional Control Flow</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>2022</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>TAO1st</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      headingSelector : CONFIG.toc.headingSelector || 'h1,h2,h3,h4,h5,h6',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      collapseDepth   : CONFIG.toc.collapseDepth || 0,
+      scrollSmooth    : true,
+      headingsOffset  : -boardTop
+    });
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.10/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.1/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

@@ -558,7 +558,7 @@
 <p>经常直到程序实际运行时，我们才知道某些数据结构的大小。</p>
 </blockquote>
 <h3 id="分配器-Allocator">分配器 Allocator</h3>
-<h4 id="堆-Heap-3">堆 Heap</h4>
+<h4 id="堆-Heap">堆 Heap</h4>
 <p>动态分配器维护的是虚拟存储空间中的堆。</p>
 <ul class="lvl-0">
 <li class="lvl-2">
@@ -610,7 +610,7 @@
 <p>无返回值。可能会引发一些潜在不易发现的错误。</p>
 </li>
 </ul>
-<h4 id="其他-4">其他</h4>
+<h4 id="其他">其他</h4>
 <ul class="lvl-0">
 <li class="lvl-2">
 <p><code>calloc</code>：对分配的地址空间会进行<b>初始化（为0）</b>，是一个基于<code>malloc</code>的 wrapper。</p>
@@ -819,7 +819,7 @@ $$</p>
 </ul>
 <p><img src="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303201604708.png" srcset="/img/loading.gif" lazyload alt="image-20230320160416642"></p>
 <h4 id="分配与分割-Placement-and-Splitting">分配与分割 Placement and Splitting</h4>
-<h5 id="分配">分配</h5>
+<h5 id="分配-2">分配</h5>
 <ul class="lvl-0">
 <li class="lvl-2">
 <p>效率：需要从头向后搜索大小合适的空闲块，效率显然为 $O(n)$，与系统中的总块数成线性关系。</p>
@@ -856,7 +856,7 @@ $$</p>
 </ol>
 </li>
 </ul>
-<h5 id="分割">分割</h5>
+<h5 id="分割-2">分割</h5>
 <p>空闲块可能会比申请的块要大，所以是否进行分割需要综合需求考虑：</p>
 <ul class="lvl-0">
 <li class="lvl-2">
@@ -869,9 +869,9 @@ $$</p>
 </li>
 </ul>
 <h4 id="释放与合并-Free-and-Coalescing">释放与合并 Free and Coalescing</h4>
-<h5 id="释放">释放</h5>
+<h5 id="释放-2">释放</h5>
 <p>释放操作：仅需修改头部尾部的分配位即可。但释放空闲块后，其前后可能会有其他的空闲块。如果不做合并处理，可能会导致假碎片（Fault Fragmentation）。</p>
-<h5 id="合并">合并</h5>
+<h5 id="合并-2">合并</h5>
 <p>任何分配器都要对相邻空闲块进行合并。合并的过程通过头部和尾部向两侧检查即可。一个重要的策略决定是何时执行合并：</p>
 <ul class="lvl-0">
 <li class="lvl-2">
