@@ -291,7 +291,7 @@
 <p>除掉代码中的注释部分</p>
 </li>
 </ul>
-<h4 id="输出">输出</h4>
+<h4 id="输出-2">输出</h4>
 <p>仍基本类似于 C code 本身。</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs shell">gcc -E [flags][filenames]<br><span class="hljs-meta prompt_"># </span><span class="language-bash">preprocess only; <span class="hljs-keyword">do</span> not compile, assemble or <span class="hljs-built_in">link</span></span><br><span class="hljs-meta prompt_"># </span><span class="language-bash">该命令不会生成对应的中间文件，而是输出经过预处理后的代码文本。</span><br><span class="hljs-meta prompt_"># </span><span class="language-bash">如果不进行重定向，结果会直接在shell中输出。</span><br></code></pre></td></tr></table></figure>
 <p>使用 <code>gcc -E</code> 重定向保存此时的代码结果，对应上面的内容，能够发现：</p>
@@ -322,7 +322,7 @@
 </li>
 </ul>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs shell">gcc -S [flags][filenames]<br><span class="hljs-meta prompt_"># </span><span class="language-bash">compile only; <span class="hljs-keyword">do</span> not assemble or <span class="hljs-built_in">link</span></span><br><span class="hljs-meta prompt_"># </span><span class="language-bash">输出为 .s 汇编代码</span><br></code></pre></td></tr></table></figure>
-<h4 id="输出-2">输出</h4>
+<h4 id="输出-3">输出</h4>
 <p>输出为 .s 汇编代码。其中所有以 ‘.’ 为开头的行都是指导 Assembler 和 Linker 工作的伪指令，分析时通常可以直接忽略。</p>
 <h3 id="Assembling-Assembler-汇编">Assembling - Assembler 汇编</h3>
 <p>全部转化为二进制比特位。</p>

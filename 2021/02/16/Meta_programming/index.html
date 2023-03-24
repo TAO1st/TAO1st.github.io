@@ -264,7 +264,7 @@
 <h2 id="Build-System">Build System</h2>
 <ul class="lvl-0">
 <li class="lvl-2">
-<p><input type="checkbox" id="checkbox2"><label for="checkbox2"></label><a target="_blank" rel="noopener" href="https://www.cs.cmu.edu/~07131/f19/topics/makefiles/">Makefiles | GPI (cmu.edu)</a></p>
+<p><input type="checkbox" id="checkbox7"><label for="checkbox7"></label><a target="_blank" rel="noopener" href="https://www.cs.cmu.edu/~07131/f19/topics/makefiles/">Makefiles | GPI (cmu.edu)</a></p>
 </li>
 </ul>
 <p><strong>Build Systems</strong>: define a number of <em><strong>dependencies</strong></em>, a number of <em><strong>targets</strong></em>, and <em><strong>rules</strong></em> for going from one to the other.</p>
@@ -316,7 +316,7 @@
 <p>There are many approaches of versioning.</p>
 <ul class="lvl-0">
 <li class="lvl-2">
-<p><input type="checkbox" id="checkbox3"><label for="checkbox3"> One popular one is </label><a target="_blank" rel="noopener" href="https://semver.org/">Semantic Versioning</a>:</p>
+<p><input type="checkbox" id="checkbox8"><label for="checkbox8"> One popular one is </label><a target="_blank" rel="noopener" href="https://semver.org/">Semantic Versioning</a>:</p>
 </li>
 </ul>
 <figure class="highlight gherkin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs gherkin">x.y.z<br>^ ^ ^<br>|<span class="hljs-string"> </span>|<span class="hljs-string"> +- patch</span><br><span class="hljs-string"></span>|<span class="hljs-string"> +--- minor</span><br><span class="hljs-string">+----- major</span><br></code></pre></td></tr></table></figure>
@@ -375,19 +375,19 @@
 <h2 id="Exercises-2">Exercises</h2>
 <ul class="lvl-0">
 <li class="lvl-2">
-<p><input type="checkbox" id="checkbox4"><label for="checkbox4">Most makefiles provide a target called </label><code>clean</code>. This isn’t intended to produce a file called <code>clean</code>, but instead to clean up any files that can be re-built by make. Think of it as a way to “undo” all of the build steps. Implement a <code>clean</code> target for the <code>paper.pdf</code> <code>Makefile</code> above. You will have to make the target <a target="_blank" rel="noopener" href="https://www.gnu.org/software/make/manual/html_node/Phony-Targets.html">phony</a>. You may find the <a target="_blank" rel="noopener" href="https://git-scm.com/docs/git-ls-files"><code>git ls-files</code></a> subcommand useful. A number of other very common make targets are listed <a target="_blank" rel="noopener" href="https://www.gnu.org/software/make/manual/html_node/Standard-Targets.html#Standard-Targets">here</a>.</p>
+<p><input type="checkbox" id="checkbox9"><label for="checkbox9">Most makefiles provide a target called </label><code>clean</code>. This isn’t intended to produce a file called <code>clean</code>, but instead to clean up any files that can be re-built by make. Think of it as a way to “undo” all of the build steps. Implement a <code>clean</code> target for the <code>paper.pdf</code> <code>Makefile</code> above. You will have to make the target <a target="_blank" rel="noopener" href="https://www.gnu.org/software/make/manual/html_node/Phony-Targets.html">phony</a>. You may find the <a target="_blank" rel="noopener" href="https://git-scm.com/docs/git-ls-files"><code>git ls-files</code></a> subcommand useful. A number of other very common make targets are listed <a target="_blank" rel="noopener" href="https://www.gnu.org/software/make/manual/html_node/Standard-Targets.html#Standard-Targets">here</a>.</p>
 </li>
 <li class="lvl-2">
-<p><input type="checkbox" id="checkbox5"><label for="checkbox5">Take a look at the various ways to specify version requirements for dependencies in </label><a target="_blank" rel="noopener" href="https://doc.rust-lang.org/cargo/reference/specifying-dependencies.html">Rust’s build system</a>. Most package repositories support similar syntax. For each one (caret, tilde, wildcard, comparison, and multiple), try to come up with a use-case in which that particular kind of requirement makes sense.</p>
+<p><input type="checkbox" id="checkbox10"><label for="checkbox10">Take a look at the various ways to specify version requirements for dependencies in </label><a target="_blank" rel="noopener" href="https://doc.rust-lang.org/cargo/reference/specifying-dependencies.html">Rust’s build system</a>. Most package repositories support similar syntax. For each one (caret, tilde, wildcard, comparison, and multiple), try to come up with a use-case in which that particular kind of requirement makes sense.</p>
 </li>
 <li class="lvl-2">
-<p><input type="checkbox" id="checkbox6"><label for="checkbox6">Git can act as a simple CI system all by itself. In </label><code>.git/hooks</code> inside any git repository, you will find (currently inactive) files that are run as scripts when a particular action happens. Write a <a target="_blank" rel="noopener" href="https://git-scm.com/docs/githooks#_pre_commit"><code>pre-commit</code></a> hook that runs <code>make paper.pdf</code> and refuses the commit if the <code>make</code> command fails. This should prevent any commit from having an unbuildable version of the paper.</p>
+<p><input type="checkbox" id="checkbox11"><label for="checkbox11">Git can act as a simple CI system all by itself. In </label><code>.git/hooks</code> inside any git repository, you will find (currently inactive) files that are run as scripts when a particular action happens. Write a <a target="_blank" rel="noopener" href="https://git-scm.com/docs/githooks#_pre_commit"><code>pre-commit</code></a> hook that runs <code>make paper.pdf</code> and refuses the commit if the <code>make</code> command fails. This should prevent any commit from having an unbuildable version of the paper.</p>
 </li>
 <li class="lvl-2">
-<p><input type="checkbox" id="checkbox7"><label for="checkbox7">Set up a simple auto-published page using </label><a target="_blank" rel="noopener" href="https://pages.github.com/">GitHub Pages</a>. Add a <a target="_blank" rel="noopener" href="https://github.com/features/actions">GitHub Action</a> to the repository to run <code>shellcheck</code> on any shell files in that repository (here is <a target="_blank" rel="noopener" href="https://github.com/marketplace/actions/shellcheck">one way to do it</a>). Check that it works!</p>
+<p><input type="checkbox" id="checkbox12"><label for="checkbox12">Set up a simple auto-published page using </label><a target="_blank" rel="noopener" href="https://pages.github.com/">GitHub Pages</a>. Add a <a target="_blank" rel="noopener" href="https://github.com/features/actions">GitHub Action</a> to the repository to run <code>shellcheck</code> on any shell files in that repository (here is <a target="_blank" rel="noopener" href="https://github.com/marketplace/actions/shellcheck">one way to do it</a>). Check that it works!</p>
 </li>
 <li class="lvl-2">
-<p><input type="checkbox" id="checkbox8"><label for="checkbox8"></label><a target="_blank" rel="noopener" href="https://help.github.com/en/actions/automating-your-workflow-with-github-actions/building-actions">Build your own</a> GitHub action to run <a target="_blank" rel="noopener" href="http://proselint.com/"><code>proselint</code></a> or <a target="_blank" rel="noopener" href="https://github.com/btford/write-good"><code>write-good</code></a> on all the <code>.md</code> files in the repository. Enable it in your repository, and check that it works by filing a pull request with a typo in it.</p>
+<p><input type="checkbox" id="checkbox13"><label for="checkbox13"></label><a target="_blank" rel="noopener" href="https://help.github.com/en/actions/automating-your-workflow-with-github-actions/building-actions">Build your own</a> GitHub action to run <a target="_blank" rel="noopener" href="http://proselint.com/"><code>proselint</code></a> or <a target="_blank" rel="noopener" href="https://github.com/btford/write-good"><code>write-good</code></a> on all the <code>.md</code> files in the repository. Enable it in your repository, and check that it works by filing a pull request with a typo in it.</p>
 </li>
 </ul>
 
@@ -430,9 +430,9 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2021/03/08/C++_OOP/" title="OOP">
+                      <a href="/2021/03/08/C++-%E5%9F%BA%E4%BA%8E%E5%AF%B9%E8%B1%A1-Objected-Based-Programming/" title="C++: Objected Based Programming">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">OOP</span>
+                        <span class="hidden-mobile">C++: Objected Based Programming</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     

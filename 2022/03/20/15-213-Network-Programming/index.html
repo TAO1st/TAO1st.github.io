@@ -16,23 +16,44 @@
   <meta name="author" content="tao1st">
   <meta name="keywords" content="">
   
-    <meta name="description" content="Network Programming 基本概念 Concept  Socket Interface">
+    <meta name="description" content="Network Programming 基本概念 Concept 对主机而言，网络就是一个I&#x2F;O设备。在Linux中也是一样以文件的形式去对其进行操作。网络的收发体现在系统内核上就是对文件的读写。设备连接在总线上，通常通过DMA传送至内存。  TCP&#x2F;IP 客户端与服务器均使用socket interface functions和 Unix I&#x2F;O functions来进行通信。套接字通常会实现为">
 <meta property="og:type" content="article">
-<meta property="og:title" content="15-213-Network-Programming">
+<meta property="og:title" content="15-213: Network Programming">
 <meta property="og:url" content="https://tao1st.github.io/2022/03/20/15-213-Network-Programming/index.html">
 <meta property="og:site_name" content="tao1st.github.io">
-<meta property="og:description" content="Network Programming 基本概念 Concept  Socket Interface">
+<meta property="og:description" content="Network Programming 基本概念 Concept 对主机而言，网络就是一个I&#x2F;O设备。在Linux中也是一样以文件的形式去对其进行操作。网络的收发体现在系统内核上就是对文件的读写。设备连接在总线上，通常通过DMA传送至内存。  TCP&#x2F;IP 客户端与服务器均使用socket interface functions和 Unix I&#x2F;O functions来进行通信。套接字通常会实现为">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303222220411.png">
+<meta property="og:image" content="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303222223953.png">
+<meta property="og:image" content="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303230006361.png">
+<meta property="og:image" content="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303230007127.png">
+<meta property="og:image" content="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303222333627.png">
+<meta property="og:image" content="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303222338141.png">
 <meta property="og:image" content="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303202345274.png">
+<meta property="og:image" content="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303230044510.png">
+<meta property="og:image" content="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303230044926.png">
+<meta property="og:image" content="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303230045223.png">
+<meta property="og:image" content="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303230045403.png">
+<meta property="og:image" content="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303230046912.png">
+<meta property="og:image" content="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303230108833.png">
+<meta property="og:image" content="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303232143642.png">
+<meta property="og:image" content="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303232201544.png">
+<meta property="og:image" content="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303232251182.png">
+<meta property="og:image" content="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303232310674.png">
+<meta property="og:image" content="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303232352525.png">
+<meta property="og:image" content="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303232352682.png">
+<meta property="og:image" content="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303240044644.png">
+<meta property="og:image" content="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303240057153.png">
+<meta property="og:image" content="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303240111826.png">
 <meta property="article:published_time" content="2022-03-20T12:55:30.000Z">
-<meta property="article:modified_time" content="2023-03-21T18:49:16.114Z">
+<meta property="article:modified_time" content="2023-03-24T05:44:21.252Z">
 <meta property="article:author" content="tao1st">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303202345274.png">
+<meta name="twitter:image" content="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303222220411.png">
   
   
   
-  <title>15-213-Network-Programming - tao1st.github.io</title>
+  <title>15-213: Network Programming - tao1st.github.io</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -185,7 +206,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="15-213-Network-Programming"></span>
+            <span id="subtitle" data-typed-text="15-213: Network Programming"></span>
           
         </div>
 
@@ -208,7 +229,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          44 字
+          14k 字
         
       </span>
     
@@ -219,7 +240,7 @@
         
         
         
-          1 分钟
+          120 分钟
         
       </span>
     
@@ -257,16 +278,592 @@
         <div id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">15-213-Network-Programming</h1>
+            <h1 style="display: none">15-213: Network Programming</h1>
             
             
               <div class="markdown-body">
                 
                 <h1>Network Programming</h1>
 <h2 id="基本概念-Concept">基本概念 Concept</h2>
-<h3 id=""></h3>
+<p>对主机而言，网络就是一个I/O设备。在Linux中也是一样以文件的形式去对其进行操作。网络的收发体现在系统内核上就是对文件的读写。设备连接在总线上，通常通过DMA传送至内存。</p>
+<img src="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303222220411.png" srcset="/img/loading.gif" lazyload alt="image-20230322222050275" style="zoom: 33%;" />
+<h2 id="TCP-IP">TCP/IP</h2>
+<p>客户端与服务器均使用<strong>socket interface functions</strong>和 <strong>Unix I/O functions</strong>来进行通信。套接字通常会实现为<b>系统调用</b>，调用内核模式中的TCP/IP协议栈函数。</p>
+<img src="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303222223953.png" srcset="/img/loading.gif" lazyload alt="image-20230322222301877" style="zoom:33%;" />
+<h3 id="IP-Address">IP Address</h3>
+<p>32位无符号整数，常用点分十进制来表示。</p>
+<h4 id="数据结构">数据结构</h4>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">/* IP address stucture */</span><br><span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">in_addr</span> &#123;</span><br>	<span class="hljs-type">uint32_t</span> s_addr;		<span class="hljs-comment">/* Address in network byte order (big-endian) */</span><br>&#125;;<br><span class="hljs-comment">/* &#x27;in&#x27; represents internet</span><br></code></pre></td></tr></table></figure>
+<h4 id="字节顺序">字节顺序</h4>
+<p>由于历史遗留问题，网络上传递的32位无符号IP地址总是以<b>大端法（Big-Endian）</b>来存放的。与主机常用的小端法显然不同。我们将这两种顺序称为<b>网络字节顺序 Network Byte Order（Big-Endian）</b> 和<b>主机字节顺序 Host Byte Order（Little-Endian）</b>。</p>
+<img src="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303230006361.png" srcset="/img/loading.gif" lazyload alt="image-20230323000633295" style="zoom: 50%;" />
+<p>顾名思义，功能也就是二进制位的一个变换：</p>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>h: host</p>
+</li>
+<li class="lvl-2">
+<p>n: network</p>
+</li>
+<li class="lvl-2">
+<p>l/s: long / short</p>
+</li>
+</ul>
+<h4 id="格式转换">格式转换</h4>
+<p>点分十进制和普通32位二进制串的格式转换。</p>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>p: presentation 代表点分十进制</p>
+</li>
+<li class="lvl-2">
+<p>n:network 代表32位无符号整数</p>
+</li>
+</ul>
+<img src="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303230007127.png" srcset="/img/loading.gif" lazyload alt="image-20230323000748072" style="zoom:50%;" />
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>网络地址是使用了一个无类型指针指向/保存的，实际参数传入的是<code>in_addr</code>类型对象的指针；</p>
+</li>
+<li class="lvl-2">
+<p>网络地址转点分十进制时，根据参数<code>size</code>值来决定最终写入<code>dst</code>的字符串字节长度。</p>
+</li>
+</ul>
+<p>一个示例：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">in_addr</span> <span class="hljs-title">inaddr</span>;</span><br><span class="hljs-type">uint32_t</span> addr = <span class="hljs-number">0xffffffff</span>;<br><span class="hljs-type">char</span> buf[MAXBUF];<br>inaddr.s_addr = htonl(addr);<br><br><span class="hljs-keyword">if</span>( !inet_ntop(AF_INET, &amp;inaddr, buf, MAXBUF) ) &#123;<br>    unix_error(<span class="hljs-string">&quot;inet_ntop&quot;</span>);<br>&#125;<br><br><span class="hljs-type">int</span> rc = inet_pton(AF_INET, buf, &amp;inaddr) );<br>&#125;<br></code></pre></td></tr></table></figure>
+<blockquote>
+<p>Shell中使用<code>hostname</code>命令能够查看本机的点分十进制格式地址。</p>
+</blockquote>
+<h3 id="Domain-and-DNS">Domain and DNS</h3>
+<img src="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303222333627.png" srcset="/img/loading.gif" lazyload alt="image-20230322233339554" style="zoom: 50%;" />
+<p>实现域名与IP地址的转换就要依赖DNS。DNS的概念与实现见专门的部分，这里不赘述。</p>
+<blockquote>
+<p>Shell中的<code>nslookup</code>命令展示与IP地址对应的域名。</p>
+<p>域名和IP地址之间的映射可以是一对一，一对多，多对一。有些合法的域名可能没有映射到任何IP地址。</p>
+</blockquote>
+<h3 id="Internet-Connections">Internet Connections</h3>
+<p>套接字对表征一个连接。</p>
+<img src="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303222338141.png" srcset="/img/loading.gif" lazyload alt="image-20230322233811082" style="zoom: 33%;" />
 <h2 id="Socket-Interface">Socket Interface</h2>
+<p>Socket interface就是一组函数，与Unix I/O函数相结合用以创建网络应用。</p>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>从内核角度来看，socket就是通信的一个端点（end point），用于表征连接的概念；</p>
+</li>
+<li class="lvl-2">
+<p>从程序角度来看，socket就相当于一个<b>打开的I/O设备文件</b>，其<b>描述符（descriptor）</b>相当于文件描述符；</p>
+</li>
+</ul>
+<p>所以，一个socket对应：</p>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>Host: Service = IP Addr : Port</p>
+<p>即一个<code>sockaddr_in</code>的对象。</p>
+</li>
+<li class="lvl-2">
+<p>连接中的一个端点；</p>
+</li>
+<li class="lvl-2">
+<p>一个 socket descriptor；</p>
+</li>
+</ul>
 <img src="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303202345274.png" srcset="/img/loading.gif" lazyload alt="image-20230320234534185" style="zoom: 50%;" />
+<h3 id="Socket-Address-Structures">Socket Address Structures</h3>
+<p>内容：IPv4、端口号、IP地址 + 对齐填充。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">/* IP socket address structure 对应Internet下的实现 */</span> <br><span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">sockaddr_in</span> &#123;</span><br>    <span class="hljs-type">uint16_t</span> sin_family; 				<span class="hljs-comment">/* Protocol family (always AF_INET) */</span><br>    <span class="hljs-type">uint16_t</span> sin_port; 					<span class="hljs-comment">/* Port number in network byte order */</span><br>    <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">in_addr</span> <span class="hljs-title">sin_addr</span>;</span> 			<span class="hljs-comment">/* IP address in network byte order */</span><br>    <span class="hljs-type">unsigned</span> <span class="hljs-type">char</span> sin_zero[<span class="hljs-number">8</span>]; 			<span class="hljs-comment">/* Pad to sizeof(struct sockaddr) */</span><br>&#125;;<br><span class="hljs-comment">/* Generic socket address structure (for connect, bind, and accept) 通用实现 */</span><br><span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">sockaddr</span> &#123;</span><br>    <span class="hljs-type">uint16_t</span> sa_family; 				<span class="hljs-comment">/* Protocol family */</span><br>    <span class="hljs-type">char</span> sa_data[<span class="hljs-number">14</span>]; 					<span class="hljs-comment">/* Address data */</span><br>&#125;;<br></code></pre></td></tr></table></figure>
+<h3 id="Function-Implementation">Function Implementation</h3>
+<h4 id="Socket-Descriptor">Socket Descriptor</h4>
+<p>因为我们将网络设备也视为一个普通的I/O设备，而I/O设备从Linux内核的角度来看就是一个文件，所以我们对网络的通信其实就是对文件的读写，I/O读写操作也是统一的。那么对于每个Socket实体，其都会赋予一个套接字描述符。</p>
+<blockquote>
+<p><b>主动实体（active entities）</b>和<b>被动实体（passive entities）</b></p>
+<ul class="lvl-1">
+<li class="lvl-2">客户端属于主动发起连接请求的主动实体；</li>
+<li class="lvl-2">服务端属于被动接受请求，提供服务的被动实体。</li>
+</ul>
+</blockquote>
+<p>描述符和套接字对应如下几种状态：</p>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p><b>主动 Active</b>：对应客户端这类发起请求的主动实体，其创建的描述符均对应于<b>主动套接字（Active Socket）</b>;</p>
+</li>
+<li class="lvl-2">
+<p><b>被动 Passive</b>：对应服务端这类被动接受请求、提供服务的被动实体。针对不同的服务阶段还分为如下两种：</p>
+<ul class="lvl-2">
+<li class="lvl-4"><b>监听 Listening</b>：监听来自客户端的连接请求的<b>监听套接字（listening socket）</b>；</li>
+<li class="lvl-4"><b>已连接 Connected</b>：连接建立后，利用该<b>已连接描述符（connected descriptor）</b>来与客户端通信（使用Unix I/O函数）。</li>
+</ul>
+<p>监听与已连接两种状态分离意味着并发的实现。即：</p>
+<ul class="lvl-2">
+<li class="lvl-4">
+<p>一个服务端对应一个唯一的监听描述符。通常被创建一次，并存在于服务器的整个生命周期，并不断去监听来自客户端的连接请求；</p>
+</li>
+<li class="lvl-4">
+<p>一次成功的连接对应一个已连接描述符，用于在该链接上进行通信。</p>
+<p>一个服务器通过多线程建立多次连接，即对应多个已连接描述符。只存在于服务器为一个客户端服务的过程中。</p>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="socket">socket</h4>
+<p>客户端和服务器都会使用，用于创建<b>套接字描述符（socket descriptor）</b>，其类型就是一个简单的<code>int</code>。</p>
+<img src="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303230044510.png" srcset="/img/loading.gif" lazyload alt="image-20230323004431461" style="zoom: 50%;" />
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>用法其实很固定（hardcoded arguments）: <code>clientfd = Socket(AF_INT, SOCK_STREAM, 0);</code></p>
+<ul class="lvl-2">
+<li class="lvl-4"><code>AF_INET</code>: IPv4</li>
+<li class="lvl-4"><code>SOCK_STREAM</code>: 表示该套接字是连接的一个端点？</li>
+</ul>
+<p>也可以使用<code>getaddrinfo</code>来自动生成参数内容，实现代码与协议无关。</p>
+</li>
+<li class="lvl-2">
+<p>此时返回的描述符只是部分打开，不能用于读写，因为连接还没有正式建立。</p>
+</li>
+</ul>
+<p>客户端与服务端都调用<code>socket</code>函数来初始化socket描述符，但对于描述符的属性需要注意：</p>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>默认情况下，内核把<code>socket</code>返回的描述符<code>fd</code>都认为是<b>客户端属性的主动套接字（active socket）</b>；</p>
+</li>
+<li class="lvl-2">
+<p>对于服务端来说，还需要调用<code>listen</code>函数来指明其为。</p>
+</li>
+</ul>
+<h4 id="connect">connect</h4>
+<p>客户端调用<code>connect</code>试图与服务器建立连接（开始握手）。</p>
+<img src="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303230044926.png" srcset="/img/loading.gif" lazyload alt="image-20230323004448877" style="zoom:50%;" />
+<ul class="lvl-0">
+<li class="lvl-2">
+<p><code>addrlen = sizeof(sockaddr_in)</code></p>
+</li>
+<li class="lvl-2">
+<p><code>connect</code>函数会<b>阻塞</b>，直至连接成功建立，或者发生错误。</p>
+</li>
+</ul>
+<blockquote>
+<p>参数最好用<code>getaddrinfo</code>来提供；</p>
+</blockquote>
+<hr>
+<p>服务器调用<code>bind</code>、<code>listen</code>、<code>accept</code>来与客户端建立连接。</p>
+<h4 id="bind">bind</h4>
+<p>将<code>socket</code>函数初始化的<b>套接字描述符<code>sockfd</code></b>与服务器套接字地址<code>*addr</code>联系起来</p>
+<img src="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303230045223.png" srcset="/img/loading.gif" lazyload alt="image-20230323004507179" style="zoom:50%;" />
+<ul class="lvl-0">
+<li class="lvl-2">
+<p><code>addrlen = sizeof(sockaddr_in)</code></p>
+</li>
+</ul>
+<blockquote>
+<p>参数最好用<code>getaddrinfo</code>来提供；</p>
+</blockquote>
+<h4 id="listen">listen</h4>
+<p>告诉内核该描述符<code>sockfd</code>为服务器所用，而非默认下客户端的被动套接字。<code>listen</code>会将<code>sockfd</code>转换为一个<b>监听套接字（listening socket）</b>。</p>
+<img src="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303230045403.png" srcset="/img/loading.gif" lazyload alt="image-20230323004524352" style="zoom:50%;" />
+<ul class="lvl-0">
+<li class="lvl-2">
+<p><code>backlog</code>: The backlog argument is a hint about <b>the number of outstanding connection requests that the kernel should queue up before it starts to refuse requests</b>. The exact meaning of the backlog argument requires an understanding of TCP/IP that is beyond our scope. We will typically set it to a large value, such as 1,024.</p>
+</li>
+</ul>
+<h4 id="accept">accept</h4>
+<p><code>accept</code>函数的功能就是监听连接请求并建立连接，具体步骤如下：</p>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>等待来自客户端的连接请求到达监听描述符<code>listenfd</code>；</p>
+</li>
+<li class="lvl-2">
+<p>在<code>addr</code>中填写客户端的socket地址；</p>
+</li>
+<li class="lvl-2">
+<p>返回一个<b>已连接描述符<code>connfd</code> </b>，通过该描述符来利用Unix I/O函数与客户端进行通信。</p>
+<p>建立连接后，通信即利用已创建好的描述符：</p>
+<ul class="lvl-2">
+<li class="lvl-4">
+<p>客户端读写自己<code>socket</code>函数返回的<code>clientfd</code>；</p>
+</li>
+<li class="lvl-4">
+<p>服务端读写<code>accept</code>函数返回的<code>connfd</code>。</p>
+</li>
+</ul>
+</li>
+</ul>
+<img src="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303230046912.png" srcset="/img/loading.gif" lazyload alt="image-20230323004605864" style="zoom:50%;" />
+<hr>
+<p>如图是一次连接的建立示例，我们将<code>listenfd</code>赋值为3（0-2的描述符预留给标准文件）：</p>
+<img src="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303230108833.png" srcset="/img/loading.gif" lazyload alt="image-20230323010838773" style="zoom:50%;" />
+<hr>
+<p>两个主机 Host 和服务 Service 的转换函数：</p>
+<h4 id="getaddrinfo">getaddrinfo</h4>
+<p>将【<b>字符串形式的<code>（host:service）</code> / <code>(IP Addr:Port)</code></b>】转换为 【套接字地址结构<code>sockaddr_in</code>】。</p>
+<img src="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303232143642.png" srcset="/img/loading.gif" lazyload alt="image-20230323214351525" style="zoom:50%;" />
+<h5 id="输入">输入</h5>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>字符串形式的<code>host</code>与<code>service</code>信息；</p>
+<ul class="lvl-2">
+<li class="lvl-4"><code>host</code>可以是点分十进制地址，也可以是域名；</li>
+<li class="lvl-4"><code>service</code>可以是服务名比如<code>http</code>/<code>ftp</code>，也可以直接存十进制端口号。</li>
+</ul>
+<p>不需要时，二者都可以置为NULL，但至少有一个要设置有效值。</p>
+</li>
+<li class="lvl-2">
+<p><code>hint</code>：The optional hints argument is an <code>addrinfo</code> structure that <b>provides finer control over the list of socket addresses that <code>getaddrinfo</code> returns</b>.</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">addrinfo</span> &#123;</span><br>    <span class="hljs-type">int</span> ai_flags; 				<span class="hljs-comment">/* Hints argument flags */</span><br>    <span class="hljs-type">int</span> ai_family; 				<span class="hljs-comment">/* First arg to socket function */</span><br>    <span class="hljs-type">int</span> ai_socktype; 			<span class="hljs-comment">/* Second arg to socket function */</span><br>    <span class="hljs-type">int</span> ai_protocol; 			<span class="hljs-comment">/* Third arg to socket function */</span><br>    <span class="hljs-type">char</span> *ai_canonname; 		<span class="hljs-comment">/* Canonical hostname */</span><br>    <span class="hljs-type">size_t</span> ai_addrlen; 			<span class="hljs-comment">/* Size of ai_addr struct */</span><br>    <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">sockaddr</span> *<span class="hljs-title">ai_addr</span>;</span> 	<span class="hljs-comment">/* Ptr to socket address structure */</span><br>    <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">addrinfo</span> *<span class="hljs-title">ai_next</span>;</span> 	<span class="hljs-comment">/* Ptr to next item in linked list */</span><br>&#125;;<br></code></pre></td></tr></table></figure>
+<p><code>hint</code>本身格式跟返回链表中的节点格式一致，如果需要其给出更好的控制，只能设置其中：<code>ai_family</code>, <code>ai_socktype</code>, <code>ai_protocol</code>,  <code>ai_flags</code> 这几个字段. 其他字段必须置零或者<code>NULL</code>。</p>
+<p>通常，我们将整个结构使用<code>memset</code>去清零，然后有选择地设置一些字段：</p>
+<ul class="lvl-2">
+<li class="lvl-4">
+<p><code>ai_family</code>: IPv4 (AF_INET) or IPv6 (AF_INET6)；</p>
+</li>
+<li class="lvl-4">
+<p><code>ai_socktype</code>: By default, for each unique address associated with host, the <code>getaddrinfo</code> function can return <i>up to three</i> <code>addrinfo</code> structures, each with a different <code>ai_ socktype</code> field: one for <i>connections (SOCK_STREAM)</i>, one for <i>datagrams</i> (not covered), and one for <i>raw sockets</i> (not covered).<br>
+Setting <code>ai_socktype</code> to SOCK_STREAM restricts the list to at most one <code>addrinfo</code> structure for each unique address, one whose socket address can be used as the end point of a connection. <b>This is the desired behavior for all of our example programs.</b></p>
+</li>
+<li class="lvl-4">
+<p><code>ai_flags</code>: 一个位掩码，用来修改默认行为，有以下值：</p>
+<ul class="lvl-4">
+<li class="lvl-6">
+<p>AI_ADDRCONFIG:  This flag is recommended if you are using connections (SOCK_STREAM?) . It asks <code>getaddrinfo</code> to return IPv4 addresses only if the local host is configured for IPv4. Similarly for IPv6.</p>
+<p>就是根据对应协议类型返回对应地址；</p>
+</li>
+<li class="lvl-6">
+<p>AI_CANONNAME: Canonical Name. By default, the <code>ai_canonname</code> field is NULL. If this flag is set, it instructs <code>getaddrinfo</code> to point the <code>ai_canonname</code> field in the first <code>addrinfo</code> structure in the list to the <i>canonical (official) name of host</i>. 规范化主机名，见下链表图的<code>ai_canonname</code>部分；</p>
+</li>
+<li class="lvl-6">
+<p>AI_NUMERICSERV: numeric service. 默认情况下service既可以是端口号也是可以是服务名，该位为1则强制参数必须是numeric的端口号；</p>
+</li>
+<li class="lvl-6">
+<p>AI_PASSIVE: By default, <code>getaddrinfo</code> returns socket addresses that can be used by clients as active sockets in calls to connect. This flag instructs it to return socket addresses that can be used by servers as listening sockets. In this case, the host argument should be NULL. The address field in the resulting socket address structure(s) will be the wildcard address, which tells the kernel that this server will accept requests to any of the IP addresses for this host. <b>This is the desired behavior for all of our example servers.</b> ?</p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h5 id="输出">输出</h5>
+<p>返回<code>result</code>，其指向一个<code>addrinfo</code>类型的链表。因为域名可能对应多个IP地址等情况/多个服务器/多个地址。</p>
+<p>调用<code>geraddrinfo</code>后，会遍历这个链表，依次尝试每一个<code>ai_addr</code>:</p>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>对于客户端，一直尝试直到调用<code>socket</code>和<code>connect</code>成功，并建立起连接；</p>
+</li>
+<li class="lvl-2">
+<p>对于服务端，一直尝试直到调用<code>socket</code>和<code>bind</code>成功，描述符绑定至一个合法的套接字地址。</p>
+</li>
+</ul>
+<img src="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303232201544.png" srcset="/img/loading.gif" lazyload alt="image-20230323220140469" style="zoom:50%;" />
+<h5 id="释放-2">释放</h5>
+<p>为了避免内存泄漏，每次程序结束时必须调用<code>freeaddrinfo</code>，来释放该链表。</p>
+<blockquote>
+<p><code>addrinfo</code>中的字段是不透明的，都可以将任何一个字段传递给socket interface中的函数接口使用。这个属性使得其能够独立于不同版本的IP协议。</p>
+</blockquote>
+<h4 id="getnameinfo">getnameinfo</h4>
+<p>和<code>getaddrinfo</code>相反，将套接字地址结构转换为主机名和服务名字符串等信息。</p>
+<img src="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303232251182.png" srcset="/img/loading.gif" lazyload alt="image-20230323225121102" style="zoom:50%;" />
+<p>即，将大小为<code>salen</code>的套接字地址结构<code>sa</code>转换至长度为<code>hostlen</code>的<code>host</code>字符缓冲区与长度为<code>servlen</code>的<code>service</code>字符缓冲区中。</p>
+<p><code>flag</code>则作为修改默认行为的位掩码，其支持如下设置（两个示例）：</p>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>NI_NUMERICHOST. By default, <code>getnameinfo</code> tries to return a <b>domain name in host</b>. Setting this flag will cause it to return a <b>numeric address string</b> instead.</p>
+</li>
+<li class="lvl-2">
+<p>NI_NUMERICSERV. By default, <code>getnameinfo</code> will look in <code>/etc/services</code> and if possible, return a service name instead of a port number. Setting this flag forces it to skip the lookup and simply return the port number.</p>
+</li>
+</ul>
+<p>一个转换使用<code>hostinfo</code>示例：</p>
+<p>首先来看使用：</p>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>传入一个域名，展示其对应所有的IP地址的映射</p>
+</li>
+<li class="lvl-2">
+<p>传入域名的解析使用<code>getaddrinfo</code>，而获得了具体IP地址信息后再用<code>getnameinfo</code>展示出来。</p>
+</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta prompt_">linux&gt; </span><span class="language-bash">./hostinfo twitter.com</span><br>199.16.156.102<br>199.16.156.230<br>199.16.156.6<br>199.16.156.70<br></code></pre></td></tr></table></figure>
+<p>实现代码</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;csapp.h&quot;</span></span><br><br><span class="hljs-type">int</span> <span class="hljs-title function_">main</span><span class="hljs-params">(<span class="hljs-type">int</span> argc, <span class="hljs-type">char</span>** argv)</span> &#123;<br>     <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">addrinfo</span> *<span class="hljs-title">ptr</span>, *<span class="hljs-title">list</span>, <span class="hljs-title">hint</span>;</span><br>     <span class="hljs-type">int</span> rc, flags = NI_NUMERICHOST;<br>     <span class="hljs-type">char</span> host_name[MAXLINE];<br><br>     <span class="hljs-keyword">if</span>(argc != <span class="hljs-number">2</span>) &#123;<br>         <span class="hljs-built_in">fprintf</span>(<span class="hljs-built_in">stderr</span>, <span class="hljs-string">&quot;usage: %s &lt;domain name&gt;\n&quot;</span>, argv[<span class="hljs-number">0</span>]);<br>     &#125;<br><br>     <span class="hljs-comment">// set hints</span><br>     <span class="hljs-built_in">memset</span>(&amp;hint, <span class="hljs-number">0</span>, <span class="hljs-keyword">sizeof</span>(<span class="hljs-keyword">struct</span> addrinfo));<br>     hint.ai_family = AF_INET;<br>     hint.ai_socktype = SOCK_STREAM;<br><br><br>     <span class="hljs-comment">// get list</span><br>     <span class="hljs-keyword">if</span>( (rc = getaddrinfo(argv[<span class="hljs-number">1</span>], <span class="hljs-literal">NULL</span>, &amp;hint, &amp;<span class="hljs-built_in">list</span>) ) != <span class="hljs-number">0</span> ) &#123;   <span class="hljs-comment">// return non-zero error    code on error</span><br>         <span class="hljs-built_in">fprintf</span>(<span class="hljs-built_in">stderr</span>, <span class="hljs-string">&quot;getaddrinfo error: %s\n&quot;</span>, gai_strerror(rc));<br>         <span class="hljs-built_in">exit</span>(<span class="hljs-number">1</span>);<br>     &#125;<br><br>     <span class="hljs-comment">// traverse the list</span><br>     <span class="hljs-keyword">for</span>(ptr = <span class="hljs-built_in">list</span>; ptr != <span class="hljs-literal">NULL</span>; ptr = ptr-&gt;ai_next) &#123;<br>        getnameinfo(ptr-&gt;ai_addr, ptr-&gt;ai_addrlen, host_name, MAXLINE, <span class="hljs-literal">NULL</span>, <span class="hljs-number">0</span>, flags);<br>        <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;%s\n&quot;</span>, host_name);<br>     &#125;<br>     freeaddrinfo(<span class="hljs-built_in">list</span>);<br>     <span class="hljs-built_in">exit</span>(<span class="hljs-number">0</span>);<br>&#125;<br></code></pre></td></tr></table></figure>
+<h3 id="Wrapper">Wrapper</h3>
+<img src="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303232310674.png" srcset="/img/loading.gif" lazyload alt="image-20230323231023521" style="zoom: 33%;" />
+<p>如图所示，编写包装函数，以简化客户端与服务端通信的代码。</p>
+<h4 id="open-clientfd">open_clientfd</h4>
+<p>客户端调用<code>open_clientfd</code>来建立与服务器的连接。如图包括以下函数功能：<code>getaddrinfo</code>, <code>socket</code>, <code>connect</code>。</p>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>输入：服务器运行在<code>hostname</code>主机上，通过<code>port</code>端口来监听信息；</p>
+</li>
+<li class="lvl-2">
+<p>返回：返回一个已打开的套接字描述符<code>clientfd</code>。该描述符已经完成了<code>connect</code>的操作，可以通过Unix I/O函数对其进行读写。</p>
+</li>
+</ul>
+<img src="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303232352525.png" srcset="/img/loading.gif" lazyload alt="image-20230323235227459" style="zoom:50%;" />
+<p>流程：</p>
+<ol>
+<li class="lvl-3">
+<p>初始化一个 hint, 调用 <code>getaddrinfo</code> 来获取想要的 <code>sockaddr</code> 链表；</p>
+</li>
+<li class="lvl-3">
+<p>遍历链表，对每一个<code>sockaddr</code>尝试：</p>
+<ul class="lvl-2">
+<li class="lvl-5">
+<p>调用<code>socket</code>尝试初始化一个<code>clientf</code>描述符；</p>
+</li>
+<li class="lvl-5">
+<p>描述符成功初始化后，调用<code>connect</code> 尝试发起连接；</p>
+<p>连接失败时注意调用<code>close</code>清理当前的<code>clientfd</code>。</p>
+</li>
+</ul>
+</li>
+<li class="lvl-3">
+<p>清理链表，调用<code>freeaddrinfo</code>。</p>
+</li>
+<li class="lvl-3">
+<p>返回<code>clientfd</code>。</p>
+</li>
+</ol>
+<h4 id="open-listenfd">open_listenfd</h4>
+<p>服务器调用该函数创建一个监听描述符<code>listenfd</code>，准备好接受连接请求，如图包括：<code>getaddrinfo</code>, <code>socket</code>, <code>bind</code>, <code>listen</code>。</p>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>输入：在端口<code>port</code>上进行监听；</p>
+</li>
+<li class="lvl-2">
+<p>输出：返回一个已打开的监听描述符<code>listenfd</code>，该描述符已经准备好在端口<code>port</code>上接收连接请求（<code>accept</code>）。</p>
+</li>
+</ul>
+<img src="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303232352682.png" srcset="/img/loading.gif" lazyload alt="image-20230323235247617" style="zoom:50%;" />
+<p>流程：</p>
+<ol>
+<li class="lvl-3">
+<p>初始化 hint：设置AI_PASSIVE，且<code>host</code>参数设置为NULL，表示接收发送到本主机<b>所有IP地址</b>的请求；</p>
+<p>调用<code>getaddrinfo</code>；</p>
+</li>
+<li class="lvl-3">
+<p>遍历链表：</p>
+<ul class="lvl-2">
+<li class="lvl-5">
+<p>调用<code>socket</code>尝试初始化一个<code>listenfd</code>描述符；</p>
+</li>
+<li class="lvl-5">
+<p>描述符成功初始后，调用<code>bind</code>将<code>listenfd</code>描述符与<code>sockaddr</code>地址联系起来；</p>
+<p>如果失败，要调用<code>close</code>清理<code>listenfd</code>，防止内存泄露。</p>
+</li>
+</ul>
+</li>
+<li class="lvl-3">
+<p>清理链表，调用<code>freeaddrinfo</code>。</p>
+</li>
+<li class="lvl-3">
+<p>调用<code>listen</code>，开始正式监听；</p>
+</li>
+<li class="lvl-3">
+<p>返回<code>listenfd</code>（给<code>accept</code>函数）。</p>
+</li>
+</ol>
+<h2 id="Web-Server">Web Server</h2>
+<p>Web 客户端与服务端之间的交互使用<code>HTTP</code>协议；</p>
+<h3 id="Web-Content">Web Content</h3>
+<p><i>Content</i> is a sequence of bytes with associated MIME type.</p>
+<img src="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303240044644.png" srcset="/img/loading.gif" lazyload alt="image-20230324004446575" style="zoom:50%;" />
+<h4 id="提供内容的方式">提供内容的方式</h4>
+<p>服务端有两种提供内容的方式：</p>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>服务静态内容 Serving Static Content: 取一个磁盘文件，返回其内容给客户端。</p>
+</li>
+<li class="lvl-2">
+<p>服务动态内容 Serving Dynamic Content: 运行一个可执行文件，参数可以由客户端与服务端交互而得。将可执行文件的输出返回给客户端。</p>
+</li>
+</ul>
+<h4 id="URL">URL</h4>
+<p>URI即URL的后缀，对服务器来说就是本地文件地址。</p>
+<h3 id="HTTP-Transaction">HTTP Transaction</h3>
+<p>事务：客户端发起一个<b>HTTP请求</b>，服务端返回<b>HTTP响应</b>，然后关闭连接。</p>
+<h4 id="HTTP-Request">HTTP Request</h4>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>Request Line: <code>method URI version</code></p>
+</li>
+<li class="lvl-2">
+<p>Request Header: <code>header-name: header-data</code></p>
+</li>
+</ul>
+<p>方法：GET, POST, OPTIONS, HEAD, PUT, DELETE, TRACE</p>
+<p>GET: 指导服务器生成和返回URI，拼在域名后作为URL的后缀。</p>
+<h4 id="HTTP-Response">HTTP Response</h4>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>Response Line: <code>version status-code status-message</code></p>
+<img src="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303240057153.png" srcset="/img/loading.gif" lazyload alt="image-20230324005706064" style="zoom: 50%;" />
+</li>
+<li class="lvl-2">
+<p>Response Header: <code>header-name: header-data</code></p>
+</li>
+<li class="lvl-2">
+<p>Response Body: 实际传递的（文本）内容。</p>
+</li>
+</ul>
+<blockquote>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/ustc_sse_shenzhang/article/details/105744435">(33条消息) csapp.h头文件的使用 ---- 3种方法运行《深入理解计算机系统》中的代码_LjMengm的博客-CSDN博客</a></p>
+<p>因为csapp.c中有关于线程的头文件，在用gcc的时候最后要加上-lpthread 如 # gcc -o Ex Ex.c -lpthread</p>
+</blockquote>
+<h3 id="CGI">CGI</h3>
+<p>服务动态内容有一些值得考虑的问题：</p>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>客户端如何传递参数给服务端？</p>
+</li>
+<li class="lvl-2">
+<p>服务端如何将参数传递给它所创建的子进程？</p>
+</li>
+<li class="lvl-2">
+<p>服务端如何将其他必要信息传递给子进程？</p>
+</li>
+<li class="lvl-2">
+<p>子进程的输出送到哪里？</p>
+</li>
+</ul>
+<p>以上问题由CGI（Common Gateway Interface）标准来解决。</p>
+<h4 id="客户端如何将程序参数传递给服务器">客户端如何将程序参数传递给服务器</h4>
+<p>GET 请求就比较简单，因为参数都通过 URL 来传递。</p>
+<p>其他方法则需要其他方式来进行传递。</p>
+<h4 id="服务器如何将参数传递给子进程">服务器如何将参数传递给子进程</h4>
+<p>子进程调用加载器（<code>exceve</code>）前，设置 CGI 环境变量。</p>
+<h4 id="服务器如何将其他信息传递给子进程">服务器如何将其他信息传递给子进程</h4>
+<p>CGI 定义了很多环境变量。</p>
+<img src="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303240111826.png" srcset="/img/loading.gif" lazyload alt="image-20230324011100745" style="zoom: 50%;" />
+<h4 id="子进程将输出发送到哪里">子进程将输出发送到哪里</h4>
+<p>送到标准输出stdout，然后将标准输出重定向到与客户端相关联的已连接描述符<code>connfd</code>。任何CGI程序写到标准输出的东西都会直接到达客户端。</p>
+<h3 id="TINY-Web-Server">TINY Web Server</h3>
+<h4 id="main">main</h4>
+<ol>
+<li class="lvl-3">
+<p>解析命令行；</p>
+</li>
+<li class="lvl-3">
+<p>调用<code>openlistenfd</code>，生成监听描述符<code>listenfd</code>；</p>
+</li>
+<li class="lvl-3">
+<p>执行典型的无限服务器循环（迭代服务器，挨个处理不会并发）：</p>
+<ul class="lvl-2">
+<li class="lvl-5">调用<code>accept</code>接收来自客户端的<code>connect</code>请求，生成已连接描述符<code>connfd</code>；</li>
+<li class="lvl-5">将<code>connfd</code>作为参数传入并调用<code>doit</code>，执行HTTP事务；</li>
+<li class="lvl-5">执行结束后关闭已连接描述符<code>connfd</code>，进入下一轮循环（迭代）监听新的请求。</li>
+</ul>
+</li>
+</ol>
+<h4 id="doit">doit</h4>
+<p>此时连接已建立，传入<code>connfd</code>，已经与客户端建立了链接，向其中读写即可实现通信：</p>
+<ol>
+<li class="lvl-3">
+<p>解析请求行（request line），获得<code>method</code>, <code>uri</code>, <code>version</code>；</p>
+</li>
+<li class="lvl-3">
+<p>判断<code>method</code>（目前只支持<code>GET</code>方式）</p>
+</li>
+<li class="lvl-3">
+<p>调用<code>read_requesthedrs</code>函数，读取请求头部（request header），这里基本都用不到，读取后忽略即可，直至读到空行（<code>\r\n</code>）结束。</p>
+</li>
+<li class="lvl-3">
+<p>解析<code>URI</code>，调用<code>parse_uri</code>函数，将<code>uri</code>作为参数传入并填写文件名<code>filename</code>与参数<code>cgiargs</code>。</p>
+<p>如果是静态内容返回1，动态内容则返回0；</p>
+</li>
+<li class="lvl-3">
+<p>根据<code>parse_uri</code>的返回值判断其为静态内容还是动态内容，并调用相应函数（<code>serve_static</code>，<code>serve_dynamic</code>）进行操作。</p>
+</li>
+</ol>
+<h4 id="clienterror">clienterror</h4>
+<p>此处只检查一些明显的错误并将其报告回客户端。实际上TINY还缺乏实际服务器的许多错误处理特性。</p>
+<p>将简单的错误信息以HTTP响应文本的格式发回。</p>
+<h4 id="read-requesthdrs">read_requesthdrs</h4>
+<p>简单的按行读取 request header，目前的TINY不需要这部分内容。一直读到空行<code>\r\n</code>结束。</p>
+<h4 id="parse-uri">parse_uri</h4>
+<p>TINY采取如下两种假设：</p>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>静态内容的主目录即为当前目录<code>.</code>；</p>
+</li>
+<li class="lvl-2">
+<p>可执行文件的主目录为<code>./cgi-bin</code>。</p>
+</li>
+</ul>
+<p>所以，通过查找URI中是否包含<code>cgi-bin</code>字符串，来判定是静态还是动态内容。</p>
+<h4 id="serve-static">serve_static</h4>
+<p>TINY提供五种常见类型的静态内容：</p>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>HTML文件；</p>
+</li>
+<li class="lvl-2">
+<p>无格式的文本文件（plain text）；</p>
+</li>
+<li class="lvl-2">
+<p>编码为 GIF，PNG，JPG 格式的图片。</p>
+</li>
+</ul>
+<p><code>serve_static</code>即打包HTTP响应信息，并通过描述符传递给客户端。</p>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>打包 request line 与 request header；</p>
+</li>
+<li class="lvl-2">
+<p>打包 response body，即实际传送的文件内容；</p>
+<p>使用了<code>mmap</code>函数，详细见代码。</p>
+</li>
+</ul>
+<h4 id="serve-dynamic">serve_dynamic</h4>
+<h2 id="Proxy">Proxy</h2>
+<h4 id="doit-2">doit</h4>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">void</span> <span class="hljs-title function_">doit</span><span class="hljs-params">(<span class="hljs-type">int</span> connfd)</span><br>&#123;<br>    <span class="hljs-type">char</span> buf[MAXLINE], method[MAXLINE], uri[MAXLINE], version[MAXLINE];<br>    <span class="hljs-type">char</span> server[MAXLINE];<br> <br>    <span class="hljs-type">rio_t</span> rio, server_rio;<br><br>    Rio_readinitb(&amp;rio, connfd);<br>    Rio_readlineb(&amp;rio, buf, MAXLINE);<br>    <span class="hljs-built_in">sscanf</span>(buf, <span class="hljs-string">&quot;%s %s %s&quot;</span>, method, uri, version);<br><br>    <span class="hljs-keyword">if</span> (strcasecmp(method, <span class="hljs-string">&quot;GET&quot;</span>))<br>    &#123;<br>        <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;Proxy does not implement the method&quot;</span>);<br>        <span class="hljs-keyword">return</span>;<br>    &#125;<br><br>    <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">Uri</span> *<span class="hljs-title">uri_data</span> =</span> (<span class="hljs-keyword">struct</span> Uri *)<span class="hljs-built_in">malloc</span>(<span class="hljs-keyword">sizeof</span>(<span class="hljs-keyword">struct</span> Uri));<br>    <span class="hljs-comment">//解析uri</span><br>    parse_uri(uri, uri_data);<br>    <br>    <span class="hljs-comment">//设置header</span><br>    build_header(server, uri_data, &amp;rio);<br><br>    <span class="hljs-comment">// proxy对服务器来说相当于客户端，调用Open_cliendfd试图连接服务端</span><br>    <span class="hljs-type">int</span> serverfd = Open_clientfd(uri_data-&gt;host, uri_data-&gt;port);<br>    <span class="hljs-keyword">if</span> (serverfd &lt; <span class="hljs-number">0</span>)<br>    &#123;<br>        <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;connection failed\n&quot;</span>);<br>        <span class="hljs-keyword">return</span>;<br>    &#125;<br>	<span class="hljs-comment">// 转发给服务器</span><br>    <span class="hljs-comment">// 向serverfd写入，即向服务器发送server内容</span><br>    Rio_readinitb(&amp;server_rio, serverfd);<br>    Rio_writen(serverfd, server, <span class="hljs-built_in">strlen</span>(server));<br><br>    <br>    <span class="hljs-comment">// 回复给客户端</span><br>    <span class="hljs-type">size_t</span> n;<br>    <span class="hljs-keyword">while</span> ((n = Rio_readlineb(&amp;server_rio, buf, MAXLINE)) != <span class="hljs-number">0</span>)<br>    &#123;<br>        <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;proxy received %d bytes,then send\n&quot;</span>, (<span class="hljs-type">int</span>)n);<br>        Rio_writen(connfd, buf, n);<br>    &#125;<br>    <span class="hljs-comment">// 关闭服务器描述符</span><br>    Close(serverfd);<br>&#125;<br></code></pre></td></tr></table></figure>
+<h2 id="Concurrency-Proxy">Concurrency Proxy</h2>
+<h4 id="sbuf-2">sbuf</h4>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-keyword">typedef</span> <span class="hljs-class"><span class="hljs-keyword">struct</span> &#123;</span><br>    <span class="hljs-type">int</span> *buf;          <span class="hljs-comment">/* Buffer array */</span>         <br>    <span class="hljs-type">int</span> n;             <span class="hljs-comment">/* Maximum number of slots */</span><br>    <span class="hljs-type">int</span> front;         <span class="hljs-comment">/* buf[(front+1)%n] is first item */</span><br>    <span class="hljs-type">int</span> rear;          <span class="hljs-comment">/* buf[rear%n] is last item */</span><br>    <span class="hljs-type">sem_t</span> mutex;       <span class="hljs-comment">/* Protects accesses to buf 互斥信号量 */</span><br>    <span class="hljs-type">sem_t</span> slots;       <span class="hljs-comment">/* Counts available slots 记录剩余槽位 */</span><br>    <span class="hljs-type">sem_t</span> items;       <span class="hljs-comment">/* Counts available items 记录占用槽位 */</span><br>&#125; <span class="hljs-type">sbuf_t</span>;<br></code></pre></td></tr></table></figure>
+<p>其中有 3 个信号量</p>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>mutex 初始化为 1，保证对缓冲区的访问是互斥的</p>
+</li>
+<li class="lvl-2">
+<p>slots 初始化为 n，记录槽位</p>
+</li>
+<li class="lvl-2">
+<p>items 初始化为 0，记录项目数</p>
+</li>
+</ul>
+<hr>
+<p>插入：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">void</span> <span class="hljs-title function_">sbuf_insert</span><span class="hljs-params">(<span class="hljs-type">sbuf_t</span> *sp, <span class="hljs-type">int</span> item)</span><br>&#123;<br>    P(&amp;sp-&gt;slots);                          <span class="hljs-comment">/* Wait for available slot */</span><br>    P(&amp;sp-&gt;mutex);                          <span class="hljs-comment">/* Lock the buffer */</span><br>    sp-&gt;buf[(++sp-&gt;rear)%(sp-&gt;n)] = item;   <span class="hljs-comment">/* Insert the item */</span><br>    V(&amp;sp-&gt;mutex);                          <span class="hljs-comment">/* Unlock the buffer */</span><br>    V(&amp;sp-&gt;items);                          <span class="hljs-comment">/* Announce available item */</span><br>&#125;<br></code></pre></td></tr></table></figure>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>首先有一个对 slots 的 P 操作，保证了如果槽位已满，则客户端被挂起，不会继续往缓冲区写入请求</p>
+</li>
+<li class="lvl-2">
+<p>然后是一个 mutex 的 P 操作，保证了对缓冲区互斥的访问</p>
+</li>
+<li class="lvl-2">
+<p>缓冲区插入完成后，释放所有的锁</p>
+</li>
+</ul>
+<hr>
+<p>读入 / 取出：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">int</span> <span class="hljs-title function_">sbuf_remove</span><span class="hljs-params">(<span class="hljs-type">sbuf_t</span> *sp)</span><br>&#123;<br>    <span class="hljs-type">int</span> item;<br>    P(&amp;sp-&gt;items);                          <span class="hljs-comment">/* Wait for available item */</span><br>    P(&amp;sp-&gt;mutex);                          <span class="hljs-comment">/* Lock the buffer */</span><br>    item = sp-&gt;buf[(++sp-&gt;front)%(sp-&gt;n)];  <span class="hljs-comment">/* Remove the item */</span><br>    V(&amp;sp-&gt;mutex);                          <span class="hljs-comment">/* Unlock the buffer */</span><br>    V(&amp;sp-&gt;slots);                          <span class="hljs-comment">/* Announce available slot */</span><br>    <span class="hljs-keyword">return</span> item;<br>&#125;<br></code></pre></td></tr></table></figure>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>首先有一个对 items 的 P 操作，保证了如果没有项目，则 Proxy 被挂起，不会继续往缓冲区读出客户端</p>
+</li>
+<li class="lvl-2">
+<p>然后是一个 mutex 的 P 操作，保证了对缓冲区互斥的访问</p>
+</li>
+<li class="lvl-2">
+<p>缓冲区读出完成后，释放所有的锁，返回其中一个客户端的描述符</p>
+</li>
+</ul>
+<hr>
+<h4 id="Prethreaded">Prethreaded</h4>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">int</span> <span class="hljs-title function_">main</span><span class="hljs-params">(<span class="hljs-type">int</span> argc, <span class="hljs-type">char</span> **argv)</span> &#123;<br>    <span class="hljs-type">int</span> listenfd, connfd;<br>    <span class="hljs-type">socklen_t</span> clientlen;<br>    <span class="hljs-type">char</span> hostname[MAXLINE], port[MAXLINE];<br><br>    <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">sockaddr_storage</span> <span class="hljs-title">clientaddr</span>;</span><br><br>    <span class="hljs-type">pthread_t</span> tid;<br><br>    <span class="hljs-keyword">if</span> (argc != <span class="hljs-number">2</span>) &#123;<br>        <span class="hljs-built_in">fprintf</span>(<span class="hljs-built_in">stderr</span>, <span class="hljs-string">&quot;usage :%s &lt;port&gt; \n&quot;</span>, argv[<span class="hljs-number">0</span>]);<br>        <span class="hljs-built_in">exit</span>(<span class="hljs-number">1</span>);<br>    &#125;<br>    signal(SIGPIPE, sigpipe_handler);<br>    listenfd = Open_listenfd(argv[<span class="hljs-number">1</span>]);<br><br>    sbuf_init(&amp;sbuf, SBUFSIZE);<br>    <span class="hljs-comment">// 创建 NTHREAD 个工作者线程</span><br>    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; NTHREADS; i++) &#123;<br>        Pthread_create(&amp;tid, <span class="hljs-literal">NULL</span>, thread, <span class="hljs-literal">NULL</span>);<br>    &#125;<br><br>    <span class="hljs-keyword">while</span> (<span class="hljs-number">1</span>) &#123;<br>        clientlen = <span class="hljs-keyword">sizeof</span>(clientaddr);<br>        connfd = Accept(listenfd, (SA *)&amp;clientaddr, &amp;clientlen);<br>        <span class="hljs-comment">// 向缓冲区写入该工作者描述符</span><br>        sbuf_insert(&amp;sbuf, connfd);<br>        Getnameinfo((SA *)&amp;clientaddr, clientlen, hostname, MAXLINE, port, MAXLINE, <span class="hljs-number">0</span>);<br>        <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;Accepted connection from (%s %s).\n&quot;</span>, hostname, port);<br>    &#125;<br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">void</span> *<span class="hljs-title function_">thread</span><span class="hljs-params">(<span class="hljs-type">void</span> *vargp)</span><br>&#123;<br>    Pthread_detach(pthread_self());<br>    <span class="hljs-keyword">while</span>(<span class="hljs-number">1</span>) &#123;<br>        <span class="hljs-comment">// 从缓冲区中读出描述符</span><br>        <span class="hljs-type">int</span> connfd = sbuf_remove(&amp;sbuf);<br>        <span class="hljs-comment">// 转发</span><br>        doit(connfd);<br>        <span class="hljs-comment">// 关闭客户端的连接描述符</span><br>        Close(connfd);<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<blockquote>
+<p>What does EOF on a connection mean?</p>
+<p>The idea of EOF is often confusing to students, especially in the context of Internet connections. First, we need to understand that there is no such thing as an EOF character. Rather, EOF is a condition that is detected by the kernel. An application finds out about the EOF condition when it receives a zero return code from the read function. For disk files, EOF occurs when the current file position exceeds the file length. For Internet connections, EOF occurs when a process closes its end of the connection. The process at the other end of the connection detects the EOF when it attempts to read past the last byte in the stream.</p>
+</blockquote>
 
                 
               </div>
