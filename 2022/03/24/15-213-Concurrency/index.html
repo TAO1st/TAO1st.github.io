@@ -30,7 +30,7 @@
 <meta property="og:image" content="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303241244012.png">
 <meta property="og:image" content="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303241244159.png">
 <meta property="article:published_time" content="2022-03-24T04:29:51.000Z">
-<meta property="article:modified_time" content="2023-03-24T05:44:19.555Z">
+<meta property="article:modified_time" content="2023-03-26T09:09:52.383Z">
 <meta property="article:author" content="tao1st">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303241240570.png">
@@ -213,7 +213,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          749 字
+          2.9k 字
         
       </span>
     
@@ -224,7 +224,7 @@
         
         
         
-          7 分钟
+          25 分钟
         
       </span>
     
@@ -315,6 +315,53 @@
 <h3 id="基于线程的并发服务器">基于线程的并发服务器</h3>
 <h4 id="sbuf">sbuf</h4>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-keyword">typedef</span> <span class="hljs-class"><span class="hljs-keyword">struct</span> &#123;</span><br>    <span class="hljs-type">int</span> *buf;          <span class="hljs-comment">/* Buffer array */</span>         <br>    <span class="hljs-type">int</span> n;             <span class="hljs-comment">/* Maximum number of slots */</span><br>    <span class="hljs-type">int</span> front;         <span class="hljs-comment">/* buf[(front+1)%n] is first item */</span><br>    <span class="hljs-type">int</span> rear;          <span class="hljs-comment">/* buf[rear%n] is last item */</span><br>    <span class="hljs-type">sem_t</span> mutex;       <span class="hljs-comment">/* Protects accesses to buf */</span><br>    <span class="hljs-type">sem_t</span> slots;       <span class="hljs-comment">/* Counts available slots */</span><br>    <span class="hljs-type">sem_t</span> items;       <span class="hljs-comment">/* Counts available items */</span><br>&#125; <span class="hljs-type">sbuf_t</span>;<br></code></pre></td></tr></table></figure>
+<h2 id="Concurrency-Proxy">Concurrency Proxy</h2>
+<h4 id="sbuf-2">sbuf</h4>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-keyword">typedef</span> <span class="hljs-class"><span class="hljs-keyword">struct</span> &#123;</span><br>    <span class="hljs-type">int</span> *buf;          <span class="hljs-comment">/* Buffer array */</span>         <br>    <span class="hljs-type">int</span> n;             <span class="hljs-comment">/* Maximum number of slots */</span><br>    <span class="hljs-type">int</span> front;         <span class="hljs-comment">/* buf[(front+1)%n] is first item */</span><br>    <span class="hljs-type">int</span> rear;          <span class="hljs-comment">/* buf[rear%n] is last item */</span><br>    <span class="hljs-type">sem_t</span> mutex;       <span class="hljs-comment">/* Protects accesses to buf 互斥信号量 */</span><br>    <span class="hljs-type">sem_t</span> slots;       <span class="hljs-comment">/* Counts available slots 记录剩余槽位 */</span><br>    <span class="hljs-type">sem_t</span> items;       <span class="hljs-comment">/* Counts available items 记录占用槽位 */</span><br>&#125; <span class="hljs-type">sbuf_t</span>;<br></code></pre></td></tr></table></figure>
+<p>其中有 3 个信号量</p>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>mutex 初始化为 1，保证对缓冲区的访问是互斥的</p>
+</li>
+<li class="lvl-2">
+<p>slots 初始化为 n，记录槽位</p>
+</li>
+<li class="lvl-2">
+<p>items 初始化为 0，记录项目数</p>
+</li>
+</ul>
+<hr>
+<p>插入：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">void</span> <span class="hljs-title function_">sbuf_insert</span><span class="hljs-params">(<span class="hljs-type">sbuf_t</span> *sp, <span class="hljs-type">int</span> item)</span><br>&#123;<br>    P(&amp;sp-&gt;slots);                          <span class="hljs-comment">/* Wait for available slot */</span><br>    P(&amp;sp-&gt;mutex);                          <span class="hljs-comment">/* Lock the buffer */</span><br>    sp-&gt;buf[(++sp-&gt;rear)%(sp-&gt;n)] = item;   <span class="hljs-comment">/* Insert the item */</span><br>    V(&amp;sp-&gt;mutex);                          <span class="hljs-comment">/* Unlock the buffer */</span><br>    V(&amp;sp-&gt;items);                          <span class="hljs-comment">/* Announce available item */</span><br>&#125;<br></code></pre></td></tr></table></figure>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>首先有一个对 slots 的 P 操作，保证了如果槽位已满，则客户端被挂起，不会继续往缓冲区写入请求</p>
+</li>
+<li class="lvl-2">
+<p>然后是一个 mutex 的 P 操作，保证了对缓冲区互斥的访问</p>
+</li>
+<li class="lvl-2">
+<p>缓冲区插入完成后，释放所有的锁</p>
+</li>
+</ul>
+<hr>
+<p>读入 / 取出：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">int</span> <span class="hljs-title function_">sbuf_remove</span><span class="hljs-params">(<span class="hljs-type">sbuf_t</span> *sp)</span><br>&#123;<br>    <span class="hljs-type">int</span> item;<br>    P(&amp;sp-&gt;items);                          <span class="hljs-comment">/* Wait for available item */</span><br>    P(&amp;sp-&gt;mutex);                          <span class="hljs-comment">/* Lock the buffer */</span><br>    item = sp-&gt;buf[(++sp-&gt;front)%(sp-&gt;n)];  <span class="hljs-comment">/* Remove the item */</span><br>    V(&amp;sp-&gt;mutex);                          <span class="hljs-comment">/* Unlock the buffer */</span><br>    V(&amp;sp-&gt;slots);                          <span class="hljs-comment">/* Announce available slot */</span><br>    <span class="hljs-keyword">return</span> item;<br>&#125;<br></code></pre></td></tr></table></figure>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>首先有一个对 items 的 P 操作，保证了如果没有项目，则 Proxy 被挂起，不会继续往缓冲区读出客户端</p>
+</li>
+<li class="lvl-2">
+<p>然后是一个 mutex 的 P 操作，保证了对缓冲区互斥的访问</p>
+</li>
+<li class="lvl-2">
+<p>缓冲区读出完成后，释放所有的锁，返回其中一个客户端的描述符</p>
+</li>
+</ul>
+<hr>
+<h4 id="Prethreaded">Prethreaded</h4>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">int</span> <span class="hljs-title function_">main</span><span class="hljs-params">(<span class="hljs-type">int</span> argc, <span class="hljs-type">char</span> **argv)</span> &#123;<br>    <span class="hljs-type">int</span> listenfd, connfd;<br>    <span class="hljs-type">socklen_t</span> clientlen;<br>    <span class="hljs-type">char</span> hostname[MAXLINE], port[MAXLINE];<br><br>    <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">sockaddr_storage</span> <span class="hljs-title">clientaddr</span>;</span><br><br>    <span class="hljs-type">pthread_t</span> tid;<br><br>    <span class="hljs-keyword">if</span> (argc != <span class="hljs-number">2</span>) &#123;<br>        <span class="hljs-built_in">fprintf</span>(<span class="hljs-built_in">stderr</span>, <span class="hljs-string">&quot;usage :%s &lt;port&gt; \n&quot;</span>, argv[<span class="hljs-number">0</span>]);<br>        <span class="hljs-built_in">exit</span>(<span class="hljs-number">1</span>);<br>    &#125;<br>    signal(SIGPIPE, sigpipe_handler);<br>    listenfd = Open_listenfd(argv[<span class="hljs-number">1</span>]);<br><br>    sbuf_init(&amp;sbuf, SBUFSIZE);<br>    <span class="hljs-comment">// 创建 NTHREAD 个工作者线程</span><br>    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; NTHREADS; i++) &#123;<br>        Pthread_create(&amp;tid, <span class="hljs-literal">NULL</span>, thread, <span class="hljs-literal">NULL</span>);<br>    &#125;<br><br>    <span class="hljs-keyword">while</span> (<span class="hljs-number">1</span>) &#123;<br>        clientlen = <span class="hljs-keyword">sizeof</span>(clientaddr);<br>        connfd = Accept(listenfd, (SA *)&amp;clientaddr, &amp;clientlen);<br>        <span class="hljs-comment">// 向缓冲区写入该工作者描述符</span><br>        sbuf_insert(&amp;sbuf, connfd);<br>        Getnameinfo((SA *)&amp;clientaddr, clientlen, hostname, MAXLINE, port, MAXLINE, <span class="hljs-number">0</span>);<br>        <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;Accepted connection from (%s %s).\n&quot;</span>, hostname, port);<br>    &#125;<br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">void</span> *<span class="hljs-title function_">thread</span><span class="hljs-params">(<span class="hljs-type">void</span> *vargp)</span><br>&#123;<br>    Pthread_detach(pthread_self());<br>    <span class="hljs-keyword">while</span>(<span class="hljs-number">1</span>) &#123;<br>        <span class="hljs-comment">// 从缓冲区中读出描述符</span><br>        <span class="hljs-type">int</span> connfd = sbuf_remove(&amp;sbuf);<br>        <span class="hljs-comment">// 转发</span><br>        doit(connfd);<br>        <span class="hljs-comment">// 关闭客户端的连接描述符</span><br>        Close(connfd);<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
 
                 
               </div>
@@ -355,9 +402,9 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2022/06/04/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92-Dynamic-Programming/" title="动态规划（Dynamic Programming）">
+                      <a href="/2022/03/26/15-213-IO/" title="15-213: System Level I/O">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">动态规划（Dynamic Programming）</span>
+                        <span class="hidden-mobile">15-213: System Level I/O</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     

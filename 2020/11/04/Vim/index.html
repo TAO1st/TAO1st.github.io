@@ -16,21 +16,21 @@
   <meta name="author" content="tao1st">
   <meta name="keywords" content="">
   
-    <meta name="description" content="Vim-Adventure level 1   h j k l   不同长短的行末尾   level 2   w b e   level 3   x X : 删除前面的字符，不包括当前所在字符    B W : WORD and word   level 4   E   r :  replace   level 5   d : 相当于剪贴，删除的内容送进寄存器（可以是指定的寄存器） db: 向前删">
+    <meta name="description" content="Operator + Motion &#x3D; Action   一次**操作（Action）由一个操作符（operator）后接一个动作命令（motion）**组成。 1d&amp;#123;motion&amp;#125;, c&amp;#123;motion&amp;#125;, y&amp;#123;motion&amp;#125;, gu&amp;#123;motion&amp;#125;, gU&amp;#123;motion&amp;#125;   当一个操作符命令被来">
 <meta property="og:type" content="article">
-<meta property="og:title" content="The Vim Adventure">
+<meta property="og:title" content="Vim">
 <meta property="og:url" content="https://tao1st.github.io/2020/11/04/Vim/index.html">
 <meta property="og:site_name" content="tao1st.github.io">
-<meta property="og:description" content="Vim-Adventure level 1   h j k l   不同长短的行末尾   level 2   w b e   level 3   x X : 删除前面的字符，不包括当前所在字符    B W : WORD and word   level 4   E   r :  replace   level 5   d : 相当于剪贴，删除的内容送进寄存器（可以是指定的寄存器） db: 向前删">
+<meta property="og:description" content="Operator + Motion &#x3D; Action   一次**操作（Action）由一个操作符（operator）后接一个动作命令（motion）**组成。 1d&amp;#123;motion&amp;#125;, c&amp;#123;motion&amp;#125;, y&amp;#123;motion&amp;#125;, gu&amp;#123;motion&amp;#125;, gU&amp;#123;motion&amp;#125;   当一个操作符命令被来">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-11-03T18:10:33.000Z">
-<meta property="article:modified_time" content="2023-03-16T07:00:28.158Z">
+<meta property="article:modified_time" content="2023-03-25T11:42:21.394Z">
 <meta property="article:author" content="tao1st">
 <meta name="twitter:card" content="summary_large_image">
   
   
   
-  <title>The Vim Adventure - tao1st.github.io</title>
+  <title>Vim - tao1st.github.io</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -183,7 +183,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="The Vim Adventure"></span>
+            <span id="subtitle" data-typed-text="Vim"></span>
           
         </div>
 
@@ -255,12 +255,210 @@
         <div id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">The Vim Adventure</h1>
+            <h1 style="display: none">Vim</h1>
             
             
               <div class="markdown-body">
                 
-                <h1>Vim-Adventure</h1>
+                <h2 id="Operator-Motion-Action">Operator + Motion = Action</h2>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>一次**操作（Action）<strong>由一个</strong>操作符（operator）<strong>后接一个</strong>动作命令（motion）**组成。</p>
+<figure class="highlight dust"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs dust"><span class="language-xml">d</span><span class="hljs-template-variable">&#123;motion&#125;</span><span class="language-xml">, c</span><span class="hljs-template-variable">&#123;motion&#125;</span><span class="language-xml">, y</span><span class="hljs-template-variable">&#123;motion&#125;</span><span class="language-xml">, gu</span><span class="hljs-template-variable">&#123;motion&#125;</span><span class="language-xml">, gU</span><span class="hljs-template-variable">&#123;motion&#125;</span><br></code></pre></td></tr></table></figure>
+</li>
+<li class="lvl-2">
+<p>当一个操作符命令被来<strong>连续调用两次</strong>时，它会<strong>作用于当前行</strong>。例如：</p>
+<ul class="lvl-2">
+<li class="lvl-4"><code>dd</code>：删除当前行</li>
+<li class="lvl-4"><code>&gt;&gt;</code>：缩进当前行</li>
+<li class="lvl-4"><code>gUgU</code>, <code>gUU</code> : 当前行大写</li>
+</ul>
+</li>
+<li class="lvl-2">
+<p><strong>自定义</strong>操作符（operator）与动作（motion）命令：一些插件</p>
+<ul class="lvl-2">
+<li class="lvl-4"><a target="_blank" rel="noopener" href="https://github.com/tpope/vim-commentary">commentary.vim</a> : <code>gc&#123;motion&#125;</code>，其中<code>gcc</code>注释当前行。</li>
+<li class="lvl-4"><a target="_blank" rel="noopener" href="https://github.com/kana/vim-textobj-entire">textobj-entire</a> : 定义了新的motion，针对整个文件</li>
+<li class="lvl-4">自己编写自定义操作符或动作：
+<ul class="lvl-4">
+<li class="lvl-6"><code>:h :map-operator</code></li>
+<li class="lvl-6"><code>:h omap-info</code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="text-objects">text-objects</h2>
+<p>Text objects are two characters used after an operator (‘d’, ‘y’, ‘c’ etc.) to select a range to operate on. The first character is either ‘a’ (for “an object”, including white space) or ‘i’ (for “inner” object, without surrounding white space, or only the white space). The second character denotes the object type and is one of the following:</p>
+<p><strong>w</strong>ord, <strong>W</strong>ORD, <strong>s</strong>entence, <strong>p</strong>aragraph,**<br>
+<strong>&quot;</strong> or <strong>’</strong> or <strong>`</strong> - a <u>&quot;, ', or `</u> quoted string<br>
+<strong>{</strong> ,  <strong>}</strong>, or <strong>B</strong> - A { } block<br>
+<strong>(</strong>, <strong>)</strong>, or <strong>b</strong> - A ( ) block<br>
+<strong>[</strong> or <strong>]</strong><input type="checkbox" id="checkbox14"><label for="checkbox14">block</label><br>
+<strong>&lt;</strong> or <strong>&gt;</strong> - A &lt; &gt; block<br>
+<strong>t</strong> - A HTML or XML tag block</p>
+<h3 id="word-w">word <code>w</code></h3>
+<p>A word consists of a sequence of letters, digits and underscores, or a sequence of other non-blank characters, separated with white space (spaces, tabs, <EOL>). An empty line is also considered to be a word.</p>
+<p>Use ‘w’, ‘e’, and ‘b’ to navigate words.</p>
+<p>Special case: “cw” is treated like “ce” if the cursor is on a non-blank. This is because “cw” is interpreted as change-word, and a word does not include the following white space.</p>
+<h3 id="WORD-W">WORD <code>W</code></h3>
+<p>A WORD consists of a sequence of non-blank characters, separated with white space. An empty line is also considered to be a WORD.</p>
+<p>Use ‘W’, ‘E’, and ‘B’ to navigate WORDs.</p>
+<p>Special case: “cW” is treated like “cE” if the cursor is on a non-blank. This is because “cW” is interpreted as change-WORD, and a WORD does not include the following white space.</p>
+<h3 id="paragraph-p">paragraph <code>p</code></h3>
+<p>A paragraph begins after each empty line. A blank line (only containing white space) is NOT a paragraph boundary.</p>
+<p>Use ‘{’ and ‘}’ to navigate paragraphs. Paragraph text objects are denoted with ‘p’.</p>
+<h3 id="sentence-s">sentence <code>s</code></h3>
+<p>A sentence is defined as ending at a ‘.’, ‘!’ or ‘?’ followed by either the end of a line, or by a space or tab. Any number of closing ‘)’, ‘]’, ‘&quot;’ and ‘’’ characters may appear after the ‘.’, ‘!’ or ‘?’ before the spaces, tabs or end of line. A paragraph boundary is also a sentence boundary.</p>
+<p>Use ‘(’ and ‘)’ to navigate sentences. Sentence text object is denoted by ‘s’.</p>
+<h2 id="搜索">搜索</h2>
+<blockquote>
+<p>不要再 <code>Ctrl-F</code>了。</p>
+</blockquote>
+<ol>
+<li class="lvl-3">
+<p>命令模式下，输入<code>/</code>字符串</p>
+<p>比如搜索<code>user</code>，输入<code>/user</code>，按下回车之后，可以看到vim已经把光标移动到该字符处和高亮了匹配的字符串</p>
+</li>
+<li class="lvl-3">
+<p>查看下一个匹配，按下<code>n</code></p>
+</li>
+<li class="lvl-3">
+<p>跳转到上一个匹配，按下<code>N</code></p>
+</li>
+<li class="lvl-3">
+<p>搜索后，我们打开别的文件，发现也被高亮了，怎么关闭高亮？</p>
+<p>命令模式下，输入<code>:nohlsearch</code>  也可以<code>:set nohlsearch</code></p>
+<p>简写：<code>:set hls</code> / <code>:set nohls</code></p>
+</li>
+</ol>
+<hr>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>scan document for next match: <code>/pattern&lt;CR&gt;</code></p>
+</li>
+<li class="lvl-2">
+<p>scan document for previous match: <code>?pattern&lt;CR&gt;</code></p>
+</li>
+</ul>
+<h2 id="替换-2">替换</h2>
+<p>语法: <code>:[addr]s/源字符串/目的字符串/[option]</code></p>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p><code>[addr]</code> 表示检索范围,如:</p>
+<ul class="lvl-2">
+<li class="lvl-4"><code>1,n</code> 表示从第1行到n行</li>
+<li class="lvl-4"><code>%</code> 表示整个文件,同<code>1,$</code></li>
+<li class="lvl-4"><code>.,$</code> 表示从当前行到文件尾</li>
+<li class="lvl-4">省略时表示当前行</li>
+</ul>
+</li>
+<li class="lvl-2">
+<p><code>s</code> 表示替换操作,其为substitute的缩写</p>
+</li>
+<li class="lvl-2">
+<p><code>[option]</code> : 表示操作类型,如:</p>
+<ul class="lvl-2">
+<li class="lvl-4"><code>g</code> globe,表示全局替换</li>
+<li class="lvl-4"><code>c</code> confirm,表示进行确认</li>
+<li class="lvl-4"><code>p</code> 表示替代结果逐行显示(Ctrl + L恢复屏幕)</li>
+<li class="lvl-4"><code>i</code> ignore,不区分大小写</li>
+<li class="lvl-4">省略时仅对每行第一个匹配串进行替换</li>
+</ul>
+</li>
+<li class="lvl-2">
+<p>如果在源字符串和目的字符串中出现特殊字符,如’/‘,’&lt;‘,’&gt;‘,’,'等需要前面加反斜杠\进行转义</p>
+</li>
+<li class="lvl-2">
+<p><code>&amp;</code> to repeat, <code>u</code> to reverse</p>
+</li>
+</ul>
+<h2 id="vim多行缩进或缩出方法">vim多行缩进或缩出方法</h2>
+<h3 id="Visual-mode">Visual mode</h3>
+<p>按<code>v</code>进入visual状态，选定多行，用<code>&gt;</code>缩进，用<code>&lt;</code>缩出</p>
+<h3 id="缩进">缩进</h3>
+<h4 id="单行缩进">单行缩进</h4>
+<p>在要缩进的那一行按下<code>&gt;&gt;</code>, 即连按两下<code>&gt;</code>。</p>
+<h4 id="多行缩进">多行缩进</h4>
+<p>在要缩进的<strong>起始行</strong>按下<code>n&gt;&gt;</code>，n是要缩进的行数。</p>
+<h3 id="多行缩出">多行缩出</h3>
+<h4 id="单行缩出">单行缩出</h4>
+<p>在要缩出的那一行按下<code>&lt;&lt;</code>, 即连按两下<code>&lt;</code>。</p>
+<h4 id="多行缩出-2">多行缩出</h4>
+<p>在要缩出的<strong>起始行</strong>按下<code>n&lt;&lt;</code>，n是要缩出的行数。</p>
+<h2 id="撤销与重做">撤销与重做</h2>
+<p><code>u</code></p>
+<p><code>Ctrl-r</code></p>
+<p><code>U</code></p>
+<p>对于撤销/重做 (undo/redo) 来说，“U” 命令和其他命令是同等对待的。所以 “u” 可以</p>
+<p>撤销一个 “U” 命令、‘CTRL-R’ 也可以重做对 “U” 命令的撤销。当 “U”、“u” 和</p>
+<p>‘CTRL-R’ 三个命令混合使用时，你将注意到 “U” 命令决意将被该行还原到前一个 “U”</p>
+<p>命令之前的状态。这或许会令你困惑。多试试，你会习惯的。</p>
+<p>“U” 命令总是把缓冲区标记为已改变。即使它把修改过的缓冲区重做到未改变的状态也是</p>
+<p>如此。为此，只有使用 “u” 命令，才能令缓冲区正确地回复到未改变的标记。</p>
+<h2 id="控制撤销操作的粒度">控制撤销操作的粒度</h2>
+<blockquote>
+<p>control the granularity of the undo command</p>
+</blockquote>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>按照喜好，每次思考后停顿（可能是一句、一个词、一段等）的过程都退出insert mode，使其成为一个撤销块。这样更好控制撤销的粒度。</p>
+</li>
+<li class="lvl-2">
+<p>另起一行时也可以用<code>&lt;Esc&gt;o</code>来代替保持insert mode下<code>&lt;CR&gt;</code>。原因与上同理。</p>
+</li>
+<li class="lvl-2">
+<p>Moving Around in Insert Mode Resets the Change 每次在插入模式中使用上下左右光标移动时，都会产生一个新的撤销块</p>
+<p>When I said that the undo command would revert all characters entered (or deleted) during a trip into Insert mode and back, I was glossing over a small detail. If we use the  ,  ,  , or  cursor keys while in Insert mode, a new undo chunk is created. It’s just as though we had switched back to Normal mode to move around with the h , j , k , or l commands, except that we don’t have to leave Insert mode. This also has implications on the operation of the dot command.</p>
+</li>
+</ul>
+<h2 id="Insert-Mode">Insert Mode</h2>
+<blockquote>
+<p>核心是在插入模式如何使用一些在普通模式能使用的操作，从而简化插入过程。</p>
+</blockquote>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>从insert mode返回normal mode:</p>
+<ul class="lvl-2">
+<li class="lvl-4"><code>Esc</code>: 已经和Caps Lock进行了交换，要逐步习惯这种布局</li>
+<li class="lvl-4"><code>&lt;Ctrl-[&gt;</code>: 比传统Esc距离更近，但替换后意义不大</li>
+</ul>
+</li>
+<li class="lvl-2">
+<p>在<strong>插入模式</strong>中可以进行的操作</p>
+<ul class="lvl-2">
+<li class="lvl-4">
+<p>删除操作：</p>
+<ul class="lvl-4">
+<li class="lvl-6">
+<p><code>&lt;Ctrl-h&gt;</code> : 删除前一个字符</p>
+</li>
+<li class="lvl-6">
+<p><code>&lt;Ctrl-w&gt;</code> : 删除前一个单词</p>
+</li>
+<li class="lvl-6">
+<p><code>&lt;Ctrl-u&gt;</code> : 删至行首</p>
+</li>
+</ul>
+<blockquote>
+<p>这些在bash shell中也是可以通用的。</p>
+</blockquote>
+</li>
+<li class="lvl-4">
+<p>执行一条普通模式下的指令：<code>&lt;Ctrl-o&gt;</code></p>
+<blockquote>
+<p><strong>Insert-Normal Mode</strong></p>
+<p><strong>非常重要</strong>，在插入模式中进入插入-正常模式，允许你在不离开插入模式的情况下执行<em>一条</em>普通模式下的指令。</p>
+</blockquote>
+</li>
+<li class="lvl-4">
+<p>粘贴操作：<code>&lt;Ctrl-r&gt;&#123;register&#125;</code></p>
+<p>将<code>&#123;register&#125;</code>指定的内容粘贴。</p>
+</li>
+</ul>
+</li>
+</ul>
+<h1>Vim-Adventure</h1>
 <h2 id="level-1">level 1</h2>
 <ul class="lvl-0">
 <li class="lvl-2">
@@ -514,204 +712,7 @@
 <p>Operator-pending Mode：在operator和motion之间默认开启的一个模式。</p>
 <p>只有操作符才会激活该模式。两个按键的操作符（例如<code>gU</code>）之间不会激活该模式。</p>
 </li>
-</ul>
-<hr>
-<h2 id="Operator-Motion-Action">Operator + Motion = Action</h2>
-<ul class="lvl-0">
 <li class="lvl-2">
-<p>一次**操作（Action）<strong>由一个</strong>操作符（operator）<strong>后接一个</strong>动作命令（motion）**组成。</p>
-<figure class="highlight dust"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs dust"><span class="language-xml">d</span><span class="hljs-template-variable">&#123;motion&#125;</span><span class="language-xml">, c</span><span class="hljs-template-variable">&#123;motion&#125;</span><span class="language-xml">, y</span><span class="hljs-template-variable">&#123;motion&#125;</span><span class="language-xml">, gu</span><span class="hljs-template-variable">&#123;motion&#125;</span><span class="language-xml">, gU</span><span class="hljs-template-variable">&#123;motion&#125;</span><br></code></pre></td></tr></table></figure>
-</li>
-<li class="lvl-2">
-<p>当一个操作符命令被来<strong>连续调用两次</strong>时，它会<strong>作用于当前行</strong>。例如：</p>
-<ul class="lvl-2">
-<li class="lvl-4"><code>dd</code>：删除当前行</li>
-<li class="lvl-4"><code>&gt;&gt;</code>：缩进当前行</li>
-<li class="lvl-4"><code>gUgU</code>, <code>gUU</code> : 当前行大写</li>
-</ul>
-</li>
-<li class="lvl-2">
-<p><strong>自定义</strong>操作符（operator）与动作（motion）命令：一些插件</p>
-<ul class="lvl-2">
-<li class="lvl-4"><a target="_blank" rel="noopener" href="https://github.com/tpope/vim-commentary">commentary.vim</a> : <code>gc&#123;motion&#125;</code>，其中<code>gcc</code>注释当前行。</li>
-<li class="lvl-4"><a target="_blank" rel="noopener" href="https://github.com/kana/vim-textobj-entire">textobj-entire</a> : 定义了新的motion，针对整个文件</li>
-<li class="lvl-4">自己编写自定义操作符或动作：
-<ul class="lvl-4">
-<li class="lvl-6"><code>:h :map-operator</code></li>
-<li class="lvl-6"><code>:h omap-info</code></li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<h2 id="text-objects">text-objects</h2>
-<p>Text objects are two characters used after an operator (‘d’, ‘y’, ‘c’ etc.) to select a range to operate on. The first character is either ‘a’ (for “an object”, including white space) or ‘i’ (for “inner” object, without surrounding white space, or only the white space). The second character denotes the object type and is one of the following:</p>
-<p><strong>w</strong>ord, <strong>W</strong>ORD, <strong>s</strong>entence, <strong>p</strong>aragraph,**<br>
-<strong>&quot;</strong> or <strong>’</strong> or <strong>`</strong> - a <u>&quot;, ', or `</u> quoted string<br>
-<strong>{</strong> ,  <strong>}</strong>, or <strong>B</strong> - A { } block<br>
-<strong>(</strong>, <strong>)</strong>, or <strong>b</strong> - A ( ) block<br>
-<strong>[</strong> or <strong>]</strong><input type="checkbox" id="checkbox14"><label for="checkbox14">block</label><br>
-<strong>&lt;</strong> or <strong>&gt;</strong> - A &lt; &gt; block<br>
-<strong>t</strong> - A HTML or XML tag block</p>
-<h3 id="word-w">word <code>w</code></h3>
-<p>A word consists of a sequence of letters, digits and underscores, or a sequence of other non-blank characters, separated with white space (spaces, tabs, <EOL>). An empty line is also considered to be a word.</p>
-<p>Use ‘w’, ‘e’, and ‘b’ to navigate words.</p>
-<p>Special case: “cw” is treated like “ce” if the cursor is on a non-blank. This is because “cw” is interpreted as change-word, and a word does not include the following white space.</p>
-<h3 id="WORD-W">WORD <code>W</code></h3>
-<p>A WORD consists of a sequence of non-blank characters, separated with white space. An empty line is also considered to be a WORD.</p>
-<p>Use ‘W’, ‘E’, and ‘B’ to navigate WORDs.</p>
-<p>Special case: “cW” is treated like “cE” if the cursor is on a non-blank. This is because “cW” is interpreted as change-WORD, and a WORD does not include the following white space.</p>
-<h3 id="paragraph-p">paragraph <code>p</code></h3>
-<p>A paragraph begins after each empty line. A blank line (only containing white space) is NOT a paragraph boundary.</p>
-<p>Use ‘{’ and ‘}’ to navigate paragraphs. Paragraph text objects are denoted with ‘p’.</p>
-<h3 id="sentence-s">sentence <code>s</code></h3>
-<p>A sentence is defined as ending at a ‘.’, ‘!’ or ‘?’ followed by either the end of a line, or by a space or tab. Any number of closing ‘)’, ‘]’, ‘&quot;’ and ‘’’ characters may appear after the ‘.’, ‘!’ or ‘?’ before the spaces, tabs or end of line. A paragraph boundary is also a sentence boundary.</p>
-<p>Use ‘(’ and ‘)’ to navigate sentences. Sentence text object is denoted by ‘s’.</p>
-<h2 id="搜索">搜索</h2>
-<blockquote>
-<p>不要再 <code>Ctrl-F</code>了。</p>
-</blockquote>
-<ol>
-<li class="lvl-3">
-<p>命令模式下，输入<code>/</code>字符串</p>
-<p>比如搜索<code>user</code>，输入<code>/user</code>，按下回车之后，可以看到vim已经把光标移动到该字符处和高亮了匹配的字符串</p>
-</li>
-<li class="lvl-3">
-<p>查看下一个匹配，按下<code>n</code></p>
-</li>
-<li class="lvl-3">
-<p>跳转到上一个匹配，按下<code>N</code></p>
-</li>
-<li class="lvl-3">
-<p>搜索后，我们打开别的文件，发现也被高亮了，怎么关闭高亮？</p>
-<p>命令模式下，输入<code>:nohlsearch</code>  也可以<code>:set nohlsearch</code></p>
-<p>简写：<code>:set hls</code> / <code>:set nohls</code></p>
-</li>
-</ol>
-<hr>
-<ul class="lvl-0">
-<li class="lvl-2">
-<p>scan document for next match: <code>/pattern&lt;CR&gt;</code></p>
-</li>
-<li class="lvl-2">
-<p>scan document for previous match: <code>?pattern&lt;CR&gt;</code></p>
-</li>
-</ul>
-<h2 id="替换-2">替换</h2>
-<p>语法: <code>:[addr]s/源字符串/目的字符串/[option]</code></p>
-<ul class="lvl-0">
-<li class="lvl-2">
-<p><code>[addr]</code> 表示检索范围,如:</p>
-<ul class="lvl-2">
-<li class="lvl-4"><code>1,n</code> 表示从第1行到n行</li>
-<li class="lvl-4"><code>%</code> 表示整个文件,同<code>1,$</code></li>
-<li class="lvl-4"><code>.,$</code> 表示从当前行到文件尾</li>
-<li class="lvl-4">省略时表示当前行</li>
-</ul>
-</li>
-<li class="lvl-2">
-<p><code>s</code> 表示替换操作,其为substitute的缩写</p>
-</li>
-<li class="lvl-2">
-<p><code>[option]</code> : 表示操作类型,如:</p>
-<ul class="lvl-2">
-<li class="lvl-4"><code>g</code> globe,表示全局替换</li>
-<li class="lvl-4"><code>c</code> confirm,表示进行确认</li>
-<li class="lvl-4"><code>p</code> 表示替代结果逐行显示(Ctrl + L恢复屏幕)</li>
-<li class="lvl-4"><code>i</code> ignore,不区分大小写</li>
-<li class="lvl-4">省略时仅对每行第一个匹配串进行替换</li>
-</ul>
-</li>
-<li class="lvl-2">
-<p>如果在源字符串和目的字符串中出现特殊字符,如’/‘,’&lt;‘,’&gt;‘,’,'等需要前面加反斜杠\进行转义</p>
-</li>
-<li class="lvl-2">
-<p><code>&amp;</code> to repeat, <code>u</code> to reverse</p>
-</li>
-</ul>
-<h2 id="vim多行缩进或缩出方法">vim多行缩进或缩出方法</h2>
-<h3 id="Visual-mode">Visual mode</h3>
-<p>按<code>v</code>进入visual状态，选定多行，用<code>&gt;</code>缩进，用<code>&lt;</code>缩出</p>
-<h3 id="缩进">缩进</h3>
-<h4 id="单行缩进">单行缩进</h4>
-<p>在要缩进的那一行按下<code>&gt;&gt;</code>, 即连按两下<code>&gt;</code>。</p>
-<h4 id="多行缩进">多行缩进</h4>
-<p>在要缩进的<strong>起始行</strong>按下<code>n&gt;&gt;</code>，n是要缩进的行数。</p>
-<h3 id="多行缩出">多行缩出</h3>
-<h4 id="单行缩出">单行缩出</h4>
-<p>在要缩出的那一行按下<code>&lt;&lt;</code>, 即连按两下<code>&lt;</code>。</p>
-<h4 id="多行缩出-2">多行缩出</h4>
-<p>在要缩出的<strong>起始行</strong>按下<code>n&lt;&lt;</code>，n是要缩出的行数。</p>
-<h2 id="撤销与重做">撤销与重做</h2>
-<p><code>u</code></p>
-<p><code>Ctrl-r</code></p>
-<p><code>U</code></p>
-<p>对于撤销/重做 (undo/redo) 来说，“U” 命令和其他命令是同等对待的。所以 “u” 可以</p>
-<p>撤销一个 “U” 命令、‘CTRL-R’ 也可以重做对 “U” 命令的撤销。当 “U”、“u” 和</p>
-<p>‘CTRL-R’ 三个命令混合使用时，你将注意到 “U” 命令决意将被该行还原到前一个 “U”</p>
-<p>命令之前的状态。这或许会令你困惑。多试试，你会习惯的。</p>
-<p>“U” 命令总是把缓冲区标记为已改变。即使它把修改过的缓冲区重做到未改变的状态也是</p>
-<p>如此。为此，只有使用 “u” 命令，才能令缓冲区正确地回复到未改变的标记。</p>
-<h2 id="控制撤销操作的粒度">控制撤销操作的粒度</h2>
-<blockquote>
-<p>control the granularity of the undo command</p>
-</blockquote>
-<ul class="lvl-0">
-<li class="lvl-2">
-<p>按照喜好，每次思考后停顿（可能是一句、一个词、一段等）的过程都退出insert mode，使其成为一个撤销块。这样更好控制撤销的粒度。</p>
-</li>
-<li class="lvl-2">
-<p>另起一行时也可以用<code>&lt;Esc&gt;o</code>来代替保持insert mode下<code>&lt;CR&gt;</code>。原因与上同理。</p>
-</li>
-<li class="lvl-2">
-<p>Moving Around in Insert Mode Resets the Change 每次在插入模式中使用上下左右光标移动时，都会产生一个新的撤销块</p>
-<p>When I said that the undo command would revert all characters entered (or deleted) during a trip into Insert mode and back, I was glossing over a small detail. If we use the  ,  ,  , or  cursor keys while in Insert mode, a new undo chunk is created. It’s just as though we had switched back to Normal mode to move around with the h , j , k , or l commands, except that we don’t have to leave Insert mode. This also has implications on the operation of the dot command.</p>
-</li>
-</ul>
-<h2 id="Insert-Mode">Insert Mode</h2>
-<blockquote>
-<p>核心是在插入模式如何使用一些在普通模式能使用的操作，从而简化插入过程。</p>
-</blockquote>
-<ul class="lvl-0">
-<li class="lvl-2">
-<p>从insert mode返回normal mode:</p>
-<ul class="lvl-2">
-<li class="lvl-4"><code>Esc</code>: 已经和Caps Lock进行了交换，要逐步习惯这种布局</li>
-<li class="lvl-4"><code>&lt;Ctrl-[&gt;</code>: 比传统Esc距离更近，但替换后意义不大</li>
-</ul>
-</li>
-<li class="lvl-2">
-<p>在<strong>插入模式</strong>中可以进行的操作</p>
-<ul class="lvl-2">
-<li class="lvl-4">
-<p>删除操作：</p>
-<ul class="lvl-4">
-<li class="lvl-6">
-<p><code>&lt;Ctrl-h&gt;</code> : 删除前一个字符</p>
-</li>
-<li class="lvl-6">
-<p><code>&lt;Ctrl-w&gt;</code> : 删除前一个单词</p>
-</li>
-<li class="lvl-6">
-<p><code>&lt;Ctrl-u&gt;</code> : 删至行首</p>
-</li>
-</ul>
-<blockquote>
-<p>这些在bash shell中也是可以通用的。</p>
-</blockquote>
-</li>
-<li class="lvl-4">
-<p>执行一条普通模式下的指令：<code>&lt;Ctrl-o&gt;</code></p>
-<blockquote>
-<p><strong>Insert-Normal Mode</strong></p>
-<p><strong>非常重要</strong>，在插入模式中进入插入-正常模式，允许你在不离开插入模式的情况下执行<em>一条</em>普通模式下的指令。</p>
-</blockquote>
-</li>
-<li class="lvl-4">
-<p>粘贴操作：<code>&lt;Ctrl-r&gt;&#123;register&#125;</code></p>
-<p>将<code>&#123;register&#125;</code>指定的内容粘贴。</p>
-</li>
-</ul>
 </li>
 </ul>
 <p><a href="mailto:976928595@qq.com">976928595@qq.com</a><br>

@@ -16,28 +16,25 @@
   <meta name="author" content="tao1st">
   <meta name="keywords" content="">
   
-    <meta name="description" content="Git  基本特性 Snap-shots Git是基于快照的，而非基于差异的。 每次更新状态都是保存整个快照。 出于效率考虑，如果没有修改过的文件不会重新存储，而是通过链接指向之前存储的文件。  Nearly Every Option is Local 操作都在本地完成，各个版本记录也在本地。 只需有网络的时候 push &amp; pull 。 Integrity 对所有文件都进行 checks">
+    <meta name="description" content="System Level I&#x2F;O  Unix I&#x2F;O Linux将所有I&#x2F;O设备都看作文件，所以所有的输入输出都转化为统一的相应文件的读和写操作。Linux内核根据该种机制设置了一系列简单、低级的应用接口，即Unix I&#x2F;O。 File Unix I&#x2F;O Functions Opening and Closing Files Reading and Writing Files Reading Fi">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Git-Book">
-<meta property="og:url" content="https://tao1st.github.io/2020/12/04/git-book/index.html">
+<meta property="og:title" content="15-213: System Level I&#x2F;O">
+<meta property="og:url" content="https://tao1st.github.io/2022/03/26/15-213-IO/index.html">
 <meta property="og:site_name" content="tao1st.github.io">
-<meta property="og:description" content="Git  基本特性 Snap-shots Git是基于快照的，而非基于差异的。 每次更新状态都是保存整个快照。 出于效率考虑，如果没有修改过的文件不会重新存储，而是通过链接指向之前存储的文件。  Nearly Every Option is Local 操作都在本地完成，各个版本记录也在本地。 只需有网络的时候 push &amp; pull 。 Integrity 对所有文件都进行 checks">
+<meta property="og:description" content="System Level I&#x2F;O  Unix I&#x2F;O Linux将所有I&#x2F;O设备都看作文件，所以所有的输入输出都转化为统一的相应文件的读和写操作。Linux内核根据该种机制设置了一系列简单、低级的应用接口，即Unix I&#x2F;O。 File Unix I&#x2F;O Functions Opening and Closing Files Reading and Writing Files Reading Fi">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://www.runoob.com/wp-content/uploads/2015/02/git-command.jpg">
-<meta property="og:image" content="https://git-scm.com/book/en/v2/images/snapshots.png">
-<meta property="og:image" content="https://git-scm.com/book/en/v2/images/basic-merging-1.png">
-<meta property="og:image" content="https://git-scm.com/book/en/v2/images/basic-merging-2.png">
-<meta property="og:image" content="https://git-scm.com/book/en/v2/images/lr-branches-1.png">
-<meta property="og:image" content="https://git-scm.com/book/en/v2/images/lr-branches-2.png">
-<meta property="article:published_time" content="2020-12-04T04:22:00.000Z">
-<meta property="article:modified_time" content="2023-03-16T07:18:13.306Z">
+<meta property="og:image" content="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303261902627.png">
+<meta property="og:image" content="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303261903704.png">
+<meta property="og:image" content="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303261903699.png">
+<meta property="article:published_time" content="2022-03-26T11:01:09.000Z">
+<meta property="article:modified_time" content="2023-03-26T16:39:31.997Z">
 <meta property="article:author" content="tao1st">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://www.runoob.com/wp-content/uploads/2015/02/git-command.jpg">
+<meta name="twitter:image" content="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303261902627.png">
   
   
   
-  <title>Git-Book - tao1st.github.io</title>
+  <title>15-213: System Level I/O - tao1st.github.io</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -190,7 +187,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="Git-Book"></span>
+            <span id="subtitle" data-typed-text="15-213: System Level I/O"></span>
           
         </div>
 
@@ -201,8 +198,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2020-12-04 12:22" pubdate>
-          2020年12月4日 中午
+        <time datetime="2022-03-26 19:01" pubdate>
+          2022年3月26日 晚上
         </time>
       </span>
     
@@ -213,7 +210,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          2.8k 字
+          294 字
         
       </span>
     
@@ -224,7 +221,7 @@
         
         
         
-          24 分钟
+          3 分钟
         
       </span>
     
@@ -262,185 +259,28 @@
         <div id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">Git-Book</h1>
+            <h1 style="display: none">15-213: System Level I/O</h1>
             
             
               <div class="markdown-body">
                 
-                <h1>Git</h1>
-<img src="https://www.runoob.com/wp-content/uploads/2015/02/git-command.jpg" srcset="/img/loading.gif" lazyload alt="img" style="zoom:120%;" />
-<h2 id="基本特性">基本特性</h2>
-<h3 id="Snap-shots">Snap-shots</h3>
-<p>Git是基于快照的，而非基于差异的。</p>
-<p>每次更新状态都是保存整个快照。</p>
-<p>出于效率考虑，如果没有修改过的文件不会重新存储，而是通过链接指向之前存储的文件。</p>
-<img src="https://git-scm.com/book/en/v2/images/snapshots.png" srcset="/img/loading.gif" lazyload alt="Git 存储项目随时间改变的快照。" style="zoom: 80%;" />
-<h3 id="Nearly-Every-Option-is-Local">Nearly Every Option is Local</h3>
-<p>操作都在本地完成，各个版本记录也在本地。</p>
-<p>只需有网络的时候 push &amp; pull 。</p>
-<h3 id="Integrity">Integrity</h3>
-<p>对所有文件都进行 checksum，记录也是记录 checksum，从而实现防篡改。</p>
-<h2 id="基本操作-4">基本操作</h2>
-<h4 id="git-init">git init</h4>
-<h4 id="git-clone">git clone</h4>
-<h4 id="git-status-s">git status [-s]</h4>
-<h4 id="git-diff">git diff</h4>
-<p>和暂存区的区别</p>
-<h4 id="git-diff-staged">git diff --staged</h4>
-<p>要提交的和版本库的区别</p>
-<h4 id="git-add">git add</h4>
-<h4 id="git-commit">git commit</h4>
-<p>git commit [-a] [-v] -m “commit_message”</p>
-<h4 id="git-rm">git rm</h4>
-<ul class="lvl-0">
-<li class="lvl-2">
-<p>直接从工作目录中删除: changes not staged for commit</p>
-</li>
-<li class="lvl-2">
-<p>git rm  从工作目录中删除并untracked</p>
-</li>
-<li class="lvl-2">
-<p>git rm -f  移除modified或已经staged的文件</p>
-</li>
-<li class="lvl-2">
-<p>git rm --staged 在工作目录中保留，但是untracked</p>
-</li>
-</ul>
-<h4 id="git-mv-file-from-file-to">git mv file_from file_to</h4>
-<p>重命名文件</p>
-<h4 id="git-log">git log</h4>
-<p>查看提交记录，选项查文档</p>
-<h4 id="git-tag">git tag</h4>
-<p>打标签，需要就查文档</p>
-<h4 id="gitignore">.gitignore</h4>
-<p>需要就查文档</p>
-<h2 id="远程操作">远程操作</h2>
-<h4 id="git-remote-v">git remote -v</h4>
-<p>查看</p>
-<h4 id="git-remote-show-remote">git remote show &lt;remote&gt;</h4>
-<h4 id="git-remote-add-shortname-url">git remote add &lt;shortname&gt; &lt;url&gt;</h4>
-<h4 id="git-remote-rename-old-name-new-name">git remote rename &lt;old_name&gt; &lt;new_name&gt;</h4>
-<h4 id="git-fetch-shortname">git fetch &lt;shortname&gt;</h4>
-<p>拉取但不合并</p>
-<h4 id="git-pull-remote-remote-branch-local-branch">git pull &lt;remote&gt; &lt;remote branch&gt;:&lt;local branch&gt;</h4>
-<p>拉取并合并，不写本地分支就是与当前工作分支合并</p>
-<h4 id="git-push">git push</h4>
-<h4 id="git-remote-rm">git remote rm</h4>
-<h2 id="分支操作">分支操作</h2>
-<h4 id="基本概念-3">基本概念</h4>
-<ul class="lvl-0">
-<li class="lvl-2">
-<p>master为默认分支；</p>
-</li>
-<li class="lvl-2">
-<p>分支的实质就是一个指向某次提交的<strong>指针</strong>。</p>
-</li>
-</ul>
-<h4 id="HEAD-Pointer">HEAD Pointer</h4>
-<p>指向当前所在的本地分支。</p>
-<p>查看当前各个分支情况用 <code>git log --decorate</code></p>
-<h4 id="git-branch-v">git branch [-v]</h4>
-<p>查看当前所有分支列表。</p>
-<p>*号代表当前指向的分支。</p>
-<p>-v 能看到每一个分支的最后一次提交。</p>
-<h4 id="git-branch-branch-name">git branch &lt;branch_name&gt;</h4>
-<p>创建新分支，但不切换。</p>
-<h4 id="git-checkout">git checkout</h4>
-<p>切换到一个已有的分支。</p>
-<h4 id="git-checkout-b">git checkout -b</h4>
-<p>新建并切换到该分支</p>
-<h4 id="git-merge-branch-name">git merge &lt;branch_name&gt;</h4>
-<p>合并。</p>
-<ul class="lvl-0">
-<li class="lvl-2">
-<p>Fast-forward：在同一条分支，仅移动指针的合并；</p>
-</li>
-<li class="lvl-2">
-<p>位于两条分叉的合并：</p>
-<img src="https://git-scm.com/book/en/v2/images/basic-merging-1.png" srcset="/img/loading.gif" lazyload alt="一次典型合并中所用到的三个快照。" style="zoom: 67%;" />
-<img src="https://git-scm.com/book/en/v2/images/basic-merging-2.png" srcset="/img/loading.gif" lazyload alt="一个合并提交。" style="zoom:67%;" />
-</li>
-<li class="lvl-2">
-<p>Conflict：出现冲突的合并。</p>
-</li>
-</ul>
-<h4 id="git-branch-d">git branch -d</h4>
-<p>删除分支</p>
-<h4 id="Rebase">Rebase</h4>
-<hr>
-<blockquote>
-<p>Workflow</p>
-<p>常用的几种工作流方式及其命名：</p>
-<ul class="lvl-1">
-<li class="lvl-2">
-<p>master：稳定的分支。possibly only code that has been or will be released.</p>
-</li>
-<li class="lvl-2">
-<p>develop/next :一些平行分支，用于后续开发或测试稳定性等</p>
-</li>
-<li class="lvl-2">
-<p>topic(short-lived) :短期分支，应对临时需求与错误修改等，比如<u>issueXX</u></p>
-</li>
-</ul>
-<p>大型项目中还可能有：</p>
-<ul class="lvl-1">
-<li class="lvl-2">
-<p>proposed/pu(proposed updates) :建议/建议更新分支。这些分支可能含有一些不成熟的内容，不能进入next或master分支。</p>
-</li>
-</ul>
-<p>通常稳定指针在提交历史中处于落后状态：</p>
-<p><img src="https://git-scm.com/book/en/v2/images/lr-branches-1.png" srcset="/img/loading.gif" lazyload alt="趋于稳定分支的线性图。"></p>
-<img src="https://git-scm.com/book/en/v2/images/lr-branches-2.png" srcset="/img/loading.gif" lazyload alt="趋于稳定分支的工作流（“silo”）视图。" style="zoom: 67%;" />
-<center><b>通过流水线（work silos）的方式来理解，上面是更稳定的提交流水线，下面的提交经过测试考验会被提升到更加稳定的流水线上去。
-<p>通常在大型项目中我们会分多个不同级别的稳定性来管理分支，就像上图中的不同work silos一样。</p>
-<h4 id="Topic-Branches">Topic Branches</h4>
-<blockquote>
-<p>是一个short-lived的、用于实现 <u>a single particular feature</u> or related work（某一特定需求/功能）。</p>
-</blockquote>
-<blockquote>
-<p>分支这些操作如新建与合并都是发生在<u>本地</u>的，并没有与服务器发生交互。</p>
-</blockquote>
-</blockquote>
-<hr>
-<p><strong>忽略文件</strong></p>
-<p>一般我们总会有些文件无需纳入 Git 的管理，也不希望它们总出现在未跟踪文件列表。 通常都是些自动生成的文件，比如日志文件，或者编译过程中创建的临时文件等。 在这种情况下，我们可以创建一个名为 <code>.gitignore</code> 的文件，列出要忽略的文件的模式。 来看一个实际的 <code>.gitignore</code> 例子：</p>
-<figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs console"><span class="hljs-meta prompt_">$ </span><span class="language-bash"><span class="hljs-built_in">cat</span> .gitignore</span><br>*.[oa]<br>*~<br></code></pre></td></tr></table></figure>
-<p>第一行告诉 Git 忽略所有以 <code>.o</code> 或 <code>.a</code> 结尾的文件。一般这类对象文件和存档文件都是编译过程中出现的。 第二行告诉 Git 忽略所有名字以波浪符（~）结尾的文件，许多文本编辑软件（比如 Emacs）都用这样的文件名保存副本。 此外，你可能还需要忽略 log，tmp 或者 pid 目录，以及自动生成的文档等等。 要养成一开始就为你的新仓库设置好 .gitignore 文件的习惯，以免将来误提交这类无用的文件。</p>
-<p>文件 <code>.gitignore</code> 的格式规范如下：</p>
-<ul class="lvl-0">
-<li class="lvl-2">
-<p>所有空行或者以 <code>#</code> 开头的行都会被 Git 忽略。</p>
-</li>
-<li class="lvl-2">
-<p>可以使用标准的 glob 模式匹配，它会递归地应用在整个工作区中。</p>
-</li>
-<li class="lvl-2">
-<p>匹配模式可以以（<code>/</code>）开头防止递归。</p>
-</li>
-<li class="lvl-2">
-<p>匹配模式可以以（<code>/</code>）结尾指定目录。</p>
-</li>
-<li class="lvl-2">
-<p>要忽略指定模式以外的文件或目录，可以在模式前加上叹号（<code>!</code>）取反。</p>
-</li>
-</ul>
-<p>所谓的 glob 模式是指 shell 所使用的简化了的正则表达式。 星号（<code>*</code>）匹配零个或多个任意字符；<code>[abc]</code> 匹配任何一个列在方括号中的字符 （这个例子要么匹配一个 a，要么匹配一个 b，要么匹配一个 c）； 问号（<code>?</code>）只匹配一个任意字符；如果在方括号中使用短划线分隔两个字符， 表示所有在这两个字符范围内的都可以匹配（比如 <code>[0-9]</code> 表示匹配所有 0 到 9 的数字）。 使用两个星号（<code>**</code>）表示匹配任意中间目录，比如 <code>a/**/z</code> 可以匹配 <code>a/z</code> 、 <code>a/b/z</code> 或 <code>a/b/c/z</code> 等。</p>
-<p>我们再看一个 <code>.gitignore</code> 文件的例子：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 忽略所有的 .a 文件</span><br>*.a<br><br><span class="hljs-comment"># 但跟踪所有的 lib.a，即便你在前面忽略了 .a 文件</span><br>!lib.a<br><br><span class="hljs-comment"># 只忽略当前目录下的 TODO 文件，而不忽略 subdir/TODO</span><br>/TODO<br><br><span class="hljs-comment"># 忽略任何目录下名为 build 的文件夹</span><br>build/<br><br><span class="hljs-comment"># 忽略 doc/notes.txt，但不忽略 doc/server/arch.txt</span><br>doc/*.txt<br><br><span class="hljs-comment"># 忽略 doc/ 目录及其所有子目录下的 .pdf 文件</span><br>doc/**/*.pdf<br></code></pre></td></tr></table></figure>
-<table>
-<thead>
-<tr>
-<th>Tip</th>
-<th>GitHub 有一个十分详细的针对数十种项目及语言的 <code>.gitignore</code> 文件列表， 你可以在 <a target="_blank" rel="noopener" href="https://github.com/github/gitignore">https://github.com/github/gitignore</a> 找到它。</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><strong>Note</strong></td>
-<td><strong>在最简单的情况下，一个仓库可能只根目录下有一个 <code>.gitignore</code> 文件，它递归地应用到整个仓库中。 然而，子目录下也可以有额外的 <code>.gitignore</code> 文件。子目录中的 <code>.gitignore</code> 文件中的规则只作用于它所在的目录中。 （Linux 内核的源码库拥有 206 个 <code>.gitignore</code> 文件。）多个 <code>.gitignore</code> 文件的具体细节超出了本书的范围，更多详情见 <code>man gitignore</code> 。</strong></td>
-</tr>
-</tbody>
-</table>
+                <h2 id="System-Level-I-O">System Level I/O</h2>
+<img src="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303261902627.png" srcset="/img/loading.gif" lazyload alt="image-20230326190216413" style="zoom: 50%;" />
+<h3 id="Unix-I-O">Unix I/O</h3>
+<p>Linux将所有I/O设备都看作文件，所以所有的输入输出都转化为统一的相应文件的读和写操作。Linux内核根据该种机制设置了一系列简单、低级的应用接口，即Unix I/O。</p>
+<h3 id="File">File</h3>
+<h2 id="Unix-I-O-Functions">Unix I/O Functions</h2>
+<h3 id="Opening-and-Closing-Files">Opening and Closing Files</h3>
+<h3 id="Reading-and-Writing-Files">Reading and Writing Files</h3>
+<h3 id="Reading-File-Metadata">Reading File Metadata</h3>
+<h3 id="Reading-Directory-Contents">Reading Directory Contents</h3>
+<h2 id="RIO">RIO</h2>
+<h3 id="Unbuffered-Input-and-Output-Functions">Unbuffered Input and Output Functions</h3>
+<img src="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303261903704.png" srcset="/img/loading.gif" lazyload alt="image-20230326190316644" style="zoom:50%;" />
+<h3 id="Buffered-Input-Functions">Buffered Input Functions</h3>
+<img src="https://tao1st-1317129655.cos.ap-beijing.myqcloud.com/202303261903699.png" srcset="/img/loading.gif" lazyload alt="image-20230326190341641" style="zoom:50%;" />
+<h2 id="Sharing-Files">Sharing Files</h2>
+<h2 id="Standard-I-O">Standard I/O</h2>
 
                 
               </div>
@@ -459,7 +299,7 @@
     
       <span class="category-chain">
         
-  <a href="/categories/Git/" class="category-chain-item">Git</a>
+  <a href="/categories/15-213/" class="category-chain-item">15-213</a>
   
   
 
@@ -481,9 +321,9 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2021/01/21/C++_%E5%8F%98%E9%87%8F%E4%B8%8E%E5%9F%BA%E6%9C%AC%E7%B1%BB%E5%9E%8B/" title="C++：变量与基本类型">
+                      <a href="/2022/06/04/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92-Dynamic-Programming/" title="动态规划（Dynamic Programming）">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">C++：变量与基本类型</span>
+                        <span class="hidden-mobile">动态规划（Dynamic Programming）</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
@@ -491,8 +331,8 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2020/11/04/Vim/" title="Vim">
-                        <span class="hidden-mobile">Vim</span>
+                      <a href="/2022/03/24/15-213-Concurrency/" title="15-213: Concurrency">
+                        <span class="hidden-mobile">15-213: Concurrency</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
